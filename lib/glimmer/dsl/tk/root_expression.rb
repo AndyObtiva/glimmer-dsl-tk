@@ -19,22 +19,28 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-$LOAD_PATH.unshift(File.expand_path('..', __FILE__))
+require 'glimmer/dsl/static_expression'
+require 'glimmer/dsl/parent_expression'
+require 'glimmer/dsl/top_level_expression'
+require 'glimmer/tk/root_proxy'
 
-# External requires
-require 'glimmer'
-require 'logging'
-# require 'puts_debuggerer'
-require 'super_module'
-require 'tk'
+module Glimmer
+  module DSL
+    module Tk
+      class RootExpression < StaticExpression
+        include TopLevelExpression
+        include ParentExpression
 
-# Internal requires
-# require 'ext/glimmer/config'
-# require 'ext/glimmer'
-require 'glimmer/dsl/tk/dsl'
-Glimmer::Config.loop_max_count = -1
-Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
-  method = method_symbol.to_s
-  result = false
-  result ||= method == 'load_iseq'
+        def can_interpret?(parent, keyword, *args, &block)
+          keyword == 'root' and
+            (parent.nil? or parent.is_a?(Glimmer::Tk::RootProxy))
+        end
+  
+        def interpret(parent, keyword, *args, &block)
+          args = [parent] + args unless parent.nil?
+          Glimmer::Tk::RootProxy.new(*args)
+        end
+      end
+    end
+  end
 end

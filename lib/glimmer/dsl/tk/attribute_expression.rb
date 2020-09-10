@@ -19,22 +19,25 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-$LOAD_PATH.unshift(File.expand_path('..', __FILE__))
+require 'glimmer/dsl/expression'
 
-# External requires
-require 'glimmer'
-require 'logging'
-# require 'puts_debuggerer'
-require 'super_module'
-require 'tk'
-
-# Internal requires
-# require 'ext/glimmer/config'
-# require 'ext/glimmer'
-require 'glimmer/dsl/tk/dsl'
-Glimmer::Config.loop_max_count = -1
-Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
-  method = method_symbol.to_s
-  result = false
-  result ||= method == 'load_iseq'
+module Glimmer
+  module DSL
+    module Tk
+      class AttributeExpression < Expression
+        def can_interpret?(parent, keyword, *args, &block)
+          block.nil? and
+            args.size > 0 and
+            parent.respond_to?(:set_attribute) and
+            parent.respond_to?(:has_attribute?) and
+            parent.has_attribute?(keyword, *args)
+        end
+  
+        def interpret(parent, keyword, *args, &block)
+          parent.set_attribute(keyword, *args)
+          nil
+        end
+      end
+    end
+  end
 end

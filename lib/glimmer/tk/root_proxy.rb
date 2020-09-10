@@ -19,22 +19,31 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-$LOAD_PATH.unshift(File.expand_path('..', __FILE__))
+require 'glimmer/tk/widget_proxy'
 
-# External requires
-require 'glimmer'
-require 'logging'
-# require 'puts_debuggerer'
-require 'super_module'
-require 'tk'
+module Glimmer
+  module Tk
+    # Proxy for TkRoot
+    #
+    # Follows the Proxy Design Pattern
+    class RootProxy < WidgetProxy
 
-# Internal requires
-# require 'ext/glimmer/config'
-# require 'ext/glimmer'
-require 'glimmer/dsl/tk/dsl'
-Glimmer::Config.loop_max_count = -1
-Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
-  method = method_symbol.to_s
-  result = false
-  result ||= method == 'load_iseq'
+      def initialize(*args)
+        @tk_widget = ::TkRoot.new
+      end
+
+      def open
+        start_event_loop
+      end
+
+      def content(&block)
+        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::SWT::RootExpression.new, &block)
+      end
+
+      # Starts Tk mainloop
+      def start_event_loop
+        ::Tk.mainloop
+      end
+    end
+  end
 end

@@ -19,22 +19,36 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-$LOAD_PATH.unshift(File.expand_path('..', __FILE__))
-
-# External requires
 require 'glimmer'
-require 'logging'
-# require 'puts_debuggerer'
-require 'super_module'
-require 'tk'
+require 'glimmer/dsl/expression'
+require 'glimmer/dsl/parent_expression'
 
-# Internal requires
-# require 'ext/glimmer/config'
-# require 'ext/glimmer'
-require 'glimmer/dsl/tk/dsl'
-Glimmer::Config.loop_max_count = -1
-Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
-  method = method_symbol.to_s
-  result = false
-  result ||= method == 'load_iseq'
+module Glimmer
+  module DSL
+    module Tk
+      class WidgetExpression < Expression
+        include ParentExpression
+  
+        EXCLUDED_KEYWORDS = %w[root]
+  
+        def can_interpret?(parent, keyword, *args, &block)
+          !EXCLUDED_KEYWORDS.include?(keyword) and
+            parent.respond_to?(:tk_widget) and
+            Glimmer::Tk::WidgetProxy.widget_exists?(keyword)
+        end
+  
+        def interpret(parent, keyword, *args, &block)
+          Glimmer::Tk::WidgetProxy.new(keyword, parent, args, &block)
+        end
+        
+        def add_content(parent, &block)
+          super
+          parent.post_add_content
+        end
+        
+      end
+    end
+  end
 end
+
+require 'glimmer/tk/widget_proxy'

@@ -47,3 +47,8 @@ pkg
 
 # For rubinius:
 #*.rbc
+
+.DS_Store
+
+# Gladiator (Glimmer Editor)
+.gladiator
