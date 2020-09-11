@@ -29,7 +29,7 @@ module Glimmer
     class RootProxy < WidgetProxy
 
       def initialize(*args)
-        @tk_widget = ::TkRoot.new
+        @tk = ::TkRoot.new
       end
 
       def open

@@ -38,7 +38,7 @@ module Glimmer
     
       def post_initialize_child(child)
         @tab_proxies << child
-        @tk_widget.add child.tk_widget, child.tab_options
+        @tk.add child.tk, child.tab_options
       end
     end
   end

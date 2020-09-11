@@ -33,6 +33,7 @@ Gem::Specification.new do |s|
     "lib/glimmer/tk/notebook_proxy.rb",
     "lib/glimmer/tk/root_proxy.rb",
     "lib/glimmer/tk/widget_proxy.rb",
+    "samples/hello/hello_combo.rb",
     "samples/hello/hello_tab.rb",
     "samples/hello/hello_world.rb"
   ]
@@ -47,7 +48,6 @@ Gem::Specification.new do |s|
 
   if s.respond_to? :add_runtime_dependency then
     s.add_runtime_dependency(%q<glimmer>.freeze, ["~> 0.10.3"])
-    s.add_runtime_dependency(%q<puts_debuggerer>.freeze, ["~> 0.10.0"])
     s.add_runtime_dependency(%q<tk>.freeze, ["~> 0.2.0"])
     s.add_development_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
     s.add_development_dependency(%q<rdoc>.freeze, ["~> 3.12"])
@@ -55,9 +55,9 @@ Gem::Specification.new do |s|
     s.add_development_dependency(%q<simplecov>.freeze, [">= 0"])
     s.add_development_dependency(%q<jeweler>.freeze, [">= 2.3.9", "< 3.0.0"])
     s.add_development_dependency(%q<rake-tui>.freeze, [">= 0.2.1"])
+    s.add_development_dependency(%q<puts_debuggerer>.freeze, ["~> 0.10.0"])
   else
     s.add_dependency(%q<glimmer>.freeze, ["~> 0.10.3"])
-    s.add_dependency(%q<puts_debuggerer>.freeze, ["~> 0.10.0"])
     s.add_dependency(%q<tk>.freeze, ["~> 0.2.0"])
     s.add_dependency(%q<rspec>.freeze, ["~> 3.5.0"])
     s.add_dependency(%q<rdoc>.freeze, ["~> 3.12"])
@@ -65,6 +65,7 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<simplecov>.freeze, [">= 0"])
     s.add_dependency(%q<jeweler>.freeze, [">= 2.3.9", "< 3.0.0"])
     s.add_dependency(%q<rake-tui>.freeze, [">= 0.2.1"])
+    s.add_dependency(%q<puts_debuggerer>.freeze, ["~> 0.10.0"])
   end
 end
 

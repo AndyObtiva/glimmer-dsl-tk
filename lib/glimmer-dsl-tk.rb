@@ -23,9 +23,9 @@ $LOAD_PATH.unshift(File.expand_path('..', __FILE__))
 
 # External requires
 require 'glimmer'
-require 'logging'
+# require 'logging'
 require 'puts_debuggerer' if ENV['pd'].to_s.downcase == 'true'
-require 'super_module'
+# require 'super_module'
 require 'tk'
 
 # Internal requires

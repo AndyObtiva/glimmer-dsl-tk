@@ -25,7 +25,7 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class WidgetProxy
-      attr_reader :parent_proxy, :tk_widget, :args
+      attr_reader :parent_proxy, :tk, :args
 
       DEFAULT_INITIALIZERS = {
         'label' => lambda do |widget|
@@ -61,8 +61,8 @@ module Glimmer
         @parent_proxy = parent_proxy
         @args = args
         tk_widget_class = self.class.tk_widget_class_for(underscored_widget_name)
-        @tk_widget = tk_widget_class.new(@parent_proxy.tk_widget, *args)
-        DEFAULT_INITIALIZERS[underscored_widget_name]&.call(@tk_widget)        
+        @tk = tk_widget_class.new(@parent_proxy.tk, *args)
+        DEFAULT_INITIALIZERS[underscored_widget_name]&.call(@tk)        
         @parent_proxy.post_initialize_child(self)
       end
       
@@ -97,7 +97,7 @@ module Glimmer
         result = nil
         begin     
           # TK Widget currently doesn't support respond_to? properly, so I have to resort to this trick for now   
-          @tk_widget.send(attribute_setter(attribute_name), @tk_widget.send(attribute_name))
+          @tk.send(attribute_setter(attribute_name), @tk.send(attribute_name))
           result = true
         rescue => e
           result = false
@@ -111,14 +111,14 @@ module Glimmer
 
       def set_attribute(attribute_name, *args)
         if tk_widget_has_attribute?(attribute_name)
-          @tk_widget.send(attribute_setter(attribute_name), *args) unless @tk_widget.send(attribute_name) == args.first
+          @tk.send(attribute_setter(attribute_name), *args) unless @tk.send(attribute_name) == args.first
         else
           send(attribute_setter(attribute_name), args)
         end
       end
 
       def get_attribute(attribute_name)
-        @tk_widget.send(attribute_name)
+        @tk.send(attribute_name)
       end      
 
       def attribute_setter(attribute_name)
@@ -130,15 +130,15 @@ module Glimmer
       end
 
       def method_missing(method, *args, &block)
-        tk_widget.send(method, *args, &block)
+        tk.send(method, *args, &block)
       rescue => e
-        Glimmer::Config.logger.debug {"Neither WidgetProxy nor #{tk_widget.class.name} can handle the method ##{method}"}
+        Glimmer::Config.logger.debug {"Neither WidgetProxy nor #{tk.class.name} can handle the method ##{method}"}
         super
       end
       
       def respond_to?(method, *args, &block)
         super || 
-          tk_widget.respond_to?(method, *args, &block)
+          tk.respond_to?(method, *args, &block)
       end
     end
   end
