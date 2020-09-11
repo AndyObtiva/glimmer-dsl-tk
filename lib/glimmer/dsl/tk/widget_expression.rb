@@ -38,7 +38,7 @@ module Glimmer
         end
   
         def interpret(parent, keyword, *args, &block)
-          Glimmer::Tk::WidgetProxy.new(keyword, parent, args, &block)
+          Glimmer::Tk::WidgetProxy.create(keyword, parent, args, &block)
         end
         
         def add_content(parent, &block)
@@ -52,3 +52,5 @@ module Glimmer
 end
 
 require 'glimmer/tk/widget_proxy'
+require 'glimmer/tk/notebook_proxy'
+require 'glimmer/tk/frame_proxy'

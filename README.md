@@ -1,10 +1,10 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.1 (Desktop GUI)
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.2 (Desktop GUI)
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 [Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [Tk](https://www.tcl.tk/) enables desktop development with [Glimmer](https://github.com/AndyObtiva/glimmer).
 
-[Tcl/Tk](https://www.tcl.tk/) has evolved into a practical desktop GUI toolkit due to gaining true native widgets on Mac, Windows, and Linux in Tk version 8.5.
+[Tcl/Tk](https://www.tcl.tk/) has evolved into a practical desktop GUI toolkit due to gaining true native widgets on Mac, Windows, and Linux in [Tk version 8.5](https://www.tcl.tk/software/tcltk/8.5.html#:~:text=Highlights%20of%20Tk%208.5&text=Font%20rendering%3A%20Now%20uses%20anti,and%20window%20layout%2C%20and%20more.).
 
 Additionally, Ruby 3.0 supports truly parallel multi-threading, making both [MRI](https://github.com/ruby/ruby) and [Tk](https://www.tcl.tk/) finally viable for support in [Glimmer](https://github.com/AndyObtiva/glimmer) (Ruby Desktop Development GUI Library).
 
@@ -14,6 +14,28 @@ Additionally, Ruby 3.0 supports truly parallel multi-threading, making both [MRI
 - Requiring the least amount of syntax possible to build GUI
 - Scaffolding for new custom widgets, apps, and gems
 - Native-Executable packaging on Mac, Windows, and Linux
+
+**Hello, World!**
+
+Glimmer code (from [samples/hello/hello_world.rb](samples/hello/hello_world.rb)):
+
+```ruby
+root {
+  label {
+    text 'Hello, World!'
+  }
+}.open
+```
+
+Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
+
+```
+ruby -e "require '../samples/hello/hello_world.rb'"
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello world](images/glimmer-dsl-tk-screenshot-sample-hello-world.png)
 
 Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
 - [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (Desktop GUI via JRuby on SWT)
@@ -46,7 +68,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.1'
+gem 'glimmer-dsl-tk', '~> 0.0.2'
 ```
 
 And, then run:
@@ -54,9 +76,77 @@ And, then run:
 bundle
 ```
 
-## Example
+## Tk Concepts
 
-### Hello, World!:
+Here is a summary taken from the official [Tk Concepts Tutorial](https://tkdocs.com/tutorial/concepts.html)
+
+Tk Concepts consist of:
+- [Widgets](https://tkdocs.com/tutorial/concepts.html#widgets): Widgets are all the things that you see onscreen. In our example, we had a button, an entry, a few labels, and a frame. Others are things like checkboxes, tree views, scrollbars, text areas, and so on. Widgets are what are often referred to as "controls"; you'll also often see them referred to as "windows," particularly in Tk's documentation, a holdover from its X11 roots (so under that terminology, both a toplevel window and things like a button would be called windows).
+- [Geometry Management](https://tkdocs.com/tutorial/concepts.html#geometry): If you've been playing around creating widgets, you've probably noticed that just by creating them, they didn't end up showing up onscreen. Having things actually put in the onscreen window, and precisely where in the window they show up is a separate step called geometry management.
+- [Event Handling](https://tkdocs.com/tutorial/concepts.html#events): In Tk, as in most other user interface toolkits, there is an event loop which receives events from the operating system. These are things like button presses, keystrokes, mouse movement, window resizing, and so on.
+
+Learn more at the official [Tk Concepts Tutorial](https://tkdocs.com/tutorial/concepts.html)
+
+## Glimmer GUI DSL Concepts
+
+The Glimmer GUI DSL provides a declarative syntax for [Tk](https://www.tcl.tk/) that:
+- Supports smart defaults (e.g. grid layout on most widgets)
+- Automates wiring of widgets (e.g. nesting a label under a toplevel root or adding a frame to a notebook)
+- Hides lower-level details (e.g. main loop is started automatically when opening a window)
+- Nests widgets according to their visual hierarchy
+- Requires the minimum amount of syntax needed to describe an app's GUI
+
+The Glimmer GUI DSL follows these simple concepts in mapping from Tk syntax:
+- **Widget Keyword**: Any Tk widget (e.g. `Tk::Tile::Label`) or toplevel window (e.g. `TkRoot`) may be declared by its lower-case underscored name without the namespace (e.g. `label` or `root`). This is called a keyword and is represented in the Glimmer GUI DSL by a Ruby method behind the scenes.
+- **Args**: Any keyword method may optionally take arguments surrounded by parentheses (e.g. a `frame` nested under a `notebook` may receive tab options like `frame(text: 'Users')`, which gets used behind the scenes by Tk code such as `notebook.add tab, text: 'Users'`)
+- **Content/Options Block**: Any keyword may optionally be followed by a Ruby curly-brace block 
+
+Example of an app written in [Tk](https://www.tcl.tk/) imperative syntax:
+
+```ruby
+root = TkRoot.new
+root.title = 'Hello, Tab!'
+
+notebook = ::Tk::Tile::Notebook.new(root).grid
+
+tab1 = ::Tk::Tile::Frame.new(notebook).grid
+notebook.add tab1, text: 'English'
+label1 = ::Tk::Tile::Label.new(tab1).grid
+label1.text = 'Hello, World!'
+
+tab2 = ::Tk::Tile::Frame.new(notebook).grid
+notebook.add tab2, text: 'French'
+label2 = ::Tk::Tile::Label.new(tab2).grid
+label2.text = 'Bonjour, Univers!'
+
+root.mainloop
+```
+
+Example of the same app written in [Glimmer](https://github.com/AndyObtiva/glimmer) declarative syntax:
+
+```ruby
+root {      
+  title 'Hello, Tab!'
+   
+  notebook {
+    frame(text: 'English') {
+      label {
+        text 'Hello, World!'
+      }
+    }
+     
+    frame(text: 'French') {
+      label {
+        text 'Bonjour, Univers!'
+      }
+    }
+  }
+}.open
+```
+
+## Samples
+
+### Hello, World!
 
 Glimmer code (from [samples/hello/hello_world.rb](samples/hello/hello_world.rb)):
 
@@ -68,15 +158,50 @@ root {
 }.open
 ```
 
-Run:
+Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
 
 ```
-ruby samples/hello/hello_world.rb
+ruby -e "gem 'glimmer-dsl-tk'; require '../samples/hello/hello_world.rb'"
 ```
 
 Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello world](images/glimmer-dsl-tk-screenshot-sample-hello-world.png)
+
+### Hello, Tab!
+
+Glimmer code (from [samples/hello/hello_tab.rb](samples/hello/hello_tab.rb)):
+
+```ruby
+root {      
+  title 'Hello, Tab!'
+   
+  notebook {
+    frame(text: 'English') {
+      label {
+        text 'Hello, World!'
+      }
+    }
+     
+    frame(text: 'French') {
+      label {
+        text 'Bonjour, Univers!'
+      }
+    }
+  }
+}.open
+```
+
+Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
+
+```
+ruby -e "gem 'glimmer-dsl-tk'; require '../samples/hello/hello_tab.rb'"
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello tab English](images/glimmer-dsl-tk-screenshot-sample-hello-tab-english.png)
+![glimmer dsl tk screenshot sample hello tab French](images/glimmer-dsl-tk-screenshot-sample-hello-tab-french.png)
 
 ## Help
 
@@ -90,9 +215,13 @@ You may submit [issues](https://github.com/AndyObtiva/glimmer/issues) on [GitHub
 
 If you need live help, try to [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
+## Process
+
+[Glimmer Process](https://github.com/AndyObtiva/glimmer/blob/master/PROCESS.md)
+
 ## Feature Suggestions
 
-These features have been suggested. You might see them in a future version of Glimmer. You are welcome to contribute more feature suggestions.
+These features have been suggested. You might see them in a future version of Glimmer DSL for Tk. You are welcome to contribute more feature suggestions.
 
 [TODO.md](TODO.md)
 
@@ -108,7 +237,7 @@ These features have been suggested. You might see them in a future version of Gl
 
 * [Andy Maleh](https://github.com/AndyObtiva) (Founder)
 
-[Click here to view contributor commits.](https://github.com/AndyObtiva/glimmer-dsl-swt/graphs/contributors)
+[Click here to view contributor commits.](https://github.com/AndyObtiva/glimmer-dsl-tk/graphs/contributors)
 
 ## License
 

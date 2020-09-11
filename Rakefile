@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "glimmer-dsl-tk"
   gem.homepage = "http://github.com/AndyObtiva/glimmer-dsl-tk"
   gem.license = "MIT"
-  gem.summary = %Q{Glimmer DSL for TK}
-  gem.description = %Q{Glimmer DSL for TK (Ruby Desktop GUI)}
+  gem.summary = %Q{Glimmer DSL for Tk}
+  gem.description = %Q{Glimmer DSL for Tk (Ruby Desktop GUI)}
   gem.email = "andy.am@gmail.com"
   gem.authors = ["andy_maleh"]
   gem.files = ['README.md', 'CHANGELOG.md', 'VERSION', 'LICENSE.txt', 'lib/**/*', 'samples/**/*']

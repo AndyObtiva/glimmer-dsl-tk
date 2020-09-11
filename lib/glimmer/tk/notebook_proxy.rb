@@ -19,14 +19,27 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer-dsl-tk'
+require 'glimmer/tk/widget_proxy'
 
-include Glimmer
-
-root {
-  title 'Hello, World!'
-  
-  label {
-    text 'Hello, World!'
-  }
-}.open
+module Glimmer
+  module Tk    
+    # Proxy for Tk::Tile::Notebook
+    #
+    # Follows the Proxy Design Pattern
+    class NotebookProxy < WidgetProxy
+      TAB_OPTIONS = ['state', 'sticky', 'padding', 'text', 'image', 'compound', 'underline']
+    
+      attr_reader :tab_proxies
+    
+      def initialize(*args)
+        @tab_proxies = []
+        super
+      end
+    
+      def post_initialize_child(child)
+        @tab_proxies << child
+        @tk_widget.add child.tk_widget, child.tab_options
+      end
+    end
+  end
+end

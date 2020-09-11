@@ -25,22 +25,43 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class WidgetProxy
-      attr_reader :parent_proxy, :tk_widget, :drag_source_proxy, :drop_target_proxy, :drag_source_style, :drag_source_transfer, :drop_target_transfer
+      attr_reader :parent_proxy, :tk_widget, :args
 
       DEFAULT_INITIALIZERS = {
-        'label' => lambda do |label|
-          label.grid
+        'label' => lambda do |widget|
+          widget.grid
+        end,
+        'frame' => lambda do |widget|
+          widget.grid
+        end,
+        'notebook' => lambda do |widget|
+          widget.grid
         end,
       }
+      
+      class << self
+        def create(keyword, parent, args)
+          widget_proxy_class(keyword).new(keyword, parent, args)
+        end
+        
+        def widget_proxy_class(keyword)
+          begin
+            class_name = "#{keyword.camelcase(:upper)}Proxy".to_sym
+            Glimmer::Tk.const_get(class_name)
+          rescue
+            Glimmer::Tk::WidgetProxy
+          end        
+        end        
+      end      
       
       # Initializes a new Tk Widget
       #
       # Styles is a comma separate list of symbols representing Tk styles in lower case
-      def initialize(*init_args)
-        underscored_widget_name, parent, extra_options = init_args
-        @parent_proxy = parent
+      def initialize(underscored_widget_name, parent_proxy, args)
+        @parent_proxy = parent_proxy
+        @args = args
         tk_widget_class = self.class.tk_widget_class_for(underscored_widget_name)
-        @tk_widget = tk_widget_class.new(@parent_proxy.tk_widget, *extra_options)
+        @tk_widget = tk_widget_class.new(@parent_proxy.tk_widget, *args)
         DEFAULT_INITIALIZERS[underscored_widget_name]&.call(@tk_widget)        
         @parent_proxy.post_initialize_child(self)
       end
@@ -61,7 +82,7 @@ module Glimmer
 
       # This supports widgets in and out of basic Tk
       def self.tk_widget_class_for(underscored_widget_name)
-        tk_widget_name = "::Tk::Tile::#{underscored_widget_name.camelcase(:upper)}"
+        tk_widget_name = "::Tk::Tile::#{underscored_widget_name.camelcase(:upper)}"        
         tk_widget_class = eval(tk_widget_name)
         tk_widget_class
       rescue SyntaxError, NameError => e
