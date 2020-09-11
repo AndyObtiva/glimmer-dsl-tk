@@ -1,0 +1,47 @@
+language: shell
+jobs:
+  include:
+    - name: Ruby + ActiveTcl (MacOSX)
+      os: osx
+      before_script:
+        - mkdir tmp
+        - curl -L https://www.dropbox.com/s/c9go4iv89u2n0ok/ActiveTcl-8.6.9.8609.2-macosx10.9-x86_64-93b04018.pkg?dl=1 > tmp/ActiveTcl.pkg
+        - sudo installer -pkg tmp/ActiveTcl.pkg -target / -verbose
+        - rvm use ruby-2.6.3 --install --binary --fuzzy
+        - export BUNDLE_GEMFILE=$PWD/Gemfile
+        - ruby --version
+        - rvm --version
+        - gem install bundler
+        - bundle --version
+        - gem --version
+        - bundle
+      script:
+        - bundle exec rake
+      after_script:
+        - ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- --repo AndyObtiva/glimmer-dsl-tk --commit $TRAVIS_COMMIT --lcov coverage/lcov/glimmer-dsl-tk.lcov
+#    - name: Ruby + ActiveTcl (Linux)
+#      os: linux
+#      dist: xenial
+#      services: 
+#        - xvfb
+#      before_script:
+#        - curl -L https://www.dropbox.com/s/rs7k7nmc53unprh/ActiveTcl-8.6.9.8609.2-x86_64-linux-glibc-2.5-dcd3ff05d.tar.gz?dl=1 > ~/ActiveTcl.tar.gz
+#        - pushd ~
+#        - tar zxf ActiveTcl.tar.gz
+#        - popd
+#        - pushd ~/ActiveTcl-8.6.9.8609.2-x86_64-linux-glibc-2.5-dcd3ff05d
+#        - sudo printf "\nA\n" | sudo ./install.sh
+#        - export PATH="/opt/ActiveTcl-8.6/bin:$PATH"
+#        - popd
+#        - rvm use ruby-2.5.3 --install --binary --fuzzy
+#        - export BUNDLE_GEMFILE=$PWD/Gemfile
+#        - ruby --version
+#        - rvm --version
+#        - gem install bundler
+#        - bundle --version
+#        - gem --version
+#        - bundle
+#      script:
+#        - bundle exec rake
+#      after_script:
+#        - ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- --repo AndyObtiva/glimmer-dsl-tk --commit $TRAVIS_COMMIT --lcov coverage/lcov/glimmer-dsl-tk.lcov
