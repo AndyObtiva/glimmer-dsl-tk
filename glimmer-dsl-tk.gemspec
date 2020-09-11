@@ -67,3 +67,4 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<rake-tui>.freeze, [">= 0.2.1"])
   end
 end
+
