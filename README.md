@@ -6,12 +6,15 @@
 
 [Tcl/Tk](https://www.tcl.tk/) has evolved into a practical desktop GUI toolkit due to gaining true native widgets on Mac, Windows, and Linux in [Tk version 8.5](https://www.tcl.tk/software/tcltk/8.5.html#:~:text=Highlights%20of%20Tk%208.5&text=Font%20rendering%3A%20Now%20uses%20anti,and%20window%20layout%2C%20and%20more.).
 
-Additionally, Ruby 3.0 supports truly parallel multi-threading, making both [MRI](https://github.com/ruby/ruby) and [Tk](https://www.tcl.tk/) finally viable for support in [Glimmer](https://github.com/AndyObtiva/glimmer) (Ruby Desktop Development GUI Library).
+Additionally, [Ruby](https://www.ruby-lang.org/en/) 3.0 Ractor (formerly known as [Guilds](https://olivierlacan.com/posts/concurrency-in-ruby-3-with-guilds/)) supports truly parallel multi-threading, making both [MRI](https://github.com/ruby/ruby) and [Tk](https://www.tcl.tk/) finally viable for support in [Glimmer](https://github.com/AndyObtiva/glimmer) (Ruby Desktop Development GUI Library) as an alternative to [JRuby on SWT](https://github.com/AndyObtiva/glimmer-dsl-swt).
+
+The trade-off is that while [SWT](https://www.eclipse.org/swt/) provides a plethora of high quality reusable widgets for the Enterprise (such as [Nebula](https://www.eclipse.org/nebula/)), [Tk](https://www.tcl.tk/) enables very fast app startup time via [MRI Ruby](https://www.ruby-lang.org/en/).
 
 [Glimmer](https://github.com/AndyObtiva/glimmer) provides a DSL to enable more productive desktop development in Ruby with:
 - Declarative DSL syntax that visually maps to the GUI widget hierarchy
 - Convention over configuration via smart defaults and automation of low-level details
 - Requiring the least amount of syntax possible to build GUI
+- Bidirectional Data-Binding to declaratively wire and automatically synchronize GUI with Business Models
 - Scaffolding for new custom widgets, apps, and gems
 - Native-Executable packaging on Mac, Windows, and Linux
 
@@ -30,7 +33,7 @@ root {
 Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
 
 ```
-ruby -e "require '../samples/hello/hello_world.rb'"
+ruby -e "gem 'glimmer-dsl-tk'; require '../samples/hello/hello_world.rb'"
 ```
 
 Glimmer app:
@@ -38,7 +41,7 @@ Glimmer app:
 ![glimmer dsl tk screenshot sample hello world](images/glimmer-dsl-tk-screenshot-sample-hello-world.png)
 
 Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
-- [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (Desktop GUI via JRuby on SWT)
+- [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop GUI)
 - [glimmer-dsl-opal](https://github.com/AndyObtiva/glimmer-dsl-opal): Glimmer DSL for Opal (Web GUI Adapter for Desktop Apps)
 - [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
 - [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS (Cascading Style Sheets)
@@ -61,6 +64,8 @@ Afterwards, if you open `irb`, you should be able to run `require 'tk'` successf
 
 Run this command to install directly:
 ```
+gem install logging
+gem install super_module
 gem install glimmer-dsl-tk
 ```
 
@@ -68,6 +73,8 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
+gem 'logging'
+gem 'super_module'
 gem 'glimmer-dsl-tk', '~> 0.0.2'
 ```
 
@@ -99,7 +106,7 @@ The Glimmer GUI DSL provides a declarative syntax for [Tk](https://www.tcl.tk/) 
 The Glimmer GUI DSL follows these simple concepts in mapping from Tk syntax:
 - **Widget Keyword**: Any Tk widget (e.g. `Tk::Tile::Label`) or toplevel window (e.g. `TkRoot`) may be declared by its lower-case underscored name without the namespace (e.g. `label` or `root`). This is called a keyword and is represented in the Glimmer GUI DSL by a Ruby method behind the scenes.
 - **Args**: Any keyword method may optionally take arguments surrounded by parentheses (e.g. a `frame` nested under a `notebook` may receive tab options like `frame(text: 'Users')`, which gets used behind the scenes by Tk code such as `notebook.add tab, text: 'Users'`)
-- **Content/Options Block**: Any keyword may optionally be followed by a Ruby curly-brace block 
+- **Content/Options Block**: Any keyword may optionally be followed by a Ruby curly-brace block containing nested widgets (content) and attributes (options). Attributes are simply Tk option keywords followed by arguments and no block (e.g. `title 'Hello, World!'` under a `root`)
 
 Example of an app written in [Tk](https://www.tcl.tk/) imperative syntax:
 
