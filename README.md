@@ -66,8 +66,6 @@ Afterwards, if you open `irb`, you should be able to run `require 'tk'` successf
 
 Run this command to install directly:
 ```
-gem install logging
-gem install super_module
 gem install glimmer-dsl-tk
 ```
 
@@ -75,8 +73,6 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'logging'
-gem 'super_module'
 gem 'glimmer-dsl-tk', '~> 0.0.3'
 ```
 
