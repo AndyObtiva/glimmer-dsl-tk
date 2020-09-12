@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.2 (Desktop GUI)
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.3 (Desktop GUI)
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-tk/maintainability)
 [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
@@ -35,7 +35,7 @@ root {
 Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
 
 ```
-ruby -e "gem 'glimmer-dsl-tk'; require '../samples/hello/hello_world.rb'"
+ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_world.rb'"
 ```
 
 Glimmer app:
@@ -77,7 +77,7 @@ Add the following to `Gemfile`:
 ```
 gem 'logging'
 gem 'super_module'
-gem 'glimmer-dsl-tk', '~> 0.0.2'
+gem 'glimmer-dsl-tk', '~> 0.0.3'
 ```
 
 And, then run:
@@ -153,6 +153,46 @@ root {
 }.open
 ```
 
+### Bidirectional Data-Binding
+
+Glimmer supports bidirectional data-binding via the `bind` keyword, which takes a model and an attribute.
+
+Example:
+
+This assumes a `Person` model with a `country` attribute representing their current country and a `country_options` attribute representing available options for the country attribute.
+
+```ruby
+  combobox { |proxy|
+    state 'readonly'       
+    text bind(person, :country)
+  }
+```
+
+That binds the `text` selection of the `combobox` to the `country` property on the `person` model.
+
+It automatically handles all the Tk plumbing behind the scenes, such as using `TkVariable` and setting `combobox` `values` from `person.country_options` by convention (attribute_name + "_options").
+
+More details can be found in the [Hello, Combo!](#hello-combo) sample below.
+
+### Command
+
+Buttons can set a `command` option to trigger when the user clicks the button. This may be done with the `command` keyword, passing in a block directly (no need for `proc` as per Tk)
+
+Example:
+
+```ruby
+  button { |proxy|
+    text "Reset Selection"
+    command {
+      person.reset_country
+    }
+  }
+```
+
+This resets the person country.
+
+More details can be found in the [Hello, Combo!](#hello-combo) sample below.
+
 ## Samples
 
 ### Hello, World!
@@ -160,6 +200,8 @@ root {
 Glimmer code (from [samples/hello/hello_world.rb](samples/hello/hello_world.rb)):
 
 ```ruby
+include Glimmer
+
 root {
   label {
     text 'Hello, World!'
@@ -170,7 +212,7 @@ root {
 Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
 
 ```
-ruby -e "gem 'glimmer-dsl-tk'; require '../samples/hello/hello_world.rb'"
+ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_world.rb'"
 ```
 
 Glimmer app:
@@ -182,6 +224,8 @@ Glimmer app:
 Glimmer code (from [samples/hello/hello_tab.rb](samples/hello/hello_tab.rb)):
 
 ```ruby
+include Glimmer
+
 root {      
   title 'Hello, Tab!'
    
@@ -204,13 +248,48 @@ root {
 Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
 
 ```
-ruby -e "gem 'glimmer-dsl-tk'; require '../samples/hello/hello_tab.rb'"
+ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_tab.rb'"
 ```
 
 Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello tab English](images/glimmer-dsl-tk-screenshot-sample-hello-tab-english.png)
 ![glimmer dsl tk screenshot sample hello tab French](images/glimmer-dsl-tk-screenshot-sample-hello-tab-french.png)
+
+### Hello, Combo!
+
+Glimmer code (from [samples/hello/hello_combo.rb](samples/hello/hello_combo.rb)):
+
+```ruby
+# ... more code precedes
+root {
+  title 'Hello, Combo!'
+  
+  combobox { |proxy|
+    state 'readonly'       
+    text bind(person, :country)
+  }
+  
+  button { |proxy|
+    text "Reset Selection"
+    command {
+      person.reset_country
+    }
+  }
+}.open
+# ... more code follows
+```
+
+Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
+
+```
+ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_combo.rb'"
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello combo](images/glimmer-dsl-tk-screenshot-sample-hello-combo.png)
+![glimmer dsl tk screenshot sample hello combo dropdown](images/glimmer-dsl-tk-screenshot-sample-hello-combo-dropdown.png)
 
 ## Help
 

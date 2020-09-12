@@ -20,7 +20,7 @@ Jeweler::Tasks.new do |gem|
   gem.summary = %Q{Glimmer DSL for Tk}
   gem.description = %Q{Glimmer DSL for Tk (Ruby Desktop GUI)}
   gem.email = "andy.am@gmail.com"
-  gem.authors = ["andy_maleh"]
+  gem.authors = ["AndyMaleh"]
   gem.files = ['README.md', 'CHANGELOG.md', 'VERSION', 'LICENSE.txt', 'lib/**/*', 'samples/**/*']
   # dependencies defined in Gemfile
 end

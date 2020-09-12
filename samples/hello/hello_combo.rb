@@ -24,7 +24,6 @@ class HelloCombo
       
       combobox { |proxy|
         state 'readonly'       
-        values person.country_options
         text bind(person, :country)
       }
       
