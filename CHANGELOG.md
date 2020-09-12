@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.3
+
+- Combobox support
+- Button command event observer support
+- Combobox text data-binding
+
 ## 0.0.2
 
 - Notebook/frame support
