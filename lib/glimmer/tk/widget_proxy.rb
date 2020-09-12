@@ -149,6 +149,11 @@ module Glimmer
         @tk_widget_property_listener_installers ||= {
           ::Tk::Tile::TCombobox => {
             :text => lambda do |observer|
+              if observer.is_a?(Glimmer::DataBinding::ModelBinding)
+                model = observer.model
+                options_model_property = observer.property_name + '_options'
+                @tk.values = model.send(options_model_property) if model.respond_to?(options_model_property)
+              end
               @tk.bind('<ComboboxSelected>') {
                 observer.call(@tk.textvariable.value)
               }

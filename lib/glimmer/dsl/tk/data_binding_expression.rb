@@ -25,7 +25,7 @@ module Glimmer
           widget_binding.observe(model_binding)
           # TODO simplify this logic and put it where it belongs
           parent.add_observer(model_binding, keyword) if parent.respond_to?(:add_observer, [model_binding, keyword])
-        end
+        end        
       end
     end
   end
