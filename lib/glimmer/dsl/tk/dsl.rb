@@ -36,6 +36,7 @@ module Glimmer
       Engine.add_dynamic_expressions(
         Tk,
         %w[
+          block_attribute
           attribute
           widget
         ]

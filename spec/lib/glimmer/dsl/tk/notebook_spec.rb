@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 module GlimmerSpec # used to house Glimmer mixin
-  describe 'label widget' do
+  describe 'notebook widget' do
     include Glimmer
     
     it 'renders notebook with tab frames' do

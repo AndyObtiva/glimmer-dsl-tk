@@ -19,39 +19,23 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer'
 require 'glimmer/dsl/expression'
-require 'glimmer/dsl/parent_expression'
 
 module Glimmer
   module DSL
     module Tk
-      class WidgetExpression < Expression
-        include ParentExpression
-  
-        EXCLUDED_KEYWORDS = %w[root]
-  
+      class BlockAttributeExpression < Expression
         def can_interpret?(parent, keyword, *args, &block)
-          !EXCLUDED_KEYWORDS.include?(keyword) and
-            parent.respond_to?(:tk) and
-            Glimmer::Tk::WidgetProxy.widget_exists?(keyword)
+          block_given? and
+            args.size == 0 and
+            parent.respond_to?("#{keyword}_block=")
         end
   
         def interpret(parent, keyword, *args, &block)
-          Glimmer::Tk::WidgetProxy.create(keyword, parent, args, &block)
+          parent.send("#{keyword}_block=", block)
+          nil
         end
-        
-        def add_content(parent, &block)
-          super
-          parent.post_add_content
-        end
-        
       end
     end
   end
 end
-
-require 'glimmer/tk/widget_proxy'
-require 'glimmer/tk/notebook_proxy'
-require 'glimmer/tk/frame_proxy'
-require 'glimmer/tk/button_proxy'

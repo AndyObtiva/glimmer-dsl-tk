@@ -37,6 +37,12 @@ module Glimmer
         'notebook' => lambda do |widget|
           widget.grid
         end,
+        'combobox' => lambda do |widget|
+          widget.grid
+        end,
+        'button' => lambda do |widget|
+          widget.grid
+        end,
       }
       
       class << self
