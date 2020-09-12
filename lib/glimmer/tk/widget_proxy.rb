@@ -45,7 +45,29 @@ module Glimmer
           rescue
             Glimmer::Tk::WidgetProxy
           end        
-        end        
+        end
+        
+        # This supports widgets in and out of basic Tk
+        def tk_widget_class_for(underscored_widget_name)
+          tk_widget_class_basename = underscored_widget_name.camelcase(:upper)
+          potential_tk_widget_class_names = [
+            "::Tk::Tile::#{tk_widget_class_basename}", 
+            "::Tk::#{tk_widget_class_basename}", 
+            "::Tk#{tk_widget_class_basename}", 
+          ]
+          tk_widget_class = nil
+          potential_tk_widget_class_names.each do |tk_widget_name|
+            begin
+              tk_widget_class = eval(tk_widget_name)
+              break
+            rescue SyntaxError, NameError => e
+              Glimmer::Config.logger.debug e.full_message
+            rescue => e
+              Glimmer::Config.logger.debug e.full_message
+            end            
+          end
+          tk_widget_class
+        end
       end      
       
       # Initializes a new Tk Widget
@@ -81,24 +103,11 @@ module Glimmer
         !!tk_widget_class_for(underscored_widget_name)
       end
 
-      # This supports widgets in and out of basic Tk
-      def self.tk_widget_class_for(underscored_widget_name)
-        tk_widget_name = "::Tk::Tile::#{underscored_widget_name.camelcase(:upper)}"        
-        tk_widget_class = eval(tk_widget_name)
-        tk_widget_class
-      rescue SyntaxError, NameError => e
-        puts e.full_message
-        nil
-      rescue => e
-        puts e.full_message
-        nil      
-      end
-      
-      def tk_widget_has_attribute?(attribute_name)
+      def tk_widget_has_attribute?(attribute)
         result = nil
         begin     
           # TK Widget currently doesn't support respond_to? properly, so I have to resort to this trick for now   
-          @tk.send(attribute_setter(attribute_name), @tk.send(attribute_name))
+          @tk.send(attribute_setter(attribute), @tk.send(attribute))
           result = true
         rescue => e
           result = false
@@ -106,32 +115,32 @@ module Glimmer
         result      
       end
       
-      def has_attribute?(attribute_name, *args)
-        tk_widget_has_attribute?(attribute_name) || respond_to?(attribute_setter(attribute_name), args)
+      def has_attribute?(attribute, *args)
+        tk_widget_has_attribute?(attribute) || respond_to?(attribute_setter(attribute), args)
       end
 
-      def set_attribute(attribute_name, *args)
-        widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute_name.to_s]
+      def set_attribute(attribute, *args)
+        widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]
         if widget_custom_attribute
           widget_custom_attribute[:setter][:invoker].call(@tk, args)
-        elsif tk_widget_has_attribute?(attribute_name)
-          @tk.send(attribute_setter(attribute_name), *args) unless @tk.send(attribute_name) == args.first
+        elsif tk_widget_has_attribute?(attribute)
+          @tk.send(attribute_setter(attribute), *args) unless @tk.send(attribute) == args.first
         else
-          send(attribute_setter(attribute_name), args)
+          send(attribute_setter(attribute), args)
         end
       end
 
-      def get_attribute(attribute_name)
-        widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute_name.to_s]
+      def get_attribute(attribute)
+        widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]
         if widget_custom_attribute
           widget_custom_attribute[:getter][:invoker].call(@tk, args)
         else
-          @tk.send(attribute_name)
+          @tk.send(attribute)
         end
       end      
 
-      def attribute_setter(attribute_name)
-        "#{attribute_name}="
+      def attribute_setter(attribute)
+        "#{attribute}="
       end
       
       def widget_custom_attribute_mapping
@@ -145,10 +154,10 @@ module Glimmer
         }
       end
       
-      def widget_property_listener_installers
-        @tk_widget_property_listener_installers ||= {
+      def widget_attribute_listener_installers
+        @tk_widget_attribute_listener_installers ||= {
           ::Tk::Tile::TCombobox => {
-            :text => lambda do |observer|
+            'text' => lambda do |observer|
               if observer.is_a?(Glimmer::DataBinding::ModelBinding)
                 model = observer.model
                 options_model_property = observer.property_name + '_options'
@@ -158,13 +167,13 @@ module Glimmer
                 observer.call(@tk.textvariable.value)
               }
             end,
-          }
+          },
         }
       end
       
-      def add_observer(observer, property_name)
-        property_listener_installers = @tk.class.ancestors.map {|ancestor| widget_property_listener_installers[ancestor]}.compact
-        widget_listener_installers = property_listener_installers.map{|installer| installer[property_name.to_s.to_sym]}.compact if !property_listener_installers.empty?
+      def add_observer(observer, attribute)
+        attribute_listener_installers = @tk.class.ancestors.map {|ancestor| widget_attribute_listener_installers[ancestor]}.compact
+        widget_listener_installers = attribute_listener_installers.map{|installer| installer[attribute.to_s]}.compact if !attribute_listener_installers.empty?
         widget_listener_installers.to_a.first&.call(observer)
       end      
 
