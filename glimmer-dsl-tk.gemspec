@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0".freeze) if s.respond_to? :required_rubygems_version=
   s.require_paths = ["lib".freeze]
-  s.authors = ["andy_maleh".freeze]
+  s.authors = ["AndyMaleh".freeze]
   s.date = "2020-09-12"
   s.description = "Glimmer DSL for Tk (Ruby Desktop GUI)".freeze
   s.email = "andy.am@gmail.com".freeze
