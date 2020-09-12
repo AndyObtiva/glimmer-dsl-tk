@@ -1,15 +1,14 @@
 require 'glimmer-dsl-tk'
 
-class Person
+class Person 
   attr_accessor :country, :country_options
 
-  def initialize
+  def initialize   
     self.country_options=["", "Canada", "US", "Mexico"]
     self.country = "Canada"
   end
 
   def reset_country
-    puts 'resetting...'
     self.country = "Canada"
   end
 end
@@ -26,8 +25,7 @@ class HelloCombo
       combobox { |proxy|
         state 'readonly'       
         values person.country_options
-#         selection bind(person, :country)
-#         proxy.tk.bind('<ComboboxSelected>') {puts 'combo'}
+        text bind(person, :country)
       }
       
       button { |proxy|

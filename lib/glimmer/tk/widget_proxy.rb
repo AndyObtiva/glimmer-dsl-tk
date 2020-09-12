@@ -28,20 +28,8 @@ module Glimmer
       attr_reader :parent_proxy, :tk, :args
 
       DEFAULT_INITIALIZERS = {
-        'label' => lambda do |widget|
-          widget.grid
-        end,
-        'frame' => lambda do |widget|
-          widget.grid
-        end,
-        'notebook' => lambda do |widget|
-          widget.grid
-        end,
-        'combobox' => lambda do |widget|
-          widget.grid
-        end,
-        'button' => lambda do |widget|
-          widget.grid
+        'combobox' => lambda do |tk|
+          tk.textvariable = ::TkVariable.new          
         end,
       }
       
@@ -68,6 +56,13 @@ module Glimmer
         @args = args
         tk_widget_class = self.class.tk_widget_class_for(underscored_widget_name)
         @tk = tk_widget_class.new(@parent_proxy.tk, *args)
+        begin
+          # a common widget initializer
+          @tk.grid
+        rescue => e
+          # catching error just in case a widget doesn't support it
+          Glimmer::Config.logger.debug e.full_message
+        end
         DEFAULT_INITIALIZERS[underscored_widget_name]&.call(@tk)        
         @parent_proxy.post_initialize_child(self)
       end
@@ -116,7 +111,10 @@ module Glimmer
       end
 
       def set_attribute(attribute_name, *args)
-        if tk_widget_has_attribute?(attribute_name)
+        widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute_name.to_s]
+        if widget_custom_attribute
+          widget_custom_attribute[:setter][:invoker].call(@tk, args)
+        elsif tk_widget_has_attribute?(attribute_name)
           @tk.send(attribute_setter(attribute_name), *args) unless @tk.send(attribute_name) == args.first
         else
           send(attribute_setter(attribute_name), args)
@@ -124,12 +122,46 @@ module Glimmer
       end
 
       def get_attribute(attribute_name)
-        @tk.send(attribute_name)
+        widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute_name.to_s]
+        if widget_custom_attribute
+          widget_custom_attribute[:getter][:invoker].call(@tk, args)
+        else
+          @tk.send(attribute_name)
+        end
       end      
 
       def attribute_setter(attribute_name)
         "#{attribute_name}="
       end
+      
+      def widget_custom_attribute_mapping
+        @widget_custom_attribute_mapping ||= {
+          ::Tk::Tile::TCombobox => {
+            'text' => {
+              getter: {name: 'text', invoker: lambda { |widget, args| @tk.textvariable&.value }},
+              setter: {name: 'text=', invoker: lambda { |widget, args| @tk.textvariable&.value = args.first }},
+            },
+          },
+        }
+      end
+      
+      def widget_property_listener_installers
+        @tk_widget_property_listener_installers ||= {
+          ::Tk::Tile::TCombobox => {
+            :text => lambda do |observer|
+              @tk.bind('<ComboboxSelected>') {
+                observer.call(@tk.textvariable.value)
+              }
+            end,
+          }
+        }
+      end
+      
+      def add_observer(observer, property_name)
+        property_listener_installers = @tk.class.ancestors.map {|ancestor| widget_property_listener_installers[ancestor]}.compact
+        widget_listener_installers = property_listener_installers.map{|installer| installer[property_name.to_s.to_sym]}.compact if !property_listener_installers.empty?
+        widget_listener_installers.to_a.first&.call(observer)
+      end      
 
       def content(&block)
         Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Tk::WidgetExpression.new, &block)

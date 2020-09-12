@@ -18,6 +18,7 @@ The trade-off is that while [SWT](https://www.eclipse.org/swt/) provides a pleth
 - Bidirectional Data-Binding to declaratively wire and automatically synchronize GUI with Business Models
 - Scaffolding for new custom widgets, apps, and gems
 - Native-Executable packaging on Mac, Windows, and Linux
+- Custom Widget support
 
 **Hello, World!**
 

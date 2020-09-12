@@ -37,7 +37,7 @@ module Glimmer
       end
 
       def content(&block)
-        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::SWT::RootExpression.new, &block)
+        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Tk::RootExpression.new, &block)
       end
 
       # Starts Tk mainloop
