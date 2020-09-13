@@ -17,6 +17,7 @@ module Glimmer
         end
   
         def interpret(parent, keyword, *args, &block)
+          parent.class
           model_binding = args[0]
           widget_binding_parameters = [parent, keyword]
           widget_binding = DataBinding::Tk::WidgetBinding.new(*widget_binding_parameters)

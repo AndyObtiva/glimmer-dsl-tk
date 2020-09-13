@@ -21,28 +21,49 @@
 
 require 'glimmer-dsl-tk'
 
-class HelloTab
+class Person
+  attr_accessor :provinces, :provinces_options
+
+  def initialize
+    self.provinces_options=[
+      "",
+      "Quebec",
+      "Ontario",
+      "Manitoba",
+      "Saskatchewan",
+      "Alberta",
+      "British Columbia",
+      "Nova Skotia",
+      "Newfoundland"
+    ]
+    self.provinces = ["Quebec", "Manitoba", "Alberta"]
+  end
+
+  def reset_provinces
+    self.provinces = ["Quebec", "Manitoba", "Alberta"]
+  end
+end
+
+class HelloListMultiSelection
   include Glimmer
   
   def launch
-    root {      
-      title 'Hello, Tab!'
-       
-      notebook {
-        frame(text: 'English') {
-          label {
-            text 'Hello, World!'
-          }
-        }
-         
-        frame(text: 'French') {
-          label {
-            text 'Bonjour, Univers!'
-          }
-        }
+    person = Person.new
+    
+    root {
+      title 'Hello, List Multi Selection!'
+      
+      list {
+        selection bind(person, :provinces)
+      }
+      
+      button {
+        text "Reset Selection To Defaults"
+        
+        command { person.reset_provinces }
       }
     }.open
   end
 end
 
-HelloTab.new.launch
+HelloListMultiSelection.new.launch

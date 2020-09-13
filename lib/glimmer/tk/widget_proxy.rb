@@ -181,7 +181,7 @@ module Glimmer
 
       def method_missing(method, *args, &block)
         method = method.to_s
-        if args.empty? && block.nil?
+        if args.empty? && block.nil? && widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][method]
           get_attribute(method)
         elsif widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][method.sub(/=$/, '')] && method.end_with?('=') && block.nil?
           set_attribute(method.sub(/=$/, ''), *args)

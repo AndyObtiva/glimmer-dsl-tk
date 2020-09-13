@@ -30,28 +30,6 @@ module Glimmer
         @tk.show = 'tree'
       end
       
-      def widget_attribute_listener_installers
-        super.merge(
-          ::Tk::Tile::Treeview => {
-            'selection' => lambda do |observer|
-              if observer.is_a?(Glimmer::DataBinding::ModelBinding)
-                model = observer.model
-                options_model_property = observer.property_name + '_options'
-                if model.respond_to?(options_model_property)
-                  @tk.delete @tk.children('')
-                  model.send(options_model_property).each do |child|
-                    @tk.insert('', 'end', :text => child)
-                  end
-                end
-              end
-              @tk.bind('<TreeviewSelect>') {
-                observer.call(@tk.selection.first&.text)
-              }
-            end,
-          },
-        )
-      end
-      
       def widget_custom_attribute_mapping
         @widget_custom_attribute_mapping ||= {
           ::Tk::Tile::Treeview => {
@@ -65,7 +43,7 @@ module Glimmer
               }},
             },
             'selection' => {
-              getter: {name: 'selection', invoker: lambda { |widget, args| @tk.selection.map(&:text).first }},
+              getter: {name: 'selection', invoker: lambda { |widget, args| @tk.selection.map(&:text) }},
               setter: {name: 'selection=', invoker: lambda { |widget, args| 
                 selection_args = args.first.is_a?(Array) ? args.first : [args.first]
                 selection_items = selection_args.map do |arg|

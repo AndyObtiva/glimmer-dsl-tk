@@ -36,6 +36,7 @@ module Glimmer
       Engine.add_dynamic_expressions(
         Tk,
         %w[
+          list_selection_data_binding
           data_binding
           block_attribute
           attribute

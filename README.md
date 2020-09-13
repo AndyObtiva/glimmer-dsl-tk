@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.3 (Desktop GUI)
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.4 (Desktop GUI)
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Travis CI](https://travis-ci.com/AndyObtiva/glimmer-dsl-tk.svg?branch=master)](https://travis-ci.com/github/AndyObtiva/glimmer-dsl-tk)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer-dsl-tk/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer-dsl-tk?branch=master)
@@ -75,13 +75,23 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.3'
+gem 'glimmer-dsl-tk', '~> 0.0.4'
 ```
 
 And, then run:
 ```
 bundle
 ```
+
+## Girb (Glimmer IRB)
+
+You can run the `girb` command (`bin/girb` if you cloned the project locally):
+
+```
+girb
+```
+
+This gives you `irb` with the `glimmer-dsl-tk` gem loaded and the `Glimmer` module mixed into the main object for easy experimentation with GUI.
 
 ## Tk Concepts
 
@@ -151,9 +161,11 @@ root {
 }.open
 ```
 
-### Bidirectional Data-Binding
+## Bidirectional Data-Binding
 
 Glimmer supports bidirectional data-binding via the `bind` keyword, which takes a model and an attribute.
+
+### Combo Data-Binding
 
 Example:
 
@@ -166,20 +178,64 @@ This assumes a `Person` model with a `country` attribute representing their curr
   }
 ```
 
+It binds the `values` of the `combobox` to the `country_options` property on the `person` model (data-binding attribute + "_options" by convention).
 That binds the `text` selection of the `combobox` to the `country` property on the `person` model.
 
 It automatically handles all the Tk plumbing behind the scenes, such as using `TkVariable` and setting `combobox` `values` from `person.country_options` by convention (attribute_name + "_options").
 
 More details can be found in the [Hello, Combo!](#hello-combo) sample below.
 
-### Command
+### List Single Selection Data-Binding
+
+Tk does not support a native themed listbox, so Glimmer implements its own `list` widget on top of `Tk::Tile::Treeview`. It is set to single selection via selectmode 'browse'.
+
+Example:
+
+This assumes a `Person` model with a `country` attribute representing their current country and a `country_options` attribute representing available options for the country attribute.
+
+```ruby
+  list {
+    selectmode 'browse'       
+    text bind(person, :country)
+  }
+```
+
+It binds the `items` text of the `list` to the `country_options` property on the `person` model (data-binding attribute + "_options" by convention).
+It also binds the `selection` text of the `list` to the `country` property on the `person` model.
+
+It automatically handles all the Tk plumbing behind the scenes.
+
+More details can be found in the [Hello, List Single Selection!](#hello-list-single-selection) sample below.
+
+### List Multi Selection Data-Binding
+
+Tk does not support a native themed listbox, so Glimmer implements its own `list` widget on top of `Tk::Tile::Treeview`. It is set to multi selection by default.
+
+Example:
+
+This assumes a `Person` model with a `provinces` attribute representing their current country and a `provinces_options` attribute representing available options for the provinces attribute.
+
+```ruby
+  list {
+    text bind(person, :provinces)
+  }
+```
+
+It binds the `items` text of the `list` to the `provinces_options` property on the `person` model (data-binding attribute + "_options" by convention)
+That binds the `selection` text of the `list` to the `provinces` property on the `person` model.
+
+It automatically handles all the Tk plumbing behind the scenes.
+
+More details can be found in the [Hello, List Multi Selection!](#hello-list-multi-selection) sample below.
+
+## Command Observer
 
 Buttons can set a `command` option to trigger when the user clicks the button. This may be done with the `command` keyword, passing in a block directly (no need for `proc` as per Tk)
 
 Example:
 
 ```ruby
-  button { |proxy|
+  button {
     text "Reset Selection"
     command {
       person.reset_country
@@ -288,6 +344,71 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello combo](images/glimmer-dsl-tk-screenshot-sample-hello-combo.png)
 ![glimmer dsl tk screenshot sample hello combo dropdown](images/glimmer-dsl-tk-screenshot-sample-hello-combo-dropdown.png)
+
+### Hello, List Single Selection!
+
+Glimmer code (from [samples/hello/hello_list_single_selection.rb](samples/hello/hello_list_single_selection.rb)):
+
+```ruby
+# ... more code precedes
+root {      
+  title 'Hello, List Single Selection!'
+  
+  list {
+    selectmode 'browse'
+    selection bind(person, :country)
+  }
+  
+  button {
+    text "Reset Selection To Default Value"
+    
+    command { person.reset_country }
+  }
+}.open
+# ... more code follows
+```
+
+Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
+
+```
+ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_list_single_selection.rb'"
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello list single selection](images/glimmer-dsl-tk-screenshot-sample-hello-list-single-selection.png)
+
+### Hello, List Multi Selection!
+
+Glimmer code (from [samples/hello/hello_list_multi_selection.rb](samples/hello/hello_list_multi_selection.rb)):
+
+```ruby
+# ... more code precedes
+root {
+  title 'Hello, List Multi Selection!'
+  
+  list {
+    selection bind(person, :provinces)
+  }
+  
+  button {
+    text "Reset Selection To Defaults"
+    
+    command { person.reset_provinces }
+  }
+}.open
+# ... more code follows
+```
+
+Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
+
+```
+ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_list_multi_selection.rb'"
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello list multi selection](images/glimmer-dsl-tk-screenshot-sample-hello-list-multi-selection.png)
 
 ## Help
 

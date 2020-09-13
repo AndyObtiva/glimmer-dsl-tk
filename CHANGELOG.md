@@ -4,7 +4,8 @@
 
 - `list` custom widget (since listbox is not tile themed yet in Tk)
 - `girb` (Glimmer IRB)
-- Hello, List! sample
+- Hello, List Single Selection! sample
+- Hello, List Multi Selection! sample
 
 ## 0.0.3
 
