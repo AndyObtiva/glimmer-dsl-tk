@@ -23,3 +23,4 @@
 - Add Packaging support for Windows to Scaffolding
 - Implement Packaging support for Linux
 - Add Packaging support for Linux to Scaffolding
+- Add `girb` with tk and glimmer-dsl-tk preloaded and Glimmer mixin pre-included

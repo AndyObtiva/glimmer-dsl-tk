@@ -6,13 +6,13 @@ module GlimmerSpec # used to house Glimmer mixin
     
     it 'renders root' do
       root_title = 'Window'
-      @root_proxy = @proxy = root {
+      @root_proxy = @subject_proxy = root {
         title root_title
       }
       
-      expect(@proxy).to be_a(Glimmer::Tk::RootProxy)
-      expect(@proxy.tk).to be_a(::TkRoot)
-      expect(@proxy.tk.title).to eq(root_title)
+      expect(@subject_proxy).to be_a(Glimmer::Tk::RootProxy)
+      expect(@subject_proxy.tk).to be_a(::TkRoot)
+      expect(@subject_proxy.tk.title).to eq(root_title)
     end
     
     it 'starts mainloop on open' do

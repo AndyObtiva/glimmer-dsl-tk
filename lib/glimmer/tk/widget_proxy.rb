@@ -117,7 +117,9 @@ module Glimmer
       end
       
       def has_attribute?(attribute, *args)
-        tk_widget_has_attribute?(attribute) || respond_to?(attribute_setter(attribute), args)
+        (widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]) || 
+          tk_widget_has_attribute?(attribute) || 
+          respond_to?(attribute_setter(attribute), args)
       end
 
       def set_attribute(attribute, *args)
@@ -138,7 +140,7 @@ module Glimmer
         else
           @tk.send(attribute)
         end
-      end      
+      end
 
       def attribute_setter(attribute)
         "#{attribute}="
@@ -183,10 +185,17 @@ module Glimmer
       end
 
       def method_missing(method, *args, &block)
-        tk.send(method, *args, &block)
+        method = method.to_s
+        if args.empty? && block.nil?
+          get_attribute(method)
+        elsif widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][method.sub(/=$/, '')] && method.end_with?('=') && block.nil?
+          set_attribute(method.sub(/=$/, ''), *args)
+        else
+          tk.send(method, *args, &block)
+        end
       rescue => e
         Glimmer::Config.logger.debug {"Neither WidgetProxy nor #{tk.class.name} can handle the method ##{method}"}
-        super
+        super(method.to_sym, *args, &block)
       end
       
       def respond_to?(method, *args, &block)

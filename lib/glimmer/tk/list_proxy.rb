@@ -30,14 +30,6 @@ module Glimmer
         @tk.show = 'tree'
       end
       
-      def xscrollcommand_block=(proc)
-        tk.xscrollcommand(proc)
-      end
-      
-      def yscrollcommand_block=(proc)
-        tk.yscrollcommand(proc)
-      end
-      
       def widget_attribute_listener_installers
         super.merge(
           ::Tk::Tile::Treeview => {
@@ -58,37 +50,32 @@ module Glimmer
             end,
           },
         )
-      end      
-      
-      def has_attribute?(attribute, *args)
-        attribute == 'selection' || super
-      end
-
-      def set_attribute(attribute, *args)
-        if attribute == 'children'
-          @tk.delete @tk.children('')
-          args.first.each do |child|
-            @tk.insert('', 'end', :text => child)
-          end          
-        elsif attribute == 'selection'
-          selection_args = args.first.is_a?(Array) ? args.first : [args.first]
-          selection_items = selection_args.map do |arg|
-            @tk.children('').detect {|item| item.text == arg}
-          end
-          @tk.selection_set(*selection_items)
-        else
-          super
-        end
       end
       
-      def get_attribute(attribute)
-        if attribute == 'children'
-          tk.children('').map(&:text)          
-        elsif attribute == 'selection'
-          tk.selection.map(&:text)
-        else
-          super
-        end
+      def widget_custom_attribute_mapping
+        @widget_custom_attribute_mapping ||= {
+          ::Tk::Tile::Treeview => {
+            'items' => {
+              getter: {name: 'items', invoker: lambda { |widget, args| tk.children('').map(&:text) }},
+              setter: {name: 'items=', invoker: lambda { |widget, args| 
+                @tk.delete @tk.children('')
+                args.first.each do |child|
+                  @tk.insert('', 'end', :text => child)
+                end          
+              }},
+            },
+            'selection' => {
+              getter: {name: 'selection', invoker: lambda { |widget, args| @tk.selection.map(&:text).first }},
+              setter: {name: 'selection=', invoker: lambda { |widget, args| 
+                selection_args = args.first.is_a?(Array) ? args.first : [args.first]
+                selection_items = selection_args.map do |arg|
+                  @tk.children('').detect {|item| item.text == arg}
+                end
+                @tk.selection_set(*selection_items)
+              }},
+            },
+          },
+        }
       end
     end
   end

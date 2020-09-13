@@ -8,7 +8,7 @@ module GlimmerSpec # used to house Glimmer mixin
       button_text = 'Submit'
       @button_invoked = false
       @root_proxy = root {
-        @proxy = button {
+        @subject_proxy = button {
           text button_text
           command {
             @button_invoked = true
@@ -16,12 +16,12 @@ module GlimmerSpec # used to house Glimmer mixin
         }
       }
       
-      expect(@proxy).to be_a(Glimmer::Tk::ButtonProxy)
-      expect(@proxy.tk).to be_a(::Tk::Tile::Button)
-      expect(@proxy.parent_proxy).to eq(@root_proxy)
-      expect(@proxy.tk.text).to eq(button_text)
+      expect(@subject_proxy).to be_a(Glimmer::Tk::ButtonProxy)
+      expect(@subject_proxy.tk).to be_a(::Tk::Tile::Button)
+      expect(@subject_proxy.parent_proxy).to eq(@root_proxy)
+      expect(@subject_proxy.tk.text).to eq(button_text)
       expect(@button_invoked).to eq(false)
-      @proxy.tk.invoke
+      @subject_proxy.tk.invoke
       expect(@button_invoked).to eq(true)
     end
   end
