@@ -20,11 +20,11 @@ module Glimmer
           model_binding = args[0]
           widget_binding_parameters = [parent, keyword]
           widget_binding = DataBinding::Tk::WidgetBinding.new(*widget_binding_parameters)
-          widget_binding.call(model_binding.evaluate_property)
           #TODO make this options observer dependent and all similar observers in widget specific data binding handlers
           widget_binding.observe(model_binding)
           # TODO simplify this logic and put it where it belongs
           parent.add_observer(model_binding, keyword) if parent.respond_to?(:add_observer, [model_binding, keyword])
+          widget_binding.call(model_binding.evaluate_property)
         end        
       end
     end

@@ -1,6 +1,17 @@
 # TODO
 
 - Implement all Glimmer DSL for SWT samples
+ - Hello, List! Single Selection
+ - Hello, List! Multi Selection
+ - Hello, Computed
+ - Hello, Message Box
+ - Hello, Browser
+ - Hello, Drag & Drop
+ - Hello, Menu Bar
+ - Hello, Pop Up Context Menu
+ - Elaborate, Login
+ - Elaborate, Tic Tac Toe
+ - Elaborate, Contact Manager
 - Scaffold App without packaging
 - Scaffold Custom Root Gem without packaging
 - Scaffold Custom Widget Gem
