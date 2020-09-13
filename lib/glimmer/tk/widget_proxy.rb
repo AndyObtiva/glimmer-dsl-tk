@@ -61,9 +61,7 @@ module Glimmer
             begin
               tk_widget_class = eval(tk_widget_name)
               break
-            rescue SyntaxError, NameError => e
-              Glimmer::Config.logger.debug e.full_message
-            rescue => e
+            rescue RuntimeError, SyntaxError, NameError => e
               Glimmer::Config.logger.debug e.full_message
             end            
           end
@@ -79,13 +77,8 @@ module Glimmer
         @args = args
         tk_widget_class = self.class.tk_widget_class_for(underscored_widget_name)
         @tk = tk_widget_class.new(@parent_proxy.tk, *args)
-        begin
-          # a common widget initializer
-          @tk.grid
-        rescue => e
-          # catching error just in case a widget doesn't support it
-          Glimmer::Config.logger.debug e.full_message
-        end
+        # a common widget initializer
+        @tk.grid
         DEFAULT_INITIALIZERS[underscored_widget_name]&.call(@tk)        
         @parent_proxy.post_initialize_child(self)
       end
@@ -137,8 +130,10 @@ module Glimmer
         widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]
         if widget_custom_attribute
           widget_custom_attribute[:getter][:invoker].call(@tk, args)
-        else
+        elsif tk_widget_has_attribute?(attribute)
           @tk.send(attribute)
+        else
+          send(attribute)
         end
       end
 
