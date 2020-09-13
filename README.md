@@ -44,6 +44,8 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello world](images/glimmer-dsl-tk-screenshot-sample-hello-world.png)
 
+NOTE: Glimmer DSL for Tk is in alpha mode. Please help make better by contributing, adopting for small or low risk projects, and providing feedback. It is by no means perfect, so the more feedback and issues you report the better.
+
 Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
 - [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop GUI)
 - [glimmer-dsl-opal](https://github.com/AndyObtiva/glimmer-dsl-opal): Glimmer DSL for Opal (Web GUI Adapter for Desktop Apps)
