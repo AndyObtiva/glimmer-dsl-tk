@@ -21,7 +21,8 @@ Jeweler::Tasks.new do |gem|
   gem.description = %Q{Glimmer DSL for Tk (Ruby Desktop GUI)}
   gem.email = "andy.am@gmail.com"
   gem.authors = ["AndyMaleh"]
-  gem.files = ['README.md', 'CHANGELOG.md', 'VERSION', 'LICENSE.txt', 'lib/**/*', 'samples/**/*']
+  gem.executables = ['girb']
+  gem.files = ['README.md', 'CHANGELOG.md', 'VERSION', 'LICENSE.txt', 'bin/**/*', 'lib/**/*', 'samples/**/*']
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
