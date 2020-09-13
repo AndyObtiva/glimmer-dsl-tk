@@ -21,6 +21,7 @@ class HelloListSingleSelection
       title 'Hello, List Single Selection!'
       
       list {
+        selectmode 'browse'
         selection bind(person, :country)
       }
       

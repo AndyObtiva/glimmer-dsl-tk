@@ -8,6 +8,7 @@ module GlimmerSpec # used to house Glimmer mixin
       person = Person.new
       @root_proxy = root {
         @subject_proxy = list {
+          selectmode 'browse'
           selection bind(person, :country)
         }
       }
@@ -17,6 +18,7 @@ module GlimmerSpec # used to house Glimmer mixin
       expect(@subject_proxy.parent_proxy).to eq(@root_proxy)
       expect(@subject_proxy.items).to eq(person.country_options)
       expect(@subject_proxy.selection).to eq(person.country)
+      expect(@subject_proxy.selectmode).to eq('browse')
       
       @subject_proxy.selection = 'US'
       ::Tk.event_generate(@subject_proxy.tk, '<TreeviewSelect>')

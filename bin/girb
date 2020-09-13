@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+GIRB_RUNNER="$(realpath $(dirname $0))/girb_runner.rb"
+
+irb $@ -r $GIRB_RUNNER
+
+if !(test -f ~/.girb_runner_exit); then
+  rm -rf ~/.girb_runner_exit
+  exec $0
+fi
