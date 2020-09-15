@@ -81,7 +81,7 @@ module Glimmer
       def initialize(underscored_widget_name, parent_proxy, args)
         @parent_proxy = parent_proxy
         @args = args
-        tk_widget_class = self.class.tk_widget_class_for(underscored_widget_name)
+        tk_widget_class = self.class.tk_widget_class_for(underscored_widget_name)        
         @tk = tk_widget_class.new(@parent_proxy.tk, *args)
         # a common widget initializer
         @tk.grid
@@ -103,7 +103,7 @@ module Glimmer
         !!tk_widget_class_for(underscored_widget_name)
       end
 
-      def tk_widget_has_attribute?(attribute)
+      def tk_widget_has_attribute_setter?(attribute)
         result = nil
         begin     
           # TK Widget currently doesn't support respond_to? properly, so I have to resort to this trick for now   
@@ -115,9 +115,22 @@ module Glimmer
         result      
       end
       
+      def tk_widget_has_attribute_getter_setter?(attribute)
+        result = nil
+        begin     
+          # TK Widget currently doesn't support respond_to? properly, so I have to resort to this trick for now   
+          @tk.send(attribute, @tk.send(attribute))
+          result = true
+        rescue => e
+          result = false
+        end
+        result      
+      end
+      
       def has_attribute?(attribute, *args)
         (widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]) || 
-          tk_widget_has_attribute?(attribute) || 
+          tk_widget_has_attribute_setter?(attribute) || 
+          tk_widget_has_attribute_getter_setter?(attribute) || 
           respond_to?(attribute_setter(attribute), args)
       end
 
@@ -125,8 +138,10 @@ module Glimmer
         widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]
         if widget_custom_attribute
           widget_custom_attribute[:setter][:invoker].call(@tk, args)
-        elsif tk_widget_has_attribute?(attribute)
+        elsif tk_widget_has_attribute_setter?(attribute)
           @tk.send(attribute_setter(attribute), *args) unless @tk.send(attribute) == args.first
+        elsif tk_widget_has_attribute_getter_setter?(attribute)
+          @tk.send(attribute, *args) unless @tk.send(attribute) == args.first
         else
           send(attribute_setter(attribute), args)
         end
@@ -136,7 +151,7 @@ module Glimmer
         widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]
         if widget_custom_attribute
           widget_custom_attribute[:getter][:invoker].call(@tk, args)
-        elsif tk_widget_has_attribute?(attribute)
+        elsif tk_widget_has_attribute_getter_setter?(attribute)
           @tk.send(attribute)
         else
           send(attribute)
@@ -187,10 +202,9 @@ module Glimmer
           ::Tk::Tile::TEntry => {
             'text' => lambda do |observer|
               tk.validate = 'key'
-              
               tk.validatecommand { |new_tk_variable|
                 @text_variable_edit = new_tk_variable.value != @tk.textvariable.value
-                if @text_variable_edit                  
+                if @text_variable_edit
                   observer.call(new_tk_variable.value)
                   @text_variable_edit = nil
                   true

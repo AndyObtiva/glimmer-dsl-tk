@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.0.5
+
+- Label text data-binding
+- Entry text data-binding
+- The `grid` geometry manager
+- Hello, Computed! sample
+
 ## 0.0.4
 
 - `list` custom widget (since listbox is not tile themed yet in Tk)

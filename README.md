@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.4 (Desktop GUI)
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.5 (Desktop GUI)
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Travis CI](https://travis-ci.com/AndyObtiva/glimmer-dsl-tk.svg?branch=master)](https://travis-ci.com/github/AndyObtiva/glimmer-dsl-tk)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer-dsl-tk/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer-dsl-tk?branch=master)
@@ -77,7 +77,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.4'
+gem 'glimmer-dsl-tk', '~> 0.0.5'
 ```
 
 And, then run:
@@ -163,6 +163,26 @@ root {
 }.open
 ```
 
+## The Grid Geometry Manager
+
+The Grid Geometry Manager is supported via the `grid` keyword just as per the [Tk documentation](https://tkdocs.com/tutorial/grid.html), except by nesting under the widget it concerns.
+
+Example:
+
+```ruby
+        label {
+          grid column: 0, row: 2, sticky: 'w'
+          text 'Year of Birth: '
+        }
+        entry {
+          grid column: 1, row: 2
+          width 15
+          text bind(@contact, :year_of_birth)
+        }
+```
+
+More details can be found in the [Hello, Computed!](#hello-computed) sample below.
+
 ## Bidirectional Data-Binding
 
 Glimmer supports bidirectional data-binding via the `bind` keyword, which takes a model and an attribute.
@@ -180,8 +200,8 @@ This assumes a `Person` model with a `country` attribute representing their curr
   }
 ```
 
-It binds the `values` of the `combobox` to the `country_options` property on the `person` model (data-binding attribute + "_options" by convention).
-That binds the `text` selection of the `combobox` to the `country` property on the `person` model.
+That code sets the `values` of the `combobox` to the `country_options` property on the `person` model (data-binding attribute + "_options" by convention).
+It also binds the `text` selection of the `combobox` to the `country` property on the `person` model.
 
 It automatically handles all the Tk plumbing behind the scenes, such as using `TkVariable` and setting `combobox` `values` from `person.country_options` by convention (attribute_name + "_options").
 
@@ -202,7 +222,7 @@ This assumes a `Person` model with a `country` attribute representing their curr
   }
 ```
 
-It binds the `items` text of the `list` to the `country_options` property on the `person` model (data-binding attribute + "_options" by convention).
+That code binds the `items` text of the `list` to the `country_options` property on the `person` model (data-binding attribute + "_options" by convention).
 It also binds the `selection` text of the `list` to the `country` property on the `person` model.
 
 It automatically handles all the Tk plumbing behind the scenes.
@@ -223,12 +243,48 @@ This assumes a `Person` model with a `provinces` attribute representing their cu
   }
 ```
 
-It binds the `items` text of the `list` to the `provinces_options` property on the `person` model (data-binding attribute + "_options" by convention)
+That code binds the `items` text of the `list` to the `provinces_options` property on the `person` model (data-binding attribute + "_options" by convention)
 That binds the `selection` text of the `list` to the `provinces` property on the `person` model.
 
 It automatically handles all the Tk plumbing behind the scenes.
 
 More details can be found in the [Hello, List Multi Selection!](#hello-list-multi-selection) sample below.
+
+### Label Data-Binding
+
+Example:
+
+This assumes a `Person` model with a `country` attribute.
+
+```ruby
+  label {
+    text bind(person, :country)
+  }
+```
+
+That code binds the `textvariable` value of the `label` to the `country` property on the `person` model.
+
+It automatically handles all the Tk plumbing behind the scenes.
+
+More details can be found in the [Hello, Computed!](#hello-computed) sample below.
+
+### Entry Data-Binding
+
+Example:
+
+This assumes a `Person` model with a `country` attribute.
+
+```ruby
+  entry {
+    text bind(person, :country)
+  }
+```
+
+That code binds the `textvariable` value of the `entry` to the `country` property on the `person` model.
+
+It automatically handles all the Tk plumbing behind the scenes.
+
+More details can be found in the [Hello, Computed!](#hello-computed) sample below.
 
 ## Command Observer
 
@@ -408,9 +464,79 @@ Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem ins
 ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_list_multi_selection.rb'"
 ```
 
+### Hello, Computed!
+
+Glimmer code (from [samples/hello/hello_computed.rb](samples/hello/hello_computed.rb)):
+
+```ruby
+# ... more code precedes
+    root {
+      title 'Hello, Computed!'
+      
+      frame {        
+        grid column: 0, row: 0, padx: 5, pady: 5
+        
+        label {
+          grid column: 0, row: 0, sticky: 'w'
+          text 'First Name: '
+        }
+        entry {
+          grid column: 1, row: 0
+          width 15
+          text bind(@contact, :first_name)
+        }
+        
+        label {
+          grid column: 0, row: 1, sticky: 'w'
+          text 'Last Name: '
+        }
+        entry {
+          grid column: 1, row: 1
+          width 15
+          text bind(@contact, :last_name)
+        }
+        
+        label {
+          grid column: 0, row: 2, sticky: 'w'
+          text 'Year of Birth: '
+        }
+        entry {
+          grid column: 1, row: 2
+          width 15
+          text bind(@contact, :year_of_birth)
+        }
+        
+        label {
+          grid column: 0, row: 3, sticky: 'w'
+          text 'Name: '
+        }
+        label {
+          grid column: 1, row: 3, sticky: 'w'
+          text bind(@contact, :name, computed_by: [:first_name, :last_name])
+        }
+        
+        label {
+          grid column: 0, row: 4, sticky: 'w'
+          text 'Age: '
+        }
+        label {
+          grid column: 1, row: 4, sticky: 'w'
+          text bind(@contact, :age, on_write: :to_i, computed_by: [:year_of_birth])
+        }
+      }
+    }.open
+# ... more code follows
+```
+
+Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
+
+```
+ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_computed.rb'"
+```
+
 Glimmer app:
 
-![glimmer dsl tk screenshot sample hello list multi selection](images/glimmer-dsl-tk-screenshot-sample-hello-list-multi-selection.png)
+![glimmer dsl tk screenshot sample hello computed](images/glimmer-dsl-tk-screenshot-sample-hello-computed.png)
 
 ## Help
 
