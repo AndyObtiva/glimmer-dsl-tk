@@ -1,4 +1,5 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.5 (Desktop GUI)
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.5
+## Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Travis CI](https://travis-ci.com/AndyObtiva/glimmer-dsl-tk.svg?branch=master)](https://travis-ci.com/github/AndyObtiva/glimmer-dsl-tk)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer-dsl-tk/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer-dsl-tk?branch=master)
@@ -7,20 +8,20 @@
 
 [Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [Tk](https://www.tcl.tk/) enables desktop development with [Glimmer](https://github.com/AndyObtiva/glimmer) in [Ruby](https://github.com/ruby/ruby).
 
-[Tcl/Tk](https://www.tcl.tk/) has evolved into a practical desktop GUI toolkit due to gaining true native widgets on Mac, Windows, and Linux in [Tk version 8.5](https://www.tcl.tk/software/tcltk/8.5.html#:~:text=Highlights%20of%20Tk%208.5&text=Font%20rendering%3A%20Now%20uses%20anti,and%20window%20layout%2C%20and%20more.).
+[Tcl/Tk](https://www.tcl.tk/) has evolved into a practical desktop GUI toolkit due to gaining truly native looking themed widgets on Mac, Windows, and Linux in [Tk version 8.5](https://www.tcl.tk/software/tcltk/8.5.html#:~:text=Highlights%20of%20Tk%208.5&text=Font%20rendering%3A%20Now%20uses%20anti,and%20window%20layout%2C%20and%20more.).
 
 Additionally, [Ruby](https://www.ruby-lang.org/en/) 3.0 Ractor (formerly known as [Guilds](https://olivierlacan.com/posts/concurrency-in-ruby-3-with-guilds/)) supports truly parallel multi-threading, making both [MRI](https://github.com/ruby/ruby) and [Tk](https://www.tcl.tk/) finally viable for support in [Glimmer](https://github.com/AndyObtiva/glimmer) (Ruby Desktop Development GUI Library) as an alternative to [JRuby on SWT](https://github.com/AndyObtiva/glimmer-dsl-swt).
 
 The trade-off is that while [SWT](https://www.eclipse.org/swt/) provides a plethora of high quality reusable widgets for the Enterprise (such as [Nebula](https://www.eclipse.org/nebula/)), [Tk](https://www.tcl.tk/) enables very fast app startup time via [MRI Ruby](https://www.ruby-lang.org/en/).
 
-[Glimmer](https://github.com/AndyObtiva/glimmer) provides a DSL to enable more productive desktop development in Ruby with:
+[Glimmer](https://github.com/AndyObtiva/glimmer) aims to provide a DSL similar to the [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) to enable more productive desktop development in Ruby with:
 - Declarative DSL syntax that visually maps to the GUI widget hierarchy
 - Convention over configuration via smart defaults and automation of low-level details
 - Requiring the least amount of syntax possible to build GUI
 - Bidirectional Data-Binding to declaratively wire and automatically synchronize GUI with Business Models
+- Custom Widget support
 - Scaffolding for new custom widgets, apps, and gems
 - Native-Executable packaging on Mac, Windows, and Linux
-- Custom Widget support
 
 **Hello, World!**
 
@@ -44,7 +45,7 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello world](images/glimmer-dsl-tk-screenshot-sample-hello-world.png)
 
-NOTE: Glimmer DSL for Tk is in alpha mode. Please help make better by contributing, adopting for small or low risk projects, and providing feedback. It is by no means perfect, so the more feedback and issues you report the better.
+NOTE: Glimmer DSL for Tk is in alpha mode. Please help make better by contributing, adopting for small or low risk projects, and providing feedback. It is still an early alpha, so the more feedback and issues you report the better.
 
 Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
 - [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop GUI)
@@ -194,7 +195,7 @@ Example:
 This assumes a `Person` model with a `country` attribute representing their current country and a `country_options` attribute representing available options for the country attribute.
 
 ```ruby
-  combobox { |proxy|
+  combobox {
     state 'readonly'       
     text bind(person, :country)
   }
@@ -243,8 +244,8 @@ This assumes a `Person` model with a `provinces` attribute representing their cu
   }
 ```
 
-That code binds the `items` text of the `list` to the `provinces_options` property on the `person` model (data-binding attribute + "_options" by convention)
-That binds the `selection` text of the `list` to the `provinces` property on the `person` model.
+That code binds the `items` text of the `list` to the `provinces_options` property on the `person` model (data-binding attribute + "_options" by convention).
+It also binds the `selection` text of the `list` to the `provinces` property on the `person` model.
 
 It automatically handles all the Tk plumbing behind the scenes.
 
@@ -464,6 +465,10 @@ Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem ins
 ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_list_multi_selection.rb'"
 ```
 
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello list multi selection](images/glimmer-dsl-tk-screenshot-sample-hello-list-multi-selection.png)
+
 ### Hello, Computed!
 
 Glimmer code (from [samples/hello/hello_computed.rb](samples/hello/hello_computed.rb)):
@@ -554,9 +559,9 @@ If you need live help, try to [![Join the chat at https://gitter.im/AndyObtiva/g
 
 [Glimmer Process](https://github.com/AndyObtiva/glimmer/blob/master/PROCESS.md)
 
-## Feature Suggestions
+## Planned Features and Feature Suggestions
 
-These features have been suggested. You might see them in a future version of Glimmer DSL for Tk. You are welcome to contribute more feature suggestions.
+These features have been planned or suggested. You might see them in a future version of Glimmer DSL for Tk. You are welcome to contribute more feature suggestions.
 
 [TODO.md](TODO.md)
 
