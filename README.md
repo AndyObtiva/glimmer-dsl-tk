@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.5 (Desktop GUI)
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.5 (Ruby Desktop GUI)
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Travis CI](https://travis-ci.com/AndyObtiva/glimmer-dsl-tk.svg?branch=master)](https://travis-ci.com/github/AndyObtiva/glimmer-dsl-tk)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer-dsl-tk/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer-dsl-tk?branch=master)
@@ -18,9 +18,9 @@ The trade-off is that while [SWT](https://www.eclipse.org/swt/) provides a pleth
 - Convention over configuration via smart defaults and automation of low-level details
 - Requiring the least amount of syntax possible to build GUI
 - Bidirectional Data-Binding to declaratively wire and automatically synchronize GUI with Business Models
+- Custom Widget support
 - Scaffolding for new custom widgets, apps, and gems
 - Native-Executable packaging on Mac, Windows, and Linux
-- Custom Widget support
 
 **Hello, World!**
 
@@ -44,7 +44,7 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello world](images/glimmer-dsl-tk-screenshot-sample-hello-world.png)
 
-NOTE: Glimmer DSL for Tk is in alpha mode. Please help make better by contributing, adopting for small or low risk projects, and providing feedback. It is by no means perfect, so the more feedback and issues you report the better.
+NOTE: Glimmer DSL for Tk is in alpha mode. Please help make better by contributing, adopting for small or low risk projects, and providing feedback. It is still an early alpha, so the more feedback and issues you report the better.
 
 Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
 - [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop GUI)
@@ -464,6 +464,10 @@ Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem ins
 ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_list_multi_selection.rb'"
 ```
 
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello list multi selection](images/glimmer-dsl-tk-screenshot-sample-hello-list-multi-selection.png)
+
 ### Hello, Computed!
 
 Glimmer code (from [samples/hello/hello_computed.rb](samples/hello/hello_computed.rb)):
@@ -554,9 +558,9 @@ If you need live help, try to [![Join the chat at https://gitter.im/AndyObtiva/g
 
 [Glimmer Process](https://github.com/AndyObtiva/glimmer/blob/master/PROCESS.md)
 
-## Feature Suggestions
+## Planned Features and Feature Suggestions
 
-These features have been suggested. You might see them in a future version of Glimmer DSL for Tk. You are welcome to contribute more feature suggestions.
+These features have been planned or suggested. You might see them in a future version of Glimmer DSL for Tk. You are welcome to contribute more feature suggestions.
 
 [TODO.md](TODO.md)
 
