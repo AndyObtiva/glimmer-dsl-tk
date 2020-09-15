@@ -31,6 +31,12 @@ module Glimmer
         'combobox' => lambda do |tk|
           tk.textvariable = ::TkVariable.new          
         end,
+        'label' => lambda do |tk|
+          tk.textvariable = ::TkVariable.new          
+        end,
+        'entry' => lambda do |tk|
+          tk.textvariable = ::TkVariable.new          
+        end,
       }
       
       class << self
@@ -149,6 +155,18 @@ module Glimmer
               setter: {name: 'text=', invoker: lambda { |widget, args| @tk.textvariable&.value = args.first }},
             },
           },
+          ::Tk::Tile::TLabel => {
+            'text' => {
+              getter: {name: 'text', invoker: lambda { |widget, args| @tk.textvariable&.value }},
+              setter: {name: 'text=', invoker: lambda { |widget, args| @tk.textvariable&.value = args.first }},
+            },
+          },
+          ::Tk::Tile::TEntry => {
+            'text' => {
+              getter: {name: 'text', invoker: lambda { |widget, args| @tk.textvariable&.value }},
+              setter: {name: 'text=', invoker: lambda { |widget, args| @tk.textvariable&.value = args.first unless @text_variable_edit }},
+            },
+          },
         }
       end
       
@@ -163,6 +181,22 @@ module Glimmer
               end
               @tk.bind('<ComboboxSelected>') {
                 observer.call(@tk.textvariable.value)
+              }
+            end,
+          },
+          ::Tk::Tile::TEntry => {
+            'text' => lambda do |observer|
+              tk.validate = 'key'
+              
+              tk.validatecommand { |new_tk_variable|
+                @text_variable_edit = new_tk_variable.value != @tk.textvariable.value
+                if @text_variable_edit                  
+                  observer.call(new_tk_variable.value)
+                  @text_variable_edit = nil
+                  true
+                else
+                  false
+                end
               }
             end,
           },
