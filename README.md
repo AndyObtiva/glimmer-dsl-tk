@@ -244,8 +244,8 @@ This assumes a `Person` model with a `provinces` attribute representing their cu
   }
 ```
 
-That code binds the `items` text of the `list` to the `provinces_options` property on the `person` model (data-binding attribute + "_options" by convention)
-That binds the `selection` text of the `list` to the `provinces` property on the `person` model.
+That code binds the `items` text of the `list` to the `provinces_options` property on the `person` model (data-binding attribute + "_options" by convention).
+It also binds the `selection` text of the `list` to the `provinces` property on the `person` model.
 
 It automatically handles all the Tk plumbing behind the scenes.
 
