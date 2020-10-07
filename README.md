@@ -195,7 +195,7 @@ Example:
 This assumes a `Person` model with a `country` attribute representing their current country and a `country_options` attribute representing available options for the country attribute.
 
 ```ruby
-  combobox { |proxy|
+  combobox {
     state 'readonly'       
     text bind(person, :country)
   }
