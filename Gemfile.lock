@@ -97,7 +97,7 @@ GEM
     thread_safe (0.3.6)
     tins (1.25.0)
       sync
-    tk (0.2.0)
+    tk (0.3.0)
     tty-color (0.5.2)
     tty-cursor (0.7.1)
     tty-prompt (0.22.0)
@@ -124,7 +124,7 @@ DEPENDENCIES
   rspec (~> 3.5.0)
   simplecov (~> 0.16.1)
   simplecov-lcov (~> 0.7.0)
-  tk (~> 0.2.0)
+  tk (~> 0.3.0)
 
 BUNDLED WITH
    2.1.4
