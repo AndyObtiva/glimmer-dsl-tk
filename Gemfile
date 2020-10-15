@@ -18,7 +18,7 @@ gem 'glimmer', '~> 0.10.3' #, path: '../glimmer'
 # gem 'os', '>= 1.0.0', '< 2.0.0'
 # gem 'rake', '>= 10.1.0', '< 14.0.0'
 # gem 'text-table', '>= 1.2.4', '< 2.0.0'
-gem 'tk', '~> 0.2.0'
+gem 'tk', '~> 0.3.0'
 
 
 # Add dependencies to develop your gem here.

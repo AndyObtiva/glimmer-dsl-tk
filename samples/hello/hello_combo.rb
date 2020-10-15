@@ -43,12 +43,12 @@ class HelloCombo
     root {
       title 'Hello, Combo!'
       
-      combobox { |proxy|
+      combobox {
         state 'readonly'       
         text bind(person, :country)
       }
       
-      button { |proxy|
+      button {
         text "Reset Selection"
         command {
           person.reset_country

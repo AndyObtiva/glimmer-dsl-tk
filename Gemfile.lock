@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.4.0)
-    array_include_methods (1.0.2)
+    array_include_methods (1.0.3)
     awesome_print (1.8.0)
     builder (3.2.4)
     coveralls (0.8.23)
@@ -61,11 +61,11 @@ GEM
     pastel (0.8.0)
       tty-color (~> 0.5)
     psych (3.2.0)
-    puts_debuggerer (0.10.1)
+    puts_debuggerer (0.10.2)
       awesome_print (~> 1.8.0)
     rack (2.2.3)
     rake (13.0.1)
-    rake-tui (0.2.1)
+    rake-tui (0.2.3)
       tty-prompt
     rchardet (1.8.0)
     rdoc (3.12.2)
@@ -95,9 +95,9 @@ GEM
       tins (~> 1.0)
     thor (1.0.1)
     thread_safe (0.3.6)
-    tins (1.25.0)
+    tins (1.26.0)
       sync
-    tk (0.2.0)
+    tk (0.3.0)
     tty-color (0.5.2)
     tty-cursor (0.7.1)
     tty-prompt (0.22.0)
@@ -124,7 +124,7 @@ DEPENDENCIES
   rspec (~> 3.5.0)
   simplecov (~> 0.16.1)
   simplecov-lcov (~> 0.7.0)
-  tk (~> 0.2.0)
+  tk (~> 0.3.0)
 
 BUNDLED WITH
    2.1.4

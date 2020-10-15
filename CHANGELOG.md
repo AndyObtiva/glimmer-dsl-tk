@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.6
+
+- Upgraded to tk 0.3.0
+
 ## 0.0.5
 
 - Label text data-binding
