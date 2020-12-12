@@ -27,8 +27,6 @@ jobs:
       uses: ruby/setup-ruby@21351ecc0a7c196081abca5dc55b08f085efe09a
       with:
         ruby-version: 2.6
-    - name: Run tests
-      run: bundle exec rake
     - name: Make tmp directory
       run: mkdir tmp
     - name: Download ActiveTcl
@@ -37,7 +35,7 @@ jobs:
       run: sudo installer -pkg tmp/ActiveTcl.pkg -target / -verbose
     - name: Install dependencies
       run: bundle install
-    - name: Text
+    - name: Run tests
       run: bundle exec rake
     - name: Coverage
       run: ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- --repo AndyObtiva/glimmer-dsl-tk --commit $TRAVIS_COMMIT --lcov coverage/lcov/glimmer-dsl-tk.lcov      
