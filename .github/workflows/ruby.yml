@@ -27,12 +27,8 @@ jobs:
       uses: ruby/setup-ruby@21351ecc0a7c196081abca5dc55b08f085efe09a
       with:
         ruby-version: 2.6
-    - name: Make tmp directory
-      run: mkdir tmp
-    - name: Download ActiveTcl
-      run: curl -L https://www.dropbox.com/s/c9go4iv89u2n0ok/ActiveTcl-8.6.9.8609.2-macosx10.9-x86_64-93b04018.pkg?dl=1 > tmp/ActiveTcl.pkg
     - name: Install ActiveTcl
-      run: sudo installer -pkg tmp/ActiveTcl.pkg -target / -verbose
+      run: mkdir tmp; curl -L https://www.dropbox.com/s/c9go4iv89u2n0ok/ActiveTcl-8.6.9.8609.2-macosx10.9-x86_64-93b04018.pkg?dl=1 > tmp/ActiveTcl.pkg; sudo installer -pkg tmp/ActiveTcl.pkg -target / -verbose      
     - name: Install dependencies
       run: bundle install
     - name: Run tests
