@@ -19,3 +19,4 @@
 - Add Packaging support for Windows to Scaffolding
 - Implement Packaging support for Linux
 - Add Packaging support for Linux to Scaffolding
+- Syntax adapter to become compatible with the syntax of Glimmer DSL for SWT and Glimmer DSL for Opal
