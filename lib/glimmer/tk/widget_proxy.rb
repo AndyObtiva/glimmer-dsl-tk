@@ -1,5 +1,5 @@
-# Copyright (c) 2020 Andy Maleh
-# 
+# Copyright (c) 2020-2021 Andy Maleh
+#
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
 # "Software"), to deal in the Software without restriction, including
@@ -7,10 +7,10 @@
 # distribute, sublicense, and/or sell copies of the Software, and to
 # permit persons to whom the Software is furnished to do so, subject to
 # the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be
 # included in all copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 # EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 # MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -29,13 +29,13 @@ module Glimmer
 
       DEFAULT_INITIALIZERS = {
         'combobox' => lambda do |tk|
-          tk.textvariable = ::TkVariable.new          
+          tk.textvariable = ::TkVariable.new
         end,
         'label' => lambda do |tk|
-          tk.textvariable = ::TkVariable.new          
+          tk.textvariable = ::TkVariable.new
         end,
         'entry' => lambda do |tk|
-          tk.textvariable = ::TkVariable.new          
+          tk.textvariable = ::TkVariable.new
         end,
       }
       
@@ -50,17 +50,17 @@ module Glimmer
             Glimmer::Tk.const_get(class_name)
           rescue
             Glimmer::Tk::WidgetProxy
-          end        
+          end
         end
         
         # This supports widgets in and out of basic Tk
         def tk_widget_class_for(underscored_widget_name)
           tk_widget_class_basename = underscored_widget_name.camelcase(:upper)
           potential_tk_widget_class_names = [
-            "::Tk::Tile::#{tk_widget_class_basename}", 
-            "::Tk::#{tk_widget_class_basename}", 
-            "::Tk#{tk_widget_class_basename}", 
-            "::Glimmer::Tk::#{tk_widget_class_basename}Proxy", 
+            "::Tk::Tile::#{tk_widget_class_basename}",
+            "::Tk::#{tk_widget_class_basename}",
+            "::Tk#{tk_widget_class_basename}",
+            "::Glimmer::Tk::#{tk_widget_class_basename}Proxy",
           ]
           tk_widget_class = nil
           potential_tk_widget_class_names.each do |tk_widget_name|
@@ -69,11 +69,11 @@ module Glimmer
               break
             rescue RuntimeError, SyntaxError, NameError => e
               Glimmer::Config.logger.debug e.full_message
-            end            
+            end
           end
           tk_widget_class
         end
-      end      
+      end
       
       # Initializes a new Tk Widget
       #
@@ -81,11 +81,11 @@ module Glimmer
       def initialize(underscored_widget_name, parent_proxy, args)
         @parent_proxy = parent_proxy
         @args = args
-        tk_widget_class = self.class.tk_widget_class_for(underscored_widget_name)        
+        tk_widget_class = self.class.tk_widget_class_for(underscored_widget_name)
         @tk = tk_widget_class.new(@parent_proxy.tk, *args)
         # a common widget initializer
         @tk.grid
-        DEFAULT_INITIALIZERS[underscored_widget_name]&.call(@tk)        
+        DEFAULT_INITIALIZERS[underscored_widget_name]&.call(@tk)
         @parent_proxy.post_initialize_child(self)
       end
       
@@ -105,32 +105,32 @@ module Glimmer
 
       def tk_widget_has_attribute_setter?(attribute)
         result = nil
-        begin     
-          # TK Widget currently doesn't support respond_to? properly, so I have to resort to this trick for now   
+        begin
+          # TK Widget currently doesn't support respond_to? properly, so I have to resort to this trick for now
           @tk.send(attribute_setter(attribute), @tk.send(attribute))
           result = true
         rescue => e
           result = false
         end
-        result      
+        result
       end
       
       def tk_widget_has_attribute_getter_setter?(attribute)
         result = nil
-        begin     
-          # TK Widget currently doesn't support respond_to? properly, so I have to resort to this trick for now   
+        begin
+          # TK Widget currently doesn't support respond_to? properly, so I have to resort to this trick for now
           @tk.send(attribute, @tk.send(attribute))
           result = true
         rescue => e
           result = false
         end
-        result      
+        result
       end
       
       def has_attribute?(attribute, *args)
-        (widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]) || 
-          tk_widget_has_attribute_setter?(attribute) || 
-          tk_widget_has_attribute_getter_setter?(attribute) || 
+        (widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]) ||
+          tk_widget_has_attribute_setter?(attribute) ||
+          tk_widget_has_attribute_getter_setter?(attribute) ||
           respond_to?(attribute_setter(attribute), args)
       end
 
@@ -221,7 +221,7 @@ module Glimmer
         attribute_listener_installers = @tk.class.ancestors.map {|ancestor| widget_attribute_listener_installers[ancestor]}.compact
         widget_listener_installers = attribute_listener_installers.map{|installer| installer[attribute.to_s]}.compact if !attribute_listener_installers.empty?
         widget_listener_installers.to_a.first&.call(observer)
-      end      
+      end
 
       def content(&block)
         Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Tk::WidgetExpression.new, &block)
@@ -242,7 +242,7 @@ module Glimmer
       end
       
       def respond_to?(method, *args, &block)
-        super || 
+        super ||
           tk.respond_to?(method, *args, &block)
       end
     end

@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.7
+
+- Upgraded to tk 0.4.0
+- Fixed `girb` by changing to a pure Ruby script
+
 ## 0.0.6
 
 - Upgraded to tk 0.3.0

@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.6
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.7
 ## MRI Ruby Desktop Development GUI Library
 GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
@@ -60,7 +60,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
 - [Tcl/Tk](https://www.tcl.tk/): Follow the [install instructions](https://tkdocs.com/tutorial/install.html)
 - [Ruby](https://www.ruby-lang.org/en/): On Windows, obtain from the Ruby [download page](https://www.ruby-lang.org/en/downloads/). On the Mac and Linux, it is more convenient to just use [RVM](http://rvm.io) and follow the [RVM Tk instructions](https://rvm.io/integration/tk).
 
-For example, on the Mac, you can: 
+For example, on the Mac, you can:
 - Install the ActiveTcl Mac package from [ActiveState.com](ActiveState.com)
 - Install [RVM](https://rvm.io/) by running `\curl -sSL https://get.rvm.io | bash -s stable` (and run `curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -` if needed for mentioned security reasons)
 - Run: `rvm install 2.7.1 --enable-shared --enable-pthread --with-tk --with-tcl`
@@ -76,11 +76,11 @@ Run this command to install directly:
 gem install glimmer-dsl-tk
 ```
 
-### Option 2: Bundler 
+### Option 2: Bundler
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.6'
+gem 'glimmer-dsl-tk', '~> 0.0.7'
 ```
 
 And, then run:
@@ -147,7 +147,7 @@ root.mainloop
 Example of the same app written in [Glimmer](https://github.com/AndyObtiva/glimmer) declarative syntax:
 
 ```ruby
-root {      
+root {
   title 'Hello, Tab!'
    
   notebook {
@@ -198,7 +198,7 @@ This assumes a `Person` model with a `country` attribute representing their curr
 
 ```ruby
   combobox {
-    state 'readonly'       
+    state 'readonly'
     text bind(person, :country)
   }
 ```
@@ -220,7 +220,7 @@ This assumes a `Person` model with a `country` attribute representing their curr
 
 ```ruby
   list {
-    selectmode 'browse'       
+    selectmode 'browse'
     text bind(person, :country)
   }
 ```
@@ -341,7 +341,7 @@ Glimmer code (from [samples/hello/hello_tab.rb](samples/hello/hello_tab.rb)):
 ```ruby
 include Glimmer
 
-root {      
+root {
   title 'Hello, Tab!'
    
   notebook {
@@ -381,7 +381,7 @@ root {
   title 'Hello, Combo!'
   
   combobox { |proxy|
-    state 'readonly'       
+    state 'readonly'
     text bind(person, :country)
   }
   
@@ -412,7 +412,7 @@ Glimmer code (from [samples/hello/hello_list_single_selection.rb](samples/hello/
 
 ```ruby
 # ... more code precedes
-root {      
+root {
   title 'Hello, List Single Selection!'
   
   list {
@@ -480,7 +480,7 @@ Glimmer code (from [samples/hello/hello_computed.rb](samples/hello/hello_compute
     root {
       title 'Hello, Computed!'
       
-      frame {        
+      frame {
         grid column: 0, row: 0, padx: 5, pady: 5
         
         label {
@@ -585,7 +585,7 @@ These features have been planned or suggested. You might see them in a future ve
 
 [MIT](LICENSE.txt)
 
-Copyright (c) 2020 - Andy Maleh. 
+Copyright (c) 2020-2021 - Andy Maleh.
 
 --
 
