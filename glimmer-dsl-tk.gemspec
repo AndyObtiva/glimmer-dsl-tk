@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib".freeze]
   s.authors = ["AndyMaleh".freeze]
   s.date = "2021-07-15"
-  s.description = "Glimmer DSL for Tk (Ruby Desktop GUI)".freeze
+  s.description = "Glimmer DSL for Tk (Ruby Desktop Development GUI Library)".freeze
   s.email = "andy.am@gmail.com".freeze
   s.executables = ["girb".freeze]
   s.extra_rdoc_files = [
