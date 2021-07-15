@@ -1,6 +1,5 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.7
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.8
 ## MRI Ruby Desktop Development GUI Library
-GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer-dsl-tk/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer-dsl-tk?branch=master)
 [![Maintainability](https://api.codeclimate.com/v1/badges/ce2853efdbecf6ebdc73/maintainability)](https://codeclimate.com/github/AndyObtiva/glimmer-dsl-tk/maintainability)
@@ -37,10 +36,10 @@ root {
 }.open
 ```
 
-Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_world.rb'"
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_world'"
 ```
 
 Glimmer app:
@@ -61,9 +60,10 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
 - [Ruby](https://www.ruby-lang.org/en/): On Windows, obtain from the Ruby [download page](https://www.ruby-lang.org/en/downloads/). On the Mac and Linux, it is more convenient to just use [RVM](http://rvm.io) and follow the [RVM Tk instructions](https://rvm.io/integration/tk).
 
 For example, on the Mac, you can:
-- Install the ActiveTcl Mac package from [ActiveState.com](ActiveState.com)
+- Install the ActiveTcl Mac package from [ActiveState.com](https://activestate.com)
 - Install [RVM](https://rvm.io/) by running `\curl -sSL https://get.rvm.io | bash -s stable` (and run `curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -` if needed for mentioned security reasons)
 - Run: `rvm install 2.7.1 --enable-shared --enable-pthread --with-tk --with-tcl`
+- Run: `gem install tk -v0.4.0`
 
 Afterwards, if you open `irb`, you should be able to run `require 'tk'` successfully.
 
@@ -80,7 +80,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.7'
+gem 'glimmer-dsl-tk', '~> 0.0.8'
 ```
 
 And, then run:
@@ -163,6 +163,36 @@ root {
       }
     }
   }
+}.open
+```
+
+### Smart Defaults and Convensions
+
+#### Grid Layout
+
+`grid` layout is the default on most widgets (which support it).
+
+#### Icon Photo
+
+The `iconphoto` attribute on `root` is set to the Glimmer icon by default if no icon photo is supplied.
+
+Otherwise, [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) is smart enough to accept an image path directly (no need to wrap with `TkPhotoImage`)
+
+Example with direct image path (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+root {
+  title 'Title'
+  iconphoto 'icons/glimmer.png'
+}.open
+```
+
+Example with `TkPhotoImage` object (you may copy/paste in [`girb`](#girb-glimmer-irb)):
+
+```ruby
+root {
+  title 'Title'
+  iconphoto TkPhotoImage.new(file: 'icons/glimmer.png')
 }.open
 ```
 
@@ -324,10 +354,16 @@ root {
 }.open
 ```
 
-Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_world.rb'"
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_world'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_world'"
 ```
 
 Glimmer app:
@@ -360,10 +396,16 @@ root {
 }.open
 ```
 
-Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_tab.rb'"
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_tab'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_tab'"
 ```
 
 Glimmer app:
@@ -395,10 +437,16 @@ root {
 # ... more code follows
 ```
 
-Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_combo.rb'"
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_combo'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_combo'"
 ```
 
 Glimmer app:
@@ -429,10 +477,16 @@ root {
 # ... more code follows
 ```
 
-Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_list_single_selection.rb'"
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_list_single_selection'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_list_single_selection'"
 ```
 
 Glimmer app:
@@ -461,10 +515,16 @@ root {
 # ... more code follows
 ```
 
-Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_list_multi_selection.rb'"
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_list_multi_selection'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_list_multi_selection'"
 ```
 
 Glimmer app:
@@ -535,10 +595,16 @@ Glimmer code (from [samples/hello/hello_computed.rb](samples/hello/hello_compute
 # ... more code follows
 ```
 
-Run (with the [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed):
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r glimmer-dsl-tk -e "require '../samples/hello/hello_computed.rb'"
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_computed'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_computed'"
 ```
 
 Glimmer app:

@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.0.8
+
+- Fix issue #5 (https://github.com/AndyObtiva/glimmer-dsl-tk/issues/5)
+- Support `iconphoto` attribute on `root` widget, intelligently accepting a direct image path or `TkPhotoImage` object
+- Set `root` `iconphoto` attribute to Glimmer icon by default if not set in an application.
+- Provide `iconphoto` code example in README
+- Upgrade to glimmer 2.1.1
+
 ## 0.0.7
 
 - Upgraded to tk 0.4.0

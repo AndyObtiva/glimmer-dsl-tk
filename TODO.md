@@ -1,5 +1,6 @@
 # TODO
 
+- Upgrade glimmer to version 2.1.1
 - Hello, Message Box
 - Hello, Browser
 - Hello, Drag & Drop

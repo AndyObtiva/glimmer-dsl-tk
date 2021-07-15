@@ -40,6 +40,11 @@ module Glimmer
           args = [parent] + args unless parent.nil?
           Glimmer::Tk::RootProxy.new(*args)
         end
+        
+        def add_content(parent, keyword, *args, &block)
+          super
+          parent.post_add_content
+        end
       end
     end
   end

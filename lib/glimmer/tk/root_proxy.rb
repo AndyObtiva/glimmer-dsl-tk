@@ -27,17 +27,31 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class RootProxy < WidgetProxy
-
       def initialize(*args)
         @tk = ::TkRoot.new
       end
 
+      def post_add_content
+        set_attribute('iconphoto', File.expand_path('../../../icons/glimmer.png', __dir__)) if @tk.iconphoto.nil?
+      end
+      
       def open
         start_event_loop
       end
 
       def content(&block)
         Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Tk::RootExpression.new, &block)
+      end
+      
+      def set_attribute(attribute, *args)
+        if attribute.to_s == 'iconphoto'
+          if args.size == 1 && args.first.is_a?(String)
+            args[0] = ::TkPhotoImage.new(file: args.first)
+          end
+          super
+        else
+          super
+        end
       end
 
       # Starts Tk mainloop

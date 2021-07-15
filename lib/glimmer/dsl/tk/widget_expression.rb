@@ -41,7 +41,7 @@ module Glimmer
           Glimmer::Tk::WidgetProxy.create(keyword, parent, args, &block)
         end
         
-        def add_content(parent, &block)
+        def add_content(parent, keyword, *args, &block)
           super
           parent.post_add_content
         end

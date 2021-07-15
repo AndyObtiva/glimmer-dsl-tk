@@ -116,15 +116,7 @@ module Glimmer
       end
       
       def tk_widget_has_attribute_getter_setter?(attribute)
-        result = nil
-        begin
-          # TK Widget currently doesn't support respond_to? properly, so I have to resort to this trick for now
-          @tk.send(attribute, @tk.send(attribute))
-          result = true
-        rescue => e
-          result = false
-        end
-        result
+        @tk.respond_to?(attribute)
       end
       
       def has_attribute?(attribute, *args)

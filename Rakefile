@@ -22,7 +22,8 @@ Jeweler::Tasks.new do |gem|
   gem.email = "andy.am@gmail.com"
   gem.authors = ["AndyMaleh"]
   gem.executables = ['girb']
-  gem.files = ['README.md', 'CHANGELOG.md', 'VERSION', 'LICENSE.txt', 'bin/**/*', 'lib/**/*', 'samples/**/*']
+  gem.files = ['README.md', 'CHANGELOG.md', 'VERSION', 'LICENSE.txt', 'bin/**/*', 'lib/**/*', 'icons/**/*', 'samples/**/*']
+  gem.require_paths = ['lib', '.']
   # dependencies defined in Gemfile
 end
 Jeweler::RubygemsDotOrgTasks.new
