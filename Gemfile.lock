@@ -27,7 +27,7 @@ GEM
       hashie (>= 3.4)
       mime-types (>= 1.16, < 3.0)
       oauth2 (~> 1.0)
-    glimmer (2.1.1)
+    glimmer (2.1.2)
       array_include_methods (>= 1.0.4, < 2.0.0)
       facets (>= 3.1.0, < 4.0.0)
     hashie (4.1.0)
@@ -118,7 +118,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (>= 1.0)
   coveralls (= 0.8.23)
-  glimmer (~> 2.1.1)
+  glimmer (~> 2.1.2)
   jeweler (>= 2.3.9, < 3.0.0)
   puts_debuggerer (~> 0.13.1)
   rake-tui (>= 0.2.1)

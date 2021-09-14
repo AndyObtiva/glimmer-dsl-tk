@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.9
+
+- Upgrade to glimmer 2.1.2
+
 ## 0.0.8
 
 - Fix issue #5 (https://github.com/AndyObtiva/glimmer-dsl-tk/issues/5)
