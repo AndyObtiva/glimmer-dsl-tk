@@ -19,43 +19,32 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer'
-require 'glimmer/dsl/expression'
-require 'glimmer/dsl/parent_expression'
+require 'glimmer/tk/widget_proxy'
 
 module Glimmer
-  module DSL
-    module Tk
-      class WidgetExpression < Expression
-        include ParentExpression
-  
-        EXCLUDED_KEYWORDS = %w[root]
-  
-        def can_interpret?(parent, keyword, *args, &block)
-          !EXCLUDED_KEYWORDS.include?(keyword) and
-            parent.respond_to?(:tk) and
-            Glimmer::Tk::WidgetProxy.widget_exists?(keyword)
-        end
-  
-        def interpret(parent, keyword, *args, &block)
-          Glimmer::Tk::WidgetProxy.create(keyword, parent, args, &block)
-        end
-        
-        def add_content(parent, keyword, *args, &block)
-          super
-          parent.post_add_content
-        end
-        
+  module Tk
+    # Custom treeview widget implementation
+    class TreeviewProxy < WidgetProxy
+      def has_attribute?(attribute, *args)
+        attribute == 'columns' || super
       end
+
+      def set_attribute(attribute, *args)
+        if attribute == 'columns'
+          self[attribute] = args.first
+        else
+          super
+        end
+      end
+
+      def get_attribute(attribute)
+        if attribute == 'columns'
+          self[attribute]
+        else
+          super
+        end
+      end
+      
     end
   end
 end
-
-require 'glimmer/tk/widget_proxy'
-require 'glimmer/tk/notebook_proxy'
-require 'glimmer/tk/frame_proxy'
-require 'glimmer/tk/button_proxy'
-require 'glimmer/tk/label_proxy'
-require 'glimmer/tk/list_proxy'
-require 'glimmer/tk/entry_proxy'
-require 'glimmer/tk/treeview_proxy'

@@ -133,7 +133,7 @@ module Glimmer
         elsif tk_widget_has_attribute_setter?(attribute)
           @tk.send(attribute_setter(attribute), *args) unless @tk.send(attribute) == args.first
         elsif tk_widget_has_attribute_getter_setter?(attribute)
-          @tk.send(attribute, *args) unless @tk.send(attribute) == args.first
+          @tk.send(attribute, *args)
         else
           send(attribute_setter(attribute), args)
         end

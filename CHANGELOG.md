@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.11
+
+- Add preliminary support for `treeview` (no data-binding) with `columns`, `show`, and `heading_configure` attributes/methods
+
 ## 0.0.10
 
 - puts_debuggerer gem to help consumers with debugging in and out of girb
