@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.9
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.10
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer-dsl-tk/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer-dsl-tk?branch=master)
@@ -15,7 +15,7 @@ Additionally, [Ruby](https://www.ruby-lang.org/en/) 3.0 Ractor (formerly known a
 
 The trade-off is that while [SWT](https://www.eclipse.org/swt/) provides a plethora of high quality reusable widgets for the Enterprise (such as [Nebula](https://www.eclipse.org/nebula/)), [Tk](https://www.tcl.tk/) enables very fast app startup time and a small memory footprint via [MRI Ruby](https://www.ruby-lang.org/en/).
 
-[Glimmer](https://github.com/AndyObtiva/glimmer) aims to provide a DSL similar to the [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) to enable more productive desktop development in Ruby with:
+[Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) aims to provide a DSL similar to the [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) to enable more productive desktop development in Ruby with:
 - Declarative DSL syntax that visually maps to the GUI widget hierarchy
 - Convention over configuration via smart defaults and automation of low-level details
 - Requiring the least amount of syntax possible to build GUI
@@ -80,7 +80,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.9'
+gem 'glimmer-dsl-tk', '~> 0.0.10'
 ```
 
 And, then run:
@@ -629,7 +629,7 @@ If you need live help, try to [![Join the chat at https://gitter.im/AndyObtiva/g
 
 ## Planned Features and Feature Suggestions
 
-These features have been planned or suggested. You might see them in a future version of Glimmer DSL for Tk. You are welcome to contribute more feature suggestions.
+These features have been planned or suggested. You might see them in a future version of [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk). You are welcome to contribute more feature suggestions.
 
 [TODO.md](TODO.md)
 

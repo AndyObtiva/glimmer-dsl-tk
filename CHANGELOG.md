@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.10
+
+- puts_debuggerer gem to help consumers with debugging in and out of girb
+
 ## 0.0.9
 
 - Upgrade to glimmer 2.1.2
