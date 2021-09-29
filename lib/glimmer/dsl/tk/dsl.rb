@@ -41,6 +41,7 @@ module Glimmer
           block_attribute
           attribute
           widget
+          drag_and_drop
         ]
       )
     end
