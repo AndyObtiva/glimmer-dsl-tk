@@ -45,7 +45,7 @@ class HelloCombo
       
       combobox {
         state 'readonly'
-        text bind(person, :country)
+        text <=> [person, :country]
       }
       
       button {

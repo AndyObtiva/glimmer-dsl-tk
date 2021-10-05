@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.12
+
+- Upgrade to glimmer 2.3.0
+- Support Shine syntax for data-binding
+- Update all data-binding samples to use Shine syntax for data-binding
+
 ## 0.0.11
 
 - Add preliminary support for `treeview` (no data-binding) with `columns`, `show`, and `heading_configure` attributes/methods

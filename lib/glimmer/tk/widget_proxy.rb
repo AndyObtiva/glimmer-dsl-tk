@@ -25,20 +25,6 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class WidgetProxy
-      attr_reader :parent_proxy, :tk, :args
-
-      DEFAULT_INITIALIZERS = {
-        'combobox' => lambda do |tk|
-          tk.textvariable = ::TkVariable.new
-        end,
-        'label' => lambda do |tk|
-          tk.textvariable = ::TkVariable.new
-        end,
-        'entry' => lambda do |tk|
-          tk.textvariable = ::TkVariable.new
-        end,
-      }
-      
       class << self
         def create(keyword, parent, args)
           widget_proxy_class(keyword).new(keyword, parent, args)
@@ -75,12 +61,27 @@ module Glimmer
         end
       end
       
+      attr_reader :parent_proxy, :tk, :args, :keyword
+
+      DEFAULT_INITIALIZERS = {
+        'combobox' => lambda do |tk|
+          tk.textvariable = ::TkVariable.new
+        end,
+        'label' => lambda do |tk|
+          tk.textvariable = ::TkVariable.new
+        end,
+        'entry' => lambda do |tk|
+          tk.textvariable = ::TkVariable.new
+        end,
+      }
+            
       # Initializes a new Tk Widget
       #
       # Styles is a comma separate list of symbols representing Tk styles in lower case
       def initialize(underscored_widget_name, parent_proxy, args)
         @parent_proxy = parent_proxy
         @args = args
+        @keyword = underscored_widget_name
         tk_widget_class = self.class.tk_widget_class_for(underscored_widget_name)
         @tk = tk_widget_class.new(@parent_proxy.tk, *args)
         # a common widget initializer
@@ -216,7 +217,7 @@ module Glimmer
       end
 
       def content(&block)
-        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Tk::WidgetExpression.new, &block)
+        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Tk::WidgetExpression.new, keyword, *args, &block)
       end
 
       def method_missing(method, *args, &block)

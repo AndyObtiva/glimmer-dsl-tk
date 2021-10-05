@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.11
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.12
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer-dsl-tk/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer-dsl-tk?branch=master)
@@ -46,7 +46,7 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello world](images/glimmer-dsl-tk-screenshot-sample-hello-world.png)
 
-NOTE: Glimmer DSL for Tk is in alpha mode. Please help make better by contributing, adopting for small or low risk projects, and providing feedback. It is still an early alpha, so the more feedback and issues you report the better.
+NOTE: Glimmer DSL for Tk is currently in early alpha mode (incomplete). Please help make better by contributing, adopting for small or low risk projects, and providing feedback. It is still an early alpha, so the more feedback and issues you report the better.
 
 Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
 - [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)
@@ -81,7 +81,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.11'
+gem 'glimmer-dsl-tk', '~> 0.0.12'
 ```
 
 And, then run:
@@ -211,7 +211,7 @@ Example:
         entry {
           grid column: 1, row: 2
           width 15
-          text bind(@contact, :year_of_birth)
+          text <=> [@contact, :year_of_birth]
         }
 ```
 
@@ -219,7 +219,7 @@ More details can be found in the [Hello, Computed!](#hello-computed) sample belo
 
 ## Bidirectional Data-Binding
 
-Glimmer supports bidirectional data-binding via the `bind` keyword, which takes a model and an attribute.
+Glimmer supports Shine syntax bidirectional data-binding via the `<=>` operator (read-write) and unidirectional data-binding via the `<=` operator (read-only), which takes a model and an attribute (the `bind` keyword may also be used as the old-style of data-binding).
 
 ### Combo Data-Binding
 
@@ -230,7 +230,7 @@ This assumes a `Person` model with a `country` attribute representing their curr
 ```ruby
   combobox {
     state 'readonly'
-    text bind(person, :country)
+    text <=> [person, :country]
   }
 ```
 
@@ -252,7 +252,7 @@ This assumes a `Person` model with a `country` attribute representing their curr
 ```ruby
   list {
     selectmode 'browse'
-    text bind(person, :country)
+    text <=> [person, :country]
   }
 ```
 
@@ -273,7 +273,7 @@ This assumes a `Person` model with a `provinces` attribute representing their cu
 
 ```ruby
   list {
-    text bind(person, :provinces)
+    text <=> [person, :provinces]
   }
 ```
 
@@ -292,7 +292,7 @@ This assumes a `Person` model with a `country` attribute.
 
 ```ruby
   label {
-    text bind(person, :country)
+    text <=> [person, :country]
   }
 ```
 
@@ -310,7 +310,7 @@ This assumes a `Person` model with a `country` attribute.
 
 ```ruby
   entry {
-    text bind(person, :country)
+    text <=> [person, :country]
   }
 ```
 
@@ -425,7 +425,7 @@ root {
   
   combobox { |proxy|
     state 'readonly'
-    text bind(person, :country)
+    text <=> [person, :country]
   }
   
   button { |proxy|
@@ -466,7 +466,7 @@ root {
   
   list {
     selectmode 'browse'
-    selection bind(person, :country)
+    selection <=> [person, :country]
   }
   
   button {
@@ -504,7 +504,7 @@ root {
   title 'Hello, List Multi Selection!'
   
   list {
-    selection bind(person, :provinces)
+    selection <=> [person, :provinces]
   }
   
   button {
@@ -551,7 +551,7 @@ Glimmer code (from [samples/hello/hello_computed.rb](samples/hello/hello_compute
         entry {
           grid column: 1, row: 0
           width 15
-          text bind(@contact, :first_name)
+          text <=> [@contact, :first_name]
         }
         
         label {
@@ -561,7 +561,7 @@ Glimmer code (from [samples/hello/hello_computed.rb](samples/hello/hello_compute
         entry {
           grid column: 1, row: 1
           width 15
-          text bind(@contact, :last_name)
+          text <=> [@contact, :last_name]
         }
         
         label {
@@ -571,7 +571,7 @@ Glimmer code (from [samples/hello/hello_computed.rb](samples/hello/hello_compute
         entry {
           grid column: 1, row: 2
           width 15
-          text bind(@contact, :year_of_birth)
+          text <=> [@contact, :year_of_birth]
         }
         
         label {
@@ -580,7 +580,7 @@ Glimmer code (from [samples/hello/hello_computed.rb](samples/hello/hello_compute
         }
         label {
           grid column: 1, row: 3, sticky: 'w'
-          text bind(@contact, :name, computed_by: [:first_name, :last_name])
+          text <=> [@contact, :name, computed_by: [:first_name, :last_name]]
         }
         
         label {
@@ -589,7 +589,7 @@ Glimmer code (from [samples/hello/hello_computed.rb](samples/hello/hello_compute
         }
         label {
           grid column: 1, row: 4, sticky: 'w'
-          text bind(@contact, :age, on_write: :to_i, computed_by: [:year_of_birth])
+          text <=> [@contact, :age, on_write: :to_i, computed_by: [:year_of_birth]]
         }
       }
     }.open

@@ -45,7 +45,7 @@ class HelloListSingleSelection
       
       list {
         selectmode 'browse'
-        selection bind(person, :country)
+        selection <=> [person, :country]
       }
       
       button {

@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 Andy Maleh
+# Copyright (c) 2007-2021 Andy Maleh
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -19,44 +19,24 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/tk/widget_proxy'
+require 'glimmer/dsl/expression'
+require 'glimmer/data_binding/model_binding'
+require 'glimmer/data_binding/tk/widget_binding'
+require 'glimmer/data_binding/shine'
 
 module Glimmer
-  module Tk
-    # Proxy for TkRoot
-    #
-    # Follows the Proxy Design Pattern
-    class RootProxy < WidgetProxy
-      def initialize(*args)
-        @tk = ::TkRoot.new
-      end
-
-      def post_add_content
-        set_attribute('iconphoto', File.expand_path('../../../icons/glimmer.png', __dir__)) if @tk.iconphoto.nil?
-      end
-      
-      def open
-        start_event_loop
-      end
-
-      def content(&block)
-        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Tk::RootExpression.new, keyword, *args, &block)
-      end
-      
-      def set_attribute(attribute, *args)
-        if attribute.to_s == 'iconphoto'
-          if args.size == 1 && args.first.is_a?(String)
-            args[0] = ::TkPhotoImage.new(file: args.first)
-          end
-          super
-        else
-          super
+  module DSL
+    module Tk
+      class ShineDataBindingExpression < Expression
+        def can_interpret?(parent, keyword, *args, &block)
+          args.size == 0 and
+            block.nil? and
+            (parent.respond_to?(:has_attribute?) and parent.has_attribute?(keyword))
         end
-      end
-
-      # Starts Tk mainloop
-      def start_event_loop
-        ::Tk.mainloop
+  
+        def interpret(parent, keyword, *args, &block)
+          Glimmer::DataBinding::Shine.new(parent, keyword)
+        end
       end
     end
   end
