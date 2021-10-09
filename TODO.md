@@ -2,14 +2,30 @@
 
 ## General
 
-- Support widget `textvariable` attribute in addition to its `text` shortcut (to make it easier for Tk experienced developers to work with Glimmer DSL for Tk without extra effort on learning)
+- Set minimum width on `root`
+- Support `button` `image` attribute
+- Support `button` `compound` attribute
+- Support `button` `default` attribute (`:active` or `:normal`)
+- Support `button` `disabled` attribute
+- Support `label` `anchor` attribute (`'e'`, `'se'`, `'s'`, `'sw'`, `'w'`, `'nw'` or `'center'`)
+- Support `label` `justify` attribute (`:left`, `:center`, `:right`)
+- Support `label` `font` attribute (`:default`, `:text`, `:fixed`, `:menu`, `:heading`, `:caption`, `:small_caption`, `:icon`, `:tooltip`)
+- Support `label` `image` attribute
+- Support `label` `compound` attribute
+- Support `label` `relief` attributes
+- Support `frame` `borderwidth` attributes
+- Support `frame` `relief` attributes
+- Support `frame` `width` and `height` attributes
+- Support `frame` `padding` attributes
+- Support `root` `width`, `height`, `x`, `y` attributes
+- Support styles
+- Support themes
 - Custom Widget
 
 ## Samples
 
 ### Hello
 
-- Hello, Button!
 - Hello, Label!
 - Hello, Frame!
 - Hello, Root!
