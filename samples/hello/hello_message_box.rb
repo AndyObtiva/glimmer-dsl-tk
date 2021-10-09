@@ -19,21 +19,76 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer-dsl-swt'
+require 'glimmer-dsl-tk'
 
 include Glimmer
 
-shell {
-  text 'Hello, Message Box!'
+root { |r|
+  title 'Hello, Message Box!'
   
-  button {
-    text 'Please Click To Win a Surprise'
+  frame {
+    grid sticky: 'nsew', padx: 15, pady: 15
     
-    on_widget_selected {
-      message_box {
-        text 'Surprise'
-        message "Congratulations!\n\nYou won $1,000,000!"
-      }.open
+    button {
+      text 'Please Click To Win a Surprise'
+      
+      command {
+        # specifying parent ensures dialog shows up centered on top of window (instead of centered in display monitor)
+        @result_label.text = message_box(parent: r, title: 'Surprise', message: "Congratulations!\n\nYou won $1,000,000!") # type: 'ok' by default
+      }
+    }
+    
+    button {
+      text 'Download Software Update'
+      
+      command {
+        @result_label.text = message_box(type: 'okcancel', title: 'Software Update', message: "We will begin to download software update.")
+      }
+    }
+    
+    button {
+      text 'Format Hard Drive'
+      
+      command {
+        @result_label.text = message_box(type: 'yesno', icon: 'question', title: 'Format', message: "Would you like to format your hard drive?")
+      }
+    }
+    
+    button {
+      text 'Submit Application'
+      
+      command {
+        @result_label.text = message_box(type: 'yesnocancel', icon: 'question', title: 'Application', message: "Would you like to review application before submitting?")
+      }
+    }
+    
+    button {
+      text 'Play Video'
+      
+      command {
+        @result_label.text = message_box(type: 'retrycancel', icon: 'error', title: 'Video Replay', message: "Video has failed to play. Would you like to retry?")
+      }
+    }
+    
+    button {
+      text 'Installation Completed'
+      
+      command {
+        @result_label.text = message_box(type: 'abortretryignore', icon: 'warning', default: 'ignore', title: 'Failed To Install Extra Utilities', message: "Installation is complete, but extra utilities have failed to install. Would you like to retry installing extra utilities?", detail: 'Encountered network error in downloading extra utilities, resulting in failure to install them')
+      }
+    }
+  }
+  
+  frame {
+    grid sticky: 'nsew', padx: 15, pady: 15
+    
+    label {
+      grid row: 0, column: 0
+      text 'Result:'
+    }
+    
+    @result_label = label {
+      grid row: 0, column: 1
     }
   }
 }.open

@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.12
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.13
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer-dsl-tk/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer-dsl-tk?branch=master)
@@ -9,7 +9,7 @@
 
 [Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [Tk](https://www.tcl.tk/) enables desktop development with [Glimmer](https://github.com/AndyObtiva/glimmer) in [Ruby](https://github.com/ruby/ruby).
 
-[Tcl/Tk](https://www.tcl.tk/) has evolved into a practical desktop GUI toolkit due to gaining truly native looking themed widgets on Mac, Windows, and Linux in [Tk version 8.5](https://www.tcl.tk/software/tcltk/8.5.html#:~:text=Highlights%20of%20Tk%208.5&text=Font%20rendering%3A%20Now%20uses%20anti,and%20window%20layout%2C%20and%20more.).
+[Tcl/Tk](https://www.tcl.tk/) has evolved into a practical desktop GUI toolkit due to gaining native looking themed widgets on Mac, Windows, and Linux in [Tk version 8.5](https://www.tcl.tk/software/tcltk/8.5.html#:~:text=Highlights%20of%20Tk%208.5&text=Font%20rendering%3A%20Now%20uses%20anti,and%20window%20layout%2C%20and%20more.).
 
 Additionally, [Ruby](https://www.ruby-lang.org/en/) 3.0 Ractor (formerly known as [Guilds](https://olivierlacan.com/posts/concurrency-in-ruby-3-with-guilds/)) supports truly parallel multi-threading, making both [MRI](https://github.com/ruby/ruby) and [Tk](https://www.tcl.tk/) finally viable for support in [Glimmer](https://github.com/AndyObtiva/glimmer) (Ruby Desktop Development GUI Library) as an alternative to [JRuby on SWT](https://github.com/AndyObtiva/glimmer-dsl-swt).
 
@@ -81,7 +81,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.12'
+gem 'glimmer-dsl-tk', '~> 0.0.13'
 ```
 
 And, then run:
@@ -166,6 +166,23 @@ root {
   }
 }.open
 ```
+
+### Supported Widgets
+
+keyword(args) | attributes | listeners/events
+------------- | ---------- | ---------
+`button` | `text` | `command`
+`entry` | `width`, `text` | None
+`frame(text: )` | None | None
+`label` | `text` | None
+`list` | `selectmode`, `selection` | None
+`message_box(type: , message: , detail: , title: , icon: , default: , parent: )` | None | None
+`notebook` | None | None
+`root` | `title`, `iconphoto` | None
+
+#### Common Attributes
+
+- `grid`
 
 ### Smart Defaults and Convensions
 
@@ -413,6 +430,99 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello tab English](images/glimmer-dsl-tk-screenshot-sample-hello-tab-english.png)
 ![glimmer dsl tk screenshot sample hello tab French](images/glimmer-dsl-tk-screenshot-sample-hello-tab-french.png)
+
+### Hello, Message Box!
+
+Glimmer code (from [samples/hello/hello_message_box.rb](samples/hello/hello_message_box.rb)):
+
+```ruby
+root { |r|
+  title 'Hello, Message Box!'
+  
+  frame {
+    grid sticky: 'nsew', padx: 15, pady: 15
+    
+    button {
+      text 'Please Click To Win a Surprise'
+      
+      command {
+        # specifying parent ensures dialog shows up centered on top of window (instead of centered in display monitor)
+        @result_label.text = message_box(parent: r, title: 'Surprise', message: "Congratulations!\n\nYou won $1,000,000!") # type: 'ok' by default
+      }
+    }
+    
+    button {
+      text 'Download Software Update'
+      
+      command {
+        @result_label.text = message_box(type: 'okcancel', title: 'Software Update', message: "We will begin to download software update.")
+      }
+    }
+    
+    button {
+      text 'Format Hard Drive'
+      
+      command {
+        @result_label.text = message_box(type: 'yesno', icon: 'question', title: 'Format', message: "Would you like to format your hard drive?")
+      }
+    }
+    
+    button {
+      text 'Submit Application'
+      
+      command {
+        @result_label.text = message_box(type: 'yesnocancel', icon: 'question', title: 'Application', message: "Would you like to review application before submitting?")
+      }
+    }
+    
+    button {
+      text 'Play Video'
+      
+      command {
+        @result_label.text = message_box(type: 'retrycancel', icon: 'error', title: 'Video Replay', message: "Video has failed to play. Would you like to retry?")
+      }
+    }
+    
+    button {
+      text 'Installation Completed'
+      
+      command {
+        @result_label.text = message_box(type: 'abortretryignore', icon: 'warning', default: 'ignore', title: 'Failed To Install Extra Utilities', message: "Installation is complete, but extra utilities have failed to install. Would you like to retry installing extra utilities?", detail: 'Encountered network error in downloading extra utilities, resulting in failure to install them')
+      }
+    }
+  }
+  
+  frame {
+    grid sticky: 'nsew', padx: 15, pady: 15
+    
+    label {
+      grid row: 0, column: 0
+      text 'Result:'
+    }
+    
+    @result_label = label {
+      grid row: 0, column: 1
+    }
+  }
+}.open
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_tab'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_tab'"
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello message box](images/glimmer-dsl-tk-screenshot-sample-hello-message-box.png)
+![glimmer dsl tk screenshot sample hello message box open](images/glimmer-dsl-tk-screenshot-sample-hello-message-box-open.png)
 
 ### Hello, Combobox!
 
