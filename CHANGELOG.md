@@ -1,12 +1,21 @@
 # Change Log
 
-## 0.0.13
+## 0.0.15
 
-- Hello, Button!
+- Update Hello, Button! to demo all button attributes
 - Support `button` `image` attribute (accepting image arguments: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule` to automatically process image)
 - Update `root` `iconphoto` support to accept image arguments: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule` to automatically process image
 - Support `button` `compound` attribute (`'center', 'top', 'bottom', 'left', 'right'`)
 - Support `button` `default` attribute (`'active'` or `'normal'`)
+
+## 0.0.14
+
+- Hello, Button!
+
+## 0.0.13
+
+- Hello, Message Box!
+- Support `message_box`
 
 ## 0.0.12
 
