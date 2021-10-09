@@ -34,6 +34,11 @@ class HelloButton
     root {
       title 'Hello, Button!'
       
+      label {
+        grid pady: 15
+        text 'Text Button'
+      }
+      
       button {
         text <= [self, :count, on_read: ->(value) { "Click To Increment: #{value}  " }]
         
@@ -42,8 +47,13 @@ class HelloButton
         }
       }
       
+      label {
+        grid pady: 15
+        text 'Image Button'
+      }
+      
       button {
-        image File.expand_path('../../icons/glimmer.png', __dir__)
+        image File.expand_path('../../icons/glimmer.png', __dir__), subsample: 4
         
         command {
           message_box(title: 'Image Button', message: 'Image Button Clicked!')

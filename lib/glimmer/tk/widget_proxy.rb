@@ -159,11 +159,23 @@ module Glimmer
         @widget_custom_attribute_mapping ||= {
           ::Tk::Tile::TButton => {
             'image' => {
-              getter: {name: 'text', invoker: lambda { |widget, args| @tk.textvariable&.value }},
+              getter: {name: 'image', invoker: lambda { |widget, args| @tk.textvariable&.value }},
               setter: {
-                name: 'text=',
+                name: 'image=',
                 invoker: lambda do |widget, args|
-                  @tk['image'] = args.first.is_a?(::TkPhotoImage) ? args.first : ::TkPhotoImage.new(file: args.first.to_s)
+                  if args.first.is_a?(::TkPhotoImage)
+                    @tk['image'] = args.first
+                  else
+                    image_args = {}
+                    image_args.merge!(file: args.first.to_s) if args.first.is_a?(String)
+                    the_image = ::TkPhotoImage.new(image_args)
+                    if args.last.is_a?(Hash)
+                      processed_image = ::TkPhotoImage.new
+                      processed_image.copy(the_image, args.last)
+                      the_image = processed_image
+                    end
+                    @tk['image'] = the_image
+                  end
                 end
               },
             },

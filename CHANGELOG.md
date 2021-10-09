@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.13
+
+- Hello, Button!
+- Support `button` `image` attribute (accepting image arguments: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule` to automatically process image)
+
 ## 0.0.12
 
 - Upgrade to glimmer 2.3.0
