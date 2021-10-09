@@ -221,7 +221,7 @@ More details can be found in the [Hello, Computed!](#hello-computed) sample belo
 
 Glimmer supports Shine syntax bidirectional data-binding via the `<=>` operator (read-write) and unidirectional data-binding via the `<=` operator (read-only), which takes a model and an attribute (the `bind` keyword may also be used as the old-style of data-binding).
 
-### Combo Data-Binding
+### Combobox Data-Binding
 
 Example:
 
@@ -239,7 +239,7 @@ It also binds the `text` selection of the `combobox` to the `country` property o
 
 It automatically handles all the Tk plumbing behind the scenes, such as using `TkVariable` and setting `combobox` `values` from `person.country_options` by convention (attribute_name + "_options").
 
-More details can be found in the [Hello, Combo!](#hello-combo) sample below.
+More details can be found in the [Hello, Combobox!](#hello-combobox) sample below.
 
 ### List Single Selection Data-Binding
 
@@ -337,7 +337,7 @@ Example:
 
 This resets the person country.
 
-More details can be found in the [Hello, Combo!](#hello-combo) sample below.
+More details can be found in the [Hello, Combobox!](#hello-combobox) sample below.
 
 ## Samples
 
@@ -414,14 +414,14 @@ Glimmer app:
 ![glimmer dsl tk screenshot sample hello tab English](images/glimmer-dsl-tk-screenshot-sample-hello-tab-english.png)
 ![glimmer dsl tk screenshot sample hello tab French](images/glimmer-dsl-tk-screenshot-sample-hello-tab-french.png)
 
-### Hello, Combo!
+### Hello, Combobox!
 
-Glimmer code (from [samples/hello/hello_combo.rb](samples/hello/hello_combo.rb)):
+Glimmer code (from [samples/hello/hello_combobox.rb](samples/hello/hello_combobox.rb)):
 
 ```ruby
 # ... more code precedes
 root {
-  title 'Hello, Combo!'
+  title 'Hello, Combobox!'
   
   combobox { |proxy|
     state 'readonly'
@@ -441,19 +441,19 @@ root {
 Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_combo'"
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_combobox'"
 ```
 
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_combo'"
+ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_combobox'"
 ```
 
 Glimmer app:
 
-![glimmer dsl tk screenshot sample hello combo](images/glimmer-dsl-tk-screenshot-sample-hello-combo.png)
-![glimmer dsl tk screenshot sample hello combo dropdown](images/glimmer-dsl-tk-screenshot-sample-hello-combo-dropdown.png)
+![glimmer dsl tk screenshot sample hello combobox](images/glimmer-dsl-tk-screenshot-sample-hello-combobox.png)
+![glimmer dsl tk screenshot sample hello combobox dropdown](images/glimmer-dsl-tk-screenshot-sample-hello-combobox-dropdown.png)
 
 ### Hello, List Single Selection!
 

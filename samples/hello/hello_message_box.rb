@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 Andy Maleh
+# Copyright (c) 2007-2021 Andy Maleh
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -19,43 +19,21 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer-dsl-tk'
+require 'glimmer-dsl-swt'
 
-class Person
-  attr_accessor :country, :country_options
+include Glimmer
 
-  def initialize
-    self.country_options=["", "Canada", "US", "Mexico"]
-    self.country = "Canada"
-  end
-
-  def reset_country
-    self.country = "Canada"
-  end
-end
-
-class HelloCombo
-  include Glimmer
+shell {
+  text 'Hello, Message Box!'
   
-  def launch
-    person = Person.new
+  button {
+    text 'Please Click To Win a Surprise'
     
-    root {
-      title 'Hello, Combo!'
-      
-      combobox {
-        state 'readonly'
-        text <=> [person, :country]
-      }
-      
-      button {
-        text "Reset Selection"
-        command {
-          person.reset_country
-        }
-      }
-    }.open
-  end
-end
-
-HelloCombo.new.launch
+    on_widget_selected {
+      message_box {
+        text 'Surprise'
+        message "Congratulations!\n\nYou won $1,000,000!"
+      }.open
+    }
+  }
+}.open

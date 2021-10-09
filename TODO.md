@@ -1,10 +1,16 @@
 # TODO
 
-- Hello, Message Box
-- Hello, Browser
-- Hello, Drag & Drop
-- Hello, Menu Bar
-- Hello, Pop Up Context Menu
+- Hello, Message Box!
+- Hello, Label!
+- Hello, Frame!
+- Hello, Layout!
+- Hello, Button!
+- Hello, Checkbox!
+- Hello, Radiobutton!
+- Hello, Entry!
+- Hello, Drag & Drop!
+- Hello, Menu Bar!
+- Hello, Pop Up Context Menu!
 - Elaborate, Login
 - Elaborate, Tic Tac Toe
 - Elaborate, Contact Manager
