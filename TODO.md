@@ -2,10 +2,11 @@
 
 ## General
 
-- Support common themed widget state attributes: `active`, `disabled`, `focus`, `pressed`, `selected`, `background`, `readonly`, `alternate`, `invalid`, and `hover`
 - Support `label` `anchor` attribute (`'e'`, `'se'`, `'s'`, `'sw'`, `'w'`, `'nw'` or `'center'`)
 - Support `label` `justify` attribute (`:left`, `:center`, `:right`)
 - Support `label` `font` attribute (`:default`, `:text`, `:fixed`, `:menu`, `:heading`, `:caption`, `:small_caption`, `:icon`, `:tooltip`)
+- Support `label` `foreground` attribute
+- Support `label` `background` attribute
 - Support `label` `image` attribute
 - Support `label` `compound` attribute
 - Support `label` `relief` attributes
@@ -13,6 +14,7 @@
 - Support `frame` `relief` attributes
 - Support `frame` `width` and `height` attributes
 - Support `frame` `padding` attributes
+- Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 - Support `root` `width`, `height`, `x`, `y` attributes
 - Set minimum width on `root`
 - Support styles
@@ -31,7 +33,7 @@
 - Rename Hello, Tab! to Hello, Notebook!
 - Hello, Toplevel! (Custom Dialog)
 - Hello, Dialog! (open_file, save_file, choose_directory, choose_color, font_chooser [choose_font alias])
-- Hello, Listbox! (two tabs for single/multi selection) (see if Hello, List! and list widget can be replaced since it is based on Treeview)
+- Hello, Listbox! (two tabs for single/multi selection)
 - Hello, Checkbox!
 - Hello, Radiobutton!
 - Hello, Entry!

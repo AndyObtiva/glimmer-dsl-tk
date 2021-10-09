@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.15
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.16
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer-dsl-tk/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer-dsl-tk?branch=master)
@@ -87,7 +87,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.15'
+gem 'glimmer-dsl-tk', '~> 0.0.16'
 ```
 
 And, then run:
@@ -175,9 +175,9 @@ root {
 
 ### Supported Widgets
 
-keyword(args) | attributes | listeners / events / bindings / callbacks
+keyword(args) | attributes | event bindings & callbacks
 ------------- | ---------- | ---------
-`button` | `text`, `image`, `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `default` (`'active', 'normal'`) | `command`
+`button` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `default` (`'active', 'normal'`) | `command`
 `entry` | `width`, `text` | None
 `frame(text: )` | None | None
 `label` | `text` | None
@@ -188,7 +188,20 @@ keyword(args) | attributes | listeners / events / bindings / callbacks
 
 #### Common Attributes
 
-- `grid`
+- `grid`: `Hash` of `:row`, `:column`, `:padx`, `:pady`, `:sticky` (`'e', 'w', 'n', 's'` or any combination of direction letters)
+
+#### Common Themed Widget States
+
+- `active?`
+- `disabled?`
+- `focus?`
+- `pressed?`
+- `selected?`
+- `background?`
+- `readonly?`
+- `alternate?`
+- `invalid?`
+- `hover?`
 
 ### Smart Defaults and Convensions
 
@@ -429,6 +442,7 @@ class HelloButton
         button {
           text <= [self, :count, on_read: ->(value) { "Click To Increment: #{value}  " }]
           default 'active'
+          focus true
           
           command {
             self.count += 1

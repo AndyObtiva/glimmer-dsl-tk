@@ -42,9 +42,10 @@ class HelloButton
           text 'Text Button'
         }
         
-        button {
+        button { |b|
           text <= [self, :count, on_read: ->(value) { "Click To Increment: #{value}  " }]
           default 'active'
+          focus true
           
           command {
             self.count += 1

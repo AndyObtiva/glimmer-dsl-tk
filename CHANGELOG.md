@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.16
+
+- Support common themed widget state attributes: `active`, `disabled`, `focus`, `pressed`, `selected`, `background`, `readonly`, `alternate`, `invalid`, and `hover`
+- Update Hello, Button! to utilize `focus true` in first button.
+
 ## 0.0.15
 
 - Update Hello, Button! to demo all button attributes
