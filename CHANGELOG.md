@@ -5,6 +5,8 @@
 - Hello, Button!
 - Support `button` `image` attribute (accepting image arguments: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule` to automatically process image)
 - Update `root` `iconphoto` support to accept image arguments: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule` to automatically process image
+- Support `button` `compound` attribute (`'center', 'top', 'bottom', 'left', 'right'`)
+- Support `button` `default` attribute (`'active'` or `'normal'`)
 
 ## 0.0.12
 

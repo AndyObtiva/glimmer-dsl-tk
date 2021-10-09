@@ -34,30 +34,60 @@ class HelloButton
     root {
       title 'Hello, Button!'
       
-      label {
-        grid pady: 15
-        text 'Text Button'
-      }
-      
-      button {
-        text <= [self, :count, on_read: ->(value) { "Click To Increment: #{value}  " }]
+      frame {
+        grid row: 0, column: 0
         
-        command {
-          self.count += 1
+        label {
+          grid pady: 15
+          text 'Text Button'
+        }
+        
+        button {
+          text <= [self, :count, on_read: ->(value) { "Click To Increment: #{value}  " }]
+          default 'active'
+          
+          command {
+            self.count += 1
+          }
+        }
+      }
+        
+      frame {
+        grid row: 0, column: 1
+        
+        label {
+          grid pady: 15
+          text 'Image Button'
+        }
+        
+        button {
+          image File.expand_path('../../icons/glimmer.png', __dir__), subsample: 5
+          
+          command {
+            message_box(title: 'Image Button', message: 'Image Button Clicked!')
+          }
         }
       }
       
-      label {
-        grid pady: 15
-        text 'Image Button'
-      }
-      
-      button {
-        image File.expand_path('../../icons/glimmer.png', __dir__), subsample: 4
+      frame {
+        grid row: 0, column: 2
         
-        command {
-          message_box(title: 'Image Button', message: 'Image Button Clicked!')
+        label {
+          grid pady: 15
+          text 'Text Image Buttons'
         }
+        
+        ['center', 'top', 'bottom', 'left', 'right'].each do |compound_option|
+          button {
+            image File.expand_path('../../icons/glimmer.png', __dir__), subsample: 5
+            text 'Text Image Button'
+            compound compound_option
+            
+            command {
+              message_box(title: 'Text Image Button', message: 'Text Image Button Clicked!', detail: "(#{compound_option})")
+            }
+          }
+        end
       }
     }.open
   end

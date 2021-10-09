@@ -29,7 +29,13 @@ The trade-off is that while [SWT](https://www.eclipse.org/swt/) provides a pleth
 Glimmer code (from [samples/hello/hello_world.rb](samples/hello/hello_world.rb)):
 
 ```ruby
+require 'glimmer-dsl-tk'
+
+include Glimmer
+
 root {
+  title 'Hello, World!'
+  
   label {
     text 'Hello, World!'
   }
@@ -169,9 +175,9 @@ root {
 
 ### Supported Widgets
 
-keyword(args) | attributes | listeners/events
+keyword(args) | attributes | listeners / events / bindings / callbacks
 ------------- | ---------- | ---------
-`button` | `text` | `command`
+`button` | `text`, `image`, `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `default` (`'active', 'normal'`) | `command`
 `entry` | `width`, `text` | None
 `frame(text: )` | None | None
 `label` | `text` | None
@@ -363,9 +369,13 @@ More details can be found in the [Hello, Combobox!](#hello-combobox) sample belo
 Glimmer code (from [samples/hello/hello_world.rb](samples/hello/hello_world.rb)):
 
 ```ruby
+require 'glimmer-dsl-tk'
+
 include Glimmer
 
 root {
+  title 'Hello, World!'
+  
   label {
     text 'Hello, World!'
   }
@@ -381,7 +391,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_world'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_world'"
+ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_world.rb
 ```
 
 Glimmer app:
@@ -408,12 +418,60 @@ class HelloButton
     root {
       title 'Hello, Button!'
       
-      button {
-        text <= [self, :count, on_read: ->(value) { "Click To Increment: #{value}  " }]
+      frame {
+        grid row: 0, column: 0
         
-        command {
-          self.count += 1
+        label {
+          grid pady: 15
+          text 'Text Button'
         }
+        
+        button {
+          text <= [self, :count, on_read: ->(value) { "Click To Increment: #{value}  " }]
+          default 'active'
+          
+          command {
+            self.count += 1
+          }
+        }
+      }
+        
+      frame {
+        grid row: 0, column: 1
+        
+        label {
+          grid pady: 15
+          text 'Image Button'
+        }
+        
+        button {
+          image File.expand_path('../../icons/glimmer.png', __dir__), subsample: 5
+          
+          command {
+            message_box(title: 'Image Button', message: 'Image Button Clicked!')
+          }
+        }
+      }
+      
+      frame {
+        grid row: 0, column: 2
+        
+        label {
+          grid pady: 15
+          text 'Text Image Buttons'
+        }
+        
+        ['center', 'top', 'bottom', 'left', 'right'].each do |compound_option|
+          button {
+            image File.expand_path('../../icons/glimmer.png', __dir__), subsample: 5
+            text 'Text Image Button'
+            compound compound_option
+            
+            command {
+              message_box(title: 'Text Image Button', message: 'Text Image Button Clicked!', detail: "(#{compound_option})")
+            }
+          }
+        end
       }
     }.open
   end
@@ -431,7 +489,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_button'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_button'"
+ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_button.rb
 ```
 
 Glimmer app:

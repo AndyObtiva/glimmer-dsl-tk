@@ -2,9 +2,7 @@
 
 ## General
 
-- Support `button` `compound` attribute
-- Support `button` `default` attribute (`:active` or `:normal`)
-- Support `button` `disabled` attribute
+- Support common themed widget state attributes: `active`, `disabled`, `focus`, `pressed`, `selected`, `background`, `readonly`, `alternate`, `invalid`, and `hover`
 - Support `label` `anchor` attribute (`'e'`, `'se'`, `'s'`, `'sw'`, `'w'`, `'nw'` or `'center'`)
 - Support `label` `justify` attribute (`:left`, `:center`, `:right`)
 - Support `label` `font` attribute (`:default`, `:text`, `:fixed`, `:menu`, `:heading`, `:caption`, `:small_caption`, `:icon`, `:tooltip`)
