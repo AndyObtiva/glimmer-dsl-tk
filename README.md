@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.13
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.14
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer-dsl-tk/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer-dsl-tk?branch=master)
@@ -81,7 +81,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.13'
+gem 'glimmer-dsl-tk', '~> 0.0.14'
 ```
 
 And, then run:
@@ -238,6 +238,24 @@ More details can be found in the [Hello, Computed!](#hello-computed) sample belo
 
 Glimmer supports Shine syntax bidirectional data-binding via the `<=>` operator (read-write) and unidirectional data-binding via the `<=` operator (read-only), which takes a model and an attribute (the `bind` keyword may also be used as the old-style of data-binding).
 
+### General Property Data-Binding
+
+Example:
+
+This assumes a `Person` model with a `country` attribute.
+
+```ruby
+  label {
+    text <=> [person, :country]
+  }
+```
+
+That code binds the `textvariable` value of the `label` to the `country` property on the `person` model.
+
+It automatically handles all the Tk plumbing behind the scenes.
+
+More details can be found in the [Hello, Computed!](#hello-computed) sample below.
+
 ### Combobox Data-Binding
 
 Example:
@@ -300,24 +318,6 @@ It also binds the `selection` text of the `list` to the `provinces` property on 
 It automatically handles all the Tk plumbing behind the scenes.
 
 More details can be found in the [Hello, List Multi Selection!](#hello-list-multi-selection) sample below.
-
-### Label Data-Binding
-
-Example:
-
-This assumes a `Person` model with a `country` attribute.
-
-```ruby
-  label {
-    text <=> [person, :country]
-  }
-```
-
-That code binds the `textvariable` value of the `label` to the `country` property on the `person` model.
-
-It automatically handles all the Tk plumbing behind the scenes.
-
-More details can be found in the [Hello, Computed!](#hello-computed) sample below.
 
 ### Entry Data-Binding
 
@@ -387,6 +387,56 @@ ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_world'"
 Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello world](images/glimmer-dsl-tk-screenshot-sample-hello-world.png)
+
+### Hello, Button!
+
+Glimmer code (from [samples/hello/hello_button.rb](samples/hello/hello_button.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+class HelloButton
+  include Glimmer
+  
+  attr_accessor :count
+  
+  def initialize
+    @count = 0
+  end
+  
+  def launch
+    root {
+      title 'Hello, Button!'
+      
+      button {
+        text <= [self, :count, on_read: ->(value) { "Click To Increment: #{value}  " }]
+        
+        command {
+          self.count += 1
+        }
+      }
+    }.open
+  end
+end
+
+HelloButton.new.launch
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_button'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_button'"
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello button](images/glimmer-dsl-tk-screenshot-sample-hello-button.png)
 
 ### Hello, Tab!
 

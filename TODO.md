@@ -1,13 +1,17 @@
 # TODO
 
+## General
+
+- Support widget `textvariable` attribute in addition to its `text` shortcut (to make it easier for Tk experienced developers to work with Glimmer DSL for Tk without extra effort on learning)
+- Custom Widget
+
 ## Samples
 
 ### Hello
 
-- Hello, Message Box!
+- Hello, Button!
 - Hello, Label!
 - Hello, Frame!
-- Hello, Button!
 - Hello, Root!
 - Hello, Grid!
 - Rename Hello, Tab! to Hello, Notebook!
@@ -59,10 +63,6 @@
 - Add Packaging support for Windows to Scaffolding
 - Implement Packaging support for Linux
 - Add Packaging support for Linux to Scaffolding
-
-## General Features
-
-- Custom Widget
 
 ## Maybe
 
