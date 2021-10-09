@@ -45,9 +45,7 @@ module Glimmer
       
       def set_attribute(attribute, *args)
         if attribute.to_s == 'iconphoto'
-          if args.size == 1 && args.first.is_a?(String)
-            args[0] = ::TkPhotoImage.new(file: args.first)
-          end
+          args[0..-1] = [image_argument(args)]
           super
         else
           super

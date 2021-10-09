@@ -2,7 +2,6 @@
 
 ## General
 
-- Update `root` `iconphoto` support to accept image arguments: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule` to automatically process image
 - Support `button` `compound` attribute
 - Support `button` `default` attribute (`:active` or `:normal`)
 - Support `button` `disabled` attribute
