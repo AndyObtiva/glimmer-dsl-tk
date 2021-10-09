@@ -2,7 +2,6 @@
 
 ## General
 
-- Set minimum width on `root`
 - Support `button` `image` attribute
 - Support `button` `compound` attribute
 - Support `button` `default` attribute (`:active` or `:normal`)
@@ -18,9 +17,11 @@
 - Support `frame` `width` and `height` attributes
 - Support `frame` `padding` attributes
 - Support `root` `width`, `height`, `x`, `y` attributes
+- Set minimum width on `root`
 - Support styles
 - Support themes
 - Custom Widget
+- Implement `code_text` custom widget
 
 ## Samples
 

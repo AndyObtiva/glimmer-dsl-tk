@@ -41,6 +41,14 @@ class HelloButton
           self.count += 1
         }
       }
+      
+      button {
+        image File.expand_path('../../icons/glimmer.png', __dir__)
+        
+        command {
+          message_box(title: 'Image Button', message: 'Image Button Clicked!')
+        }
+      }
     }.open
   end
 end

@@ -157,6 +157,17 @@ module Glimmer
       
       def widget_custom_attribute_mapping
         @widget_custom_attribute_mapping ||= {
+          ::Tk::Tile::TButton => {
+            'image' => {
+              getter: {name: 'text', invoker: lambda { |widget, args| @tk.textvariable&.value }},
+              setter: {
+                name: 'text=',
+                invoker: lambda do |widget, args|
+                  @tk['image'] = args.first.is_a?(::TkPhotoImage) ? args.first : ::TkPhotoImage.new(file: args.first.to_s)
+                end
+              },
+            },
+          },
           ::Tk::Tile::TCombobox => {
             'text' => {
               getter: {name: 'text', invoker: lambda { |widget, args| @tk.textvariable&.value }},
