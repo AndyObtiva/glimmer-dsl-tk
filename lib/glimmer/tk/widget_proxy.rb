@@ -117,7 +117,13 @@ module Glimmer
       end
       
       def tk_widget_has_attribute_getter_setter?(attribute)
-        @tk.respond_to?(attribute)
+        begin
+          # TK Widget currently doesn't support respond_to? properly, so I have to resort to this trick for now
+          @tk.send(attribute)
+          true
+        rescue
+          false
+        end
       end
       
       def has_state?(attribute)
@@ -135,10 +141,10 @@ module Glimmer
       end
       
       def has_attribute?(attribute, *args)
-        (widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]) ||
-          tk_widget_has_attribute_setter?(attribute) ||
-          tk_widget_has_attribute_getter_setter?(attribute) ||
-          has_state?(attribute) ||
+        (widget_custom_attribute_mapping[tk.class] and widget_custom_attribute_mapping[tk.class][attribute.to_s]) or
+          tk_widget_has_attribute_setter?(attribute) or
+          tk_widget_has_attribute_getter_setter?(attribute) or
+          has_state?(attribute) or
           respond_to?(attribute_setter(attribute), args)
       end
 

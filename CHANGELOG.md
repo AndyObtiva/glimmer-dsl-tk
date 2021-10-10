@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.17
+
+- Support `label` `anchor` attribute (`'e'`, `'se'`, `'s'`, `'sw'`, `'w'`, `'nw'` or `'center'`)
+- Support `label` `width` attributes
+
 ## 0.0.16
 
 - Support common themed widget state attributes: `active`, `disabled`, `focus`, `pressed`, `selected`, `background`, `readonly`, `alternate`, `invalid`, and `hover`

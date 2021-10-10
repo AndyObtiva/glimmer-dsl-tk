@@ -2,7 +2,6 @@
 
 ## General
 
-- Support `label` `anchor` attribute (`'e'`, `'se'`, `'s'`, `'sw'`, `'w'`, `'nw'` or `'center'`)
 - Support `label` `justify` attribute (`:left`, `:center`, `:right`)
 - Support `label` `font` attribute (`:default`, `:text`, `:fixed`, `:menu`, `:heading`, `:caption`, `:small_caption`, `:icon`, `:tooltip`)
 - Support `label` `foreground` attribute
@@ -10,9 +9,9 @@
 - Support `label` `image` attribute
 - Support `label` `compound` attribute
 - Support `label` `relief` attributes
+- Support `frame` `width` and `height` attributes
 - Support `frame` `borderwidth` attributes
 - Support `frame` `relief` attributes
-- Support `frame` `width` and `height` attributes
 - Support `frame` `padding` attributes
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 - Support `root` `width`, `height`, `x`, `y` attributes

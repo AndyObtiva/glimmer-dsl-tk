@@ -179,7 +179,7 @@ keyword(args) | attributes | event bindings & callbacks
 ------------- | ---------- | ---------
 `button` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `default` (`'active', 'normal'`) | `command`
 `entry` | `width`, `text` | None
-`frame(text: )` | None | None
+`frame(text: nil)` | None | None
 `label` | `text` | None
 `list` | `selectmode`, `selection` | None
 `message_box(type: , message: , detail: , title: , icon: , default: , parent: )` | None | None
@@ -208,6 +208,10 @@ keyword(args) | attributes | event bindings & callbacks
 #### Grid Layout
 
 `grid` layout is the default on most widgets (which support it).
+
+#### Label/Button Image
+
+Label and Button `image` attribute can accept image path directly as an alternative to `TkPhotoImage` object in addition to key values for automatic processing of image (`subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`)
 
 #### Icon Photo
 
