@@ -6,7 +6,6 @@
 - Support `label` `font` attribute (`:default`, `:text`, `:fixed`, `:menu`, `:heading`, `:caption`, `:small_caption`, `:icon`, `:tooltip`)
 - Support `label` `foreground` attribute
 - Support `label` `background` attribute
-- Support `label` `image` attribute
 - Support `label` `compound` attribute
 - Support `label` `relief` attributes
 - Support `frame` `width` and `height` attributes

@@ -189,8 +189,8 @@ module Glimmer
         @widget_custom_attribute_mapping ||= {
           ::Tk::Tile::TButton => {
             'image' => {
-              getter: {name: 'image', invoker: lambda { |widget, args| @tk.textvariable&.value }},
-              setter: {name: 'image=', invoker: lambda { |widget, args| @tk['image'] = image_argument(args) }},
+              getter: {name: 'image', invoker: lambda { |widget, args| @tk.image }},
+              setter: {name: 'image=', invoker: lambda { |widget, args| @tk.image = image_argument(args) }},
             },
           },
           ::Tk::Tile::TCombobox => {
@@ -203,6 +203,10 @@ module Glimmer
             'text' => {
               getter: {name: 'text', invoker: lambda { |widget, args| @tk.textvariable&.value }},
               setter: {name: 'text=', invoker: lambda { |widget, args| @tk.textvariable&.value = args.first }},
+            },
+            'image' => {
+              getter: {name: 'image', invoker: lambda { |widget, args| @tk.image }},
+              setter: {name: 'image=', invoker: lambda { |widget, args| @tk.image = image_argument(args) }},
             },
           },
           ::Tk::Tile::TEntry => {

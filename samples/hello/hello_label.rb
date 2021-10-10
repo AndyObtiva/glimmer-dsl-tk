@@ -58,6 +58,14 @@ class HelloLabel
             }
           end
         }
+        
+        frame(text: 'images') {
+          ['denmark', 'finland', 'norway'].each do |image_name|
+            label {
+              image File.expand_path("images/#{image_name}.png", __dir__)
+            }
+          end
+        }
       }
     }.open
   end

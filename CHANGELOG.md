@@ -4,6 +4,7 @@
 
 - Support `label` `anchor` attribute (`'e'`, `'se'`, `'s'`, `'sw'`, `'w'`, `'nw'` or `'center'`)
 - Support `label` `width` attributes
+- Support `label` `image` attribute
 
 ## 0.0.16
 
