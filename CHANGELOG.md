@@ -3,6 +3,10 @@
 ## 0.0.18
 
 - Avoid setting grid geometry manager on `toplevel` widget
+- Support `frame` `width` and `height` attributes
+- Support `frame` `borderwidth` attribute
+- Support `frame` `relief` attribute
+- Support `frame` `padding` attribute
 
 ## 0.0.17
 

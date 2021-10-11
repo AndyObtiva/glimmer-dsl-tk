@@ -3,10 +3,6 @@
 ## General
 
 - Rename Hello, Tab! to Hello, Notebook!
-- Support `frame` `width` and `height` attributes
-- Support `frame` `borderwidth` attributes
-- Support `frame` `relief` attributes
-- Support `frame` `padding` attributes
 - Document gotcha about setting label background not working in Mac aqua
 
 - Support `root` `width`, `height`, `x`, `y` attributes
@@ -57,6 +53,7 @@
 - Hello, Drag & Drop!
 - Hello, Canvas!
 - Hello, Canvas Drag and Drop!
+- Hello, Cursor!
 - Hello, Style!
 - Hello, Theme!
 - Hello samples for tk included tkextlib extra widgets such as tktable, calendar, autoscroll, tablelist, etc...
