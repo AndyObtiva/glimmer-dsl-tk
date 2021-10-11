@@ -20,6 +20,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - name: Install ActiveTcl
+      run: mkdir tmp; curl -L https://www.dropbox.com/s/hel9o18x2b0j1m3/ActiveTcl-8.6.9.8609.2-macosx10.9-x86_64-93b04018.pkg?dl=1 > tmp/ActiveTcl.pkg; sudo installer -pkg tmp/ActiveTcl.pkg -target / -verbose      
     - name: Set up Ruby
     # To automatically get bug fixes and new Ruby versions for ruby/setup-ruby,
     # change this to (see https://github.com/ruby/setup-ruby#versioning):
@@ -28,8 +30,6 @@ jobs:
       with:
         bundler-cache: true
         ruby-version: 2.6
-    - name: Install ActiveTcl
-      run: mkdir tmp; curl -L https://www.dropbox.com/s/hel9o18x2b0j1m3/ActiveTcl-8.6.9.8609.2-macosx10.9-x86_64-93b04018.pkg?dl=1 > tmp/ActiveTcl.pkg; sudo installer -pkg tmp/ActiveTcl.pkg -target / -verbose      
     - name: Install dependencies
       run: bundle install
     - name: Run tests
