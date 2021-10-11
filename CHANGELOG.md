@@ -5,6 +5,7 @@
 - Support `label` `anchor` attribute (`'e'`, `'se'`, `'s'`, `'sw'`, `'w'`, `'nw'` or `'center'`)
 - Support `label` `width` attributes
 - Support `label` `image` attribute
+- Support `label` `justify` attribute (`:left`, `:center`, `:right`)
 
 ## 0.0.16
 
