@@ -33,7 +33,7 @@ class HelloLabel
           1.upto(3) do |n|
             label {
               text "Field #{n}"
-              width 10
+              width 60
               anchor 'w'
             }
           end
@@ -43,7 +43,7 @@ class HelloLabel
           1.upto(3) do |n|
             label {
               text "Field #{n}"
-              width 10
+              width 60
               anchor 'center'
             }
           end
@@ -53,7 +53,7 @@ class HelloLabel
           1.upto(3) do |n|
             label {
               text "Field #{n}"
-              width 10
+              width 60
               anchor 'e'
             }
           end
@@ -63,6 +63,16 @@ class HelloLabel
           ['denmark', 'finland', 'norway'].each do |image_name|
             label {
               image File.expand_path("images/#{image_name}.png", __dir__)
+            }
+          end
+        }
+        
+        frame(text: 'background images') {
+          ['italy', 'france', 'mexico'].each do |image_name|
+            label {
+              text image_name.capitalize
+              image File.expand_path("images/#{image_name}.png", __dir__)
+              compound 'center'
             }
           end
         }
