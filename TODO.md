@@ -2,10 +2,10 @@
 
 ## General
 
-- Support `label` `foreground` attribute
 - Support `label` `background` attribute
 - Support `label` `compound` attribute
 - Support `label` `relief` attributes
+- Document all label attributes
 - Support `frame` `width` and `height` attributes
 - Support `frame` `borderwidth` attributes
 - Support `frame` `relief` attributes

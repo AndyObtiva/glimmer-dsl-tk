@@ -73,6 +73,7 @@ class HelloLabel
             anchor 'center'
             justify 'center' # other options are: 'left' and 'right'
             font 'caption' # other options are: 'default', 'text', 'fixed', 'menu', 'heading', 'small_caption', 'icon', 'tooltip'
+            foreground 'blue'
           }
         }
         
