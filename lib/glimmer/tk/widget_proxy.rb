@@ -85,7 +85,7 @@ module Glimmer
         tk_widget_class = self.class.tk_widget_class_for(underscored_widget_name)
         @tk = tk_widget_class.new(@parent_proxy.tk, *args)
         # a common widget initializer
-        @tk.grid
+        @tk.grid unless @tk.is_a?(::Tk::Toplevel)
         DEFAULT_INITIALIZERS[underscored_widget_name]&.call(@tk)
         @parent_proxy.post_initialize_child(self)
       end

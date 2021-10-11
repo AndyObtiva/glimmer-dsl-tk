@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.18
+
+- Avoid setting grid geometry manager on `toplevel` widget
+
 ## 0.0.17
 
 - Support `label` `anchor` attribute (`'e'`, `'se'`, `'s'`, `'sw'`, `'w'`, `'nw'` or `'center'`)
