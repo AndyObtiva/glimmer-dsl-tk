@@ -6,6 +6,7 @@
 - Support `label` `width` attributes
 - Support `label` `image` attribute
 - Support `label` `justify` attribute (`:left`, `:center`, `:right`)
+- Support `label` `font` attribute (`:default`, `:text`, `:fixed`, `:menu`, `:heading`, `:caption`, `:small_caption`, `:icon`, `:tooltip`)
 
 ## 0.0.16
 

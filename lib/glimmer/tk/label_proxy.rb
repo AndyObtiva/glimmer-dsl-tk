@@ -27,14 +27,14 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class LabelProxy < WidgetProxy
-      # TODO specify attribute setters
-#       def tk_widget_has_attribute_setter?(attribute)
-#         if ['anchor', 'justify'].include?(attribute.to_s)
-#           true
-#         else
-#           super
-#         end
-#       end
+      def set_attribute(attribute, *args)
+        if attribute.to_s == 'font'
+          args[0] = "tk_#{args[0]}_font".camelcase(:upper) if (args[0].is_a?(Symbol) || args[0].is_a?(String)) && args[0].to_s == args[0].to_s.downcase
+          super
+        else
+          super
+        end
+      end
     end
   end
 end

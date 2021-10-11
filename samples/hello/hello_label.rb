@@ -62,15 +62,17 @@ class HelloLabel
         frame(text: 'justified') {
           label {
             text <<~MULTI_LINE_STRING
-              This is a very long paragraph that spans multiple lines. It looks better and is easier
-              to read when justified. In fact, this is how to make it look like a new paper column.
-              That results in professional looking text. Magazines use the same sort of justified text.
-              Word processors also support justified text. In fact, this is how text is made for news
-              papers and magainzes, and then published in paper form and digitally.
+              This is a very long paragraph that spans multiple lines. It looks better and
+              is easier to read when justified. In fact, this is how to make it look like a
+              new paper column. That results in professional looking text. Magazines use the
+              same sort of justified text. Word processors also support justified text. In
+              fact, this is how text is made for news papers and magainzes, and then published
+              in paper form and digitally.
             MULTI_LINE_STRING
             width 60
             anchor 'center'
-            justify 'center' # other options are 'left' and 'right'
+            justify 'center' # other options are: 'left' and 'right'
+            font 'caption' # other options are: 'default', 'text', 'fixed', 'menu', 'heading', 'small_caption', 'icon', 'tooltip'
           }
         }
         
