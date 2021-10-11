@@ -24,15 +24,18 @@ require 'glimmer-dsl-tk'
 class HelloLabel
   include Glimmer
   
+  LABEL_FONTS = ['default', 'text', 'fixed', 'menu', 'heading', 'caption', 'small_caption', 'icon', 'tooltip']
+  LABEL_RELIEFS = ['flat', 'raised', 'sunken', 'solid', 'ridge', 'groove']
+  
   def launch
     root {
       title 'Hello, Label!'
       
       notebook {
         frame(text: 'left-aligned') {
-          1.upto(3) do |n|
+          3.times do |n|
             label {
-              text "Field #{n}"
+              text "Field #{n + 1} / default font / flat relief"
               width 60
               anchor 'w'
             }
@@ -40,21 +43,25 @@ class HelloLabel
         }
         
         frame(text: 'centered') {
-          1.upto(3) do |n|
+          9.times do |n|
             label {
-              text "Field #{n}"
-              width 60
+              text "Field #{n + 1} / fixed font / raised relief"
+              width 80
               anchor 'center'
+              font 'fixed'
+              relief 'raised'
             }
           end
         }
         
         frame(text: 'right-aligned') {
-          1.upto(3) do |n|
+          9.times do |n|
             label {
-              text "Field #{n}"
-              width 60
+              text "Field #{n + 1} / small_caption font / ridge relief"
+              width 80
               anchor 'e'
+              font 'small_caption'
+              relief 'ridge'
             }
           end
         }
@@ -74,7 +81,7 @@ class HelloLabel
             justify 'center' # other options are: 'left' and 'right'
             font 'caption' # other options are: 'default', 'text', 'fixed', 'menu', 'heading', 'small_caption', 'icon', 'tooltip'
             foreground 'blue'
-            relief 'raised' # other options are: 'flat' (default), 'sunken', 'solid', 'ridge', 'groove'
+            relief 'sunken' # other options are: 'flat' (default), 'raised', 'solid', 'ridge', 'groove'
           }
         }
         

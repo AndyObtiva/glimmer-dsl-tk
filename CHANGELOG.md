@@ -5,8 +5,8 @@
 - Support `label` `anchor` attribute (`'e'`, `'se'`, `'s'`, `'sw'`, `'w'`, `'nw'` or `'center'`)
 - Support `label` `width` attributes
 - Support `label` `image` attribute
-- Support `label` `justify` attribute (`:left`, `:center`, `:right`)
-- Support `label` `font` attribute (`:default`, `:text`, `:fixed`, `:menu`, `:heading`, `:caption`, `:small_caption`, `:icon`, `:tooltip`)
+- Support `label` `justify` attribute (`'left', 'center', 'right'`)
+- Support `label` `font` attribute (`'default', 'text', 'fixed', 'menu', 'heading', 'caption', 'small_caption', 'icon', 'tooltip'`)
 - Support `label` `foreground` attribute
 - Support `label` `background` attribute (note that it does not work in Mac 'aqua' theme)
 - Support `label` `compound` attribute
