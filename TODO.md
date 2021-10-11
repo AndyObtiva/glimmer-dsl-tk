@@ -2,7 +2,6 @@
 
 ## General
 
-- Document all label attributes
 - Support `frame` `width` and `height` attributes
 - Support `frame` `borderwidth` attributes
 - Support `frame` `relief` attributes

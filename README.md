@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.16
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.17
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -62,6 +62,52 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
 - [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
 - [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS (Cascading Style Sheets)
 
+## Table of Contents
+
+- [Glimmer DSL for Tk](#)
+  - [MRI Ruby Desktop Development GUI Library](#mri-ruby-desktop-development-gui-library)
+  - [Pre-requisites](#pre-requisites)
+  - [Setup](#setup)
+    - [Option 1: Install](#option-1-install)
+    - [Option 2: Bundler](#option-2-bundler)
+  - [Girb (Glimmer IRB)](#girb-glimmer-irb)
+  - [Tk Concepts](#tk-concepts)
+  - [Glimmer GUI DSL Concepts](#glimmer-gui-dsl-concepts)
+    - [Supported Widgets](#supported-widgets)
+      - [Common Attributes](#common-attributes)
+      - [Common Themed Widget States](#common-themed-widget-states)
+    - [Smart Defaults and Convensions](#smart-defaults-and-convensions)
+      - [Grid Layout](#grid-layout)
+      - [Label/Button Image](#labelbutton-image)
+      - [Icon Photo](#icon-photo)
+  - [The Grid Geometry Manager](#the-grid-geometry-manager)
+  - [Bidirectional Data-Binding](#bidirectional-data-binding)
+    - [General Property Data-Binding](#general-property-data-binding)
+    - [Combobox Data-Binding](#combobox-data-binding)
+    - [List Single Selection Data-Binding](#list-single-selection-data-binding)
+    - [List Multi Selection Data-Binding](#list-multi-selection-data-binding)
+    - [Entry Data-Binding](#entry-data-binding)
+  - [Command Observer](#command-observer)
+  - [Samples](#samples)
+    - [Hello, World!](#hello-world)
+    - [Hello, Button!](#hello-button)
+    - [Hello, Tab!](#hello-tab)
+    - [Hello, Label!](#hello-label)
+    - [Hello, Message Box!](#hello-message-box)
+    - [Hello, Combobox!](#hello-combobox)
+    - [Hello, List Single Selection!](#hello-list-single-selection)
+    - [Hello, List Multi Selection!](#hello-list-multi-selection)
+    - [Hello, Computed!](#hello-computed)
+  - [Help](#help)
+    - [Issues](#issues)
+    - [Chat](#chat)
+  - [Process](#process)
+  - [Planned Features and Feature Suggestions](#planned-features-and-feature-suggestions)
+  - [Change Log](#change-log)
+  - [Contributing](#contributing)
+  - [Contributors](#contributors)
+  - [License](#license)
+
 ## Pre-requisites
 
 - [Tcl/Tk](https://www.tcl.tk/): Follow the [install instructions](https://tkdocs.com/tutorial/install.html)
@@ -88,7 +134,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.16'
+gem 'glimmer-dsl-tk', '~> 0.0.17'
 ```
 
 And, then run:
@@ -181,7 +227,7 @@ keyword(args) | attributes | event bindings & callbacks
 `button` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `default` (`'active', 'normal'`) | `command`
 `entry` | `width`, `text` | None
 `frame(text: nil)` | None | None
-`label` | `text` | None
+`label` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `font` (`'default', 'text', 'fixed', 'menu', 'heading', 'caption', 'small_caption', 'icon', 'tooltip'`), `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`), `justify` (`'left', 'center', 'right'`), `foreground`, `background` | None
 `list` | `selectmode`, `selection` | None
 `message_box(type: , message: , detail: , title: , icon: , default: , parent: )` | None | None
 `notebook` | None | None
@@ -550,13 +596,135 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_tab'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_tab'"
+ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_tab.rb
 ```
 
 Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello tab English](images/glimmer-dsl-tk-screenshot-sample-hello-tab-english.png)
 ![glimmer dsl tk screenshot sample hello tab French](images/glimmer-dsl-tk-screenshot-sample-hello-tab-french.png)
+
+### Hello, Label!
+
+Glimmer code (from [samples/hello/hello_label.rb](samples/hello/hello_label.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+class HelloLabel
+  include Glimmer
+  
+  LABEL_FONTS = ['default', 'text', 'fixed', 'menu', 'heading', 'caption', 'small_caption', 'icon', 'tooltip']
+  LABEL_RELIEFS = ['flat', 'raised', 'sunken', 'solid', 'ridge', 'groove']
+  
+  def launch
+    root {
+      title 'Hello, Label!'
+      
+      notebook {
+        frame(text: 'left-aligned') {
+          3.times do |n|
+            label {
+              text "Field #{n + 1} / default font / flat relief"
+              width 60
+              anchor 'w'
+            }
+          end
+        }
+        
+        frame(text: 'centered') {
+          9.times do |n|
+            label {
+              text "Field #{n + 1} / fixed font / raised relief"
+              width 80
+              anchor 'center'
+              font 'fixed'
+              relief 'raised'
+            }
+          end
+        }
+        
+        frame(text: 'right-aligned') {
+          9.times do |n|
+            label {
+              text "Field #{n + 1} / small_caption font / ridge relief"
+              width 80
+              anchor 'e'
+              font 'small_caption'
+              relief 'ridge'
+            }
+          end
+        }
+        
+        frame(text: 'justified') {
+          label {
+            text <<~MULTI_LINE_STRING
+              This is a very long paragraph that spans multiple lines. It looks better and
+              is easier to read when justified. In fact, this is how to make it look like a
+              new paper column. That results in professional looking text. Magazines use the
+              same sort of justified text. Word processors also support justified text. In
+              fact, this is how text is made for news papers and magainzes, and then published
+              in paper form and digitally.
+            MULTI_LINE_STRING
+            width 60
+            anchor 'center'
+            justify 'center' # other options are: 'left' and 'right'
+            font 'caption' # other options are: 'default', 'text', 'fixed', 'menu', 'heading', 'small_caption', 'icon', 'tooltip'
+            foreground 'blue'
+            relief 'sunken' # other options are: 'flat' (default), 'raised', 'solid', 'ridge', 'groove'
+          }
+        }
+        
+        frame(text: 'images') {
+          ['denmark', 'finland', 'norway'].each do |image_name|
+            label {
+              image File.expand_path("images/#{image_name}.png", __dir__)
+            }
+          end
+        }
+        
+        frame(text: 'background images') {
+          ['italy', 'france', 'mexico'].each do |image_name|
+            label {
+              text image_name.capitalize
+              image File.expand_path("images/#{image_name}.png", __dir__)
+              compound 'center'
+            }
+          end
+        }
+      }
+    }.open
+  end
+end
+
+HelloLabel.new.launch
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_label'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_label.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello label left aligned](images/glimmer-dsl-tk-screenshot-sample-hello-label-left-aligned.png)
+
+![glimmer dsl tk screenshot sample hello label centered](images/glimmer-dsl-tk-screenshot-sample-hello-label-centered.png)
+
+![glimmer dsl tk screenshot sample hello label right aligned](images/glimmer-dsl-tk-screenshot-sample-hello-label-right-aligned.png)
+
+![glimmer dsl tk screenshot sample hello label justified](images/glimmer-dsl-tk-screenshot-sample-hello-label-justified.png)
+
+![glimmer dsl tk screenshot sample hello label images](images/glimmer-dsl-tk-screenshot-sample-hello-label-images.png)
+
+![glimmer dsl tk screenshot sample hello label background images](images/glimmer-dsl-tk-screenshot-sample-hello-label-background-images.png)
 
 ### Hello, Message Box!
 
@@ -637,13 +805,13 @@ root { |r|
 Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_tab'"
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_message_box'"
 ```
 
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_tab'"
+ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_message_box.rb
 ```
 
 Glimmer app:
@@ -684,7 +852,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_combobox'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_combobox'"
+ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_combobox.rb
 ```
 
 Glimmer app:
@@ -724,7 +892,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_list_single_selection'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_list_single_selection'"
+ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_list_single_selection.rb
 ```
 
 Glimmer app:
@@ -762,7 +930,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_list_multi_selection'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_list_multi_selection'"
+ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_list_multi_selection.rb
 ```
 
 Glimmer app:
@@ -842,7 +1010,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_computed'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -e "require './lib/glimmer-dsl-tk'; require './samples/hello/hello_computed'"
+ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_computed.rb
 ```
 
 Glimmer app:
