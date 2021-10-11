@@ -74,6 +74,7 @@ class HelloLabel
             justify 'center' # other options are: 'left' and 'right'
             font 'caption' # other options are: 'default', 'text', 'fixed', 'menu', 'heading', 'small_caption', 'icon', 'tooltip'
             foreground 'blue'
+            relief 'raised' # other options are: 'flat' (default), 'sunken', 'solid', 'ridge', 'groove'
           }
         }
         
