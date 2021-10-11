@@ -2,7 +2,6 @@
 
 ## General
 
-- Support `label` `background` attribute
 - Support `label` `compound` attribute
 - Support `label` `relief` attributes
 - Document all label attributes
