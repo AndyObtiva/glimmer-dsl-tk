@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.17
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.18
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -79,6 +79,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Smart Defaults and Convensions](#smart-defaults-and-convensions)
       - [Grid Layout](#grid-layout)
       - [Label/Button Image](#labelbutton-image)
+      - [Notebook Frame](#notebook-frame)
       - [Icon Photo](#icon-photo)
   - [The Grid Geometry Manager](#the-grid-geometry-manager)
   - [Bidirectional Data-Binding](#bidirectional-data-binding)
@@ -88,10 +89,12 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [List Multi Selection Data-Binding](#list-multi-selection-data-binding)
     - [Entry Data-Binding](#entry-data-binding)
   - [Command Observer](#command-observer)
+  - [Gotchas](#gotchas)
   - [Samples](#samples)
     - [Hello, World!](#hello-world)
     - [Hello, Button!](#hello-button)
-    - [Hello, Tab!](#hello-tab)
+    - [Hello, Frame!](#hello-frame)
+    - [Hello, Notebook!](#hello-notebook)
     - [Hello, Label!](#hello-label)
     - [Hello, Message Box!](#hello-message-box)
     - [Hello, Combobox!](#hello-combobox)
@@ -134,7 +137,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.17'
+gem 'glimmer-dsl-tk', '~> 0.0.18'
 ```
 
 And, then run:
@@ -181,7 +184,7 @@ Example of an app written in [Tk](https://www.tcl.tk/) imperative syntax:
 
 ```ruby
 root = TkRoot.new
-root.title = 'Hello, Tab!'
+root.title = 'Hello, Notebook!'
 
 notebook = ::Tk::Tile::Notebook.new(root).grid
 
@@ -202,7 +205,7 @@ Example of the same app written in [Glimmer](https://github.com/AndyObtiva/glimm
 
 ```ruby
 root {
-  title 'Hello, Tab!'
+  title 'Hello, Notebook!'
    
   notebook {
     frame(text: 'English') {
@@ -226,7 +229,7 @@ keyword(args) | attributes | event bindings & callbacks
 ------------- | ---------- | ---------
 `button` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `default` (`'active', 'normal'`) | `command`
 `entry` | `width`, `text` | None
-`frame(text: nil)` | None | None
+`frame(text: nil)` | `width`, `height`, `borderwidth`, `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`) | None
 `label` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `font` (`'default', 'text', 'fixed', 'menu', 'heading', 'caption', 'small_caption', 'icon', 'tooltip'`), `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`), `justify` (`'left', 'center', 'right'`), `foreground`, `background` | None
 `list` | `selectmode`, `selection` | None
 `message_box(type: , message: , detail: , title: , icon: , default: , parent: )` | None | None
@@ -259,6 +262,10 @@ keyword(args) | attributes | event bindings & callbacks
 #### Label/Button Image
 
 Label and Button `image` attribute can accept image path directly as an alternative to `TkPhotoImage` object in addition to key values for automatic processing of image (`subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`)
+
+#### Notebook Frame
+
+When nesting `frame` under `notebook`, you can pass a `:text` keyword argument to indicate the tab title.
 
 #### Icon Photo
 
@@ -426,6 +433,10 @@ This resets the person country.
 
 More details can be found in the [Hello, Combobox!](#hello-combobox) sample below.
 
+## Gotchas
+
+- Setting `background` attribute on `frame` or `label` does not work in `'aqua'` theme on the Mac (only in `'classic'` theme)
+
 ## Samples
 
 ### Hello, World!
@@ -561,48 +572,129 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello button](images/glimmer-dsl-tk-screenshot-sample-hello-button.png)
 
-### Hello, Tab!
+### Hello, Frame!
 
-Glimmer code (from [samples/hello/hello_tab.rb](samples/hello/hello_tab.rb)):
+Glimmer code (from [samples/hello/hello_frame.rb](samples/hello/hello_frame.rb)):
 
 ```ruby
-include Glimmer
+require 'glimmer-dsl-tk'
 
-root {
-  title 'Hello, Tab!'
-   
-  notebook {
-    frame(text: 'English') {
-      label {
-        text 'Hello, World!'
+class HelloFrame
+  include Glimmer
+  
+  def launch
+    root {
+      title 'Hello, Frame!'
+      
+      frame { # frame simply contains widgets for visual organization via a layout
+        relief 'sunken'
+        
+        label {
+          grid row: 0, column: 0, columnspan: 4, padx: 5, pady: 5
+          text 'Enter Your Full Name'
+          font 'caption'
+          anchor 'center'
+        }
+
+        label {
+          grid row: 1, column: 0, padx: 5
+          text "First Name:"
+        }
+        
+        entry {
+          grid row: 1, column: 1, padx: 5
+        }
+        
+        label {
+          grid row: 2, column: 0, padx: 5
+          text "Last Name:"
+        }
+        
+        entry {
+          grid row: 2, column: 1, padx: 5
+        }
       }
-    }
-     
-    frame(text: 'French') {
-      label {
-        text 'Bonjour, Univers!'
+      
+      frame { # an empty frame can specify width and height
+        grid padx: 7, pady: 7
+        width 200
+        height 100
+        borderwidth 3
+        relief 'sunken'
       }
-    }
-  }
-}.open
+    }.open
+  end
+end
+
+HelloFrame.new.launch
 ```
 
 Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_tab'"
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_frame'"
 ```
 
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_tab.rb
+ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_frame.rb
 ```
 
 Glimmer app:
 
-![glimmer dsl tk screenshot sample hello tab English](images/glimmer-dsl-tk-screenshot-sample-hello-tab-english.png)
-![glimmer dsl tk screenshot sample hello tab French](images/glimmer-dsl-tk-screenshot-sample-hello-tab-french.png)
+![glimmer dsl tk screenshot sample hello frame](images/glimmer-dsl-tk-screenshot-sample-hello-frame.png)
+
+### Hello, Notebook!
+
+Glimmer code (from [samples/hello/hello_notebook.rb](samples/hello/hello_notebook.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+class HelloNotebook
+  include Glimmer
+  
+  def launch
+    root {
+      title 'Hello, Notebook!'
+       
+      notebook {
+        frame(text: 'English') {
+          label {
+            text 'Hello, World!'
+          }
+        }
+         
+        frame(text: 'French') {
+          label {
+            text 'Bonjour, Univers!'
+          }
+        }
+      }
+    }.open
+  end
+end
+
+HelloNotebook.new.launch
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_notebook'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_notebook.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello notebook English](images/glimmer-dsl-tk-screenshot-sample-hello-notebook-english.png)
+![glimmer dsl tk screenshot sample hello notebook French](images/glimmer-dsl-tk-screenshot-sample-hello-notebook-french.png)
 
 ### Hello, Label!
 

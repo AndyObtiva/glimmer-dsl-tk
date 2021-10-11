@@ -2,9 +2,6 @@
 
 ## General
 
-- Rename Hello, Tab! to Hello, Notebook!
-- Document gotcha about setting label background not working in Mac aqua
-
 - Support `root` `width`, `height`, `x`, `y` attributes
 - Set minimum width on `root`
 

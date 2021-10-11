@@ -21,12 +21,12 @@
 
 require 'glimmer-dsl-tk'
 
-class HelloTab
+class HelloNotebook
   include Glimmer
   
   def launch
     root {
-      title 'Hello, Tab!'
+      title 'Hello, Notebook!'
        
       notebook {
         frame(text: 'English') {
@@ -45,4 +45,4 @@ class HelloTab
   end
 end
 
-HelloTab.new.launch
+HelloNotebook.new.launch

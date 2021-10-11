@@ -2,14 +2,17 @@
 
 ## 0.0.18
 
+- Hello, Frame! sample
 - Avoid setting grid geometry manager on `toplevel` widget
 - Support `frame` `width` and `height` attributes
 - Support `frame` `borderwidth` attribute
 - Support `frame` `relief` attribute
 - Support `frame` `padding` attribute
+- Rename Hello, Tab! to Hello, Notebook!
 
 ## 0.0.17
 
+- Hello, Label! sample
 - Support `label` `anchor` attribute (`'e'`, `'se'`, `'s'`, `'sw'`, `'w'`, `'nw'` or `'center'`)
 - Support `label` `width` attributes
 - Support `label` `image` attribute
