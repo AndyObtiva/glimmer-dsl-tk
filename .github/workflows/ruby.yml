@@ -33,5 +33,3 @@ jobs:
       run: bundle install
     - name: Run tests
       run: bundle exec rake
-    - name: Coverage
-      run: ruby -e "$(curl -s https://undercover-ci.com/uploader.rb)" -- --repo AndyObtiva/glimmer-dsl-tk --commit $TRAVIS_COMMIT --lcov coverage/lcov/glimmer-dsl-tk.lcov      
