@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.20
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.21
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -120,7 +120,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
 For example, on the Mac, you can:
 - Install the ActiveTcl Mac package from [ActiveState.com](https://activestate.com)
 - Install [RVM](https://rvm.io/) by running `\curl -sSL https://get.rvm.io | bash -s stable` (and run `curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -` if needed for mentioned security reasons)
-- Run: `rvm install 2.7.1 --enable-shared --enable-pthread --with-tk --with-tcl`
+- Run: `rvm install 3.0.2 --enable-shared --enable-pthread --with-tk --with-tcl`
 - Run: `gem install tk -v0.4.0`
 
 Afterwards, if you open `irb`, you should be able to run `require 'tk'` successfully.
@@ -138,7 +138,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.20'
+gem 'glimmer-dsl-tk', '~> 0.0.21'
 ```
 
 And, then run:

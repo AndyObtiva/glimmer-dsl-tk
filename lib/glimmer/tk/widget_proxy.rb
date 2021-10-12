@@ -140,11 +140,17 @@ module Glimmer
         end
       end
       
+      def has_attributes_attribute?(attribute)
+        attribute = attribute.sub(/\?$/, '').sub(/=$/, '')
+        @tk.respond_to?(:attributes) && @tk.attributes.keys.include?(attribute.to_s)
+      end
+      
       def has_attribute?(attribute, *args)
         (widget_custom_attribute_mapping[tk.class] and widget_custom_attribute_mapping[tk.class][attribute.to_s]) or
           tk_widget_has_attribute_setter?(attribute) or
           tk_widget_has_attribute_getter_setter?(attribute) or
           has_state?(attribute) or
+          has_attributes_attribute?(attribute) or
           respond_to?(attribute_setter(attribute), args)
       end
 
@@ -169,6 +175,9 @@ module Glimmer
           else
             @tk.tile_state("!#{attribute}")
           end
+        elsif has_attributes_attribute?(attribute)
+          attribute = attribute.sub(/=$/, '')
+          @tk.attributes(attribute, args.first)
         else
           send(attribute_setter(attribute), args)
         end
@@ -182,6 +191,10 @@ module Glimmer
           @tk.send(attribute)
         elsif has_state?(attribute)
           @tk.tile_instate(attribute.sub(/\?$/, ''))
+        elsif has_attributes_attribute?(attribute)
+          result = @tk.attributes[attribute.sub(/\?$/, '')]
+          result = result == 1 if result.is_a?(Integer)
+          result
         else
           send(attribute)
         end
@@ -284,9 +297,9 @@ module Glimmer
 
       def method_missing(method, *args, &block)
         method = method.to_s
-        if args.empty? && block.nil? && ((widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][method]) || has_state?(method))
+        if args.empty? && block.nil? && ((widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][method]) || has_state?(method) || has_attributes_attribute?(method))
           get_attribute(method)
-        elsif method.end_with?('=') && block.nil? && ((widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][method.sub(/=$/, '')]) || has_state?(method))
+        elsif method.end_with?('=') && block.nil? && ((widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][method.sub(/=$/, '')]) || has_state?(method) || has_attributes_attribute?(method))
           set_attribute(method.sub(/=$/, ''), *args)
         else
           tk.send(method, *args, &block)

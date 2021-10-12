@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.21
+
+- Support `root` attribute: `background` (any color including `systemTransparent`)
+- Support `root` boolean attribute: `alpha`
+- Support `root` boolean attributes: `fullscreen`, `topmost`, `transparent`
+
 ## 0.0.20
 
 - Hello, Root! sample

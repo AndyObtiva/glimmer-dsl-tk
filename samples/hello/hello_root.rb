@@ -27,9 +27,12 @@ root {
   title 'Hello, Root!'
   width 400
   height 200
-  x 150
+  x -150
   y 300
   resizable true # same as `resizable true, true`, meaning cannot resize horizontally and vertically
   minsize 200, 100
   maxsize 600, 400
+  background 'lightgrey'
+  alpha 0.8 # on the mac, you can set `transparent true` as well
+  topmost true
 }.open
