@@ -5,6 +5,9 @@
 - Hello, Root! sample
 - Support `root` `width`, `height`, `x`, `y` attributes
 - Support `root` attribute: `resizable`
+- Support `root` attribute: `minsize`
+- Support `root` attribute: `maxsize`
+- Set minimum width/height on `root` (190 pixels)
 
 ## 0.0.18
 

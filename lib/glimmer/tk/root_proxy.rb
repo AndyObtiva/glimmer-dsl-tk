@@ -28,10 +28,12 @@ module Glimmer
     # Follows the Proxy Design Pattern
     class RootProxy < WidgetProxy
       REGEX_GEOMETRY = /[x+-]/
-      DEFAULT_DIMENSION = '190'
+      DEFAULT_WIDTH = 190
+      DEFAULT_HEIGHT = 95
       
       def initialize(*args)
         @tk = ::TkRoot.new
+        @tk.minsize = DEFAULT_WIDTH, DEFAULT_HEIGHT
       end
 
       def post_add_content
@@ -57,14 +59,14 @@ module Glimmer
           super
         when 'width'
           @width = args.first.to_i
-          self.geometry = "#{args.first.to_i}x#{@height || DEFAULT_DIMENSION}#{x_sign}#{abs_x}#{y_sign}#{abs_y}"
+          self.geometry = "#{args.first.to_i}x#{@height || DEFAULT_HEIGHT}#{x_sign}#{abs_x}#{y_sign}#{abs_y}"
         when 'height'
           @height = args.first.to_i
-          self.geometry = "#{@width || DEFAULT_DIMENSION}x#{args.first.to_i}#{x_sign}#{abs_x}#{y_sign}#{abs_y}"
+          self.geometry = "#{@width || DEFAULT_WIDTH}x#{args.first.to_i}#{x_sign}#{abs_x}#{y_sign}#{abs_y}"
         when 'x'
-          self.geometry = "#{@width || DEFAULT_DIMENSION}x#{@height || DEFAULT_DIMENSION}#{args.first.to_i > 0 ? '+' : '-'}#{args.first.to_i.abs}#{y_sign}#{abs_y}"
+          self.geometry = "#{@width || DEFAULT_WIDTH}x#{@height || DEFAULT_HEIGHT}#{args.first.to_i > 0 ? '+' : '-'}#{args.first.to_i.abs}#{y_sign}#{abs_y}"
         when 'y'
-          self.geometry = "#{@width || DEFAULT_DIMENSION}x#{@height || DEFAULT_DIMENSION}#{x_sign}#{abs_x}#{args.first.to_i > 0 ? '+' : '-'}#{args.first.to_i.abs}"
+          self.geometry = "#{@width || DEFAULT_WIDTH}x#{@height || DEFAULT_HEIGHT}#{x_sign}#{abs_x}#{args.first.to_i > 0 ? '+' : '-'}#{args.first.to_i.abs}"
         when 'resizable'
           if args.size == 1 && !args.first.is_a?(Array)
             self.resizable = [args.first]*2

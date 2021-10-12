@@ -29,5 +29,7 @@ root {
   height 200
   x 150
   y 300
-  resizable false # same as `resizable false, false`, meaning cannot resize horizontally and vertically
+  resizable true # same as `resizable true, true`, meaning cannot resize horizontally and vertically
+  minsize 200, 100
+  maxsize 600, 400
 }.open
