@@ -2,6 +2,7 @@
 
 ## General
 
+- Set minimum width/height on `root` (190 pixels)
 
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 

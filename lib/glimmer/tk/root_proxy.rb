@@ -65,6 +65,12 @@ module Glimmer
           self.geometry = "#{@width || DEFAULT_DIMENSION}x#{@height || DEFAULT_DIMENSION}#{args.first.to_i > 0 ? '+' : '-'}#{args.first.to_i.abs}#{y_sign}#{abs_y}"
         when 'y'
           self.geometry = "#{@width || DEFAULT_DIMENSION}x#{@height || DEFAULT_DIMENSION}#{x_sign}#{abs_x}#{args.first.to_i > 0 ? '+' : '-'}#{args.first.to_i.abs}"
+        when 'resizable'
+          if args.size == 1 && !args.first.is_a?(Array)
+            self.resizable = [args.first]*2
+          else
+            super
+          end
         else
           super
         end

@@ -29,4 +29,5 @@ root {
   height 200
   x 150
   y 300
+  resizable false # same as `resizable false, false`, meaning cannot resize horizontally and vertically
 }.open
