@@ -180,6 +180,7 @@ The Glimmer GUI DSL follows these simple concepts in mapping from Tk syntax:
 - **Widget Keyword**: Any Tk widget (e.g. `Tk::Tile::Label`) or toplevel window (e.g. `TkRoot`) may be declared by its lower-case underscored name without the namespace (e.g. `label` or `root`). This is called a keyword and is represented in the Glimmer GUI DSL by a Ruby method behind the scenes.
 - **Args**: Any keyword method may optionally take arguments surrounded by parentheses (e.g. a `frame` nested under a `notebook` may receive tab options like `frame(text: 'Users')`, which gets used behind the scenes by Tk code such as `notebook.add tab, text: 'Users'`)
 - **Content/Options Block**: Any keyword may optionally be followed by a Ruby curly-brace block containing nested widgets (content) and attributes (options). Attributes are simply Tk option keywords followed by arguments and no block (e.g. `title 'Hello, World!'` under a `root`)
+- **Event Binding Block**: `on(event) {}` keyword receiving a Tk binding event name (e.g. `KeyPress` or `ComboboxSelected`). No need to surround event by `<>` as [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) takes care of that automatically.
 
 Example of an app written in [Tk](https://www.tcl.tk/) imperative syntax:
 
@@ -199,6 +200,15 @@ notebook.add tab2, text: 'French'
 label2 = ::Tk::Tile::Label.new(tab2).grid
 label2.text = 'Bonjour, Univers!'
 
+root.bind('KeyPress') do |event|
+  case event.keysym
+  when 'e', 'E'
+    notebook.select(0)
+  when 'f', 'F'
+    notebook.select(1)
+  end
+end
+
 root.mainloop
 ```
 
@@ -208,7 +218,7 @@ Example of the same app written in [Glimmer](https://github.com/AndyObtiva/glimm
 root {
   title 'Hello, Notebook!'
    
-  notebook {
+  @notebook = notebook {
     frame(text: 'English') {
       label {
         text 'Hello, World!'
@@ -221,6 +231,15 @@ root {
       }
     }
   }
+  
+  on('KeyPress') do |event|
+    case event.keysym
+    when 'e', 'E'
+      @notebook.select(0)
+    when 'f', 'F'
+      @notebook.select(1)
+    end
+  end
 }.open
 ```
 
@@ -228,18 +247,50 @@ root {
 
 keyword(args) | attributes | event bindings & callbacks
 ------------- | ---------- | ---------
-`button` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `default` (`'active', 'normal'`) | `command`
+`button` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `default` (`'active', 'normal'`) | `command {}`
+`combobox` | `state`, `text` | `'ComboboxSelected'`
 `entry` | `width`, `text` | None
 `frame(text: nil)` | `width`, `height`, `borderwidth`, `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`) | None
 `label` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `font` (`'default', 'text', 'fixed', 'menu', 'heading', 'caption', 'small_caption', 'icon', 'tooltip'`), `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`), `justify` (`'left', 'center', 'right'`), `foreground`, `background` | None
 `list` | `selectmode`, `selection` | None
 `message_box(type: , message: , detail: , title: , icon: , default: , parent: )` | None | None
 `notebook` | None | None
-`root` | `title`, `iconphoto` | None
+`root` | `title`, `iconphoto`, `background`, `alpha`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`, `'OPEN_WINDOW'`
 
 #### Common Attributes
 
 - `grid`: `Hash` of `:row`, `:column`, `:padx`, `:pady`, `:sticky` (`'e', 'w', 'n', 's'` or any combination of direction letters)
+
+#### Common Event Bindings
+
+- `Activate`
+- `Deactivate`
+- `MouseWheel`
+- `KeyPress`
+- `KeyRelease`
+- `ButtonPress`
+- `ButtonRelease`
+- `Motion`
+- `Configure`
+- `Map`
+- `Unmap`
+- `Visibility`
+- `Expose`
+- `Destroy`
+- `FocusIn`
+- `FocusOut`
+- `Enter`
+- `Leave`
+- `Property`
+- `Colormap`
+- `MapRequest`
+- `CirculateRequest`
+- `ResizeRequest`
+- `ConfigureRequest`
+- `Create`
+- `Gravity`
+- `Reparent`
+- `Circulate`
 
 #### Common Themed Widget States
 
@@ -255,6 +306,10 @@ keyword(args) | attributes | event bindings & callbacks
 - `hover?`
 
 ### Smart Defaults and Convensions
+
+#### Event Bindings
+
+Any events that normally can be accepted by the Tk `bind` or `protocol` methods can be accepted by the `on(event) {}` listener syntax. There is no need to surround event name by `<>` as [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) automatically takes care of that when needed and leaves out when not needed.
 
 #### Grid Layout
 
@@ -655,15 +710,28 @@ require 'glimmer-dsl-tk'
 
 include Glimmer
 
-root {
+root { |r|
   title 'Hello, Root!'
+  iconphoto File.expand_path('../../icons/glimmer.png', __dir__)
   width 400
   height 200
-  x 150
+  x -150
   y 300
   resizable true # same as `resizable true, true`, meaning cannot resize horizontally and vertically
   minsize 200, 100
   maxsize 600, 400
+  background 'lightgrey'
+  alpha 0.85 # on the mac, you can set `transparent true` as well
+  topmost true
+  
+  on('OPEN_WINDOW') do # custom event that runs right after Tk.mainloop
+    message_box(parent: r, title: 'Hi', message: 'Hi')
+  end
+  
+  on('DELETE_WINDOW') do |event| # alias for WM_DELETE_WINDOW protocol event
+    message_box(parent: r, title: 'Bye', message: 'Bye')
+    exit(0)
+  end
 }.open
 ```
 
@@ -678,6 +746,14 @@ Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems
 ```
 ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_root.rb
 ```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello root hi](images/glimmer-dsl-tk-screenshot-sample-hello-root-hi.png)
+
+![glimmer dsl tk screenshot sample hello root](images/glimmer-dsl-tk-screenshot-sample-hello-root.png)
+
+![glimmer dsl tk screenshot sample hello root bye](images/glimmer-dsl-tk-screenshot-sample-hello-root-bye.png)
 
 ### Hello, Notebook!
 

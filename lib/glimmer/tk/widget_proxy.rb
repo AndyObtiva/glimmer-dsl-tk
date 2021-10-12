@@ -292,7 +292,15 @@ module Glimmer
       end
       
       def handle_listener(listener_name, &listener)
-        @tk.bind(listener_name, &listener)
+        listener_name = listener_name.to_s
+        begin
+          @tk.bind(listener_name, &listener)
+        rescue => e
+          Glimmer::Config.logger.debug {e.full_message}
+          listener_name = "<#{listener_name}" if !listener_name.start_with?('<')
+          listener_name = "#{listener_name}>" if !listener_name.end_with?('>')
+          @tk.bind(listener_name, &listener)
+        end
       end
       
       def content(&block)

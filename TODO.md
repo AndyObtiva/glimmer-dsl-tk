@@ -2,10 +2,7 @@
 
 ## General
 
-- Document all newly supported root attributes
-
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
-- Support combo selected event binding
 
 - Support styles
 - Support themes

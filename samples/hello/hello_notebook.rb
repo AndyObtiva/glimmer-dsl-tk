@@ -27,7 +27,7 @@ class HelloNotebook
   def launch
     root {
       title 'Hello, Notebook!'
-       
+      
       notebook {
         frame(text: 'English') {
           label {

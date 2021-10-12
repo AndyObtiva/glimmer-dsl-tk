@@ -25,6 +25,7 @@ include Glimmer
 
 root { |r|
   title 'Hello, Root!'
+  iconphoto File.expand_path('../../icons/glimmer.png', __dir__)
   width 400
   height 200
   x -150
@@ -33,7 +34,7 @@ root { |r|
   minsize 200, 100
   maxsize 600, 400
   background 'lightgrey'
-  alpha 0.8 # on the mac, you can set `transparent true` as well
+  alpha 0.85 # on the mac, you can set `transparent true` as well
   topmost true
   
   on('OPEN_WINDOW') do # custom event that runs right after Tk.mainloop
