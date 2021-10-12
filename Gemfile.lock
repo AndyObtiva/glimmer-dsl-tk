@@ -43,7 +43,7 @@ GEM
       rake
       rdoc
       semver2
-    json (1.8.6)
+    json (2.5.1)
     jwt (2.2.3)
     mime-types (2.99.3)
     mini_portile2 (2.6.1)
@@ -70,8 +70,7 @@ GEM
     rake-tui (0.2.3)
       tty-prompt
     rchardet (1.8.0)
-    rdoc (3.12.2)
-      json (~> 1.4)
+    rdoc (6.3.2)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
@@ -120,13 +119,13 @@ DEPENDENCIES
   coveralls (= 0.8.23)
   glimmer (~> 2.1.2)
   jeweler (>= 2.3.9, < 3.0.0)
+  json (= 2.5.1)
   puts_debuggerer (~> 0.13.1)
   rake-tui (>= 0.2.1)
-  rdoc (~> 3.12)
   rspec (~> 3.5.0)
   simplecov (~> 0.16.1)
   simplecov-lcov (~> 0.7.0)
   tk (~> 0.4.0)
 
 BUNDLED WITH
-   2.2.22
+   2.2.28

@@ -1,6 +1,6 @@
 # Change Log
 
-## 0.0.19
+## 0.0.20
 
 - Hello, Root! sample
 - Support `root` `width`, `height`, `x`, `y` attributes

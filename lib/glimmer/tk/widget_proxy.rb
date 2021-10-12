@@ -150,7 +150,6 @@ module Glimmer
 
       def set_attribute(attribute, *args)
         widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]
-        pd attribute, tk_widget_has_attribute_setter?(attribute)
         if widget_custom_attribute
           widget_custom_attribute[:setter][:invoker].call(@tk, args)
         elsif tk_widget_has_attribute_setter?(attribute)
