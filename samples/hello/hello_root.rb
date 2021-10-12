@@ -24,7 +24,7 @@ require 'glimmer-dsl-tk'
 include Glimmer
 
 root {
-  title 'Hello, Frame!'
+  title 'Hello, Root!'
   width 400
   height 200
   x 150

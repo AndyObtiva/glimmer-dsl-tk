@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.18
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.19
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -94,6 +94,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Hello, World!](#hello-world)
     - [Hello, Button!](#hello-button)
     - [Hello, Frame!](#hello-frame)
+    - [Hello, Root!](#hello-root)
     - [Hello, Notebook!](#hello-notebook)
     - [Hello, Label!](#hello-label)
     - [Hello, Message Box!](#hello-message-box)
@@ -137,7 +138,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.18'
+gem 'glimmer-dsl-tk', '~> 0.0.19'
 ```
 
 And, then run:
@@ -644,6 +645,39 @@ ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_frame.rb
 Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello frame](images/glimmer-dsl-tk-screenshot-sample-hello-frame.png)
+
+### Hello, Root!
+
+Glimmer code (from [samples/hello/hello_frame.rb](samples/hello/hello_frame.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+include Glimmer
+
+root {
+  title 'Hello, Root!'
+  width 400
+  height 200
+  x 150
+  y 300
+  resizable true # same as `resizable true, true`, meaning cannot resize horizontally and vertically
+  minsize 200, 100
+  maxsize 600, 400
+}.open
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_root'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_root.rb
+```
 
 ### Hello, Notebook!
 

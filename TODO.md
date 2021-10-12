@@ -2,6 +2,23 @@
 
 ## General
 
+- Support `root` attribute: `background` (try color `ssytemTransparent`)
+- Support `root` attribute: `alpha`
+- Support `root` attribute: `transparent`
+- Support `root` attribute: `fullscreen`
+- Support `root` attribute: `topmost`
+- Support `root` attribute: `stackorder`
+- Support `root` attribute: `winfo_screendepth`
+- Support `root` attribute: `winfo_screenvisual`
+- Support `root` attribute: `winfo_screenwidth`
+- Support `root` attribute: `winfo_screenheight`
+- Support `root` attribute: `winfo_pixels('li')`
+- Support `root` attribute: `winfo_screen`
+- Support `root` attribute: `wm_maxsize`
+- Support `root` attribute: `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`)
+- Support `root` event binding: `on_delete_window` (alias: `on_close`)
+- Support general `root` `attributes`
+- Support `root` event binding: `on_open_window`
 
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 
