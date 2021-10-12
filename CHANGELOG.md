@@ -2,9 +2,14 @@
 
 ## 0.0.21
 
+- Support event bindings via `on(event) {}` syntax nestable under any widget
+- Support `root` event binding: `WM_DELETE_WINDOW`
 - Support `root` attribute: `background` (any color including `systemTransparent`)
 - Support `root` boolean attribute: `alpha`
 - Support `root` boolean attributes: `fullscreen`, `topmost`, `transparent`
+- Support `root` attributes: `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`
+- Support `root` attribute: `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`)
+
 
 ## 0.0.20
 

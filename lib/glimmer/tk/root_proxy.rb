@@ -126,6 +126,15 @@ module Glimmer
         set_attribute(:y, value)
       end
       
+      def handle_listener(listener_name, &listener)
+        case listener_name.to_s
+        when 'WM_DELETE_WINDOW'
+          @tk.protocol(listener_name, &listener)
+        else
+          super
+        end
+      end
+      
       # Starts Tk mainloop
       def start_event_loop
         ::Tk.mainloop

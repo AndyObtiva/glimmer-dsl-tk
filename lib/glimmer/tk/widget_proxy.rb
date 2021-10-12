@@ -290,7 +290,11 @@ module Glimmer
         widget_listener_installers = attribute_listener_installers.map{|installer| installer[attribute.to_s]}.compact if !attribute_listener_installers.empty?
         widget_listener_installers.to_a.first&.call(observer)
       end
-
+      
+      def handle_listener(listener_name, &listener)
+        @tk.bind(listener_name, &listener)
+      end
+      
       def content(&block)
         Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Tk::WidgetExpression.new, keyword, *args, &block)
       end

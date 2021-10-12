@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 Andy Maleh
+# Copyright (c) 2021 Andy Maleh
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -19,25 +19,17 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer-dsl-tk'
+require 'glimmer/dsl/static_expression'
+require 'glimmer/tk/widget_proxy'
 
-include Glimmer
-
-root {
-  title 'Hello, Root!'
-  width 400
-  height 200
-  x -150
-  y 300
-  resizable true # same as `resizable true, true`, meaning cannot resize horizontally and vertically
-  minsize 200, 100
-  maxsize 600, 400
-  background 'lightgrey'
-  alpha 0.8 # on the mac, you can set `transparent true` as well
-  topmost true
-  
-  on('WM_DELETE_WINDOW') do |event|
-    puts 'Bye'
-    exit(0)
+module Glimmer
+  module DSL
+    module Tk
+      class OnExpression < StaticExpression
+        def interpret(parent, keyword, *args, &block)
+          parent.handle_listener(args.first, &block)
+        end
+      end
+    end
   end
-}.open
+end
