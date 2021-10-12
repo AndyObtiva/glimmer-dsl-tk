@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.19
+
+- Hello, Root! sample
+- Support `root` `width`, `height`, `x`, `y` attributes
+- Set minimum width/height on `root` (190 pixels)
+
 ## 0.0.18
 
 - Hello, Frame! sample

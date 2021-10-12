@@ -2,8 +2,6 @@
 
 ## General
 
-- Support `root` `width`, `height`, `x`, `y` attributes
-- Set minimum width on `root`
 
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 
