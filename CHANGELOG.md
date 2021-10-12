@@ -3,7 +3,8 @@
 ## 0.0.21
 
 - Support event bindings via `on(event) {}` syntax nestable under any widget
-- Support `root` event binding: `WM_DELETE_WINDOW`
+- Support `root` event binding: `'WM_DELETE_WINDOW'` and alias `'DELETE_WINDOW'`
+- Support `root` event binding: `'OPEN_WINDOW'`
 - Support `root` attribute: `background` (any color including `systemTransparent`)
 - Support `root` boolean attribute: `alpha`
 - Support `root` boolean attributes: `fullscreen`, `topmost`, `transparent`

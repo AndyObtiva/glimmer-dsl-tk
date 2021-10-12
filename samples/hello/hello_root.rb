@@ -23,7 +23,7 @@ require 'glimmer-dsl-tk'
 
 include Glimmer
 
-root {
+root { |r|
   title 'Hello, Root!'
   width 400
   height 200
@@ -36,8 +36,12 @@ root {
   alpha 0.8 # on the mac, you can set `transparent true` as well
   topmost true
   
-  on('WM_DELETE_WINDOW') do |event|
-    puts 'Bye'
+  on('OPEN_WINDOW') do # custom event that runs right after Tk.mainloop
+    message_box(parent: r, title: 'Hi', message: 'Hi')
+  end
+  
+  on('DELETE_WINDOW') do |event| # alias for WM_DELETE_WINDOW protocol event
+    message_box(parent: r, title: 'Bye', message: 'Bye')
     exit(0)
   end
 }.open

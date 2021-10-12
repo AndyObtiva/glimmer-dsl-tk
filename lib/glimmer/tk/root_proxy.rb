@@ -128,8 +128,12 @@ module Glimmer
       
       def handle_listener(listener_name, &listener)
         case listener_name.to_s
-        when 'WM_DELETE_WINDOW'
+        when 'WM_DELETE_WINDOW', 'DELETE_WINDOW'
+          listener_name = 'WM_DELETE_WINDOW'
           @tk.protocol(listener_name, &listener)
+        when 'WM_OPEN_WINDOW', 'OPEN_WINDOW'
+          @on_open_window_procs ||= []
+          @on_open_window_procs << listener
         else
           super
         end
@@ -137,6 +141,13 @@ module Glimmer
       
       # Starts Tk mainloop
       def start_event_loop
+        if @on_open_window_procs.to_a.any?
+          ::Tk.after(100) do # ensure root window showed up first
+            @on_open_window_procs.to_a.each do |on_open_window|
+              ::Tk.after(0, on_open_window)
+            end
+          end
+        end
         ::Tk.mainloop
       end
       
