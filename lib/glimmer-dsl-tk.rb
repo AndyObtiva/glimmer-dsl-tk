@@ -28,6 +28,7 @@ require 'puts_debuggerer' if ENV['pd'].to_s.downcase == 'true'
 # require 'super_module'
 require 'tk'
 require 'os'
+require 'facets/hash/symbolize_keys'
 
 # Internal requires
 # require 'ext/glimmer/config'

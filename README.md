@@ -315,7 +315,7 @@ keyword(args) | attributes | event bindings & callbacks
 
 #### Event Bindings
 
-Any events that normally can be accepted by the Tk `bind` or `protocol` methods can be accepted by the `on(event) {}` listener syntax. There is no need to surround event name by `<>` as [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) automatically takes care of that when needed and leaves out when not needed.
+Any events that normally can be accepted by the Tk `bind` or `protocol` methods can be accepted by the `on(event) {}` listener syntax. For actual (non-virtual) events, there is no need to surround event name by `<>` as [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) automatically takes care of that when needed and leaves out when not needed.
 
 #### Grid Layout
 

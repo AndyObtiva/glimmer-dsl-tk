@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.24
+
+- Update `entry` data-binding logic to trace 'write' changes to `entry` `textvariable` as that is more correct than monitoring `validatecommand`
+- Support `grid` options `row_weight` (for row expansion), `column_weight` (for column expansion), `row_minsize` (alias: `min_height`), and `column_minsize` (alias: `min_width`)
+- Hello, Entry!
+
 ## 0.0.23
 
 - Hello, Radiobutton!

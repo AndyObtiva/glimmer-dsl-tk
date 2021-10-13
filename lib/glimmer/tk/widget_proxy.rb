@@ -149,7 +149,11 @@ module Glimmer
 
       def set_attribute(attribute, *args)
         widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]
-        if widget_custom_attribute
+        if respond_to?(attribute, super_only: true)
+          send(attribute, *args)
+        elsif respond_to?(attribute_setter(attribute), super_only: true)
+          send(attribute_setter(attribute), *args)
+        elsif widget_custom_attribute
           widget_custom_attribute[:setter][:invoker].call(@tk, args)
         elsif tk_widget_has_attribute_setter?(attribute)
           unless args.size == 1 && @tk.send(attribute) == args.first
@@ -195,6 +199,26 @@ module Glimmer
 
       def attribute_setter(attribute)
         "#{attribute}="
+      end
+      
+      def grid(options = {})
+        options = options.stringify_keys
+        index_in_parent = @parent_proxy.children.index(self)
+        options['rowweight'] = options.delete('row_weight') if options.keys.include?('row_weight')
+        options['columnweight'] = options.delete('column_weight') if options.keys.include?('column_weight')
+        options['columnweight'] = options['rowweight'] = options.delete('weight')  if options.keys.include?('weight')
+        options['rowminsize'] = options.delete('row_minsize') if options.keys.include?('row_minsize')
+        options['rowminsize'] = options.delete('minheight') if options.keys.include?('minheight')
+        options['rowminsize'] = options.delete('min_height') if options.keys.include?('min_height')
+        options['columnminsize'] = options.delete('column_minsize') if options.keys.include?('column_minsize')
+        options['columnminsize'] = options.delete('minwidth') if options.keys.include?('minwidth')
+        options['columnminsize'] = options.delete('min_width') if options.keys.include?('min_width')
+        options['columnminsize'] = options['rowminsize'] = options.delete('minsize')  if options.keys.include?('minsize')
+        TkGrid.rowconfigure(@parent_proxy.tk, index_in_parent, 'weight'=> options.delete('rowweight')) if options.keys.include?('rowweight')
+        TkGrid.rowconfigure(@parent_proxy.tk, index_in_parent, 'minsize'=> options.delete('rowminsize')) if options.keys.include?('rowminsize')
+        TkGrid.columnconfigure(@parent_proxy.tk, index_in_parent, 'weight'=> options.delete('columnweight')) if options.keys.include?('columnweight')
+        TkGrid.columnconfigure(@parent_proxy.tk, index_in_parent, 'minsize'=> options.delete('columnminsize')) if options.keys.include?('columnminsize')
+        @tk.grid(options)
       end
       
       def widget_custom_attribute_mapping
@@ -249,7 +273,7 @@ module Glimmer
           ::Tk::Tile::TEntry => {
             'text' => {
               getter: {name: 'text', invoker: lambda { |widget, args| @tk.textvariable&.value }},
-              setter: {name: 'text=', invoker: lambda { |widget, args| @tk.textvariable&.value = args.first unless @text_variable_edit }},
+              setter: {name: 'text=', invoker: lambda { |widget, args| @tk.textvariable&.value = args.first }},
             },
           },
           ::Tk::Root => {
@@ -285,23 +309,14 @@ module Glimmer
           },
           ::Tk::Tile::TEntry => {
             'text' => lambda do |observer|
-              tk.validate = 'key'
-              tk.validatecommand { |new_tk_variable|
-                @text_variable_edit = new_tk_variable.value != @tk.textvariable.value
-                if @text_variable_edit
-                  observer.call(new_tk_variable.value)
-                  @text_variable_edit = nil
-                  true
-                else
-                  false
-                end
+              tk.textvariable.trace('write') {
+                observer.call(@tk.textvariable.value)
               }
             end,
           },
           ::Tk::Tile::TRadiobutton => {
             'variable' => lambda do |observer|
               @tk.command {
-                pd @tk.variable.value, @tk.value
                 observer.call(@tk.variable.value == @tk.value)
               }
             end,
@@ -361,15 +376,15 @@ module Glimmer
         super(method.to_sym, *args, &block)
       end
       
-      def respond_to?(method, *args, &block)
-        super ||
-          tk.respond_to?(method, *args, &block)
+      def respond_to?(method, *args, super_only: false, &block)
+        super(method, true) ||
+          !super_only && tk.respond_to?(method, *args, &block)
       end
       
       private
       
       def initialize_defaults
-        @tk.grid unless @tk.is_a?(::Tk::Toplevel)
+        grid unless @tk.is_a?(::Tk::Toplevel)
       end
     end
   end
