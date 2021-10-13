@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.21
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.22
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -88,7 +88,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [List Single Selection Data-Binding](#list-single-selection-data-binding)
     - [List Multi Selection Data-Binding](#list-multi-selection-data-binding)
     - [Entry Data-Binding](#entry-data-binding)
-    - [Checkbox Data-Binding](#checkbox-data-binding)
+    - [Checkbutton Data-Binding](#checkbutton-data-binding)
   - [Command Callback](#command-callback)
   - [Gotchas](#gotchas)
   - [Samples](#samples)
@@ -140,7 +140,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.21'
+gem 'glimmer-dsl-tk', '~> 0.0.22'
 ```
 
 And, then run:
@@ -473,7 +473,7 @@ It automatically handles all the Tk plumbing behind the scenes.
 
 More details can be found in the [Hello, Computed!](#hello-computed) sample below.
 
-### Checkbox Data-Binding
+### Checkbutton Data-Binding
 
 Example:
 
@@ -488,6 +488,8 @@ This assumes a `Person` model with a boolean `adult` attribute.
 That code binds the `variable` value of the `checkbutton` to the boolean `adult` attribute on the `person` model.
 
 It automatically handles all the Tk plumbing behind the scenes.
+
+If you need to display a half-checked `checkbutton`, bind to `alternate` attribute.
 
 More details can be found in the [Hello, Checkbutton!](#hello-checkbutton) sample below.
 
@@ -738,6 +740,10 @@ ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_checkbutton.rb
 Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello checkbutton](images/glimmer-dsl-tk-screenshot-sample-hello-checkbutton.png)
+
+![glimmer dsl tk screenshot sample hello checkbutton](images/glimmer-dsl-tk-screenshot-sample-hello-checkbutton-all-checked.png)
+
+![glimmer dsl tk screenshot sample hello checkbutton](images/glimmer-dsl-tk-screenshot-sample-hello-checkbutton-none-checked.png)
 
 ### Hello, Frame!
 

@@ -23,13 +23,47 @@ require 'glimmer-dsl-tk'
 
 class HelloCheckbutton
   class Person
-    attr_accessor :skiing, :snowboarding, :snowmobiling, :snowshoeing
+    attr_accessor :skiing, :snowboarding, :snowmobiling, :snowshoeing, :winter_activities, :winter_activities_alternate
     
     def initialize
       reset_activities!
+      individual_observer = Glimmer::DataBinding::Observer.proc do
+        unless @updating_group
+          @updating_individual = true
+          if skiing && snowboarding && snowmobiling && snowshoeing
+            self.winter_activities = true
+            self.winter_activities_alternate = false
+          elsif skiing || snowboarding || snowmobiling || snowshoeing
+            self.winter_activities = true
+            self.winter_activities_alternate = true
+          else
+            self.winter_activities = false
+            self.winter_activities_alternate = false
+          end
+          @updating_individual = false
+        end
+      end
+      individual_observer.observe(self, :skiing)
+      individual_observer.observe(self, :snowboarding)
+      individual_observer.observe(self, :snowmobiling)
+      individual_observer.observe(self, :snowshoeing)
+      
+      group_observer = Glimmer::DataBinding::Observer.proc do
+        unless @updating_individual
+          @updating_group = true
+          self.skiing = self.winter_activities
+          self.snowboarding = self.winter_activities
+          self.snowmobiling = self.winter_activities
+          self.snowshoeing = self.winter_activities
+          @updating_group = false
+        end
+      end
+      group_observer.observe(self, :winter_activities)
     end
     
     def reset_activities!
+      self.winter_activities = true
+      self.winter_activities_alternate = true
       self.skiing = false
       self.snowboarding = true
       self.snowmobiling = false
@@ -55,23 +89,31 @@ class HelloCheckbutton
       
       frame {
         checkbutton {
-          text 'Skiing'
-          variable <=> [@person, :skiing]
+          text 'Winter Activities'
+          variable <=> [@person, :winter_activities]
+          alternate <=> [@person, :winter_activities_alternate] # binds half-checked state
         }
         
-        checkbutton {
-          text 'Snowboarding'
-          variable <=> [@person, :snowboarding]
-        }
-        
-        checkbutton {
-          text 'Snowmobiling'
-          variable <=> [@person, :snowmobiling]
-        }
-        
-        checkbutton {
-          text 'Snowshoeing'
-          variable <=> [@person, :snowshoeing]
+        frame {
+          checkbutton {
+            text 'Skiing'
+            variable <=> [@person, :skiing]
+          }
+          
+          checkbutton {
+            text 'Snowboarding'
+            variable <=> [@person, :snowboarding]
+          }
+          
+          checkbutton {
+            text 'Snowmobiling'
+            variable <=> [@person, :snowmobiling]
+          }
+          
+          checkbutton {
+            text 'Snowshoeing'
+            variable <=> [@person, :snowshoeing]
+          }
         }
       }
       

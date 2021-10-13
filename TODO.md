@@ -3,6 +3,7 @@
 ## General
 
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
+- Alias `title` attributes as `text` (and `text` as `title`, like for `notebook` `frame`)
 
 - Support styles
 - Support themes
@@ -23,16 +24,15 @@
 
 ### Hello
 
-- Hello, Checkbutton!
 - Hello, Radiobutton!
 - Hello, Entry!
-- Hello, Grid!
 - Hello, Text!
 - Hello, Scale!
 - Hello, Spinbox!
 - Hello, Progressbar!
 - Hello, Menu Bar!
 - Hello, Contextual Menu!
+- Hello, Grid!
 - Hello, Dialog! (open_file, save_file, choose_directory, choose_color, font_chooser [choose_font alias])
 - Hello, Toplevel! (Custom Window and Custom Dialog)
 - Hello, Listbox! (two tabs for single/multi selection)

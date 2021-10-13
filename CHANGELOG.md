@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.23
+
+- Improved Hello, Checkbutton! sample to demonstrate alternate checkbutton value (half-checked state)
+
 ## 0.0.22
 
 - Hello, Checkbutton!
