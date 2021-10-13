@@ -2,11 +2,14 @@
 
 ## 0.0.23
 
+- Hello, Radiobutton!
+- Support `radiobutton` ensuring that sibling radio buttons share the same variable to achieve mutually exclusive selection
 - Improved Hello, Checkbutton! sample to demonstrate alternate checkbutton value (half-checked state)
 - Support `checkbutton` with specified `onvalue` and `offvalue` (when they do not have values 1 and 0)
 - Alias `root` `title` attribute as `text` & add children attribute to widgets
 - Alias `notebook` `frame` `:title` as `:text`
 - Alias message_box `:title` as `:text`
+- Fix reference to `Glimmer::Tk::CheckbuttonProxy` (was `Glimmer::Tk::ChecktbuttonProxy`)
 
 ## 0.0.22
 

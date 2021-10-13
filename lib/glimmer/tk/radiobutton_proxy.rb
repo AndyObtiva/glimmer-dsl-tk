@@ -21,16 +21,26 @@
 
 require 'glimmer/tk/widget_proxy'
 require 'glimmer/tk/commandable'
-require 'glimmer/tk/variable_owner'
 
 module Glimmer
   module Tk
-    # Proxy for Tk::Tile::Checkbutton
+    # Proxy for Tk::Tile::Radiobutton
     #
     # Follows the Proxy Design Pattern
-    class CheckbuttonProxy < WidgetProxy
+    class RadiobuttonProxy < WidgetProxy
       include Commandable
-      include VariableOwner
+      
+      def sibling_radio_buttons
+        @parent_proxy.children.select {|child| child.is_a?(RadiobuttonProxy)}
+      end
+      
+      private
+      
+      def initialize_defaults
+        super
+        sibling_variable = sibling_radio_buttons.map(&:tk).map(&:variable).compact.first
+        tk.variable = sibling_variable.nil? ? ::TkVariable.new : sibling_variable
+      end
     end
   end
 end

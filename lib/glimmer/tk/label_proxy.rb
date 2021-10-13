@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/tk/widget_proxy'
+require 'glimmer/tk/text_variable_owner'
 
 module Glimmer
   module Tk
@@ -27,6 +28,8 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class LabelProxy < WidgetProxy
+      include TextVariableOwner
+      
       def set_attribute(attribute, *args)
         if attribute.to_s == 'font'
           args[0] = "tk_#{args[0]}_font".camelcase(:upper) if (args[0].is_a?(Symbol) || args[0].is_a?(String)) && args[0].to_s == args[0].to_s.downcase

@@ -2,7 +2,6 @@
 
 ## General
 
-- Support `radiobutton` ensuring that sibling radio buttons share the same variable to achieve mutually exclusive selection
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 
 - Support styles
@@ -24,7 +23,6 @@
 
 ### Hello
 
-- Hello, Radiobutton!
 - Hello, Entry!
 - Hello, Text!
 - Hello, Scale!
@@ -93,6 +91,8 @@
 
 ## Maybe
 
+- Support `radiobuttons` widget that aggregates mutliple `radiobutton` widgets
+- Support `checkbuttons` widget that aggregates mutliple `checkbutton` widgets
 - Syntax adapter to become compatible with the syntax of Glimmer DSL for SWT, Glimmer DSL for LibUI and Glimmer DSL for Opal
 - Logging library to ensure asynchronous logging (as opposed to Glimmer's built-in synchronous Logger)
 - Support canvas shape nested relative positioning

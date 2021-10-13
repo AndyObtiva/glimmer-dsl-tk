@@ -20,17 +20,15 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/tk/widget_proxy'
-require 'glimmer/tk/commandable'
-require 'glimmer/tk/variable_owner'
+require 'glimmer/tk/text_variable_owner'
 
 module Glimmer
   module Tk
-    # Proxy for Tk::Tile::Checkbutton
+    # Proxy for Tk::Tile::Combobox
     #
     # Follows the Proxy Design Pattern
-    class CheckbuttonProxy < WidgetProxy
-      include Commandable
-      include VariableOwner
+    class ComboboxProxy < WidgetProxy
+      include TextVariableOwner
     end
   end
 end

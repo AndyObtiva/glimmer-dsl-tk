@@ -19,18 +19,13 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/tk/widget_proxy'
-require 'glimmer/tk/commandable'
-require 'glimmer/tk/variable_owner'
-
 module Glimmer
   module Tk
-    # Proxy for Tk::Tile::Checkbutton
-    #
-    # Follows the Proxy Design Pattern
-    class CheckbuttonProxy < WidgetProxy
-      include Commandable
-      include VariableOwner
+    module VariableOwner
+      def initialize_defaults
+        super
+        tk.variable = ::TkVariable.new
+      end
     end
   end
 end

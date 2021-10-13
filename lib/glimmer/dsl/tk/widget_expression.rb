@@ -52,10 +52,3 @@ module Glimmer
 end
 
 require 'glimmer/tk/widget_proxy'
-require 'glimmer/tk/notebook_proxy'
-require 'glimmer/tk/frame_proxy'
-require 'glimmer/tk/button_proxy'
-require 'glimmer/tk/label_proxy'
-require 'glimmer/tk/list_proxy'
-require 'glimmer/tk/entry_proxy'
-require 'glimmer/tk/treeview_proxy'

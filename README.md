@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.22
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.23
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -89,12 +89,14 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [List Multi Selection Data-Binding](#list-multi-selection-data-binding)
     - [Entry Data-Binding](#entry-data-binding)
     - [Checkbutton Data-Binding](#checkbutton-data-binding)
+    - [Radiobutton Data-Binding](#radiobutton-data-binding)
   - [Command Callback](#command-callback)
   - [Gotchas](#gotchas)
   - [Samples](#samples)
     - [Hello, World!](#hello-world)
     - [Hello, Button!](#hello-button)
     - [Hello, Checkbutton!](#hello-checkbutton)
+    - [Hello, Radiobutton!](#hello-radiobutton)
     - [Hello, Frame!](#hello-frame)
     - [Hello, Root!](#hello-root)
     - [Hello, Notebook!](#hello-notebook)
@@ -140,7 +142,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.22'
+gem 'glimmer-dsl-tk', '~> 0.0.23'
 ```
 
 And, then run:
@@ -250,7 +252,7 @@ root {
 keyword(args) | attributes | event bindings & callbacks
 ------------- | ---------- | ---------
 `button` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `default` (`'active', 'normal'`) | `command {}`
-`checkbutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `default` (`'active', 'normal'`) | `command {}`
+`checkbutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `onvalue` (default: `1`), `offvalue` (default: `0`) | `command {}`
 `combobox` | `state`, `text` | `'ComboboxSelected'`
 `entry` | `width`, `text` | None
 `frame(text: nil)` | `width`, `height`, `borderwidth`, `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`) | None
@@ -258,6 +260,7 @@ keyword(args) | attributes | event bindings & callbacks
 `list` | `selectmode`, `selection` | None
 `message_box(type: , message: , detail: , title: , icon: , default: , parent: )` | None | None
 `notebook` | None | None
+`radiobutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `value` (default: `text`) | `command {}`
 `root` | `title`, `iconphoto`, `background`, `alpha`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`, `'OPEN_WINDOW'`
 
 #### Common Attributes
@@ -493,6 +496,32 @@ If you need to display a half-checked `checkbutton`, bind to `alternate` attribu
 
 More details can be found in the [Hello, Checkbutton!](#hello-checkbutton) sample below.
 
+### Radiobutton Data-Binding
+
+Example:
+
+This assumes a `Person` model with boolean `male` and `female` attributes.
+
+```ruby
+  radiobutton {
+    text 'Male'
+    variable <=> [@person, :male]
+  }
+  
+  radiobutton {
+    text 'Female'
+    variable <=> [@person, :female]
+  }
+```
+
+That code binds the `variable` value of the `radiobutton` to the boolean `male` and `female` attributes on the `person` model.
+
+It automatically handles all the Tk plumbing behind the scenes, including setting the `radiobutton` `value` (uses `text` attribute as `value`), enabling an API that works with simple booleans for each `radiobutton`.
+
+For very rare cases, if you need to display a half-selected `radiobutton`, set `alternate` attribute as `true` when the `variable` value is `false`.
+
+More details can be found in the [Hello, Radiobutton!](#hello-radiobutton) sample below.
+
 ## Command Callback
 
 `button` and `checkbutton` can set a `command` block to trigger when the user clicks the button/checkbutton. This may be done with the `command` keyword, passing in a block directly.
@@ -659,13 +688,47 @@ require 'glimmer-dsl-tk'
 
 class HelloCheckbutton
   class Person
-    attr_accessor :skiing, :snowboarding, :snowmobiling, :snowshoeing
+    attr_accessor :skiing, :snowboarding, :snowmobiling, :snowshoeing, :snow_activities, :snow_activities_alternate
     
     def initialize
       reset_activities!
+      individual_observer = Glimmer::DataBinding::Observer.proc do
+        unless @updating_group
+          @updating_individual = true
+          if skiing && snowboarding && snowmobiling && snowshoeing
+            self.snow_activities = true
+            self.snow_activities_alternate = false
+          elsif skiing || snowboarding || snowmobiling || snowshoeing
+            self.snow_activities = true
+            self.snow_activities_alternate = true
+          else
+            self.snow_activities = false
+            self.snow_activities_alternate = false
+          end
+          @updating_individual = false
+        end
+      end
+      individual_observer.observe(self, :skiing)
+      individual_observer.observe(self, :snowboarding)
+      individual_observer.observe(self, :snowmobiling)
+      individual_observer.observe(self, :snowshoeing)
+      
+      group_observer = Glimmer::DataBinding::Observer.proc do
+        unless @updating_individual
+          @updating_group = true
+          self.skiing = self.snow_activities
+          self.snowboarding = self.snow_activities
+          self.snowmobiling = self.snow_activities
+          self.snowshoeing = self.snow_activities
+          @updating_group = false
+        end
+      end
+      group_observer.observe(self, :snow_activities)
     end
     
     def reset_activities!
+      self.snow_activities = true
+      self.snow_activities_alternate = true
       self.skiing = false
       self.snowboarding = true
       self.snowmobiling = false
@@ -691,23 +754,31 @@ class HelloCheckbutton
       
       frame {
         checkbutton {
-          text 'Skiing'
-          variable <=> [@person, :skiing]
+          text 'Snow Activities'
+          variable <=> [@person, :snow_activities]
+          alternate <=> [@person, :snow_activities_alternate] # binds half-checked state
         }
         
-        checkbutton {
-          text 'Snowboarding'
-          variable <=> [@person, :snowboarding]
-        }
-        
-        checkbutton {
-          text 'Snowmobiling'
-          variable <=> [@person, :snowmobiling]
-        }
-        
-        checkbutton {
-          text 'Snowshoeing'
-          variable <=> [@person, :snowshoeing]
+        frame {
+          checkbutton {
+            text 'Skiing'
+            variable <=> [@person, :skiing]
+          }
+          
+          checkbutton {
+            text 'Snowboarding'
+            variable <=> [@person, :snowboarding]
+          }
+          
+          checkbutton {
+            text 'Snowmobiling'
+            variable <=> [@person, :snowmobiling]
+          }
+          
+          checkbutton {
+            text 'Snowshoeing'
+            variable <=> [@person, :snowshoeing]
+          }
         }
       }
       
@@ -744,6 +815,116 @@ Glimmer app:
 ![glimmer dsl tk screenshot sample hello checkbutton](images/glimmer-dsl-tk-screenshot-sample-hello-checkbutton-all-checked.png)
 
 ![glimmer dsl tk screenshot sample hello checkbutton](images/glimmer-dsl-tk-screenshot-sample-hello-checkbutton-none-checked.png)
+
+### Hello, Radiobutton!
+
+Glimmer code (from [samples/hello/hello_radiobutton.rb](samples/hello/hello_radiobutton.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+class HelloRadiobutton
+  class Person
+    attr_accessor :male, :female, :child, :teen, :adult, :senior
+    
+    def initialize
+      reset!
+    end
+    
+    def reset!
+      self.male = true
+      self.female = nil
+      self.child = nil
+      self.teen = nil
+      self.adult = true
+      self.senior = nil
+    end
+  end
+  
+  include Glimmer
+  
+  def initialize
+    @person = Person.new
+  end
+  
+  def launch
+    root {
+      title 'Hello, Radio!'
+      background '#ececec' if OS.mac?
+      
+      label {
+        text 'Gender:'
+        font 'caption'
+      }
+      
+      frame {
+        radiobutton {
+          text 'Male'
+          variable <=> [@person, :male]
+        }
+        
+        radiobutton {
+          text 'Female'
+          variable <=> [@person, :female]
+        }
+      }
+      
+      label {
+        text 'Age Group:'
+        font 'caption'
+      }
+      
+      frame {
+        radiobutton {
+          text 'Child'
+          variable <=> [@person, :child]
+        }
+
+        radiobutton {
+          text 'Teen'
+          variable <=> [@person, :teen]
+        }
+
+        radiobutton {
+          text 'Adult'
+          variable <=> [@person, :adult]
+        }
+
+        radiobutton {
+          text 'Senior'
+          variable <=> [@person, :senior]
+        }
+      }
+      
+      button {
+        text 'Reset'
+        
+        command do
+          @person.reset!
+        end
+      }
+    }.open
+  end
+end
+
+HelloRadiobutton.new.launch
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_radiobutton'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_radiobutton.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello radiobutton](images/glimmer-dsl-tk-screenshot-sample-hello-radiobutton.png)
 
 ### Hello, Frame!
 

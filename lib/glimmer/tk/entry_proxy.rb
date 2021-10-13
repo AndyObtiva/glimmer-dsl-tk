@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/tk/widget_proxy'
+require 'glimmer/tk/text_variable_owner'
 
 module Glimmer
   module Tk
@@ -27,6 +28,8 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class EntryProxy < WidgetProxy
+      include TextVariableOwner
+    
       def validatecommand_block=(proc)
         tk.validatecommand(proc)
       end

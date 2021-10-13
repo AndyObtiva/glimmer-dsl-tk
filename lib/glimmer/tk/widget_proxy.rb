@@ -63,21 +63,6 @@ module Glimmer
       
       attr_reader :parent_proxy, :tk, :args, :keyword, :children
 
-      DEFAULT_INITIALIZERS = {
-        'checkbutton' => lambda do |tk|
-          tk.variable = ::TkVariable.new
-        end,
-        'combobox' => lambda do |tk|
-          tk.textvariable = ::TkVariable.new
-        end,
-        'label' => lambda do |tk|
-          tk.textvariable = ::TkVariable.new
-        end,
-        'entry' => lambda do |tk|
-          tk.textvariable = ::TkVariable.new
-        end,
-      }
-            
       # Initializes a new Tk Widget
       #
       # Styles is a comma separate list of symbols representing Tk styles in lower case
@@ -89,8 +74,7 @@ module Glimmer
         tk_widget_class = self.class.tk_widget_class_for(underscored_widget_name)
         @tk = tk_widget_class.new(@parent_proxy.tk, *args)
         # a common widget initializer
-        @tk.grid unless @tk.is_a?(::Tk::Toplevel)
-        DEFAULT_INITIALIZERS[underscored_widget_name]&.call(@tk)
+        initialize_defaults
         @parent_proxy.post_initialize_child(self)
         post_add_content if @block.nil?
       end
@@ -214,6 +198,7 @@ module Glimmer
       end
       
       def widget_custom_attribute_mapping
+        # TODO consider extracting to modules/subclasses
         @widget_custom_attribute_mapping ||= {
           ::Tk::Tile::TButton => {
             'image' => {
@@ -229,6 +214,20 @@ module Glimmer
             'variable' => {
               getter: {name: 'variable', invoker: lambda { |widget, args| @tk.variable&.value.to_s == @tk.onvalue.to_s }},
               setter: {name: 'variable=', invoker: lambda { |widget, args| @tk.variable&.value = args.first.is_a?(Integer) ? args.first : (args.first ? 1 : 0) }},
+            },
+          },
+          ::Tk::Tile::TRadiobutton => {
+            'image' => {
+              getter: {name: 'image', invoker: lambda { |widget, args| @tk.image }},
+              setter: {name: 'image=', invoker: lambda { |widget, args| @tk.image = image_argument(args) }},
+            },
+            'text' => {
+              getter: {name: 'text', invoker: lambda { |widget, args| @tk.text }},
+              setter: {name: 'text=', invoker: lambda { |widget, args| @tk.value = @tk.text = args.first }},
+            },
+            'variable' => {
+              getter: {name: 'variable', invoker: lambda { |widget, args| @tk.variable&.value == @tk.value }},
+              setter: {name: 'variable=', invoker: lambda { |widget, args| @tk.variable&.value = args.first ? @tk.value : @tk.variable&.value }},
             },
           },
           ::Tk::Tile::TCombobox => {
@@ -263,6 +262,7 @@ module Glimmer
       end
       
       def widget_attribute_listener_installers
+        # TODO consider extracting to modules/subclasses
         @tk_widget_attribute_listener_installers ||= {
           ::Tk::Tile::TCheckbutton => {
             'variable' => lambda do |observer|
@@ -295,6 +295,14 @@ module Glimmer
                 else
                   false
                 end
+              }
+            end,
+          },
+          ::Tk::Tile::TRadiobutton => {
+            'variable' => lambda do |observer|
+              @tk.command {
+                pd @tk.variable.value, @tk.value
+                observer.call(@tk.variable.value == @tk.value)
               }
             end,
           },
@@ -357,6 +365,14 @@ module Glimmer
         super ||
           tk.respond_to?(method, *args, &block)
       end
+      
+      private
+      
+      def initialize_defaults
+        @tk.grid unless @tk.is_a?(::Tk::Toplevel)
+      end
     end
   end
 end
+
+Dir[File.expand_path('./*_proxy.rb', __dir__)].each {|f| require f}

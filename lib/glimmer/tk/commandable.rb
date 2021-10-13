@@ -20,17 +20,23 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/tk/widget_proxy'
-require 'glimmer/tk/commandable'
-require 'glimmer/tk/variable_owner'
 
 module Glimmer
   module Tk
-    # Proxy for Tk::Tile::Checkbutton
-    #
-    # Follows the Proxy Design Pattern
-    class CheckbuttonProxy < WidgetProxy
-      include Commandable
-      include VariableOwner
+    # Represents widgets that can invoke a command
+    module Commandable
+      def command_block=(proc)
+        tk.command(proc)
+      end
+      
+      def handle_listener(listener_name, &listener)
+        case listener_name.to_s.downcase
+        when 'command'
+          command(listener)
+        else
+          super
+        end
+      end
     end
   end
 end
