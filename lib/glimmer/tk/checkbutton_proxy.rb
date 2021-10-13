@@ -19,23 +19,26 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-$LOAD_PATH.unshift(File.expand_path('..', __FILE__))
+require 'glimmer/tk/widget_proxy'
 
-# External requires
-require 'glimmer'
-# require 'logging'
-require 'puts_debuggerer' if ENV['pd'].to_s.downcase == 'true'
-# require 'super_module'
-require 'tk'
-require 'os'
-
-# Internal requires
-# require 'ext/glimmer/config'
-# require 'ext/glimmer'
-require 'glimmer/dsl/tk/dsl'
-Glimmer::Config.loop_max_count = -1
-Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
-  method = method_symbol.to_s
-  result = false
-  result ||= method == 'load_iseq'
+module Glimmer
+  module Tk
+    # Proxy for Tk::Tile::Checkbutton
+    #
+    # Follows the Proxy Design Pattern
+    class ChecktbuttonProxy < WidgetProxy
+      def command_block=(proc)
+        tk.command(proc)
+      end
+      
+      def handle_listener(listener_name, &listener)
+        case listener_name.to_s.downcase
+        when 'command'
+          command(listener)
+        else
+          super
+        end
+      end
+    end
+  end
 end

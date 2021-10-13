@@ -64,6 +64,9 @@ module Glimmer
       attr_reader :parent_proxy, :tk, :args, :keyword
 
       DEFAULT_INITIALIZERS = {
+        'checkbutton' => lambda do |tk|
+          tk.variable = ::TkVariable.new
+        end,
         'combobox' => lambda do |tk|
           tk.textvariable = ::TkVariable.new
         end,
@@ -212,6 +215,16 @@ module Glimmer
               setter: {name: 'image=', invoker: lambda { |widget, args| @tk.image = image_argument(args) }},
             },
           },
+          ::Tk::Tile::TCheckbutton => {
+            'image' => {
+              getter: {name: 'image', invoker: lambda { |widget, args| @tk.image }},
+              setter: {name: 'image=', invoker: lambda { |widget, args| @tk.image = image_argument(args) }},
+            },
+            'variable' => {
+              getter: {name: 'variable', invoker: lambda { |widget, args| @tk.variable&.value.to_i == 1 }},
+              setter: {name: 'variable=', invoker: lambda { |widget, args| @tk.variable&.value = args.first.is_a?(Integer) ? args.first : (args.first ? 1 : 0) }},
+            },
+          },
           ::Tk::Tile::TCombobox => {
             'text' => {
               getter: {name: 'text', invoker: lambda { |widget, args| @tk.textvariable&.value }},
@@ -239,6 +252,13 @@ module Glimmer
       
       def widget_attribute_listener_installers
         @tk_widget_attribute_listener_installers ||= {
+          ::Tk::Tile::TCheckbutton => {
+            'variable' => lambda do |observer|
+              @tk.command {
+                observer.call(@tk.variable.value.to_i == 1)
+              }
+            end,
+          },
           ::Tk::Tile::TCombobox => {
             'text' => lambda do |observer|
               if observer.is_a?(Glimmer::DataBinding::ModelBinding)

@@ -27,8 +27,19 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class ButtonProxy < WidgetProxy
+      # TODO extract to a module
+      
       def command_block=(proc)
         tk.command(proc)
+      end
+      
+      def handle_listener(listener_name, &listener)
+        case listener_name.to_s.downcase
+        when 'command'
+          command(listener)
+        else
+          super
+        end
       end
     end
   end

@@ -127,7 +127,7 @@ module Glimmer
       end
       
       def handle_listener(listener_name, &listener)
-        case listener_name.to_s
+        case listener_name.to_s.upcase
         when 'WM_DELETE_WINDOW', 'DELETE_WINDOW'
           listener_name = 'WM_DELETE_WINDOW'
           @tk.protocol(listener_name, &listener)

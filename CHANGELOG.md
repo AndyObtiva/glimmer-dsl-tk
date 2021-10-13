@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.22
+
+- Hello, Checkbutton!
+- Support checkbutton data-binding
+
 ## 0.0.21
 
 - Support event bindings via `on(event) {}` syntax nestable under any widget

@@ -83,16 +83,18 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
       - [Icon Photo](#icon-photo)
   - [The Grid Geometry Manager](#the-grid-geometry-manager)
   - [Bidirectional Data-Binding](#bidirectional-data-binding)
-    - [General Property Data-Binding](#general-property-data-binding)
+    - [Label Data-Binding](#label-data-binding)
     - [Combobox Data-Binding](#combobox-data-binding)
     - [List Single Selection Data-Binding](#list-single-selection-data-binding)
     - [List Multi Selection Data-Binding](#list-multi-selection-data-binding)
     - [Entry Data-Binding](#entry-data-binding)
-  - [Command Observer](#command-observer)
+    - [Checkbox Data-Binding](#checkbox-data-binding)
+  - [Command Callback](#command-callback)
   - [Gotchas](#gotchas)
   - [Samples](#samples)
     - [Hello, World!](#hello-world)
     - [Hello, Button!](#hello-button)
+    - [Hello, Checkbutton!](#hello-checkbutton)
     - [Hello, Frame!](#hello-frame)
     - [Hello, Root!](#hello-root)
     - [Hello, Notebook!](#hello-notebook)
@@ -248,6 +250,7 @@ root {
 keyword(args) | attributes | event bindings & callbacks
 ------------- | ---------- | ---------
 `button` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `default` (`'active', 'normal'`) | `command {}`
+`checkbutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `default` (`'active', 'normal'`) | `command {}`
 `combobox` | `state`, `text` | `'ComboboxSelected'`
 `entry` | `width`, `text` | None
 `frame(text: nil)` | `width`, `height`, `borderwidth`, `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`) | None
@@ -371,7 +374,7 @@ More details can be found in the [Hello, Computed!](#hello-computed) sample belo
 
 Glimmer supports Shine syntax bidirectional data-binding via the `<=>` operator (read-write) and unidirectional data-binding via the `<=` operator (read-only), which takes a model and an attribute (the `bind` keyword may also be used as the old-style of data-binding).
 
-### General Property Data-Binding
+### Label Data-Binding
 
 Example:
 
@@ -379,11 +382,11 @@ This assumes a `Person` model with a `country` attribute.
 
 ```ruby
   label {
-    text <=> [person, :country]
+    text <= [person, :country]
   }
 ```
 
-That code binds the `textvariable` value of the `label` to the `country` property on the `person` model.
+That code binds the `textvariable` value of the `label` unidirectionally (read-only) to the `country` property on the `person` model.
 
 It automatically handles all the Tk plumbing behind the scenes.
 
@@ -424,8 +427,8 @@ This assumes a `Person` model with a `country` attribute representing their curr
   }
 ```
 
-That code binds the `items` text of the `list` to the `country_options` property on the `person` model (data-binding attribute + "_options" by convention).
-It also binds the `selection` text of the `list` to the `country` property on the `person` model.
+That code binds the `items` text of the `list` to the `country_options` attribute on the `person` model (data-binding attribute + "_options" by convention).
+It also binds the `selection` text of the `list` to the `country` attribute on the `person` model.
 
 It automatically handles all the Tk plumbing behind the scenes.
 
@@ -445,8 +448,8 @@ This assumes a `Person` model with a `provinces` attribute representing their cu
   }
 ```
 
-That code binds the `items` text of the `list` to the `provinces_options` property on the `person` model (data-binding attribute + "_options" by convention).
-It also binds the `selection` text of the `list` to the `provinces` property on the `person` model.
+That code binds the `items` text of the `list` to the `provinces_options` attribute on the `person` model (data-binding attribute + "_options" by convention).
+It also binds the `selection` text of the `list` to the `provinces` attribute on the `person` model.
 
 It automatically handles all the Tk plumbing behind the scenes.
 
@@ -464,30 +467,47 @@ This assumes a `Person` model with a `country` attribute.
   }
 ```
 
-That code binds the `textvariable` value of the `entry` to the `country` property on the `person` model.
+That code binds the `textvariable` value of the `entry` to the `country` attribute on the `person` model.
 
 It automatically handles all the Tk plumbing behind the scenes.
 
 More details can be found in the [Hello, Computed!](#hello-computed) sample below.
 
-## Command Observer
+### Checkbox Data-Binding
 
-Buttons can set a `command` option to trigger when the user clicks the button. This may be done with the `command` keyword, passing in a block directly (no need for `proc` as per Tk)
+Example:
+
+This assumes a `Person` model with a boolean `adult` attribute.
+
+```ruby
+  checkbutton {
+    variable <=> [person, :adult]
+  }
+```
+
+That code binds the `variable` value of the `checkbutton` to the boolean `adult` attribute on the `person` model.
+
+It automatically handles all the Tk plumbing behind the scenes.
+
+More details can be found in the [Hello, Checkbutton!](#hello-checkbutton) sample below.
+
+## Command Callback
+
+`button` and `checkbutton` can set a `command` block to trigger when the user clicks the button/checkbutton. This may be done with the `command` keyword, passing in a block directly.
 
 Example:
 
 ```ruby
   button {
     text "Reset Selection"
+    
     command {
       person.reset_country
     }
   }
 ```
 
-This resets the person country.
-
-More details can be found in the [Hello, Combobox!](#hello-combobox) sample below.
+More details can be found in the [Hello, Button!](#hello-button) sample below.
 
 ## Gotchas
 
@@ -627,6 +647,97 @@ ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_button.rb
 Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello button](images/glimmer-dsl-tk-screenshot-sample-hello-button.png)
+
+### Hello, Checkbutton!
+
+Glimmer code (from [samples/hello/hello_checkbutton.rb](samples/hello/hello_checkbutton.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+class HelloCheckbutton
+  class Person
+    attr_accessor :skiing, :snowboarding, :snowmobiling, :snowshoeing
+    
+    def initialize
+      reset_activities!
+    end
+    
+    def reset_activities!
+      self.skiing = false
+      self.snowboarding = true
+      self.snowmobiling = false
+      self.snowshoeing = false
+    end
+  end
+  
+  include Glimmer
+  
+  def initialize
+    @person = Person.new
+  end
+  
+  def launch
+    root {
+      title 'Hello, Checkbutton!'
+      background '#ececec' if OS.mac?
+      
+      label {
+        text 'Check all snow activities you are interested in:'
+        font 'caption'
+      }
+      
+      frame {
+        checkbutton {
+          text 'Skiing'
+          variable <=> [@person, :skiing]
+        }
+        
+        checkbutton {
+          text 'Snowboarding'
+          variable <=> [@person, :snowboarding]
+        }
+        
+        checkbutton {
+          text 'Snowmobiling'
+          variable <=> [@person, :snowmobiling]
+        }
+        
+        checkbutton {
+          text 'Snowshoeing'
+          variable <=> [@person, :snowshoeing]
+        }
+      }
+      
+      button {
+        text 'Reset Activities'
+        
+        command do
+          @person.reset_activities!
+        end
+      }
+    }.open
+  end
+end
+
+HelloCheckbutton.new.launch
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_checkbutton'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_checkbutton.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello checkbutton](images/glimmer-dsl-tk-screenshot-sample-hello-checkbutton.png)
 
 ### Hello, Frame!
 

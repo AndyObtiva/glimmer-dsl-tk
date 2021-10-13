@@ -23,9 +23,7 @@
 
 ### Hello
 
-- Hello, Frame!
-- Hello, Root!
-- Hello, Checkbox!
+- Hello, Checkbutton!
 - Hello, Radiobutton!
 - Hello, Entry!
 - Hello, Grid!
