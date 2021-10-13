@@ -27,11 +27,11 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class NotebookProxy < WidgetProxy
-      TAB_OPTIONS = ['state', 'sticky', 'padding', 'text', 'image', 'compound', 'underline']
+      TAB_OPTIONS = ['state', 'sticky', 'padding', 'text', 'title', 'image', 'compound', 'underline']
     
       attr_reader :tab_proxies
     
-      def initialize(*args)
+      def initialize(underscored_widget_name, parent_proxy, args, &block)
         @tab_proxies = []
         super
       end

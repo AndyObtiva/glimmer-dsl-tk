@@ -4,6 +4,8 @@
 
 - Improved Hello, Checkbutton! sample to demonstrate alternate checkbutton value (half-checked state)
 - Support `checkbutton` with specified `onvalue` and `offvalue` (when they do not have values 1 and 0)
+- Alias `root` `title` attribute as `text` & add children attribute to widgets
+- Alias `notebook` `frame` `:title` as `:text`
 
 ## 0.0.22
 
