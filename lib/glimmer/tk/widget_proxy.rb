@@ -26,8 +26,8 @@ module Glimmer
     # Follows the Proxy Design Pattern
     class WidgetProxy
       class << self
-        def create(keyword, parent, args)
-          widget_proxy_class(keyword).new(keyword, parent, args)
+        def create(keyword, parent, args, &block)
+          widget_proxy_class(keyword).new(keyword, parent, args, &block)
         end
         
         def widget_proxy_class(keyword)
@@ -61,7 +61,7 @@ module Glimmer
         end
       end
       
-      attr_reader :parent_proxy, :tk, :args, :keyword
+      attr_reader :parent_proxy, :tk, :args, :keyword, :children
 
       DEFAULT_INITIALIZERS = {
         'checkbutton' => lambda do |tk|
@@ -81,21 +81,27 @@ module Glimmer
       # Initializes a new Tk Widget
       #
       # Styles is a comma separate list of symbols representing Tk styles in lower case
-      def initialize(underscored_widget_name, parent_proxy, args)
+      def initialize(underscored_widget_name, parent_proxy, args, &block)
         @parent_proxy = parent_proxy
         @args = args
         @keyword = underscored_widget_name
+        @block = block
         tk_widget_class = self.class.tk_widget_class_for(underscored_widget_name)
         @tk = tk_widget_class.new(@parent_proxy.tk, *args)
         # a common widget initializer
         @tk.grid unless @tk.is_a?(::Tk::Toplevel)
         DEFAULT_INITIALIZERS[underscored_widget_name]&.call(@tk)
         @parent_proxy.post_initialize_child(self)
+        post_add_content if @block.nil?
+      end
+      
+      def children
+        @children ||= []
       end
       
       # Subclasses may override to perform post initialization work on an added child
       def post_initialize_child(child)
-        # No Op by default
+        children << child
       end
 
       # Subclasses may override to perform post add_content work
@@ -245,6 +251,12 @@ module Glimmer
             'text' => {
               getter: {name: 'text', invoker: lambda { |widget, args| @tk.textvariable&.value }},
               setter: {name: 'text=', invoker: lambda { |widget, args| @tk.textvariable&.value = args.first unless @text_variable_edit }},
+            },
+          },
+          ::Tk::Root => {
+            'text' => {
+              getter: {name: 'text', invoker: lambda { |widget, args| @tk.title }},
+              setter: {name: 'text=', invoker: lambda { |widget, args| @tk.title = args.first }},
             },
           },
         }
