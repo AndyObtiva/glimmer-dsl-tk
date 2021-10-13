@@ -23,7 +23,7 @@ require 'glimmer-dsl-tk'
 
 class HelloCheckbutton
   class Person
-    attr_accessor :skiing, :snowboarding, :snowmobiling, :snowshoeing, :winter_activities, :winter_activities_alternate
+    attr_accessor :skiing, :snowboarding, :snowmobiling, :snowshoeing, :snow_activities, :snow_activities_alternate
     
     def initialize
       reset_activities!
@@ -31,14 +31,14 @@ class HelloCheckbutton
         unless @updating_group
           @updating_individual = true
           if skiing && snowboarding && snowmobiling && snowshoeing
-            self.winter_activities = true
-            self.winter_activities_alternate = false
+            self.snow_activities = true
+            self.snow_activities_alternate = false
           elsif skiing || snowboarding || snowmobiling || snowshoeing
-            self.winter_activities = true
-            self.winter_activities_alternate = true
+            self.snow_activities = true
+            self.snow_activities_alternate = true
           else
-            self.winter_activities = false
-            self.winter_activities_alternate = false
+            self.snow_activities = false
+            self.snow_activities_alternate = false
           end
           @updating_individual = false
         end
@@ -51,19 +51,19 @@ class HelloCheckbutton
       group_observer = Glimmer::DataBinding::Observer.proc do
         unless @updating_individual
           @updating_group = true
-          self.skiing = self.winter_activities
-          self.snowboarding = self.winter_activities
-          self.snowmobiling = self.winter_activities
-          self.snowshoeing = self.winter_activities
+          self.skiing = self.snow_activities
+          self.snowboarding = self.snow_activities
+          self.snowmobiling = self.snow_activities
+          self.snowshoeing = self.snow_activities
           @updating_group = false
         end
       end
-      group_observer.observe(self, :winter_activities)
+      group_observer.observe(self, :snow_activities)
     end
     
     def reset_activities!
-      self.winter_activities = true
-      self.winter_activities_alternate = true
+      self.snow_activities = true
+      self.snow_activities_alternate = true
       self.skiing = false
       self.snowboarding = true
       self.snowmobiling = false
@@ -89,9 +89,9 @@ class HelloCheckbutton
       
       frame {
         checkbutton {
-          text 'Winter Activities'
-          variable <=> [@person, :winter_activities]
-          alternate <=> [@person, :winter_activities_alternate] # binds half-checked state
+          text 'Snow Activities'
+          variable <=> [@person, :snow_activities]
+          alternate <=> [@person, :snow_activities_alternate] # binds half-checked state
         }
         
         frame {

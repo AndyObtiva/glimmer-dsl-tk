@@ -221,7 +221,7 @@ module Glimmer
               setter: {name: 'image=', invoker: lambda { |widget, args| @tk.image = image_argument(args) }},
             },
             'variable' => {
-              getter: {name: 'variable', invoker: lambda { |widget, args| @tk.variable&.value.to_i == 1 }},
+              getter: {name: 'variable', invoker: lambda { |widget, args| @tk.variable&.value.to_s == @tk.onvalue.to_s }},
               setter: {name: 'variable=', invoker: lambda { |widget, args| @tk.variable&.value = args.first.is_a?(Integer) ? args.first : (args.first ? 1 : 0) }},
             },
           },
@@ -255,7 +255,7 @@ module Glimmer
           ::Tk::Tile::TCheckbutton => {
             'variable' => lambda do |observer|
               @tk.command {
-                observer.call(@tk.variable.value.to_i == 1)
+                observer.call(@tk.variable.value.to_s == @tk.onvalue.to_s)
               }
             end,
           },

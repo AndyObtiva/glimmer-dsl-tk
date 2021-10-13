@@ -3,6 +3,7 @@
 ## 0.0.23
 
 - Improved Hello, Checkbutton! sample to demonstrate alternate checkbutton value (half-checked state)
+- Support `checkbutton` with specified `onvalue` and `offvalue` (when they do not have values 1 and 0)
 
 ## 0.0.22
 
