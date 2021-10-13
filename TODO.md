@@ -4,7 +4,6 @@
 
 - Support `radiobutton` ensuring that sibling radio buttons share the same variable to achieve mutually exclusive selection
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
-- Alias message_box `:title` as `:text`
 
 - Support styles
 - Support themes

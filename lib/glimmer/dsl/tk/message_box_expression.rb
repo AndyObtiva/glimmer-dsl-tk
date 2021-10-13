@@ -27,7 +27,10 @@ module Glimmer
     module Tk
       class MessageBoxExpression < StaticExpression
         def interpret(parent, keyword, *args, &block)
-          args.first[:parent] = args.first[:parent].tk if args.first.is_a?(Hash) && args.first[:parent].is_a?(Glimmer::Tk::RootProxy)
+          if args.first.is_a?(Hash)
+            args.first[:parent] = args.first[:parent].tk if args.first[:parent].is_a?(Glimmer::Tk::RootProxy)
+            args.first[:title] = args.first.delete(:text) if args.first.keys.include?(:text)
+          end
           ::Tk::messageBox(*args)
         end
       end
