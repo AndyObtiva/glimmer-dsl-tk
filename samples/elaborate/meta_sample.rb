@@ -26,7 +26,7 @@ class MetaSample
   end
   
   def glimmer_dsl_tk_file
-    File.expand_path('../lib/glimmer-dsl-tk', __dir__)
+    File.expand_path('../../lib/glimmer-dsl-tk', __dir__)
   end
   
   def selected_sample
@@ -34,25 +34,29 @@ class MetaSample
   end
   
   def run_sample(sample)
-    command = "ruby -r #{glimmer_dsl_tk_file} #{sample} 2>&1"
-    result = ''
-    IO.popen(command) do |f|
-      f.each_line do |line|
-        result << line
-        puts line
+    Thread.new do
+      command = "ruby -r #{glimmer_dsl_tk_file} #{sample} 2>&1"
+      result = ''
+      IO.popen(command) do |f|
+        f.each_line do |line|
+          result << line
+          puts line
+        end
+      end
+      ::Tk.after(100) do
+        message_box(parent: @root, title: 'Error Running Sample', message: result) if result.downcase.include?('error')
       end
     end
-    msg_box('Error Running Sample', result) if result.downcase.include?('error')
   end
   
   def launch
-    root {
+    @root = root {
       title 'Meta-Sample'
       width 700
       height 500
       
       frame {
-        grid row: 0, column: 0
+        grid row: 0, column: 0, column_weight: 0, row_weight: 1
         
         samples.each_with_index do |sample, index|
           radiobutton {
@@ -61,7 +65,7 @@ class MetaSample
             
             on('command') do
               @selected_sample_index = index
-              @code_entry.text = File.read(file_path_for(selected_sample))
+              @code_text.text = File.read(file_path_for(selected_sample))
             end
           }
         end
@@ -73,11 +77,11 @@ class MetaSample
             
             on('command') do
               begin
-                parent_dir = File.join(Dir.home, '.glimmer-dsl-tk', 'samples')
+                parent_dir = File.join(Dir.home, '.glimmer-dsl-tk', 'samples', 'hello')
                 FileUtils.mkdir_p(parent_dir)
                 sample_file = File.join(parent_dir, "#{selected_sample.underscore}.rb")
-                File.write(sample_file, @code_entry.text)
-                FileUtils.cp_r(File.expand_path('../icons', __dir__), File.dirname(parent_dir))
+                File.write(sample_file, @code_text.text)
+                FileUtils.cp_r(File.expand_path('../../icons', __dir__), File.dirname(File.dirname(parent_dir)))
                 run_sample(sample_file)
               rescue => e
                 puts e.full_message
@@ -91,17 +95,18 @@ class MetaSample
             text 'Reset'
             
             on('command') do
-              @code_entry.text = File.read(file_path_for(selected_sample))
+              @code_text.text = File.read(file_path_for(selected_sample))
             end
           }
         }
       }
       
       @code_text = entry { # TODO switch to text widget
-        grid row: 0, column: 1
+        grid row: 0, column: 1, column_weight: 1
         text File.read(file_path_for(selected_sample))
       }
-    }.open
+    }
+    @root.open
   end
 end
 

@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/tk/widget_proxy'
+require 'glimmer/tk/notebook_proxy'
 
 module Glimmer
   module Tk
@@ -43,7 +44,7 @@ module Glimmer
       
       def initialize_defaults
         super
-        self.padding = 15
+        self.padding = 15 unless @parent_proxy.is_a?(NotebookProxy)
       end
     end
   end
