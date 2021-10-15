@@ -2,6 +2,10 @@
 
 ## General
 
+- Hello, Spinbox!
+- Elaborate, Meta-Sample
+- Support `text` widget with `text` attribute/data-binding just like `entry`
+
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 - Add default padding to `root`, `frame`, and `labelframe`
 - Default to `validate 'all'` when defining `validatecommand {}` or `on('validate') {}` on an `entry`
@@ -25,7 +29,6 @@
 
 ### Hello
 
-- Hello, Spinbox!
 - Hello, Scale!
 - Hello, Progressbar!
 - Hello, Text!
@@ -51,7 +54,6 @@
 
 ### Elaborate
 
-- Elaborate, Meta-Sample
 - Elaborate, Login
 - Elaborate, Tic Tac Toe
 - Elaborate, Contact Manager

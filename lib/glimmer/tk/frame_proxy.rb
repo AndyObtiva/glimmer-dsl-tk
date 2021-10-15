@@ -38,6 +38,13 @@ module Glimmer
         end
         super
       end
+      
+      private
+      
+      def initialize_defaults
+        super
+        self.padding = 15
+      end
     end
   end
 end
