@@ -276,6 +276,12 @@ module Glimmer
               setter: {name: 'text=', invoker: lambda { |widget, args| @tk.textvariable&.value = args.first }},
             },
           },
+          ::Tk::Tile::TSpinbox => {
+            'text' => {
+              getter: {name: 'text', invoker: lambda { |widget, args| @tk.textvariable&.value }},
+              setter: {name: 'text=', invoker: lambda { |widget, args| @tk.textvariable&.value = args.first }},
+            },
+          },
           ::Tk::Root => {
             'text' => {
               getter: {name: 'text', invoker: lambda { |widget, args| @tk.title }},
@@ -309,8 +315,15 @@ module Glimmer
           },
           ::Tk::Tile::TEntry => {
             'text' => lambda do |observer|
-              tk.textvariable.trace('write') {
+              @tk.textvariable.trace('write') {
                 observer.call(@tk.textvariable.value)
+              }
+            end,
+          },
+          ::Tk::Tile::TSpinbox => {
+            'text' => lambda do |observer|
+              @tk.command {
+                observer.call(@tk.textvariable&.value)
               }
             end,
           },

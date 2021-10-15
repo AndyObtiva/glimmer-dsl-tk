@@ -2,7 +2,8 @@
 
 ## General
 
-- Hello, Spinbox!
+- Support `spinbox` format = '%0.2f'
+- Support modified/selected event bindings for `text` widget
 
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 - Add default padding to `root`, `frame`, and `labelframe`
@@ -97,3 +98,4 @@
 - Syntax adapter to become compatible with the syntax of Glimmer DSL for SWT, Glimmer DSL for LibUI and Glimmer DSL for Opal
 - Logging library to ensure asynchronous logging (as opposed to Glimmer's built-in synchronous Logger)
 - Support canvas shape nested relative positioning
+- Think of a dynamic way of invoking commands on widgets instead of hardcoding commands for each widget

@@ -20,45 +20,33 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/tk/widget_proxy'
+require 'glimmer/tk/text_variable_owner'
 
 module Glimmer
   module Tk
-    # Proxy for Tk::Text
+    # Proxy for Tk::Tile::TSpinbox
     #
     # Follows the Proxy Design Pattern
-    class TextProxy < WidgetProxy
+    class SpinboxProxy < WidgetProxy
+      include TextVariableOwner
+      
+      def command_block=(proc)
+        tk.command(proc)
+      end
+    
       def handle_listener(listener_name, &listener)
-        listener_name = listener_name.to_s.downcase
-        case listener_name
-        when '<<modified>>', '<modified>', 'modified'
-          bind('<Modified>', listener) # TODO look into it as it does not seem to work
-        when '<<selection>>', '<selection>', 'selection'
-          bind('<Selection>', listener) # TODO look into it as it does not seem to work
+        case listener_name.to_s.downcase
+        when 'command', 'change'
+          command(&listener)
+        when 'increment', '<increment>', '<<increment>>'
+          bind('<Increment>', listener)
+        when 'decrement', '<decrement>', '<<decrement>>'
+          bind('<Decrement>', listener)
         else
           super
         end
       end
-    
-      def text=(value)
-        delete('1.0', 'end')
-        insert('end', value)
-      end
       
-      def text(value = nil)
-        if value.nil?
-          get("1.0", 'end')
-        else
-          self.text = value
-        end
-      end
-      
-      private
-      
-      def initialize_defaults
-        super
-        self.padx = 5
-        self.pady = 5
-      end
     end
   end
 end

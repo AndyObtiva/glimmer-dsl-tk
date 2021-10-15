@@ -41,6 +41,7 @@ class MetaSample
         f.each_line do |line|
           result << line
           puts line
+          $stdout.flush
         end
       end
       ::Tk.after(100) do

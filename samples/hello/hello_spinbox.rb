@@ -19,21 +19,21 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer-dsl-swt'
+require 'glimmer-dsl-tk'
 
 class HelloSpinbox
   class Person
     attr_accessor :donation
   end
   
-  include Glimmer::UI::CustomShell
+  include Glimmer
   
-  before_body do
+  def initialize
     @person = Person.new
-    @person.donation = 500 # in cents
+    @person.donation = 5 # in dollars
   end
   
-  body {
+  def launch
     root {
       title 'Hello, Spinbox!'
       
@@ -43,34 +43,45 @@ class HelloSpinbox
       
       frame {
         label {
-          layout_data {
-            width_hint 240
-          }
+          grid row: 0, column: 0
           text 'Amount:'
-          font style: :bold
+          font 'caption'
         }
         
         label {
+          grid row: 0, column: 1
           text '$'
         }
         
-        spinbox {
-          digits 2 # digits after the decimal point
-          minimum 100 # minimum value (including digits after the decimal point)
-          maximum 15000 # maximum value (including digits after the decimal point)
-          increment 500 # increment on up and down (including digits after the decimal point)
-          page_increment 5000 # page increment on page up and page down (including digits after the decimal point)
-          selection <=> [@person, :donation] # selection must be set last if other properties are configured to ensure value is within bounds
+        spinbox { |sb|
+          grid row: 0, column: 2
+          from 1.0 # minimum value
+          to 150.0 # maximum value
+          increment 5.0 # increment on up and down
+          text <=> [@person, :donation] # selection must be set last if other properties are configured to ensure value is within bounds
+          
+          on('increment') do
+            puts 'increment'
+          end
+
+          on('decrement') do
+            puts 'decrement'
+          end
+
+          command do
+            puts 'command'
+            puts sb.text
+          end
         }
         
         label {
-          layout_data(:fill, :center, true, false)
-          text <=> [@person, :donation, on_read: ->(value) { "Thank you for your donation of $#{"%.2f" % (value.to_f / 100.0)}"}]
+          grid row: 1, column: 0, columnspan: 3
+          text <=> [@person, :donation, on_read: ->(value) { "Thank you for your donation of $#{"%.2f" % value.to_f}"}]
         }
 
       }
-    }
-  }
+    }.open
+  end
 end
 
-HelloSpinbox.launch
+HelloSpinbox.new.launch
