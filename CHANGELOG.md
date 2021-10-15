@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.25
+
+- Make `grid sticky: 'nsew', column_weight: 1` the default for all widgets
+
 ## 0.0.24
 
 - Hello, Entry!

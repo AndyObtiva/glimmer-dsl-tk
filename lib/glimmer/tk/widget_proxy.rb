@@ -74,8 +74,8 @@ module Glimmer
         tk_widget_class = self.class.tk_widget_class_for(underscored_widget_name)
         @tk = tk_widget_class.new(@parent_proxy.tk, *args)
         # a common widget initializer
-        initialize_defaults
         @parent_proxy.post_initialize_child(self)
+        initialize_defaults
         post_add_content if @block.nil?
       end
       
@@ -384,7 +384,9 @@ module Glimmer
       private
       
       def initialize_defaults
-        grid unless @tk.is_a?(::Tk::Toplevel)
+        options = {sticky: 'nsew'}
+        options[:column_weight] = 1 if @parent_proxy.children.count == 1
+        grid(options) unless @tk.is_a?(::Tk::Toplevel)
       end
     end
   end
