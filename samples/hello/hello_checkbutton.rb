@@ -80,7 +80,6 @@ class HelloCheckbutton
   def launch
     root {
       title 'Hello, Checkbutton!'
-      background '#ececec' if OS.mac?
       
       label {
         text 'Check all snow activities you are interested in:'

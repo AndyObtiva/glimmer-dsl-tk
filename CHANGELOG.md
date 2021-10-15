@@ -5,6 +5,7 @@
 - Elaborate, Meta-Sample
 - Make `grid sticky: 'nsew', column_weight: 1` the default for all widgets (column weight is only applied to the first widget in a series of siblings)
 - Support `text` widget with `text` attribute/data-binding just like `entry`
+- Set `background '#ececec' if OS.mac?` on `root` by default
 
 ## 0.0.24
 

@@ -38,7 +38,7 @@ module Glimmer
   
         def interpret(parent, keyword, *args, &block)
           args = [parent] + args unless parent.nil?
-          Glimmer::Tk::RootProxy.new(*args)
+          Glimmer::Tk::RootProxy.new(*args, &block)
         end
         
         def add_content(parent, keyword, *args, &block)

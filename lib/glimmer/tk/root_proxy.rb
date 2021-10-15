@@ -31,9 +31,11 @@ module Glimmer
       DEFAULT_WIDTH = 190
       DEFAULT_HEIGHT = 95
       
-      def initialize(*args)
+      def initialize(*args, &block)
         @tk = ::TkRoot.new
         @tk.minsize = DEFAULT_WIDTH, DEFAULT_HEIGHT
+        initialize_defaults
+        post_add_content if block.nil?
       end
 
       def post_add_content
@@ -175,6 +177,10 @@ module Glimmer
       
       def geometry_signs
         geometry.chars.select {|char| char.match(/[+-]/)}
+      end
+      
+      def initialize_defaults
+        self.background = '#ececec' if OS.mac?
       end
     end
   end

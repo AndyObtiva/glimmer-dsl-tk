@@ -48,7 +48,6 @@ class HelloRadiobutton
   def launch
     root {
       title 'Hello, Radio!'
-      background '#ececec' if OS.mac?
       
       label {
         text 'Gender:'
