@@ -43,8 +43,8 @@ module Glimmer
       private
       
       def initialize_defaults
-        super
-        self.padding = 15 unless @parent_proxy.is_a?(NotebookProxy)
+        super unless @parent_proxy.is_a?(NotebookProxy)
+        self.padding = 15
       end
     end
   end

@@ -384,8 +384,9 @@ module Glimmer
       private
       
       def initialize_defaults
-        options = {sticky: 'nsew'}
-        options[:column_weight] = 1 if @parent_proxy.children.count == 1 && !@parent_proxy.is_a?(NotebookProxy)
+        options = {}
+        options[:sticky] = 'nsew'
+        options[:column_weight] = 1 if @parent_proxy.children.count == 1
         grid(options) unless @tk.is_a?(::Tk::Toplevel)
       end
     end
