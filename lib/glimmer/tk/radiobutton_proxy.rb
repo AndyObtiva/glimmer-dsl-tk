@@ -31,7 +31,7 @@ module Glimmer
       include Commandable
       
       def sibling_radio_buttons
-        @parent_proxy.children.select {|child| child.is_a?(RadiobuttonProxy)}
+        @parent_proxy.children.select {|child| child.is_a?(RadiobuttonProxy) && child != self}
       end
       
       private
