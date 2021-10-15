@@ -13,7 +13,7 @@ class MetaSample
   
   def samples
     if @samples.nil?
-      sample_files = Dir.glob(File.join(File.expand_path('../hello', __dir__), '**', '*.rb'))
+      sample_files = Dir.glob(File.join(File.expand_path('../hello', __dir__), '**', 'hello_*.rb'))
       sample_file_names = sample_files.map { |f| File.basename(f, '.rb') }
       sample_file_names = sample_file_names.reject { |f| f == 'meta_sample' || f.match(/\d$/) }
       @samples = sample_file_names.map { |f| f.underscore.titlecase }
@@ -101,7 +101,7 @@ class MetaSample
         }
       }
       
-      @code_text = entry { # TODO switch to text widget
+      @code_text = text {
         grid row: 0, column: 1, column_weight: 1
         text File.read(file_path_for(selected_sample))
       }

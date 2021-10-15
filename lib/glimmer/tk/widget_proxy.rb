@@ -314,6 +314,13 @@ module Glimmer
               }
             end,
           },
+          ::Tk::Text => {
+            'text' => lambda do |observer|
+              handle_listener('modified') do
+                observer.call(text)
+              end
+            end,
+          },
           ::Tk::Tile::TRadiobutton => {
             'variable' => lambda do |observer|
               @tk.command {

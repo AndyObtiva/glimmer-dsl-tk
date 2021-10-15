@@ -3,8 +3,6 @@
 ## General
 
 - Hello, Spinbox!
-- Elaborate, Meta-Sample
-- Support `text` widget with `text` attribute/data-binding just like `entry`
 
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 - Add default padding to `root`, `frame`, and `labelframe`

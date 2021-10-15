@@ -2,7 +2,9 @@
 
 ## 0.0.25
 
-- Make `grid sticky: 'nsew', column_weight: 1` the default for all widgets
+- Elaborate, Meta-Sample
+- Make `grid sticky: 'nsew', column_weight: 1` the default for all widgets (column weight is only applied to the first widget in a series of siblings)
+- Support `text` widget with `text` attribute/data-binding just like `entry`
 
 ## 0.0.24
 
