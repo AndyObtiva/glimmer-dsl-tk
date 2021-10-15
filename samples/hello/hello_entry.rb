@@ -1,112 +1,98 @@
+# Copyright (c) 2020-2021 Andy Maleh
+#
+# Permission is hereby granted, free of charge, to any person obtaining
+# a copy of this software and associated documentation files (the
+# "Software"), to deal in the Software without restriction, including
+# without limitation the rights to use, copy, modify, merge, publish,
+# distribute, sublicense, and/or sell copies of the Software, and to
+# permit persons to whom the Software is furnished to do so, subject to
+# the following conditions:
+#
+# The above copyright notice and this permission notice shall be
+# included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 require 'glimmer-dsl-tk'
 
 class HelloEntry
   include Glimmer
   
-  attr_accessor :default, :center, :left, :right, :password, :telephone, :read_only, :wrap, :multi
+  attr_accessor :default, :password, :telephone, :read_only
   
   def initialize
     self.default = 'default'
-    self.center = 'centered'
-    self.left = 'left-aligned'
-    self.right = 'right-aligned'
     self.password = 'password'
     self.telephone = '555-555-5555'
     self.read_only = 'Telephone area code is 555'
-    self.wrap = 'wraps if text content is too long like this example'
-    self.multi = "multi-line enables hitting enter,\nbut does not wrap by default"
   end
   
   def launch
-    root { |r|
+    root {
       title 'Hello, Entry!'
       
-      label { |l|
+      label {
         grid sticky: 'ew', column_weight: 1
-        text 'text'
+        text 'default entry'
       }
-      entry { |l|
+      entry {
         grid sticky: 'ew'
         text <=> [self, :default]
       }
       
-#       label {
-#         text 'text(:center, :border)'
-#       }
-#       text(:center, :border) {
-#         layout_data :fill, :center, true, false
-#         text <=> [self, :center]
-#       }
-#
-#       label {
-#         text 'text(:left, :border)'
-#       }
-#       text(:left, :border) {
-#         layout_data :fill, :center, true, false
-#         text <=> [self, :left]
-#       }
-#
-#       label {
-#         text 'text(:right, :border)'
-#       }
-#       text(:right, :border) {
-#         layout_data :fill, :center, true, false
-#         text <=> [self, :right]
-#       }
-#
-#       label {
-#         text 'text(:password, :border)'
-#       }
-#       text(:password, :border) {
-#         layout_data :fill, :center, true, false
-#         text <=> [self, :password]
-#       }
-#
-#       label {
-#         text 'text(:read_only, :border)'
-#       }
-#       text(:read_only, :border) {
-#         layout_data :fill, :center, true, false
-#         text <=> [self, :read_only]
-#       }
-#
-#       label {
-#         text 'text with event handlers'
-#       }
-#       text {
-#         layout_data :fill, :center, true, false
-#         text <=> [self, :telephone]
-#
-        ### this event kicks in just after the user typed and before modifying the text attribute value
-#         on_verify_text do |verify_event|
-#           new_text = verify_event.widget.text.clone
-#           new_text[verify_event.start...verify_event.end] = verify_event.text
-#           verify_event.doit = telephone?(new_text)
-#         end
-#
-        ### this event kicks in just after the text widget is verified and modified
-#         on_modify_text do |modify_event|
-#           self.read_only = "Telephone area code is #{modify_event.widget.text.gsub(/[^0-9]/, '')[0...3]}"
-#         end
-#       }
-#
-#       label {
-#         text 'text(:wrap, :border)'
-#       }
-#       text(:wrap, :border) {
-#         layout_data(:fill, :center, true, false) {
-#           width_hint 100
-#         }
-#         text <=> [self, :wrap]
-#       }
-#
-#       label {
-#         text 'text(:multi, :border)'
-#       }
-#       text(:multi, :border) {
-#         layout_data :fill, :center, true, false
-#         text <=> [self, :multi]
-#       }
+      label {
+        grid sticky: 'ew'
+        text 'password entry'
+      }
+      entry {
+        grid sticky: 'ew'
+        show '*'
+        text <=> [self, :password]
+      }
+
+      @validated_entry_label = label {
+        grid sticky: 'ew'
+        text 'entry with event handlers'
+      }
+      entry {
+        grid sticky: 'ew'
+        text <=> [self, :telephone]
+        validate 'key'
+
+        ## this event kicks in just after the user typed and before modifying the text variable
+        on('validate') do |new_text_variable|
+          telephone?(new_text_variable.value)
+        end
+
+        ## this event kicks in just after the text variable is validated and before it is modified
+        on('invalid') do |validate_args|
+          @validated_entry_label.text = "#{validate_args.string} is not valid!"
+          @validated_entry_label.foreground = 'red'
+        end
+
+        ## this event kicks in just after the text variable is validated and modified
+        on('change') do |new_text_variable|
+          self.read_only = "Telephone area code is #{new_text_variable.value.gsub(/[^0-9]/, '')[0...3]}"
+          @validated_entry_label.text = 'entry with event handlers'
+          @validated_entry_label.foreground = nil
+        end
+      }
+
+      label {
+        grid sticky: 'ew'
+        text 'read-only entry'
+      }
+      entry {
+        grid sticky: 'ew'
+        text <=> [self, :read_only]
+        readonly true
+      }
     }.open
   end
   

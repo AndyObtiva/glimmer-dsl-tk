@@ -33,9 +33,26 @@ module Glimmer
       def validatecommand_block=(proc)
         tk.validatecommand(proc)
       end
+      
       def invalidcommand_block=(proc)
         tk.invalidcommand(proc)
       end
+      
+      def handle_listener(listener_name, &listener)
+        case listener_name.to_s.downcase
+        when 'change'
+          tk.textvariable.trace('write') {
+            listener.call(@tk.textvariable)
+          }
+        when 'validatecommand', 'validate'
+          self.validatecommand_block = listener
+        when 'invalidcommand', 'invalid'
+          self.invalidcommand_block = listener
+        else
+          super
+        end
+      end
+      
     end
   end
 end

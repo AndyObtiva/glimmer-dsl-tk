@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.23
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.24
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -105,6 +105,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Hello, Combobox!](#hello-combobox)
     - [Hello, List Single Selection!](#hello-list-single-selection)
     - [Hello, List Multi Selection!](#hello-list-multi-selection)
+    - [Hello, Entry!](#hello-entry)
     - [Hello, Computed!](#hello-computed)
   - [Help](#help)
     - [Issues](#issues)
@@ -142,7 +143,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.23'
+gem 'glimmer-dsl-tk', '~> 0.0.24'
 ```
 
 And, then run:
@@ -254,7 +255,7 @@ keyword(args) | attributes | event bindings & callbacks
 `button` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `default` (`'active', 'normal'`) | `command {}`
 `checkbutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `onvalue` (default: `1`), `offvalue` (default: `0`) | `command {}`
 `combobox` | `state`, `text` | `'ComboboxSelected'`
-`entry` | `width`, `text` | None
+`entry` | `width`, `text`, `validate`, `show` (`'none', 'focus', 'focusin', 'focusout', 'key', or 'all'`) | `'validate'`, `'invalid'`, `'change'`, `validatecommand {}`, `invalidcommand {}`
 `frame(text: nil)` | `width`, `height`, `borderwidth`, `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`) | None
 `label` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `font` (`'default', 'text', 'fixed', 'menu', 'heading', 'caption', 'small_caption', 'icon', 'tooltip'`), `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`), `justify` (`'left', 'center', 'right'`), `foreground`, `background` | None
 `list` | `selectmode`, `selection` | None
@@ -474,7 +475,7 @@ That code binds the `textvariable` value of the `entry` to the `country` attribu
 
 It automatically handles all the Tk plumbing behind the scenes.
 
-More details can be found in the [Hello, Computed!](#hello-computed) sample below.
+More details can be found in [Hello, Entry!](#hello-entry) and [Hello, Computed!](#hello-computed) samples below.
 
 ### Checkbutton Data-Binding
 
@@ -573,7 +574,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_world'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_world.rb
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_world.rb
 ```
 
 Glimmer app:
@@ -672,7 +673,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_button'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_button.rb
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_button.rb
 ```
 
 Glimmer app:
@@ -805,7 +806,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_checkbutton'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_checkbutton.rb
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_checkbutton.rb
 ```
 
 Glimmer app:
@@ -919,7 +920,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_radiobutton'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_radiobutton.rb
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_radiobutton.rb
 ```
 
 Glimmer app:
@@ -992,7 +993,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_frame'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_frame.rb
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_frame.rb
 ```
 
 Glimmer app:
@@ -1042,7 +1043,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_root'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_root.rb
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_root.rb
 ```
 
 Glimmer app:
@@ -1096,7 +1097,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_notebook'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_notebook.rb
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_notebook.rb
 ```
 
 Glimmer app:
@@ -1209,7 +1210,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_label'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_label.rb
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_label.rb
 ```
 
 Glimmer app:
@@ -1311,7 +1312,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_message_box'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_message_box.rb
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_message_box.rb
 ```
 
 Glimmer app:
@@ -1352,7 +1353,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_combobox'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_combobox.rb
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_combobox.rb
 ```
 
 Glimmer app:
@@ -1392,7 +1393,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_list_single_selection'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_list_single_selection.rb
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_list_single_selection.rb
 ```
 
 Glimmer app:
@@ -1430,7 +1431,7 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_list_multi_selection'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_list_multi_selection.rb
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_list_multi_selection.rb
 ```
 
 Glimmer app:
@@ -1510,7 +1511,194 @@ ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_computed'"
 Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
 
 ```
-ruby -r ./lib/glimmer-dsl-tk.rb ./samples/hello/hello_computed.rb
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_computed.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello computed](images/glimmer-dsl-tk-screenshot-sample-hello-computed.png)
+
+### Hello, Entry!
+
+Glimmer code (from [samples/hello/hello_entry.rb](samples/hello/hello_entry.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+class HelloEntry
+  include Glimmer
+  
+  attr_accessor :default, :password, :telephone, :read_only
+  
+  def initialize
+    self.default = 'default'
+    self.password = 'password'
+    self.telephone = '555-555-5555'
+    self.read_only = 'Telephone area code is 555'
+  end
+  
+  def launch
+    root {
+      title 'Hello, Entry!'
+      
+      label {
+        grid sticky: 'ew', column_weight: 1
+        text 'default entry'
+      }
+      entry {
+        grid sticky: 'ew'
+        text <=> [self, :default]
+      }
+      
+      label {
+        grid sticky: 'ew'
+        text 'password entry'
+      }
+      entry {
+        grid sticky: 'ew'
+        show '*'
+        text <=> [self, :password]
+      }
+
+      @validated_entry_label = label {
+        grid sticky: 'ew'
+        text 'entry with event handlers'
+      }
+      entry {
+        grid sticky: 'ew'
+        text <=> [self, :telephone]
+        validate 'key'
+
+        ## this event kicks in just after the user typed and before modifying the text variable
+        on('validate') do |new_text_variable|
+          telephone?(new_text_variable.value)
+        end
+
+        ## this event kicks in just after the text variable is validated and before it is modified
+        on('invalid') do |validate_args|
+          @validated_entry_label.text = "#{validate_args.string} is not valid!"
+          @validated_entry_label.foreground = 'red'
+        end
+
+        ## this event kicks in just after the text variable is validated and modified
+        on('change') do |new_text_variable|
+          self.read_only = "Telephone area code is #{new_text_variable.value.gsub(/[^0-9]/, '')[0...3]}"
+          @validated_entry_label.text = 'entry with event handlers'
+          @validated_entry_label.foreground = nil
+        end
+      }
+
+      label {
+        grid sticky: 'ew'
+        text 'read-only entry'
+      }
+      entry {
+        grid sticky: 'ew'
+        text <=> [self, :read_only]
+        readonly true
+      }
+    }.open
+  end
+  
+  def telephone?(text)
+    !!text.match(/^\d{0,3}[-.\/]?\d{0,3}[-.\/]?\d{0,4}$/)
+  end
+end
+
+HelloEntry.new.launch
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_entry'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_entry.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello entry](images/glimmer-dsl-tk-screenshot-sample-hello-entry.png)
+![glimmer dsl tk screenshot sample hello entry validated](images/glimmer-dsl-tk-screenshot-sample-hello-entry-validated.png)
+
+### Hello, Computed!
+
+Glimmer code (from [samples/hello/hello_computed.rb](samples/hello/hello_computed.rb)):
+
+```ruby
+# ... more code precedes
+    root {
+      title 'Hello, Computed!'
+      
+      frame {
+        grid column: 0, row: 0, padx: 5, pady: 5
+        
+        label {
+          grid column: 0, row: 0, sticky: 'w'
+          text 'First Name: '
+        }
+        entry {
+          grid column: 1, row: 0
+          width 15
+          text <=> [@contact, :first_name]
+        }
+        
+        label {
+          grid column: 0, row: 1, sticky: 'w'
+          text 'Last Name: '
+        }
+        entry {
+          grid column: 1, row: 1
+          width 15
+          text <=> [@contact, :last_name]
+        }
+        
+        label {
+          grid column: 0, row: 2, sticky: 'w'
+          text 'Year of Birth: '
+        }
+        entry {
+          grid column: 1, row: 2
+          width 15
+          text <=> [@contact, :year_of_birth]
+        }
+        
+        label {
+          grid column: 0, row: 3, sticky: 'w'
+          text 'Name: '
+        }
+        label {
+          grid column: 1, row: 3, sticky: 'w'
+          text <=> [@contact, :name, computed_by: [:first_name, :last_name]]
+        }
+        
+        label {
+          grid column: 0, row: 4, sticky: 'w'
+          text 'Age: '
+        }
+        label {
+          grid column: 1, row: 4, sticky: 'w'
+          text <=> [@contact, :age, on_write: :to_i, computed_by: [:year_of_birth]]
+        }
+      }
+    }.open
+# ... more code follows
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_computed'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_computed.rb
 ```
 
 Glimmer app:
