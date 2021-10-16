@@ -104,6 +104,9 @@ class MetaSample
                 sample_file = File.join(parent_dir, "#{selected_sample.underscore}.rb")
                 File.write(sample_file, @code_text.text)
                 FileUtils.cp_r(File.expand_path('../../icons', __dir__), File.dirname(File.dirname(parent_dir)))
+                FileUtils.cp_r(File.expand_path('../hello/images', __dir__), parent_dir)
+                sample_namespace_directory = File.expand_path("../hello/#{selected_sample.underscore}", __dir__)
+                FileUtils.cp_r(sample_namespace_directory, parent_dir) if Dir.exist?(sample_namespace_directory)
                 run_sample(sample_file)
               rescue => e
                 puts e.full_message

@@ -89,6 +89,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [List Multi Selection Data-Binding](#list-multi-selection-data-binding)
     - [Entry Data-Binding](#entry-data-binding)
     - [Spinbox Data-Binding](#spinbox-data-binding)
+    - [Text Data-Binding](#text-data-binding)
     - [Checkbutton Data-Binding](#checkbutton-data-binding)
     - [Radiobutton Data-Binding](#radiobutton-data-binding)
   - [Command Callback](#command-callback)
@@ -258,6 +259,7 @@ keyword(args) | attributes | event bindings & callbacks
 `checkbutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `onvalue` (default: `1`), `offvalue` (default: `0`) | `command {}`
 `combobox` | `state`, `text` | `'ComboboxSelected'`
 `entry` | `width`, `text`, `validate`, `show` (`'none', 'focus', 'focusin', 'focusout', 'key', or 'all'`) | `'validate'`, `'invalid'`, `'change'`, `validatecommand {}`, `invalidcommand {}`
+`spinbox` | `text`, `from`, `to`, `increment`, `format`, [more attributes](https://tcl.tk/man/tcl8.6/TkCmd/text.htm#M116) | `command {}`, `'increment'`, `'decrement'`
 `frame(text: nil)` | `width`, `height`, `borderwidth`, `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`) | None
 `label` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `font` (`'default', 'text', 'fixed', 'menu', 'heading', 'caption', 'small_caption', 'icon', 'tooltip'`), `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`), `justify` (`'left', 'center', 'right'`), `foreground`, `background` | None
 `list` | `selectmode`, `selection` | None
@@ -265,6 +267,7 @@ keyword(args) | attributes | event bindings & callbacks
 `notebook` | None | None
 `radiobutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `value` (default: `text`) | `command {}`
 `root` | `title`, `iconphoto`, `background`, `alpha`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`, `'OPEN_WINDOW'`
+`text` | `text`, [many more attributes](https://tcl.tk/man/tcl8.6/TkCmd/text.htm#M116) | `'modified'`, `'selection'`
 
 #### Common Attributes
 
@@ -500,6 +503,24 @@ That code binds the `textvariable` value of the `spinbox` to the `donation` attr
 It automatically handles all the Tk plumbing behind the scenes.
 
 More details can be found in [Hello, Spinbox!](#hello-spinbox) sample below.
+
+### Text Data-Binding
+
+Example:
+
+This assumes a `Person` model with a `address` attribute.
+
+```ruby
+  text {
+    text <=> [person, :address]
+  }
+```
+
+That code binds the text content of `text` to the `address` attribute on the `person` model.
+
+It automatically handles all the Tk plumbing behind the scenes (including fine-grained inserts and deletes, abstracting them all away).
+
+More details can be found in [Glimmer Meta-Sample](#samples) below.
 
 ### Checkbutton Data-Binding
 

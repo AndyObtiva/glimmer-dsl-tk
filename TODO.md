@@ -2,7 +2,6 @@
 
 ## General
 
-
 - Support on_event listeners (as opposed to on('event'))
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 - Add default padding to `root`, `frame`, and `labelframe`
