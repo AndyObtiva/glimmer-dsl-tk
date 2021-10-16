@@ -53,7 +53,7 @@ class HelloSpinbox
           text '$'
         }
         
-        spinbox { |sb|
+        spinbox {
           grid row: 0, column: 2
           from 1.0 # minimum value
           to 150.0 # maximum value

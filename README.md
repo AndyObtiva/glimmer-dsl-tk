@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.24
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.25
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -82,12 +82,13 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
       - [Notebook Frame](#notebook-frame)
       - [Icon Photo](#icon-photo)
   - [The Grid Geometry Manager](#the-grid-geometry-manager)
-  - [Bidirectional Data-Binding](#bidirectional-data-binding)
+  - [Data-Binding](#data-binding)
     - [Label Data-Binding](#label-data-binding)
     - [Combobox Data-Binding](#combobox-data-binding)
     - [List Single Selection Data-Binding](#list-single-selection-data-binding)
     - [List Multi Selection Data-Binding](#list-multi-selection-data-binding)
     - [Entry Data-Binding](#entry-data-binding)
+    - [Spinbox Data-Binding](#spinbox-data-binding)
     - [Checkbutton Data-Binding](#checkbutton-data-binding)
     - [Radiobutton Data-Binding](#radiobutton-data-binding)
   - [Command Callback](#command-callback)
@@ -106,6 +107,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Hello, List Single Selection!](#hello-list-single-selection)
     - [Hello, List Multi Selection!](#hello-list-multi-selection)
     - [Hello, Entry!](#hello-entry)
+    - [Hello, Spinbox!](#hello-spinbox)
     - [Hello, Computed!](#hello-computed)
   - [Help](#help)
     - [Issues](#issues)
@@ -143,7 +145,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.24'
+gem 'glimmer-dsl-tk', '~> 0.0.25'
 ```
 
 And, then run:
@@ -477,6 +479,28 @@ It automatically handles all the Tk plumbing behind the scenes.
 
 More details can be found in [Hello, Entry!](#hello-entry) and [Hello, Computed!](#hello-computed) samples below.
 
+### Spinbox Data-Binding
+
+Example:
+
+This assumes a `Person` model with a `donation` attribute.
+
+```ruby
+  spinbox {
+    from 1.0 # minimum value
+    to 150.0 # maximum value
+    increment 5.0 # increment on up and down
+    format '%0.2f'
+    text <=> [person, :country]
+  }
+```
+
+That code binds the `textvariable` value of the `spinbox` to the `donation` attribute on the `person` model.
+
+It automatically handles all the Tk plumbing behind the scenes.
+
+More details can be found in [Hello, Spinbox!](#hello-spinbox) sample below.
+
 ### Checkbutton Data-Binding
 
 Example:
@@ -546,6 +570,22 @@ More details can be found in the [Hello, Button!](#hello-button) sample below.
 - Setting `background` attribute on `frame` or `label` does not work in `'aqua'` theme on the Mac (only in `'classic'` theme)
 
 ## Samples
+
+The easiest way to run samples is by launching the Glimmer Meta-Sample (the Sample of Samples).
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/elaborate/meta_sample'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb samples/elaborate/meta_sample.rb
+```
+
+![glimmer dsl tk screenshot sample meta sample](images/glimmer-dsl-tk-screenshot-sample-elaborate-meta-sample.png)
 
 ### Hello, World!
 
@@ -1624,6 +1664,83 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello entry](images/glimmer-dsl-tk-screenshot-sample-hello-entry.png)
 ![glimmer dsl tk screenshot sample hello entry validated](images/glimmer-dsl-tk-screenshot-sample-hello-entry-validated.png)
+
+### Hello, Spinbox!
+
+Glimmer code (from [samples/hello/hello_spinbox.rb](samples/hello/hello_spinbox.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+class HelloSpinbox
+  class Person
+    attr_accessor :donation
+  end
+  
+  include Glimmer
+  
+  def initialize
+    @person = Person.new
+    @person.donation = 5.0 # in dollars
+  end
+  
+  def launch
+    root {
+      title 'Hello, Spinbox!'
+      
+      label {
+        text 'Please select the amount you would like to donate to the poor:'
+      }
+      
+      frame {
+        label {
+          grid row: 0, column: 0
+          text 'Amount:'
+          font 'caption'
+        }
+        
+        label {
+          grid row: 0, column: 1
+          text '$'
+        }
+        
+        spinbox { |sb|
+          grid row: 0, column: 2
+          from 1.0 # minimum value
+          to 150.0 # maximum value
+          increment 5.0 # increment on up and down
+          format '%0.2f'
+          text <=> [@person, :donation]
+        }
+        
+        label {
+          grid row: 1, column: 0, columnspan: 3
+          text <=> [@person, :donation, on_read: ->(value) { "Thank you for your donation of $#{"%.2f" % value.to_f}"}]
+        }
+
+      }
+    }.open
+  end
+end
+
+HelloSpinbox.new.launch
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_spinbox'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_spinbox.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello spinbox](images/glimmer-dsl-tk-screenshot-sample-hello-spinbox.png)
 
 ### Hello, Computed!
 
