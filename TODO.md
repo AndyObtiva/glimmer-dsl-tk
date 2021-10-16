@@ -2,11 +2,11 @@
 
 ## General
 
-- Support on_event listeners (as opposed to on('event'))
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 - Add default padding to `root`, `frame`, and `labelframe`
 - Default to `validate 'all'` when defining `validatecommand {}` or `on('validate') {}` on an `entry`
 - Support font attribute with terse syntax (`font 'times 12 bold'` not `font TkFont.new('times 12 bold')`)
+- Hello, Text!
 
 - Support styles
 - Support themes
@@ -29,16 +29,15 @@
 
 - Hello, Scale!
 - Hello, Progressbar!
-- Hello, Text!
 - Hello, Menu Bar!
 - Hello, Contextual Menu!
+- Hello, Separator!
+- Hello, Labelframe!
+- Hello, Panedwindow!
 - Hello, Grid!
 - Hello, Dialog! (open_file, save_file, choose_directory, choose_color, font_chooser [choose_font alias])
 - Hello, Toplevel! (Custom Window and Custom Dialog)
 - Hello, Listbox! (two tabs for single/multi selection)
-- Hello, Separator!
-- Hello, Labelframe!
-- Hello, Panedwindow!
 - Hello, Treeview!
 - Hello, Table! (adapt treeview as a table)
 - Hello, Scrollbar!
@@ -99,3 +98,4 @@
 - Support canvas shape nested relative positioning
 - Think of a dynamic way of invoking commands on widgets instead of hardcoding commands for each widget
 - Look into why text <Modified> event fires twice on every text change
+- Support on_event listeners (as opposed to on('event')) (e.g. `on_KeyPress {}`)

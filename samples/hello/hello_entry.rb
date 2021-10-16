@@ -38,7 +38,7 @@ class HelloEntry
       title 'Hello, Entry!'
       
       label {
-        grid sticky: 'ew', column_weight: 1
+        grid sticky: 'ew'
         text 'default entry'
       }
       entry {

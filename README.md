@@ -76,7 +76,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Supported Widgets](#supported-widgets)
       - [Common Attributes](#common-attributes)
       - [Common Themed Widget States](#common-themed-widget-states)
-    - [Smart Defaults and Convensions](#smart-defaults-and-convensions)
+    - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
       - [Grid Layout](#grid-layout)
       - [Label/Button Image](#labelbutton-image)
       - [Notebook Frame](#notebook-frame)
@@ -317,7 +317,7 @@ keyword(args) | attributes | event bindings & callbacks
 - `invalid?`
 - `hover?`
 
-### Smart Defaults and Convensions
+### Smart Defaults and Conventions
 
 #### Event Bindings
 
@@ -325,7 +325,11 @@ Any events that normally can be accepted by the Tk `bind` or `protocol` methods 
 
 #### Grid Layout
 
-`grid` layout is the default on most widgets (which support it).
+`grid` layout with `sticky: 'nsew'` is the default on all widgets except toplevel widgets.
+
+Also, any widget that is the first in a series of siblings has `column_weight` as `1` to automatically resize with window resizing by default.
+
+To override that behavior, you may set alternative `grid` keyword args if needed (e.g. `grid sticky: '', column_weight: 0` disables the smart defaults).
 
 #### Label/Button Image
 
@@ -359,6 +363,10 @@ root {
 }.open
 ```
 
+#### Root Background
+
+`root` `background` color attribute is automatically set to `'#ececec'` on the Mac to avoid having a non-native-looking light-colored background.
+
 ## The Grid Geometry Manager
 
 The Grid Geometry Manager is supported via the `grid` keyword just as per the [Tk documentation](https://tkdocs.com/tutorial/grid.html), except by nesting under the widget it concerns.
@@ -377,9 +385,17 @@ Example:
         }
 ```
 
+Extra convenience options may be passed to `grid` when using [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk):
+- `min_width`: alias for `columnminsize` being called on `TkGrid.columnconfigure`
+- `min_height`: alias for `rowminsize` being called on `TkGrid.rowconfigure`
+- `column_weight`: alias for `columnweight` being called on `TkGrid.columnconfigure`
+- `row_weight`: alias for `rowweight` being called on `TkGrid.rowconfigure`
+
+Note also the [Grid Layout](#grid-layout) conventions (e.g. `column_weight` is automatically set to `1` for the first widget in a series of siblings to automatically have all resize when window resize)
+
 More details can be found in the [Hello, Computed!](#hello-computed) sample below.
 
-## Bidirectional Data-Binding
+## Data-Binding
 
 Glimmer supports Shine syntax bidirectional data-binding via the `<=>` operator (read-write) and unidirectional data-binding via the `<=` operator (read-only), which takes a model and an attribute (the `bind` keyword may also be used as the old-style of data-binding).
 
@@ -570,7 +586,7 @@ More details can be found in the [Hello, Radiobutton!](#hello-radiobutton) sampl
 
 ## Command Callback
 
-`button` and `checkbutton` can set a `command` block to trigger when the user clicks the button/checkbutton. This may be done with the `command` keyword, passing in a block directly.
+`button`, `spinbox`, `radiobutton` and `checkbutton` can set a `command` block to trigger when the user clicks the button/checkbutton. This may be done with the `command` keyword, passing in a block directly.
 
 Example:
 
@@ -581,6 +597,18 @@ Example:
     command {
       person.reset_country
     }
+  }
+```
+
+Alternatively, it can be treated as simply an event for consistency with other event bindings:
+
+```ruby
+  button {
+    text "Reset Selection"
+    
+    on('command') do
+      person.reset_country
+    end
   }
 ```
 
@@ -1390,12 +1418,12 @@ Glimmer code (from [samples/hello/hello_combobox.rb](samples/hello/hello_combobo
 root {
   title 'Hello, Combobox!'
   
-  combobox { |proxy|
+  combobox {
     state 'readonly'
     text <=> [person, :country]
   }
   
-  button { |proxy|
+  button {
     text "Reset Selection"
     command {
       person.reset_country
@@ -1499,86 +1527,6 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello list multi selection](images/glimmer-dsl-tk-screenshot-sample-hello-list-multi-selection.png)
 
-### Hello, Computed!
-
-Glimmer code (from [samples/hello/hello_computed.rb](samples/hello/hello_computed.rb)):
-
-```ruby
-# ... more code precedes
-    root {
-      title 'Hello, Computed!'
-      
-      frame {
-        grid column: 0, row: 0, padx: 5, pady: 5
-        
-        label {
-          grid column: 0, row: 0, sticky: 'w'
-          text 'First Name: '
-        }
-        entry {
-          grid column: 1, row: 0
-          width 15
-          text <=> [@contact, :first_name]
-        }
-        
-        label {
-          grid column: 0, row: 1, sticky: 'w'
-          text 'Last Name: '
-        }
-        entry {
-          grid column: 1, row: 1
-          width 15
-          text <=> [@contact, :last_name]
-        }
-        
-        label {
-          grid column: 0, row: 2, sticky: 'w'
-          text 'Year of Birth: '
-        }
-        entry {
-          grid column: 1, row: 2
-          width 15
-          text <=> [@contact, :year_of_birth]
-        }
-        
-        label {
-          grid column: 0, row: 3, sticky: 'w'
-          text 'Name: '
-        }
-        label {
-          grid column: 1, row: 3, sticky: 'w'
-          text <=> [@contact, :name, computed_by: [:first_name, :last_name]]
-        }
-        
-        label {
-          grid column: 0, row: 4, sticky: 'w'
-          text 'Age: '
-        }
-        label {
-          grid column: 1, row: 4, sticky: 'w'
-          text <=> [@contact, :age, on_write: :to_i, computed_by: [:year_of_birth]]
-        }
-      }
-    }.open
-# ... more code follows
-```
-
-Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
-
-```
-ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_computed'"
-```
-
-Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
-
-```
-ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_computed.rb
-```
-
-Glimmer app:
-
-![glimmer dsl tk screenshot sample hello computed](images/glimmer-dsl-tk-screenshot-sample-hello-computed.png)
-
 ### Hello, Entry!
 
 Glimmer code (from [samples/hello/hello_entry.rb](samples/hello/hello_entry.rb)):
@@ -1603,7 +1551,7 @@ class HelloEntry
       title 'Hello, Entry!'
       
       label {
-        grid sticky: 'ew', column_weight: 1
+        grid sticky: 'ew'
         text 'default entry'
       }
       entry {
