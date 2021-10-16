@@ -2,11 +2,21 @@
 
 ## General
 
+- Support font attribute with terse syntax (`font 'times 12 bold'` not `font TkFont.new('times 12 bold')`)
+- Optimize `text=` attribute setter on `text` widget when setting a text value that includes all previous text by having it not delete and reinsert, yet append instead.
+- Support a quicker way of tagging (instead of the two-step process of tagging with a keyword and then configuring the keyword style) (e.g. `text.tag(5.0, 6.0, :background=>'yellow', :font=>'TkFixedFont', :relief=>'raised')`)
+instead of:
+```ruby
+      @code_text.tag_configure('highlightline', :background=>'yellow', :font=>'TkFixedFont', :relief=>'raised')
+      @code_text.tag_add('highlightline', 5.0, 6.0)
+```
+- Hello, Text! (build a word processor with a toolbar having font, font size, font color, background color, bold, italic, underline, strikethrough, cut, copy, paste, insert image, find dialog, undo, redo)
+- Implement `code_text` custom widget using `text` and `rouge` gem
+- Update Meta-Sample to use `code_text` custom widget
+
+- Default to `validate 'all'` when defining `validatecommand {}` or `on('validate') {}` on an `entry`
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 - Add default padding to `root`, `frame`, and `labelframe`
-- Default to `validate 'all'` when defining `validatecommand {}` or `on('validate') {}` on an `entry`
-- Support font attribute with terse syntax (`font 'times 12 bold'` not `font TkFont.new('times 12 bold')`)
-- Hello, Text!
 
 - Support styles
 - Support themes
@@ -21,7 +31,6 @@
   - text
   - widget
 - Support canvas (composite) shape
-- Implement `code_text` custom widget
 
 ## Samples
 

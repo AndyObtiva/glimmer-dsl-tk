@@ -176,7 +176,7 @@ module Glimmer
           attribute = attribute.sub(/=$/, '')
           @tk.attributes(attribute, args.first)
         else
-          send(attribute_setter(attribute), args)
+          send(attribute_setter(attribute), *args)
         end
       end
 
@@ -324,6 +324,14 @@ module Glimmer
             'text' => lambda do |observer|
               @tk.command {
                 observer.call(@tk.textvariable&.value)
+              }
+              @tk.validate('key')
+              @tk.validatecommand { |validate_args|
+                observer.call(validate_args.value)
+                new_icursor = validate_args.index
+                new_icursor += validate_args.string.size if validate_args.action == 1
+                @tk.icursor = new_icursor
+                true
               }
             end,
           },
