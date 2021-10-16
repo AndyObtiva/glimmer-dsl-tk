@@ -48,7 +48,7 @@ class HelloComputed
         entry {
           grid column: 1, row: 0
           width 15
-          text bind(@contact, :first_name)
+          text <=> [@contact, :first_name]
         }
         
         label {
@@ -58,7 +58,7 @@ class HelloComputed
         entry {
           grid column: 1, row: 1
           width 15
-          text bind(@contact, :last_name)
+          text <=> [@contact, :last_name]
         }
         
         label {
@@ -68,7 +68,7 @@ class HelloComputed
         entry {
           grid column: 1, row: 2
           width 15
-          text bind(@contact, :year_of_birth)
+          text <=> [@contact, :year_of_birth]
         }
         
         label {
@@ -77,7 +77,7 @@ class HelloComputed
         }
         label {
           grid column: 1, row: 3, sticky: 'w'
-          text bind(@contact, :name, computed_by: [:first_name, :last_name])
+          text <=> [@contact, :name, computed_by: [:first_name, :last_name]]
         }
         
         label {
@@ -86,7 +86,7 @@ class HelloComputed
         }
         label {
           grid column: 1, row: 4, sticky: 'w'
-          text bind(@contact, :age, on_write: :to_i, computed_by: [:year_of_birth])
+          text <=> [@contact, :age, on_write: :to_i, computed_by: :year_of_birth]
         }
       }
     }.open

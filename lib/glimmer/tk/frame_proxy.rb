@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/tk/widget_proxy'
+require 'glimmer/tk/notebook_proxy'
 
 module Glimmer
   module Tk
@@ -33,9 +34,17 @@ module Glimmer
         if parent_proxy.is_a?(NotebookProxy)
           @tab_options, args[0] = args[0].to_h.partition {|key, value| NotebookProxy::TAB_OPTIONS.include?(key.to_s)}
           @tab_options = Hash[@tab_options]
+          @tab_options[:text] = @tab_options.delete(:title) if @tab_options.keys.include?(:title)
           args.delete_at(0) if args[0].to_a.empty?
         end
         super
+      end
+      
+      private
+      
+      def initialize_defaults
+        super unless @parent_proxy.is_a?(NotebookProxy)
+        self.padding = 15
       end
     end
   end

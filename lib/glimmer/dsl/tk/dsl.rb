@@ -40,6 +40,7 @@ module Glimmer
           data_binding
           block_attribute
           attribute
+          shine_data_binding
           widget
           drag_and_drop
         ]

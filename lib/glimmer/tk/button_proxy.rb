@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/tk/widget_proxy'
+require 'glimmer/tk/commandable'
 
 module Glimmer
   module Tk
@@ -27,9 +28,7 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class ButtonProxy < WidgetProxy
-      def command_block=(proc)
-        tk.command(proc)
-      end
+      include Commandable
     end
   end
 end

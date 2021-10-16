@@ -25,23 +25,9 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class WidgetProxy
-      attr_reader :parent_proxy, :tk, :args
-
-      DEFAULT_INITIALIZERS = {
-        'combobox' => lambda do |tk|
-          tk.textvariable = ::TkVariable.new
-        end,
-        'label' => lambda do |tk|
-          tk.textvariable = ::TkVariable.new
-        end,
-        'entry' => lambda do |tk|
-          tk.textvariable = ::TkVariable.new
-        end,
-      }
-      
       class << self
-        def create(keyword, parent, args)
-          widget_proxy_class(keyword).new(keyword, parent, args)
+        def create(keyword, parent, args, &block)
+          widget_proxy_class(keyword).new(keyword, parent, args, &block)
         end
         
         def widget_proxy_class(keyword)
@@ -75,23 +61,31 @@ module Glimmer
         end
       end
       
+      attr_reader :parent_proxy, :tk, :args, :keyword, :children
+
       # Initializes a new Tk Widget
       #
       # Styles is a comma separate list of symbols representing Tk styles in lower case
-      def initialize(underscored_widget_name, parent_proxy, args)
+      def initialize(underscored_widget_name, parent_proxy, args, &block)
         @parent_proxy = parent_proxy
         @args = args
+        @keyword = underscored_widget_name
+        @block = block
         tk_widget_class = self.class.tk_widget_class_for(underscored_widget_name)
         @tk = tk_widget_class.new(@parent_proxy.tk, *args)
         # a common widget initializer
-        @tk.grid
-        DEFAULT_INITIALIZERS[underscored_widget_name]&.call(@tk)
         @parent_proxy.post_initialize_child(self)
+        initialize_defaults
+        post_add_content if @block.nil?
+      end
+      
+      def children
+        @children ||= []
       end
       
       # Subclasses may override to perform post initialization work on an added child
       def post_initialize_child(child)
-        # No Op by default
+        children << child
       end
 
       # Subclasses may override to perform post add_content work
@@ -116,24 +110,71 @@ module Glimmer
       end
       
       def tk_widget_has_attribute_getter_setter?(attribute)
-        @tk.respond_to?(attribute)
+        begin
+          # TK Widget currently doesn't support respond_to? properly, so I have to resort to this trick for now
+          @tk.send(attribute)
+          true
+        rescue
+          false
+        end
+      end
+      
+      def has_state?(attribute)
+        attribute = attribute.sub(/\?$/, '').sub(/=$/, '')
+        if @tk.respond_to?(:tile_state)
+          begin
+            @tk.tile_instate(attribute)
+            true
+          rescue
+            false
+          end
+        else
+          false
+        end
+      end
+      
+      def has_attributes_attribute?(attribute)
+        attribute = attribute.sub(/\?$/, '').sub(/=$/, '')
+        @tk.respond_to?(:attributes) && @tk.attributes.keys.include?(attribute.to_s)
       end
       
       def has_attribute?(attribute, *args)
-        (widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]) ||
-          tk_widget_has_attribute_setter?(attribute) ||
-          tk_widget_has_attribute_getter_setter?(attribute) ||
+        (widget_custom_attribute_mapping[tk.class] and widget_custom_attribute_mapping[tk.class][attribute.to_s]) or
+          tk_widget_has_attribute_setter?(attribute) or
+          tk_widget_has_attribute_getter_setter?(attribute) or
+          has_state?(attribute) or
+          has_attributes_attribute?(attribute) or
           respond_to?(attribute_setter(attribute), args)
       end
 
       def set_attribute(attribute, *args)
         widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]
-        if widget_custom_attribute
+        if respond_to?(attribute, super_only: true)
+          send(attribute, *args)
+        elsif respond_to?(attribute_setter(attribute), super_only: true)
+          send(attribute_setter(attribute), *args)
+        elsif widget_custom_attribute
           widget_custom_attribute[:setter][:invoker].call(@tk, args)
         elsif tk_widget_has_attribute_setter?(attribute)
-          @tk.send(attribute_setter(attribute), *args) unless @tk.send(attribute) == args.first
+          unless args.size == 1 && @tk.send(attribute) == args.first
+            if args.size == 1
+              @tk.send(attribute_setter(attribute), *args)
+            else
+              @tk.send(attribute_setter(attribute), args)
+            end
+          end
         elsif tk_widget_has_attribute_getter_setter?(attribute)
           @tk.send(attribute, *args)
+        elsif has_state?(attribute)
+          attribute = attribute.sub(/=$/, '')
+          if !!args.first
+            @tk.tile_state(attribute)
+          else
+            @tk.tile_state("!#{attribute}")
+          end
+        elsif has_attributes_attribute?(attribute)
+          attribute = attribute.sub(/=$/, '')
+          @tk.attributes(attribute, args.first)
         else
           send(attribute_setter(attribute), args)
         end
@@ -145,6 +186,12 @@ module Glimmer
           widget_custom_attribute[:getter][:invoker].call(@tk, args)
         elsif tk_widget_has_attribute_getter_setter?(attribute)
           @tk.send(attribute)
+        elsif has_state?(attribute)
+          @tk.tile_instate(attribute.sub(/\?$/, ''))
+        elsif has_attributes_attribute?(attribute)
+          result = @tk.attributes[attribute.sub(/\?$/, '')]
+          result = result == 1 if result.is_a?(Integer)
+          result
         else
           send(attribute)
         end
@@ -154,8 +201,59 @@ module Glimmer
         "#{attribute}="
       end
       
+      def grid(options = {})
+        options = options.stringify_keys
+        index_in_parent = @parent_proxy.children.index(self)
+        options['rowweight'] = options.delete('row_weight') if options.keys.include?('row_weight')
+        options['columnweight'] = options.delete('column_weight') if options.keys.include?('column_weight')
+        options['columnweight'] = options['rowweight'] = options.delete('weight')  if options.keys.include?('weight')
+        options['rowminsize'] = options.delete('row_minsize') if options.keys.include?('row_minsize')
+        options['rowminsize'] = options.delete('minheight') if options.keys.include?('minheight')
+        options['rowminsize'] = options.delete('min_height') if options.keys.include?('min_height')
+        options['columnminsize'] = options.delete('column_minsize') if options.keys.include?('column_minsize')
+        options['columnminsize'] = options.delete('minwidth') if options.keys.include?('minwidth')
+        options['columnminsize'] = options.delete('min_width') if options.keys.include?('min_width')
+        options['columnminsize'] = options['rowminsize'] = options.delete('minsize')  if options.keys.include?('minsize')
+        TkGrid.rowconfigure(@parent_proxy.tk, index_in_parent, 'weight'=> options.delete('rowweight')) if options.keys.include?('rowweight')
+        TkGrid.rowconfigure(@parent_proxy.tk, index_in_parent, 'minsize'=> options.delete('rowminsize')) if options.keys.include?('rowminsize')
+        TkGrid.columnconfigure(@parent_proxy.tk, index_in_parent, 'weight'=> options.delete('columnweight')) if options.keys.include?('columnweight')
+        TkGrid.columnconfigure(@parent_proxy.tk, index_in_parent, 'minsize'=> options.delete('columnminsize')) if options.keys.include?('columnminsize')
+        @tk.grid(options)
+      end
+      
       def widget_custom_attribute_mapping
+        # TODO consider extracting to modules/subclasses
         @widget_custom_attribute_mapping ||= {
+          ::Tk::Tile::TButton => {
+            'image' => {
+              getter: {name: 'image', invoker: lambda { |widget, args| @tk.image }},
+              setter: {name: 'image=', invoker: lambda { |widget, args| @tk.image = image_argument(args) }},
+            },
+          },
+          ::Tk::Tile::TCheckbutton => {
+            'image' => {
+              getter: {name: 'image', invoker: lambda { |widget, args| @tk.image }},
+              setter: {name: 'image=', invoker: lambda { |widget, args| @tk.image = image_argument(args) }},
+            },
+            'variable' => {
+              getter: {name: 'variable', invoker: lambda { |widget, args| @tk.variable&.value.to_s == @tk.onvalue.to_s }},
+              setter: {name: 'variable=', invoker: lambda { |widget, args| @tk.variable&.value = args.first.is_a?(Integer) ? args.first : (args.first ? 1 : 0) }},
+            },
+          },
+          ::Tk::Tile::TRadiobutton => {
+            'image' => {
+              getter: {name: 'image', invoker: lambda { |widget, args| @tk.image }},
+              setter: {name: 'image=', invoker: lambda { |widget, args| @tk.image = image_argument(args) }},
+            },
+            'text' => {
+              getter: {name: 'text', invoker: lambda { |widget, args| @tk.text }},
+              setter: {name: 'text=', invoker: lambda { |widget, args| @tk.value = @tk.text = args.first }},
+            },
+            'variable' => {
+              getter: {name: 'variable', invoker: lambda { |widget, args| @tk.variable&.value == @tk.value }},
+              setter: {name: 'variable=', invoker: lambda { |widget, args| @tk.variable&.value = args.first ? @tk.value : @tk.variable&.value }},
+            },
+          },
           ::Tk::Tile::TCombobox => {
             'text' => {
               getter: {name: 'text', invoker: lambda { |widget, args| @tk.textvariable&.value }},
@@ -167,18 +265,42 @@ module Glimmer
               getter: {name: 'text', invoker: lambda { |widget, args| @tk.textvariable&.value }},
               setter: {name: 'text=', invoker: lambda { |widget, args| @tk.textvariable&.value = args.first }},
             },
+            'image' => {
+              getter: {name: 'image', invoker: lambda { |widget, args| @tk.image }},
+              setter: {name: 'image=', invoker: lambda { |widget, args| @tk.image = image_argument(args) }},
+            },
           },
           ::Tk::Tile::TEntry => {
             'text' => {
               getter: {name: 'text', invoker: lambda { |widget, args| @tk.textvariable&.value }},
-              setter: {name: 'text=', invoker: lambda { |widget, args| @tk.textvariable&.value = args.first unless @text_variable_edit }},
+              setter: {name: 'text=', invoker: lambda { |widget, args| @tk.textvariable&.value = args.first }},
+            },
+          },
+          ::Tk::Tile::TSpinbox => {
+            'text' => {
+              getter: {name: 'text', invoker: lambda { |widget, args| @tk.textvariable&.value }},
+              setter: {name: 'text=', invoker: lambda { |widget, args| @tk.textvariable&.value = args.first }},
+            },
+          },
+          ::Tk::Root => {
+            'text' => {
+              getter: {name: 'text', invoker: lambda { |widget, args| @tk.title }},
+              setter: {name: 'text=', invoker: lambda { |widget, args| @tk.title = args.first }},
             },
           },
         }
       end
       
       def widget_attribute_listener_installers
+        # TODO consider extracting to modules/subclasses
         @tk_widget_attribute_listener_installers ||= {
+          ::Tk::Tile::TCheckbutton => {
+            'variable' => lambda do |observer|
+              @tk.command {
+                observer.call(@tk.variable.value.to_s == @tk.onvalue.to_s)
+              }
+            end,
+          },
           ::Tk::Tile::TCombobox => {
             'text' => lambda do |observer|
               if observer.is_a?(Glimmer::DataBinding::ModelBinding)
@@ -193,20 +315,49 @@ module Glimmer
           },
           ::Tk::Tile::TEntry => {
             'text' => lambda do |observer|
-              tk.validate = 'key'
-              tk.validatecommand { |new_tk_variable|
-                @text_variable_edit = new_tk_variable.value != @tk.textvariable.value
-                if @text_variable_edit
-                  observer.call(new_tk_variable.value)
-                  @text_variable_edit = nil
-                  true
-                else
-                  false
-                end
+              @tk.textvariable.trace('write') {
+                observer.call(@tk.textvariable.value)
+              }
+            end,
+          },
+          ::Tk::Tile::TSpinbox => {
+            'text' => lambda do |observer|
+              @tk.command {
+                observer.call(@tk.textvariable&.value)
+              }
+            end,
+          },
+          ::Tk::Text => {
+            'text' => lambda do |observer|
+              handle_listener('modified') do
+                observer.call(text)
+              end
+            end,
+          },
+          ::Tk::Tile::TRadiobutton => {
+            'variable' => lambda do |observer|
+              @tk.command {
+                observer.call(@tk.variable.value == @tk.value)
               }
             end,
           },
         }
+      end
+      
+      def image_argument(args)
+        if args.first.is_a?(::TkPhotoImage)
+          args.first
+        else
+          image_args = {}
+          image_args.merge!(file: args.first.to_s) if args.first.is_a?(String)
+          the_image = ::TkPhotoImage.new(image_args)
+          if args.last.is_a?(Hash)
+            processed_image = ::TkPhotoImage.new
+            processed_image.copy(the_image, args.last)
+            the_image = processed_image
+          end
+          the_image
+        end
       end
       
       def add_observer(observer, attribute)
@@ -214,16 +365,28 @@ module Glimmer
         widget_listener_installers = attribute_listener_installers.map{|installer| installer[attribute.to_s]}.compact if !attribute_listener_installers.empty?
         widget_listener_installers.to_a.first&.call(observer)
       end
-
+      
+      def handle_listener(listener_name, &listener)
+        listener_name = listener_name.to_s
+        begin
+          @tk.bind(listener_name, &listener)
+        rescue => e
+          Glimmer::Config.logger.debug {e.full_message}
+          listener_name = "<#{listener_name}" if !listener_name.start_with?('<')
+          listener_name = "#{listener_name}>" if !listener_name.end_with?('>')
+          @tk.bind(listener_name, &listener)
+        end
+      end
+      
       def content(&block)
-        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Tk::WidgetExpression.new, &block)
+        Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Tk::WidgetExpression.new, keyword, *args, &block)
       end
 
       def method_missing(method, *args, &block)
         method = method.to_s
-        if args.empty? && block.nil? && widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][method]
+        if args.empty? && block.nil? && ((widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][method]) || has_state?(method) || has_attributes_attribute?(method))
           get_attribute(method)
-        elsif widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][method.sub(/=$/, '')] && method.end_with?('=') && block.nil?
+        elsif method.end_with?('=') && block.nil? && ((widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][method.sub(/=$/, '')]) || has_state?(method) || has_attributes_attribute?(method))
           set_attribute(method.sub(/=$/, ''), *args)
         else
           tk.send(method, *args, &block)
@@ -233,10 +396,21 @@ module Glimmer
         super(method.to_sym, *args, &block)
       end
       
-      def respond_to?(method, *args, &block)
-        super ||
-          tk.respond_to?(method, *args, &block)
+      def respond_to?(method, *args, super_only: false, &block)
+        super(method, true) ||
+          !super_only && tk.respond_to?(method, *args, &block)
+      end
+      
+      private
+      
+      def initialize_defaults
+        options = {}
+        options[:sticky] = 'nsew'
+        options[:column_weight] = 1 if @parent_proxy.children.count == 1
+        grid(options) unless @tk.is_a?(::Tk::Toplevel)
       end
     end
   end
 end
+
+Dir[File.expand_path('./*_proxy.rb', __dir__)].each {|f| require f}

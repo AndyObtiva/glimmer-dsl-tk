@@ -19,43 +19,24 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer-dsl-tk'
+require 'glimmer/tk/widget_proxy'
 
-class Person
-  attr_accessor :country, :country_options
-
-  def initialize
-    self.country_options=["", "Canada", "US", "Mexico"]
-    self.country = "Canada"
-  end
-
-  def reset_country
-    self.country = "Canada"
+module Glimmer
+  module Tk
+    # Represents widgets that can invoke a command
+    module Commandable
+      def command_block=(proc)
+        tk.command(proc)
+      end
+      
+      def handle_listener(listener_name, &listener)
+        case listener_name.to_s.downcase
+        when 'command'
+          command(listener)
+        else
+          super
+        end
+      end
+    end
   end
 end
-
-class HelloCombo
-  include Glimmer
-  
-  def launch
-    person = Person.new
-    
-    root {
-      title 'Hello, Combo!'
-      
-      combobox {
-        state 'readonly'
-        text bind(person, :country)
-      }
-      
-      button {
-        text "Reset Selection"
-        command {
-          person.reset_country
-        }
-      }
-    }.open
-  end
-end
-
-HelloCombo.new.launch

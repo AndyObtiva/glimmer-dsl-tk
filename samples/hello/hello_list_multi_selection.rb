@@ -54,7 +54,7 @@ class HelloListMultiSelection
       title 'Hello, List Multi Selection!'
       
       list {
-        selection bind(person, :provinces)
+        selection <=> [person, :provinces]
       }
       
       button {

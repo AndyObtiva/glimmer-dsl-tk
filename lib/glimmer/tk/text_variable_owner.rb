@@ -19,30 +19,13 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer-dsl-tk'
-
-class HelloTab
-  include Glimmer
-  
-  def launch
-    root {
-      title 'Hello, Tab!'
-       
-      notebook {
-        frame(text: 'English') {
-          label {
-            text 'Hello, World!'
-          }
-        }
-         
-        frame(text: 'French') {
-          label {
-            text 'Bonjour, Univers!'
-          }
-        }
-      }
-    }.open
+module Glimmer
+  module Tk
+    module TextVariableOwner
+      def initialize_defaults
+        super
+        tk.textvariable = ::TkVariable.new
+      end
+    end
   end
 end
-
-HelloTab.new.launch
