@@ -30,7 +30,7 @@ class HelloSpinbox
   
   def initialize
     @person = Person.new
-    @person.donation = 5 # in dollars
+    @person.donation = 5.0 # in dollars
   end
   
   def launch
@@ -58,20 +58,8 @@ class HelloSpinbox
           from 1.0 # minimum value
           to 150.0 # maximum value
           increment 5.0 # increment on up and down
-          text <=> [@person, :donation] # selection must be set last if other properties are configured to ensure value is within bounds
-          
-          on('increment') do
-            puts 'increment'
-          end
-
-          on('decrement') do
-            puts 'decrement'
-          end
-
-          command do
-            puts 'command'
-            puts sb.text
-          end
+          format '%0.2f'
+          text <=> [@person, :donation]
         }
         
         label {

@@ -2,9 +2,9 @@
 
 ## General
 
-- Support `spinbox` format = '%0.2f'
 - Support modified/selected event bindings for `text` widget
 
+- Support on_event listeners (as opposed to on('event'))
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 - Add default padding to `root`, `frame`, and `labelframe`
 - Default to `validate 'all'` when defining `validatecommand {}` or `on('validate') {}` on an `entry`
