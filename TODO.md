@@ -2,12 +2,12 @@
 
 ## General
 
-- Support modified/selected event bindings for `text` widget
 
 - Support on_event listeners (as opposed to on('event'))
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 - Add default padding to `root`, `frame`, and `labelframe`
 - Default to `validate 'all'` when defining `validatecommand {}` or `on('validate') {}` on an `entry`
+- Support font attribute with terse syntax (`font 'times 12 bold'` not `font TkFont.new('times 12 bold')`)
 
 - Support styles
 - Support themes
@@ -99,3 +99,4 @@
 - Logging library to ensure asynchronous logging (as opposed to Glimmer's built-in synchronous Logger)
 - Support canvas shape nested relative positioning
 - Think of a dynamic way of invoking commands on widgets instead of hardcoding commands for each widget
+- Look into why text <Modified> event fires twice on every text change

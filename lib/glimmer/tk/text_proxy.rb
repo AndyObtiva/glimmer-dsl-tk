@@ -31,22 +31,29 @@ module Glimmer
         listener_name = listener_name.to_s.downcase
         case listener_name
         when '<<modified>>', '<modified>', 'modified'
-          bind('<Modified>', listener) # TODO look into it as it does not seem to work
+          modified_listener = Proc.new do |*args|
+            listener.call(*args)
+            @tk.modified = false
+          end
+          bind('<Modified>', modified_listener)
         when '<<selection>>', '<selection>', 'selection'
-          bind('<Selection>', listener) # TODO look into it as it does not seem to work
+          bind('<Selection>', listener)
         else
           super
         end
       end
     
       def text=(value)
-        delete('1.0', 'end')
-        insert('end', value)
+        if value != @text
+          @text = value
+          delete('1.0', 'end')
+          insert('end', value)
+        end
       end
       
       def text(value = nil)
         if value.nil?
-          get("1.0", 'end')
+          @text = get("1.0", 'end')
         else
           self.text = value
         end
