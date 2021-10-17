@@ -3,6 +3,7 @@
 ## 0.0.26
 
 - Ensure spinbox data-binding updates on text key changes (without incrementing/decrementing)
+- Optimize `text=` attribute setter on `text` widget when setting a text value that includes all previous text by having it not delete and reinsert, yet append instead.
 
 ## 0.0.25
 

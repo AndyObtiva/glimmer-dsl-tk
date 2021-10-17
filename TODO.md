@@ -3,7 +3,6 @@
 ## General
 
 - Support font attribute with terse syntax (`font 'times 12 bold'` not `font TkFont.new('times 12 bold')`)
-- Optimize `text=` attribute setter on `text` widget when setting a text value that includes all previous text by having it not delete and reinsert, yet append instead.
 - Support a quicker way of tagging (instead of the two-step process of tagging with a keyword and then configuring the keyword style) (e.g. `text.tag(5.0, 6.0, :background=>'yellow', :font=>'TkFixedFont', :relief=>'raised')`)
 instead of:
 ```ruby

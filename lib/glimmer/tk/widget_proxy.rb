@@ -149,10 +149,10 @@ module Glimmer
 
       def set_attribute(attribute, *args)
         widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]
-        if respond_to?(attribute, super_only: true)
-          send(attribute, *args)
-        elsif respond_to?(attribute_setter(attribute), super_only: true)
+        if respond_to?(attribute_setter(attribute), super_only: true)
           send(attribute_setter(attribute), *args)
+        elsif respond_to?(attribute, super_only: true) && self.class.instance_method(attribute).parameters.size > 0
+          send(attribute, *args)
         elsif widget_custom_attribute
           widget_custom_attribute[:setter][:invoker].call(@tk, args)
         elsif tk_widget_has_attribute_setter?(attribute)
@@ -175,14 +175,14 @@ module Glimmer
         elsif has_attributes_attribute?(attribute)
           attribute = attribute.sub(/=$/, '')
           @tk.attributes(attribute, args.first)
-        else
-          send(attribute_setter(attribute), *args)
         end
       end
 
       def get_attribute(attribute)
         widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]
-        if widget_custom_attribute
+        if respond_to?(attribute, super_only: true)
+          send(attribute)
+        elsif widget_custom_attribute
           widget_custom_attribute[:getter][:invoker].call(@tk, args)
         elsif tk_widget_has_attribute_getter_setter?(attribute)
           @tk.send(attribute)

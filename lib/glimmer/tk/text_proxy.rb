@@ -45,18 +45,18 @@ module Glimmer
     
       def text=(value)
         if value != @text
+          if @text && value.start_with?(@text)
+            insert('end', value[@text.size..-1])
+          else
+            delete('1.0', 'end')
+            insert('end', value)
+          end
           @text = value
-          delete('1.0', 'end')
-          insert('end', value)
         end
       end
       
-      def text(value = nil)
-        if value.nil?
-          @text = get("1.0", 'end')
-        else
-          self.text = value
-        end
+      def text
+        @text = get("1.0", 'end')
       end
       
       private
