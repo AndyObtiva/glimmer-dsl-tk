@@ -144,7 +144,8 @@ module Glimmer
           tk_widget_has_attribute_getter_setter?(attribute) or
           has_state?(attribute) or
           has_attributes_attribute?(attribute) or
-          respond_to?(attribute_setter(attribute), *args) or
+          respond_to?(attribute_setter(attribute), args) or
+          respond_to?(attribute_setter(attribute), *args, super_only: true) or
           respond_to?(attribute, *args, super_only: true)
       end
 

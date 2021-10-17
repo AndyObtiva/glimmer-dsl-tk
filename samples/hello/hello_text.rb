@@ -34,7 +34,7 @@ class HelloText
         button {
           grid row: 0, column: 0
           text 'B'
-          font 'times 12 bold roman'
+          style font: 'times 12 bold roman'
           
           on('command') do
             @text.tag_ranges('sel').each do |region|
@@ -47,7 +47,7 @@ class HelloText
         button {
           grid row: 0, column: 1
           text 'I'
-          font 'times 12 italic'
+          style font: 'times 12 italic'
           
           on('command') do
             @text.tag_ranges('sel').each do |region|
@@ -65,7 +65,7 @@ class HelloText
         button {
           grid row: 0, column: 3
           text 'S'
-          overstrike true
+          style overstrike: true
         }
       }
       
