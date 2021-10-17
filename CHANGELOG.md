@@ -4,6 +4,7 @@
 
 - Ensure spinbox data-binding updates on text key changes (without incrementing/decrementing)
 - Optimize `text=` attribute setter on `text` widget when setting a text value that includes all previous text by having it not delete and reinsert, yet append instead.
+- Support font attribute for arbitrary fonts with terse syntax (`font 'times 12 bold'` not `font TkFont.new('times 12 bold')`)
 
 ## 0.0.25
 

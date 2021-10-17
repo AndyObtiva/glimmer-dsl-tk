@@ -221,6 +221,10 @@ module Glimmer
         @tk.grid(options)
       end
       
+      def font=(value)
+        @tk.font = value.is_a?(TkFont) ? value : TkFont.new(value)
+      end
+      
       def widget_custom_attribute_mapping
         # TODO consider extracting to modules/subclasses
         @widget_custom_attribute_mapping ||= {
