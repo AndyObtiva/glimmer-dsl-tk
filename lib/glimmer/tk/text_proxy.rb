@@ -60,20 +60,26 @@ module Glimmer
       end
       
       def add_selection_format(option, value)
-        @tk.tag_ranges('sel').each do |region|
-          region_start = region.first
-          region_end = region.last
-          add_format(region_start, region_end, option, value)
-        end
+        process_selection_ranges { |range_start, range_end| add_format(range_start, range_end, option, value) }
+      end
+      
+      def remove_selection_format(option, value)
+        process_selection_ranges { |range_start, range_end| remove_format(range_start, range_end, option, value) }
       end
       
       def toggle_selection_format(option, value)
+        process_selection_ranges { |range_start, range_end| toggle_format(range_start, range_end, option, value) }
+      end
+      
+      def process_selection_ranges(&processor)
         @tk.tag_ranges('sel').each do |region|
-          region_start = region.first
-          region_end = region.last
-          toggle_format(region_start, region_end, option, value)
+          range_start = region.first
+          range_end = region.last
+          processor.call(range_start, range_end)
         end
       end
+      
+      # TODO implement add_selection_font_format, toggle_selection_font_format, remove_selection_font_format, add_font_format, toggle_font_format, and delete_font_format separately from other options since fonts have combinatorial effects
       
       def add_format(region_start, region_end, option, value)
         @@tag_number = 0 unless defined?(@@tag_number)
@@ -83,85 +89,46 @@ module Glimmer
         tag
       end
       
-      # TODO implement remove_format
-      # TODO implement add_font_format, toggle_font_format, and delete_font_format separately from other options since fonts have combinatorial effects
-      
-      # toggles option/value tag (removes if already applied)
-      def toggle_format(region_start, region_end, option, value)
-        tag_names = @tk.tag_names - ['sel']
-        option_applied_tags = tag_names.select do |tag_name|
+      def remove_format(region_start, region_end, option, value)
+        partial_intersection_option_applied_tags = tag_names.select do |tag_name|
           @tk.tag_ranges(tag_name).any? do |range|
-            if range.first.to_f <= region_start.to_f && range.last.to_f >= region_end.to_f
-              if value.is_a?(Hash)
-                value.all? do |key, subvalue|
-                  @tk.tag_cget(tag_name, option).send(key) == subvalue
-                end
-              else
-                @tk.tag_cget(tag_name, option) == value
-              end
+            if range.first.to_f.between?(region_start.to_f, region_end.to_f) or
+               range.last.to_f.between?(region_start.to_f, region_end.to_f) or
+               (range.first.to_f <= region_start.to_f && range.last.to_f >= region_end.to_f)
+              @tk.tag_cget(tag_name, option) == value
             end
           end
         end
         
-        if option_applied_tags.empty?
-#           if partial_intersection_option_applied_tags.empty?
-            add_format(region_start, region_end, option, value)
-#           else
-#             partial_intersection_option_applied_tags = tag_names.select do |tag_name|
-#               @tk.tag_ranges(tag_name).any? do |range|
-#                 if range.first.to_f.between?(region_start.to_f, region_end.to_f) or
-#                    range.last.to_f.between?(region_start.to_f, region_end.to_f) or
-#                    (range.first.to_f <= region_start.to_f && range.last.to_f >= region_end.to_f)
-#                   if value.is_a?(Hash)
-#                     value.all? do |key, subvalue|
-#                       @tk.tag_cget(tag_name, option).send(key) == subvalue
-#                     end
-#                   else
-#                     @tk.tag_cget(tag_name, option) == value
-#                   end
-#                 end
-#               end
-#             end
-#             partial_intersection_option_applied_tags.each do |option_applied_tag|
-#               old_value = @tk.tag_cget(option_applied_tag, option)
-#               if old_value
-#                 value.each do |key, subvalue|
-#                   old_value.send("#{key}=", subvalue)
-#                 end
-#               end
-#             end
-#           end
-        else
-          tag_names.select do |tag_name|
-            @tk.tag_ranges(tag_name).any? do |range|
-              if range.first.to_f.between?(region_start.to_f, region_end.to_f) or
-                 range.last.to_f.between?(region_start.to_f, region_end.to_f) or
-                 (range.first.to_f <= region_start.to_f && range.last.to_f >= region_end.to_f)
-                if value.is_a?(Hash)
-                  option_hash_applied = value.all? do |key, subvalue|
-                    @tk.tag_cget(tag_name, option).send(key) == subvalue
-                  end
-                  if option_hash_applied
-                    old_value = @tk.tag_cget(tag_name, option)
-                    old_value_hash = Hash[old_value.actual]
-                    amended_old_value_hash = old_value_hash.dup
-                    value.each do |key, subvalue|
-                      amended_old_value_hash.delete(key)
-                    end
-                    @tk.tag_remove(tag_name, range.first, range.last)
-                    add_format(region_start, region_end, option, amended_old_value_hash) unless value.empty?
-                    add_format(range.first, region_start - 1, option, old_value_hash) if range.first.to_f < region_start.to_f
-                    add_format(region_end + 1, range.last, option, old_value_hash) if range.last.to_f > region_end.to_f
-                  end
-                else
-                  if @tk.tag_cget(tag_name, option) == value
-                    @tk.tag_remove(tag_name, region_start, region_end)
-                  end
-                end
-              end
+        partial_intersection_option_applied_tags.each do |tag_name|
+          @tk.tag_remove(tag_name, region_start, region_end)
+        end
+        
+        nil
+      end
+      
+      def applied_format?(region_start, region_end, option, value)
+        !applied_format_tags(region_start, region_end, option, value).empty?
+      end
+      
+      def applied_format_tags(region_start, region_end, option, value)
+        tag_names = @tk.tag_names - ['sel']
+        
+        tag_names.select do |tag_name|
+          @tk.tag_ranges(tag_name).any? do |range|
+            if range.first.to_f <= region_start.to_f && range.last.to_f >= region_end.to_f
+              @tk.tag_cget(tag_name, option) == value
             end
           end
-          nil
+        end
+      end
+      
+      # toggles option/value tag (removes if already applied)
+      def toggle_format(region_start, region_end, option, value)
+        if applied_format?(region_start, region_end, option, value)
+          remove_format(region_start, region_end, option, value)
+        else
+          add_format(region_start, region_end, option, value)
         end
       end
             
