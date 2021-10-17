@@ -24,6 +24,27 @@ require 'glimmer-dsl-tk'
 class HelloText
   include Glimmer
   
+  COLOR_OPTIONS = %w[black purple blue green orange yellow red white]
+  FOREGROUND_PROMPT = '<select foreground>'
+  BACKGROUND_PROMPT = '<select background>'
+  
+  def initialize
+    @foreground = FOREGROUND_PROMPT
+    @background = BACKGROUND_PROMPT
+  end
+  
+  attr_accessor :foreground
+  
+  def foreground_options
+    [FOREGROUND_PROMPT] + COLOR_OPTIONS
+  end
+  
+  attr_accessor :background
+  
+  def background_options
+    [BACKGROUND_PROMPT] + COLOR_OPTIONS
+  end
+  
   def launch
     root {
       title 'Hello, Text!'
@@ -40,10 +61,13 @@ class HelloText
             @text.tag_ranges('sel').each do |region|
               region_start = region.first
               region_end = region.last
-              @text.toggle_format(region_start, region_end, 'font', {'weight' => 'bold'})
+              font_hash = Hash[@text.font.actual]
+              font_hash['weight'] = 'bold'
+              @text.toggle_font_format(region_start, region_end, 'font', font_hash)
             end
           end
         }
+        
         button {
           grid row: 0, column: 1
           text 'I'
@@ -53,19 +77,35 @@ class HelloText
             @text.tag_ranges('sel').each do |region|
               region_start = region.first
               region_end = region.last
-              @text.toggle_format(region_start, region_end, 'font', {'slant' => 'italic'})
+              font_hash = Hash[@text.font.actual]
+              font_hash['slant'] = 'italic'
+              @text.toggle_font_format(region_start, region_end, 'font', font_hash)
             end
           end
         }
+        
         button {
           grid row: 0, column: 2
           text 'U'
           style underline: true
         }
+        
         button {
           grid row: 0, column: 3
           text 'S'
           style overstrike: true
+        }
+        
+        combobox {
+          grid row: 0, column: 4
+          readonly true
+          text <=> [self, :foreground, after_write: ->(value) { @text.add_selection_format('foreground', value == FOREGROUND_PROMPT ? 'black' : value) }]
+        }
+        
+        combobox {
+          grid row: 0, column: 5
+          readonly true
+          text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'black' : value) }]
         }
       }
       

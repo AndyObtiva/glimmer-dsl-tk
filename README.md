@@ -425,7 +425,7 @@ This assumes a `Person` model with a `country` attribute representing their curr
 
 ```ruby
   combobox {
-    state 'readonly'
+    readonly true # this applies to text editing only (item selection still triggers a write to model)
     text <=> [person, :country]
   }
 ```
@@ -1419,7 +1419,7 @@ root {
   title 'Hello, Combobox!'
   
   combobox {
-    state 'readonly'
+    readonly true # this applies to text editing only (item selection still triggers a write to model)
     text <=> [person, :country]
   }
   
