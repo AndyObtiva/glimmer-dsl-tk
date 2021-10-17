@@ -59,11 +59,53 @@ module Glimmer
         @text = get("1.0", 'end')
       end
       
-      def tag(location_start, location_end, options)
+      def tag(region_start, region_end, option, value)
         @@tag_number = 0 unless defined?(@@tag_number)
         tag = "tag#{@@tag_number += 1}"
-        @tk.tag_configure(tag, options)
-        @tk.tag_add(tag, location_start, location_end)
+        @tk.tag_configure(tag, {option => value})
+        @tk.tag_add(tag, region_start, region_end)
+        tag
+      end
+      
+      # toggles option/value tag (removes if already applied)
+      def toggle_tag(region_start, region_end, option, value)
+        tag_names = @tk.tag_names - ['sel']
+        option_applied_tags = tag_names.select do |tag_name|
+          @tk.tag_ranges(tag_name).any? do |range|
+            if range.first.to_f <= region_start.to_f && range.last.to_f >= region_end.to_f
+              if value.is_a?(Hash)
+                value.all? do |key, subvalue|
+                  @tk.tag_cget(tag_name, option).send(key) == subvalue
+                end
+              else
+                @tk.tag_cget(tag_name, option) == value
+              end
+            end
+          end
+        end
+        if option_applied_tags.empty?
+          tag(region_start, region_end, option, value)
+        else
+          partial_intersection_option_applied_tags = tag_names.select do |tag_name|
+            @tk.tag_ranges(tag_name).any? do |range|
+              if range.first.to_f.between?(region_start.to_f, region_end.to_f) or
+                 range.last.to_f.between?(region_start.to_f, region_end.to_f) or
+                 (range.first.to_f <= region_start.to_f && range.last.to_f >= region_end.to_f)
+                if value.is_a?(Hash)
+                  value.all? do |key, subvalue|
+                    @tk.tag_cget(tag_name, option).send(key) == subvalue
+                  end
+                else
+                  @tk.tag_cget(tag_name, option) == value
+                end
+              end
+            end
+          end
+          partial_intersection_option_applied_tags.each do |option_applied_tag|
+            @tk.tag_remove(option_applied_tag, region_start, region_end)
+          end
+          nil
+        end
       end
       
       private

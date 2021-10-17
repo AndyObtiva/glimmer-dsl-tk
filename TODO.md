@@ -3,7 +3,6 @@
 ## General
 
 - Hello, Text! (build a word processor with a toolbar having font, font size, font color, background color, bold, italic, underline, strikethrough, cut, copy, paste, insert image, find dialog, undo, redo)
-- Maintain location of `text` mark (insertion point) after updating `text` attribute
 - Implement `code_text` custom widget using `text` and `rouge` gem
 - Update Meta-Sample to use `code_text` custom widget
 
