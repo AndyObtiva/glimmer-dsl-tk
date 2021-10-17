@@ -5,6 +5,8 @@
 - Ensure spinbox data-binding updates on text key changes (without incrementing/decrementing)
 - Optimize `text=` attribute setter on `text` widget when setting a text value that includes all previous text by having it not delete and reinsert, yet append instead.
 - Support font attribute for arbitrary fonts with terse syntax (`font 'times 12 bold'` not `font TkFont.new('times 12 bold')`)
+- Support a quicker way of tagging (instead of the two-step process of tagging with a keyword and then configuring the keyword style) (e.g. `text.tag(5.0, 6.0, :background=>'yellow', :font=>'TkFixedFont', :relief=>'raised')`)
+- Support styles and ability to define and apply a style in one shot
 
 ## 0.0.25
 

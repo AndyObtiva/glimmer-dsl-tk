@@ -19,23 +19,43 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/expression'
+require 'glimmer-dsl-tk'
 
-module Glimmer
-  module DSL
-    module Tk
-      class AttributeExpression < Expression
-        def can_interpret?(parent, keyword, *args, &block)
-          block.nil? and
-            args.size > 0 and
-            parent.respond_to?(:set_attribute)
-        end
+class HelloText
+  include Glimmer
   
-        def interpret(parent, keyword, *args, &block)
-          parent.set_attribute(keyword, *args)
-          nil
-        end
-      end
-    end
+  def launch
+    root {
+      title 'Hello, Text!'
+      
+      frame {
+        grid row: 0, column: 0
+        
+        button {
+          grid row: 0, column: 0
+          text 'B'
+          font 'times 12 bold'
+        }
+        button {
+          grid row: 0, column: 1
+          text 'I'
+          font 'times 12 italic'
+        }
+        button {
+          grid row: 0, column: 2
+          text 'U'
+        }
+        button {
+          grid row: 0, column: 3
+          text 'S'
+        }
+      }
+      
+      @text = text {
+        grid row: 1, column: 0
+      }
+    }.open
   end
 end
+
+HelloText.new.launch

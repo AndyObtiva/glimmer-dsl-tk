@@ -2,13 +2,8 @@
 
 ## General
 
-- Support a quicker way of tagging (instead of the two-step process of tagging with a keyword and then configuring the keyword style) (e.g. `text.tag(5.0, 6.0, :background=>'yellow', :font=>'TkFixedFont', :relief=>'raised')`)
-instead of:
-```ruby
-      @code_text.tag_configure('highlightline', :background=>'yellow', :font=>'TkFixedFont', :relief=>'raised')
-      @code_text.tag_add('highlightline', 5.0, 6.0)
-```
 - Hello, Text! (build a word processor with a toolbar having font, font size, font color, background color, bold, italic, underline, strikethrough, cut, copy, paste, insert image, find dialog, undo, redo)
+- Maintain location of `text` mark (insertion point) after updating `text` attribute
 - Implement `code_text` custom widget using `text` and `rouge` gem
 - Update Meta-Sample to use `code_text` custom widget
 
@@ -16,7 +11,6 @@ instead of:
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 - Add default padding to `root`, `frame`, and `labelframe`
 
-- Support styles
 - Support themes
 - Custom Widgets
 - Support canvas shapes:

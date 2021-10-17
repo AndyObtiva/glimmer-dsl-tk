@@ -59,6 +59,13 @@ module Glimmer
         @text = get("1.0", 'end')
       end
       
+      def tag(location_start, location_end, options)
+        @@tag_number = 0 unless defined?(@@tag_number)
+        tag = "tag#{@@tag_number += 1}"
+        @tk.tag_configure(tag, options)
+        @tk.tag_add(tag, location_start, location_end)
+      end
+      
       private
       
       def initialize_defaults

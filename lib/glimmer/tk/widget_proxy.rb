@@ -57,7 +57,7 @@ module Glimmer
               Glimmer::Config.logger.debug e.full_message
             end
           end
-          tk_widget_class
+          tk_widget_class if tk_widget_class.respond_to?(:new)
         end
       end
       
@@ -144,37 +144,46 @@ module Glimmer
           tk_widget_has_attribute_getter_setter?(attribute) or
           has_state?(attribute) or
           has_attributes_attribute?(attribute) or
-          respond_to?(attribute_setter(attribute), args)
+          respond_to?(attribute_setter(attribute), *args) or
+          respond_to?(attribute, *args, super_only: true)
       end
 
       def set_attribute(attribute, *args)
-        widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]
-        if respond_to?(attribute_setter(attribute), super_only: true)
-          send(attribute_setter(attribute), *args)
-        elsif respond_to?(attribute, super_only: true) && self.class.instance_method(attribute).parameters.size > 0
-          send(attribute, *args)
-        elsif widget_custom_attribute
-          widget_custom_attribute[:setter][:invoker].call(@tk, args)
-        elsif tk_widget_has_attribute_setter?(attribute)
-          unless args.size == 1 && @tk.send(attribute) == args.first
-            if args.size == 1
-              @tk.send(attribute_setter(attribute), *args)
-            else
-              @tk.send(attribute_setter(attribute), args)
+        begin
+          widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]
+          if respond_to?(attribute_setter(attribute), super_only: true)
+            send(attribute_setter(attribute), *args)
+          elsif respond_to?(attribute, super_only: true) && self.class.instance_method(attribute).parameters.size > 0
+            send(attribute, *args)
+          elsif widget_custom_attribute
+            widget_custom_attribute[:setter][:invoker].call(@tk, args)
+          elsif tk_widget_has_attribute_setter?(attribute)
+            unless args.size == 1 && @tk.send(attribute) == args.first
+              if args.size == 1
+                @tk.send(attribute_setter(attribute), *args)
+              else
+                @tk.send(attribute_setter(attribute), args)
+              end
             end
-          end
-        elsif tk_widget_has_attribute_getter_setter?(attribute)
-          @tk.send(attribute, *args)
-        elsif has_state?(attribute)
-          attribute = attribute.sub(/=$/, '')
-          if !!args.first
-            @tk.tile_state(attribute)
+          elsif tk_widget_has_attribute_getter_setter?(attribute)
+            @tk.send(attribute, *args)
+          elsif has_state?(attribute)
+            attribute = attribute.sub(/=$/, '')
+            if !!args.first
+              @tk.tile_state(attribute)
+            else
+              @tk.tile_state("!#{attribute}")
+            end
+          elsif has_attributes_attribute?(attribute)
+            attribute = attribute.sub(/=$/, '')
+            @tk.attributes(attribute, args.first)
           else
-            @tk.tile_state("!#{attribute}")
+            raise "#{self} cannot handle attribute #{attribute} with args #{args.inspect}"
           end
-        elsif has_attributes_attribute?(attribute)
-          attribute = attribute.sub(/=$/, '')
-          @tk.attributes(attribute, args.first)
+        rescue => e
+          Glimmer::Config.logger.debug {"Failed to set attribute #{attribute} with args #{args.inspect}. Attempting to set through style instead..."}
+          Glimmer::Config.logger.debug {e.full_message}
+          apply_style(attribute => args.first)
         end
       end
 
@@ -223,6 +232,17 @@ module Glimmer
       
       def font=(value)
         @tk.font = value.is_a?(TkFont) ? value : TkFont.new(value)
+      rescue => e
+        Glimmer::Config.logger.debug {"Failed to set attribute #{attribute} with args #{args.inspect}. Attempting to set through style instead..."}
+        Glimmer::Config.logger.debug {e.full_message}
+        apply_style({"font" => value})
+      end
+      
+      def apply_style(options)
+        @@style_number = 0 unless defined?(@@style_number)
+        style = "style#{@@style_number}.#{@tk.class.name.split('::').last}"
+        ::Tk::Tile::Style.configure(style, options)
+        @tk.style = style
       end
       
       def widget_custom_attribute_mapping
