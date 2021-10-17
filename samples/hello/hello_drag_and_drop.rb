@@ -1,4 +1,5 @@
 require "glimmer-dsl-tk"
+require "glimmer/tk/drag_and_drop_extension"
 
 include Glimmer
 
@@ -9,7 +10,7 @@ root {
     labelframe {
       text "Drag sources"
       padding 5
-      lb = label {
+      label {
         text "Entry"
         grid :row => 0, :column => 0
       }
@@ -17,7 +18,24 @@ root {
         text "Drag entry text"
         width 30
         grid :row => 0, :column => 1, :pady => 5, :sticky => "e"
-        draggable
+        on_drag_start { |event|
+          event.data = event.source.textvariable&.value
+          event.source.configure(:cursor => "hand2")
+          TkLabel.new(event.tooltip) {
+            text event.data + " "
+            bg "yellow"
+            bitmap "warning"
+            compound "right"
+          }.pack
+        }
+        on_drag_motion { |event|
+          if event.drop_accepted
+            event.source.configure(:cursor => "hand1")
+          else
+            event.source.configure(:cursor => "hand2")
+          end
+          event.tooltip.geometry("+#{event.x_root + 10}+#{event.y_root - 4}")
+        }
       }
       label {
         text "Label"
@@ -27,18 +45,20 @@ root {
         text "Drag label text"
         width 30
         grid :row => 1, :column => 1, :pady => 10, :sticky => "e"
-        draggable
+        drag_source true
       }
       label {
         text "Combobox"
-        grid :row => 2, :column => 0, :padx => 14
+        grid :row => 2, :column => 0
       }
       combobox {
         text "Spain"
         values %w[USA Canada Mexico Columbia UK Australia Germany Italy Spain]
         width 27
         grid :row => 2, :column => 1, :pady => 5, :sticky => "e"
-        draggable
+        on_drag_start { |event|
+          event.data = event.source.textvariable&.value
+        }
       }
       label {
         text "Button"
@@ -47,7 +67,7 @@ root {
       button {
         text "Drag it"
         grid :row => 3, :column => 1, :pady => 5, :sticky => "w"
-        draggable
+        drag_source true
       }
     }
 
@@ -62,7 +82,9 @@ root {
       entry {
         width 30
         grid :row => 0, :column => 1, :pady => 5, :sticky => "e"
-        droppable
+        on_drop { |event|
+          event.target.textvariable.value = event.data
+        }
       }
       label {
         text "Label"
@@ -73,7 +95,9 @@ root {
         grid :row => 1, :column => 1, :pady => 10, :sticky => "e"
         borderwidth 2
         relief "solid"
-        droppable
+        on_drop { |event|
+          event.target.textvariable.value = event.data
+        }
       }
       label {
         text "Combobox"
@@ -82,7 +106,9 @@ root {
       combobox {
         width 27
         grid :row => 2, :column => 1, :pady => 5, :sticky => "e"
-        droppable
+        on_drop { |event|
+          event.target.textvariable.value = event.data
+        }
       }
       label {
         text "Button"
@@ -91,16 +117,21 @@ root {
       button {
         text "Drop here"
         grid :row => 3, :column => 1, :pady => 5, :sticky => "w"
-        droppable
+        on_drop { |event|
+          event.target.text = event.data
+          event.source.destroy if event.source.is_a? Tk::Button
+        }
       }
       label {
         text "Checkbutton"
-        grid :row => 4, :column => 0, :padx => 10
+        grid :row => 4, :column => 0
       }
       checkbutton {
         text "Check"
         grid :row => 4, :column => 1, :pady => 5, :sticky => "w"
-        droppable
+        on_drop { |event|
+          event.target.text = event.data
+        }
       }
     }
   }
