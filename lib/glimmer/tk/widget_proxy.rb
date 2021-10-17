@@ -210,6 +210,12 @@ module Glimmer
         "#{attribute}="
       end
       
+      def style=(styles)
+        styles.each do |attribute, value|
+          apply_style(attribute => value)
+        end
+      end
+      
       def grid(options = {})
         options = options.stringify_keys
         index_in_parent = @parent_proxy.children.index(self)

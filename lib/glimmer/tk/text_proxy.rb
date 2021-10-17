@@ -59,7 +59,7 @@ module Glimmer
         @text = get("1.0", 'end')
       end
       
-      def tag(region_start, region_end, option, value)
+      def add_format(region_start, region_end, option, value)
         @@tag_number = 0 unless defined?(@@tag_number)
         tag = "tag#{@@tag_number += 1}"
         @tk.tag_configure(tag, {option => value})
@@ -67,8 +67,10 @@ module Glimmer
         tag
       end
       
+      # TODO implement remove_format
+      
       # toggles option/value tag (removes if already applied)
-      def toggle_tag(region_start, region_end, option, value)
+      def toggle_format(region_start, region_end, option, value)
         tag_names = @tk.tag_names - ['sel']
         option_applied_tags = tag_names.select do |tag_name|
           @tk.tag_ranges(tag_name).any? do |range|
@@ -84,7 +86,8 @@ module Glimmer
           end
         end
         if option_applied_tags.empty?
-          tag(region_start, region_end, option, value)
+          # TODO look for partial intersections and hash values to invoke @tk.tag_configure(tag, {option => value}) to combine with old values where needed
+          add_format(region_start, region_end, option, value)
         else
           partial_intersection_option_applied_tags = tag_names.select do |tag_name|
             @tk.tag_ranges(tag_name).any? do |range|
@@ -102,12 +105,13 @@ module Glimmer
             end
           end
           partial_intersection_option_applied_tags.each do |option_applied_tag|
+            # TODO look for partial intersections and hash values to invoke @tk.tag_configure(tag, {option => value}) to uncombine with old values where needed
             @tk.tag_remove(option_applied_tag, region_start, region_end)
           end
           nil
         end
       end
-      
+            
       private
       
       def initialize_defaults

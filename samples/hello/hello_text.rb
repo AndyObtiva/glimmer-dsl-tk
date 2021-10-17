@@ -34,13 +34,13 @@ class HelloText
         button {
           grid row: 0, column: 0
           text 'B'
-          font 'times 12 bold'
+          font 'times 12 bold roman'
           
           on('command') do
             @text.tag_ranges('sel').each do |region|
               region_start = region.first
               region_end = region.last
-              @text.toggle_tag(region_start, region_end, 'font', {'weight' => 'bold'})
+              @text.toggle_format(region_start, region_end, 'font', {'weight' => 'bold'})
             end
           end
         }
@@ -48,19 +48,29 @@ class HelloText
           grid row: 0, column: 1
           text 'I'
           font 'times 12 italic'
+          
+          on('command') do
+            @text.tag_ranges('sel').each do |region|
+              region_start = region.first
+              region_end = region.last
+              @text.toggle_format(region_start, region_end, 'font', {'slant' => 'italic'})
+            end
+          end
         }
         button {
           grid row: 0, column: 2
           text 'U'
+          style underline: true
         }
         button {
           grid row: 0, column: 3
           text 'S'
+          overstrike true
         }
       }
       
       @text = text {
-        grid row: 1, column: 0
+        grid row: 1, column: 0, row_weight: 1
         text <<~MULTI_LINE_STRING
           According to the National Post, a heavy metal-loving high school principal in Canada will be allowed to keep her job, days after a public campaign to oust her made headlines around the globe.
           
