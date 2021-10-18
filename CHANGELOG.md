@@ -7,7 +7,8 @@
 - Support font attribute for arbitrary fonts with terse syntax (`font 'times 12 bold'` not `font TkFont.new('times 12 bold')`)
 - Support a quicker way of tagging (instead of the two-step process of tagging with a keyword and then configuring the keyword style) (e.g. `text.tag(5.0, 6.0, :background=>'yellow', :font=>'TkFixedFont', :relief=>'raised')`)
 - Support styles (via `style` keyword or with attribute defaulting to style when not available) and ability to define and apply a style in one shot
-- Support `TextProxy#toggle_tag` to be able to toggle a tag option on or off for `text` widget in one shot (handles all logic for finding a tag by option)
+- Support `TextProxy#toggle_format` (+ `TextProxy#add_format` & `TextProxy#remove_format`) to be able to toggle a tag format option on or off for `text` widget in one shot instead of having to apply a tag and then configure a tag format
+- Hello, Text! (a word processor with a toolbar having foreground color and background color)
 
 ## 0.0.25
 

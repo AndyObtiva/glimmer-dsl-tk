@@ -71,6 +71,18 @@ module Glimmer
         process_selection_ranges { |range_start, range_end| toggle_format(range_start, range_end, option, value) }
       end
       
+      def add_selection_font_format(option, value)
+        process_selection_ranges { |range_start, range_end| add_font_format(range_start, range_end, option, value) }
+      end
+      
+      def remove_selection_font_format(option, value)
+        process_selection_ranges { |range_start, range_end| remove_font_format(range_start, range_end, option, value) }
+      end
+      
+      def toggle_selection_font_format(option, value)
+        process_selection_ranges { |range_start, range_end| toggle_font_format(range_start, range_end, option, value) }
+      end
+      
       def process_selection_ranges(&processor)
         @tk.tag_ranges('sel').each do |region|
           range_start = region.first
@@ -79,8 +91,22 @@ module Glimmer
         end
       end
       
-      # TODO implement add_selection_font_format, toggle_selection_font_format, remove_selection_font_format, add_font_format, toggle_font_format, and delete_font_format separately from other options since fonts have combinatorial effects
+      def applied_format?(region_start, region_end, option, value)
+        !applied_format_tags(region_start, region_end, option, value).empty?
+      end
       
+      def applied_format_tags(region_start, region_end, option, value)
+        tag_names = @tk.tag_names - ['sel']
+        
+        tag_names.select do |tag_name|
+          @tk.tag_ranges(tag_name).any? do |range|
+            if range.first.to_f <= region_start.to_f && range.last.to_f >= region_end.to_f
+              @tk.tag_cget(tag_name, option) == value
+            end
+          end
+        end
+      end
+            
       def add_format(region_start, region_end, option, value)
         @@tag_number = 0 unless defined?(@@tag_number)
         tag = "tag#{@@tag_number += 1}"
@@ -107,22 +133,6 @@ module Glimmer
         nil
       end
       
-      def applied_format?(region_start, region_end, option, value)
-        !applied_format_tags(region_start, region_end, option, value).empty?
-      end
-      
-      def applied_format_tags(region_start, region_end, option, value)
-        tag_names = @tk.tag_names - ['sel']
-        
-        tag_names.select do |tag_name|
-          @tk.tag_ranges(tag_name).any? do |range|
-            if range.first.to_f <= region_start.to_f && range.last.to_f >= region_end.to_f
-              @tk.tag_cget(tag_name, option) == value
-            end
-          end
-        end
-      end
-      
       # toggles option/value tag (removes if already applied)
       def toggle_format(region_start, region_end, option, value)
         if applied_format?(region_start, region_end, option, value)
@@ -131,6 +141,39 @@ module Glimmer
           add_format(region_start, region_end, option, value)
         end
       end
+            
+#       def applied_font_format?(region_start, region_end, option, value)
+#         !applied_font_format_tags(region_start, region_end, option, value).empty?
+#       end
+#
+#       def applied_font_format_tags(region_start, region_end, option, value)
+#         tag_names = @tk.tag_names - ['sel']
+#
+#         tag_names.select do |tag_name|
+#           @tk.tag_ranges(tag_name).any? do |range|
+#             if range.first.to_f <= region_start.to_f && range.last.to_f >= region_end.to_f
+#               @tk.tag_cget(tag_name, option) == value
+#             end
+#           end
+#         end
+#       end
+#
+#       def add_font_format(region_start, region_end, option, value)
+#       end
+#
+#       def remove_font_format(region_start, region_end, option, value)
+#       end
+#
+      ### toggles option/value tag (removes if already applied)
+#       def toggle_font_format(region_start, region_end, option, value)
+#         if applied_font_format?(region_start, region_end, option, value)
+          ### ensure removing from previous font combination (perhaps checking widget font too)
+#           remove_font_format(region_start, region_end, option, value)
+#         else
+          ### ensure adding to previous font combination (perhaps checking widget font too)
+#           add_font_format(region_start, region_end, option, value)
+#         end
+#       end
             
       private
       

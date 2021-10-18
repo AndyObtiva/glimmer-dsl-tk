@@ -24,7 +24,7 @@ require 'glimmer-dsl-tk'
 class HelloText
   include Glimmer
   
-  COLOR_OPTIONS = %w[black purple blue green orange yellow red white]
+  COLOR_OPTIONS = %w[black purple blue green orange yellow red white].map(&:capitalize)
   FOREGROUND_PROMPT = '<select foreground>'
   BACKGROUND_PROMPT = '<select background>'
   
@@ -52,58 +52,14 @@ class HelloText
       frame {
         grid row: 0, column: 0
         
-        button {
-          grid row: 0, column: 0
-          text 'B'
-          style font: 'times 12 bold roman'
-          
-          on('command') do
-            @text.tag_ranges('sel').each do |region|
-              region_start = region.first
-              region_end = region.last
-              font_hash = Hash[@text.font.actual]
-              font_hash['weight'] = 'bold'
-              @text.toggle_font_format(region_start, region_end, 'font', font_hash)
-            end
-          end
-        }
-        
-        button {
-          grid row: 0, column: 1
-          text 'I'
-          style font: 'times 12 italic'
-          
-          on('command') do
-            @text.tag_ranges('sel').each do |region|
-              region_start = region.first
-              region_end = region.last
-              font_hash = Hash[@text.font.actual]
-              font_hash['slant'] = 'italic'
-              @text.toggle_font_format(region_start, region_end, 'font', font_hash)
-            end
-          end
-        }
-        
-        button {
-          grid row: 0, column: 2
-          text 'U'
-          style underline: true
-        }
-        
-        button {
-          grid row: 0, column: 3
-          text 'S'
-          style overstrike: true
-        }
-        
         combobox {
-          grid row: 0, column: 4
+          grid row: 0, column: 0, column_weight: 1
           readonly true
           text <=> [self, :foreground, after_write: ->(value) { @text.add_selection_format('foreground', value == FOREGROUND_PROMPT ? 'black' : value) }]
         }
         
         combobox {
-          grid row: 0, column: 5
+          grid row: 0, column: 1, column_weight: 1
           readonly true
           text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'black' : value) }]
         }

@@ -3,7 +3,8 @@
 ## General
 
 - Fix issue with unbolding text in `text` widget when selecting multiple lines with an empty line
-- Hello, Text! (build a word processor with a toolbar having font, font size, font color, background color, bold, italic, underline, strikethrough, cut, copy, paste, insert image, find dialog, undo, redo)
+- Improve Hello, Text! (toolbar buttons: font, font size, bold, italic, underline, strikethrough, cut, copy, paste, insert image, find dialog, undo, redo)
+- Document all the new `text` formatting methods as well as Text Data-Binding
 - Implement `code_text` custom widget using `text` and `rouge` gem
 - Update Meta-Sample to use `code_text` custom widget
 - Look into updating block_attribute expression to not require defining blocks that simply forward to tk on the widget
