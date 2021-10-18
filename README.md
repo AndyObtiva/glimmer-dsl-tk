@@ -10,11 +10,9 @@
 
 [Glimmer](https://github.com/AndyObtiva/glimmer) DSL for [Tk](https://www.tcl.tk/) enables desktop development with [Glimmer](https://github.com/AndyObtiva/glimmer) in [Ruby](https://github.com/ruby/ruby).
 
-[Tcl/Tk](https://www.tcl.tk/) has recently improved by gaining native looking themed widgets on Mac, Windows, and Linux in [Tk version 8.5](https://www.tcl.tk/software/tcltk/8.5.html#:~:text=Highlights%20of%20Tk%208.5&text=Font%20rendering%3A%20Now%20uses%20anti,and%20window%20layout%2C%20and%20more.).
+[Tcl/Tk](https://www.tcl.tk/) has recently improved by gaining native looking themed widgets on Mac, Windows, and Linux in [Tk version 8.5](https://www.tcl.tk/software/tcltk/8.5.html#:~:text=Highlights%20of%20Tk%208.5&text=Font%20rendering%3A%20Now%20uses%20anti,and%20window%20layout%2C%20and%20more.). Additionally, [Ruby](https://www.ruby-lang.org/en/) 3.0 Ractor (formerly known as [Guilds](https://olivierlacan.com/posts/concurrency-in-ruby-3-with-guilds/)) supports truly parallel multi-threading, making both [MRI](https://github.com/ruby/ruby) and [Tk](https://www.tcl.tk/) finally viable for support in [Glimmer](https://github.com/AndyObtiva/glimmer) (Ruby Desktop Development GUI Library) as an alternative to [JRuby on SWT](https://github.com/AndyObtiva/glimmer-dsl-swt).
 
-Additionally, [Ruby](https://www.ruby-lang.org/en/) 3.0 Ractor (formerly known as [Guilds](https://olivierlacan.com/posts/concurrency-in-ruby-3-with-guilds/)) supports truly parallel multi-threading, making both [MRI](https://github.com/ruby/ruby) and [Tk](https://www.tcl.tk/) finally viable for support in [Glimmer](https://github.com/AndyObtiva/glimmer) (Ruby Desktop Development GUI Library) as an alternative to [JRuby on SWT](https://github.com/AndyObtiva/glimmer-dsl-swt).
-
-The trade-off is that while [SWT](https://www.eclipse.org/swt/) provides a plethora of high quality reusable widgets for the Enterprise (such as [Nebula](https://www.eclipse.org/nebula/)), [Tk](https://www.tcl.tk/) enables very fast app startup time and a small memory footprint via [MRI Ruby](https://www.ruby-lang.org/en/).
+The trade-off is that while [SWT](https://www.eclipse.org/swt/) provides a plethora of high quality reusable widgets for the Enterprise (such as [Nebula](https://github.com/AndyObtiva/glimmer-cw-nebula)), [Tk](https://www.tcl.tk/) enables very fast app startup time and a small memory footprint via [MRI Ruby](https://www.ruby-lang.org/en/).
 
 [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) aims to provide a DSL similar to the [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) to enable more productive desktop development in Ruby with:
 - Declarative DSL syntax that visually maps to the GUI widget hierarchy
@@ -78,7 +76,8 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
       - [Common Themed Widget States](#common-themed-widget-states)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
       - [Grid Layout](#grid-layout)
-      - [Label/Button Image](#labelbutton-image)
+      - [Image Attribute](#image-attribute)
+      - [Frame Padding](#frame-padding)
       - [Notebook Frame](#notebook-frame)
       - [Icon Photo](#icon-photo)
   - [The Grid Geometry Manager](#the-grid-geometry-manager)
@@ -331,9 +330,13 @@ Also, any widget that is the first in a series of siblings has `column_weight` a
 
 To override that behavior, you may set alternative `grid` keyword args if needed (e.g. `grid sticky: '', column_weight: 0` disables the smart defaults).
 
-#### Label/Button Image
+#### Image Attribute
 
-Label and Button `image` attribute can accept image path directly as an alternative to `TkPhotoImage` object in addition to key values for automatic processing of image (`subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`)
+Widget `image` attribute (e.g. `label` `image`) can accept image path directly as an alternative to `TkPhotoImage` object in addition to key values for automatic processing of image (`subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`)
+
+#### Frame Padding
+
+Frames have a padding of `15` all around by default to produce more user-friendly graphical user interfaces.
 
 #### Notebook Frame
 
@@ -519,24 +522,6 @@ That code binds the `textvariable` value of the `spinbox` to the `donation` attr
 It automatically handles all the Tk plumbing behind the scenes.
 
 More details can be found in [Hello, Spinbox!](#hello-spinbox) sample below.
-
-### Text Data-Binding
-
-Example:
-
-This assumes a `Person` model with a `address` attribute.
-
-```ruby
-  text {
-    text <=> [person, :address]
-  }
-```
-
-That code binds the text content of `text` to the `address` attribute on the `person` model.
-
-It automatically handles all the Tk plumbing behind the scenes (including fine-grained inserts and deletes, abstracting them all away).
-
-More details can be found in [Glimmer Meta-Sample](#samples) below.
 
 ### Checkbutton Data-Binding
 
