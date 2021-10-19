@@ -3,6 +3,7 @@
 ## 0.0.27
 
 - Default `text` widget to `wrap = 'none'`
+- Set correct `wrap 'word'` attribute for `text` widget in Hello, Text!
 
 ## 0.0.26
 

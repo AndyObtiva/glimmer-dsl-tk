@@ -67,6 +67,7 @@ class HelloText
       
       @text = text {
         grid row: 1, column: 0, row_weight: 1
+        wrap 'word'
         text <<~MULTI_LINE_STRING
           According to the National Post, a heavy metal-loving high school principal in Canada will be allowed to keep her job, days after a public campaign to oust her made headlines around the globe.
           
