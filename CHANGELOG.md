@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.27
+
+- Default `text` widget to `wrap = 'none'`
+
 ## 0.0.26
 
 - Ensure spinbox data-binding updates on text key changes (without incrementing/decrementing)

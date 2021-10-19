@@ -179,6 +179,7 @@ module Glimmer
       
       def initialize_defaults
         super
+        self.wrap = 'none'
         self.padx = 5
         self.pady = 5
       end
