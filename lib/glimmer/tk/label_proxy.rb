@@ -30,10 +30,11 @@ module Glimmer
     class LabelProxy < WidgetProxy
       include TextVariableOwner
       
-      def set_attribute(attribute, *args)
-        if attribute.to_s == 'font'
-          args[0] = "tk_#{args[0]}_font".camelcase(:upper) if (args[0].is_a?(Symbol) || args[0].is_a?(String)) && args[0].to_s == args[0].to_s.downcase
-          super
+      FONTS_PREDEFINED = %w[default text fixed menu heading caption small_caption icon tooltip]
+      
+      def font=(value)
+        if (value.is_a?(Symbol) || value.is_a?(String)) && FONTS_PREDEFINED.include?(value.to_s.downcase)
+          @tk.font = "tk_#{value}_font".camelcase(:upper)
         else
           super
         end

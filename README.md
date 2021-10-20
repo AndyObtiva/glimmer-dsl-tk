@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.25
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.26
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -76,7 +76,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Supported Widgets](#supported-widgets)
       - [Common Attributes](#common-attributes)
       - [Common Themed Widget States](#common-themed-widget-states)
-    - [Smart Defaults and Convensions](#smart-defaults-and-convensions)
+    - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
       - [Grid Layout](#grid-layout)
       - [Label/Button Image](#labelbutton-image)
       - [Notebook Frame](#notebook-frame)
@@ -89,7 +89,6 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [List Multi Selection Data-Binding](#list-multi-selection-data-binding)
     - [Entry Data-Binding](#entry-data-binding)
     - [Spinbox Data-Binding](#spinbox-data-binding)
-    - [Text Data-Binding](#text-data-binding)
     - [Checkbutton Data-Binding](#checkbutton-data-binding)
     - [Radiobutton Data-Binding](#radiobutton-data-binding)
   - [Command Callback](#command-callback)
@@ -108,6 +107,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Hello, List Single Selection!](#hello-list-single-selection)
     - [Hello, List Multi Selection!](#hello-list-multi-selection)
     - [Hello, Entry!](#hello-entry)
+    - [Hello, Text!](#hello-text)
     - [Hello, Spinbox!](#hello-spinbox)
     - [Hello, Computed!](#hello-computed)
   - [Help](#help)
@@ -146,7 +146,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.25'
+gem 'glimmer-dsl-tk', '~> 0.0.26'
 ```
 
 And, then run:
@@ -317,7 +317,7 @@ keyword(args) | attributes | event bindings & callbacks
 - `invalid?`
 - `hover?`
 
-### Smart Defaults and Convensions
+### Smart Defaults and Conventions
 
 #### Event Bindings
 
@@ -325,7 +325,11 @@ Any events that normally can be accepted by the Tk `bind` or `protocol` methods 
 
 #### Grid Layout
 
-`grid` layout is the default on most widgets (which support it).
+`grid` layout with `sticky: 'nsew'` is the default on all widgets except toplevel widgets.
+
+Also, any widget that is the first in a series of siblings has `column_weight` as `1` to automatically resize with window resizing by default.
+
+To override that behavior, you may set alternative `grid` keyword args if needed (e.g. `grid sticky: '', column_weight: 0` disables the smart defaults).
 
 #### Label/Button Image
 
@@ -359,6 +363,10 @@ root {
 }.open
 ```
 
+#### Root Background
+
+`root` `background` color attribute is automatically set to `'#ececec'` on the Mac to avoid having a non-native-looking light-colored background.
+
 ## The Grid Geometry Manager
 
 The Grid Geometry Manager is supported via the `grid` keyword just as per the [Tk documentation](https://tkdocs.com/tutorial/grid.html), except by nesting under the widget it concerns.
@@ -377,9 +385,17 @@ Example:
         }
 ```
 
+Extra convenience options may be passed to `grid` when using [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk):
+- `min_width`: alias for `columnminsize` being called on `TkGrid.columnconfigure`
+- `min_height`: alias for `rowminsize` being called on `TkGrid.rowconfigure`
+- `column_weight`: alias for `columnweight` being called on `TkGrid.columnconfigure`
+- `row_weight`: alias for `rowweight` being called on `TkGrid.rowconfigure`
+
+Note also the [Grid Layout](#grid-layout) conventions (e.g. `column_weight` is automatically set to `1` for the first widget in a series of siblings to automatically have all resize when window resize)
+
 More details can be found in the [Hello, Computed!](#hello-computed) sample below.
 
-## Bidirectional Data-Binding
+## Data-Binding
 
 Glimmer supports Shine syntax bidirectional data-binding via the `<=>` operator (read-write) and unidirectional data-binding via the `<=` operator (read-only), which takes a model and an attribute (the `bind` keyword may also be used as the old-style of data-binding).
 
@@ -409,7 +425,7 @@ This assumes a `Person` model with a `country` attribute representing their curr
 
 ```ruby
   combobox {
-    state 'readonly'
+    readonly true # this applies to text editing only (item selection still triggers a write to model)
     text <=> [person, :country]
   }
 ```
@@ -570,7 +586,7 @@ More details can be found in the [Hello, Radiobutton!](#hello-radiobutton) sampl
 
 ## Command Callback
 
-`button` and `checkbutton` can set a `command` block to trigger when the user clicks the button/checkbutton. This may be done with the `command` keyword, passing in a block directly.
+`button`, `spinbox`, `radiobutton` and `checkbutton` can set a `command` block to trigger when the user clicks the button/checkbutton. This may be done with the `command` keyword, passing in a block directly.
 
 Example:
 
@@ -581,6 +597,18 @@ Example:
     command {
       person.reset_country
     }
+  }
+```
+
+Alternatively, it can be treated as simply an event for consistency with other event bindings:
+
+```ruby
+  button {
+    text "Reset Selection"
+    
+    on('command') do
+      person.reset_country
+    end
   }
 ```
 
@@ -1390,12 +1418,12 @@ Glimmer code (from [samples/hello/hello_combobox.rb](samples/hello/hello_combobo
 root {
   title 'Hello, Combobox!'
   
-  combobox { |proxy|
-    state 'readonly'
+  combobox {
+    readonly true # this applies to text editing only (item selection still triggers a write to model)
     text <=> [person, :country]
   }
   
-  button { |proxy|
+  button {
     text "Reset Selection"
     command {
       person.reset_country
@@ -1499,86 +1527,6 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello list multi selection](images/glimmer-dsl-tk-screenshot-sample-hello-list-multi-selection.png)
 
-### Hello, Computed!
-
-Glimmer code (from [samples/hello/hello_computed.rb](samples/hello/hello_computed.rb)):
-
-```ruby
-# ... more code precedes
-    root {
-      title 'Hello, Computed!'
-      
-      frame {
-        grid column: 0, row: 0, padx: 5, pady: 5
-        
-        label {
-          grid column: 0, row: 0, sticky: 'w'
-          text 'First Name: '
-        }
-        entry {
-          grid column: 1, row: 0
-          width 15
-          text <=> [@contact, :first_name]
-        }
-        
-        label {
-          grid column: 0, row: 1, sticky: 'w'
-          text 'Last Name: '
-        }
-        entry {
-          grid column: 1, row: 1
-          width 15
-          text <=> [@contact, :last_name]
-        }
-        
-        label {
-          grid column: 0, row: 2, sticky: 'w'
-          text 'Year of Birth: '
-        }
-        entry {
-          grid column: 1, row: 2
-          width 15
-          text <=> [@contact, :year_of_birth]
-        }
-        
-        label {
-          grid column: 0, row: 3, sticky: 'w'
-          text 'Name: '
-        }
-        label {
-          grid column: 1, row: 3, sticky: 'w'
-          text <=> [@contact, :name, computed_by: [:first_name, :last_name]]
-        }
-        
-        label {
-          grid column: 0, row: 4, sticky: 'w'
-          text 'Age: '
-        }
-        label {
-          grid column: 1, row: 4, sticky: 'w'
-          text <=> [@contact, :age, on_write: :to_i, computed_by: [:year_of_birth]]
-        }
-      }
-    }.open
-# ... more code follows
-```
-
-Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
-
-```
-ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_computed'"
-```
-
-Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
-
-```
-ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_computed.rb
-```
-
-Glimmer app:
-
-![glimmer dsl tk screenshot sample hello computed](images/glimmer-dsl-tk-screenshot-sample-hello-computed.png)
-
 ### Hello, Entry!
 
 Glimmer code (from [samples/hello/hello_entry.rb](samples/hello/hello_entry.rb)):
@@ -1603,7 +1551,7 @@ class HelloEntry
       title 'Hello, Entry!'
       
       label {
-        grid sticky: 'ew', column_weight: 1
+        grid sticky: 'ew'
         text 'default entry'
       }
       entry {
@@ -1685,6 +1633,111 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello entry](images/glimmer-dsl-tk-screenshot-sample-hello-entry.png)
 ![glimmer dsl tk screenshot sample hello entry validated](images/glimmer-dsl-tk-screenshot-sample-hello-entry-validated.png)
+
+### Hello, Text!
+
+[Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) automatically provides a `text` attribute for the `text` widget that enables updating its content simply without worrying about whether to manually insert by index, delete, or append.
+
+Glimmer code (from [samples/hello/hello_text.rb](samples/hello/hello_text.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+class HelloText
+  include Glimmer
+  
+  COLOR_OPTIONS = %w[black purple blue green orange yellow red white].map(&:capitalize)
+  FOREGROUND_PROMPT = '<select foreground>'
+  BACKGROUND_PROMPT = '<select background>'
+  
+  def initialize
+    @foreground = FOREGROUND_PROMPT
+    @background = BACKGROUND_PROMPT
+  end
+  
+  attr_accessor :foreground
+  
+  def foreground_options
+    [FOREGROUND_PROMPT] + COLOR_OPTIONS
+  end
+  
+  attr_accessor :background
+  
+  def background_options
+    [BACKGROUND_PROMPT] + COLOR_OPTIONS
+  end
+  
+  def launch
+    root {
+      title 'Hello, Text!'
+      
+      frame {
+        grid row: 0, column: 0
+        
+        combobox {
+          grid row: 0, column: 0, column_weight: 1
+          readonly true
+          text <=> [self, :foreground, after_write: ->(value) { @text.add_selection_format('foreground', value == FOREGROUND_PROMPT ? 'black' : value) }]
+        }
+        
+        combobox {
+          grid row: 0, column: 1, column_weight: 1
+          readonly true
+          text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'black' : value) }]
+        }
+      }
+      
+      @text = text {
+        grid row: 1, column: 0, row_weight: 1
+        text <<~MULTI_LINE_STRING
+          According to the National Post, a heavy metal-loving high school principal in Canada will be allowed to keep her job, days after a public campaign to oust her made headlines around the globe.
+          
+          Parents at Eden High School in St. Catharines, Ontario launched a petition to remove principal Sharon Burns after discovering she's an IRON MAIDEN fan.
+          
+          The petition, titled "Eden High School Principal, Sharon Burns, Needs to Be Transferred Immediately!" read, "We are deeply disturbed that the principal assigned to the school blatantly showed Satanic symbols and her allegiance to Satanic practices on her public social media platforms where all the students can see them under @edenprincipal (not her personal account)."
+          
+          More than 500 people signed the petition to transfer Burns after she posted a picture of herself flashing the "devil horns" hand sign with a doll of the MAIDEN zombie mascot Eddie behind her as well as a personalized license plate reading "IRNMADEN" and a handwritten note that reads "Eddie 666" on a car's dashboard.
+          
+          
+          The number 666 is used to represent the devil, and is featured prominently in MAIDEN's artwork by the band, whose classic third album is titled "The Number Of The Beast".
+          
+          The petition was later updated to state that the demand for her transfer is not because of her love for metal, but for "openly displaying her own handmade sign with the 666 clearly displayed on it".
+          
+          The creator of the original petition wrote: "Sharon knows full well what she did was simply inappropriate, unnecessary and not professional but has yet to publicly admit so and is willing to allow people to believe a completely different story, making very real concerns seem petty."
+          
+          Meanwhile, a counter-petition supporting Burns garnered over 20,000 signatures.
+          
+          "It is ridiculous that a couple of parents judge her role as a principal only based on an Instagram post. (About liking the band IRON MAIDEN. That's it.) Eden High School is a public school. Not a Christian school," the petition titled "We need Mrs Burns" stated. "She has made Eden a safe space for so many people. She spreads nothing but love and kindness."
+          
+          After the complaints were aired, the District School Board of Niagara spoke with Burns and the parents who launched the petition, and the issue is over as far as the board is concerned, Kim Sweeney, the board's chief communications officer, told the National Post. No disciplinary action or policy changes were needed.
+          
+          "Our belief is that taste in music is subjective and we support that both students and staff enjoy a wide variety of genres," Sweeney said.
+          
+          The original petition has since been removed.
+        MULTI_LINE_STRING
+      }
+    }.open
+  end
+end
+
+HelloText.new.launch
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_text'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_text.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello text](images/glimmer-dsl-tk-screenshot-sample-hello-text.png)
 
 ### Hello, Spinbox!
 

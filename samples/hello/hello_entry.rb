@@ -38,7 +38,7 @@ class HelloEntry
       title 'Hello, Entry!'
       
       label {
-        grid sticky: 'ew', column_weight: 1
+        grid sticky: 'ew'
         text 'default entry'
       }
       entry {
@@ -72,7 +72,7 @@ class HelloEntry
 
         ## this event kicks in just after the text variable is validated and before it is modified
         on('invalid') do |validate_args|
-          @validated_entry_label.text = "#{validate_args.string} is not valid!"
+          @validated_entry_label.text = "#{validate_args.value} is not valid!"
           @validated_entry_label.foreground = 'red'
         end
 
