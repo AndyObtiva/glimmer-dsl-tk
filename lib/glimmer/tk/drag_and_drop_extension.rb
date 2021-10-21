@@ -37,23 +37,22 @@ module Glimmer
 
       def make_draggable
         drag_event = nil
-        bind("ButtonPress-3", proc { |tk_event|
-          tooltip = TkToplevel.new(root).overrideredirect(1) #create tooltip window to display dragged data
-          tooltip.geometry("+#{tk_event.x_root + 10}+#{tk_event.y_root - 2}")
-          drag_event = DragAndDropEvent.new(self.tk, nil, tooltip, tk_event.x_root, tk_event.y_root, nil, false)
-          if @drag_source
-            tk_event.widget.configure(:cursor => "hand2")
-            # Default data to drag is text
-            drag_event.data = if textvariable_defined? then tk.textvariable.value elsif has_attribute?(:text) then tk.text end
-            TkLabel.new(tooltip) { text drag_event.data }.pack
-          elsif !@on_drag_start_block.nil?
-            @on_drag_start_block.call(drag_event)
-            TkLabel.new(tooltip) { text drag_event.data }.pack if tooltip.winfo_children().length == 0
-          end
-        })
         bind("<DropAcceptedEvent>", proc { |event| drag_event.drop_accepted = true })
-        bind("B3-Motion", proc { |tk_event|
-          if drag_event
+        bind("B1-Motion", proc { |tk_event|
+          if drag_event.nil?
+            tooltip = TkToplevel.new(root).overrideredirect(1) #create tooltip window to display dragged data
+            tooltip.geometry("+#{tk_event.x_root + 10}+#{tk_event.y_root - 2}")
+            drag_event = DragAndDropEvent.new(self.tk, nil, tooltip, tk_event.x_root, tk_event.y_root, nil, false)
+            if @drag_source
+              tk_event.widget.configure(:cursor => "hand2")
+              # Default data to drag is text
+              drag_event.data = if textvariable_defined? then tk.textvariable.value elsif has_attribute?(:text) then tk.text end
+              TkLabel.new(tooltip) { text drag_event.data }.pack
+            elsif !@on_drag_start_block.nil?
+              @on_drag_start_block.call(drag_event)
+              TkLabel.new(tooltip) { text drag_event.data }.pack if tooltip.winfo_children().length == 0
+            end
+          else
             drag_event.x_root, drag_event.y_root = tk_event.x_root, tk_event.y_root
             drag_event.drop_accepted = false
             move_over_widget = tk_event.widget.winfo_containing(tk_event.x_root, tk_event.y_root)
@@ -74,7 +73,7 @@ module Glimmer
             end
           end
         })
-        bind("ButtonRelease-3", proc { |tk_event|
+        bind("ButtonRelease-1", proc { |tk_event|
           if drag_event
             drag_event.target = tk_event.widget.winfo_containing(tk_event.x_root, tk_event.y_root)
             drag_event.source.configure(:cursor => "")
@@ -86,9 +85,8 @@ module Glimmer
       end
 
       def make_non_draggable
-        @tk.bind_remove("ButtonPress-3")
-        @tk.bind_remove("B3-Motion")
-        @tk.bind_remove("ButtonRelease-3")
+        @tk.bind_remove("B1-Motion")
+        @tk.bind_remove("ButtonRelease-1")
         @tk.bind_remove("<DropAcceptedEvent>")
       end
 

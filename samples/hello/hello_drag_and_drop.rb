@@ -119,7 +119,6 @@ root {
         grid :row => 3, :column => 1, :pady => 5, :sticky => "w"
         on_drop { |event|
           event.target.text = event.data
-          event.source.destroy if event.source.is_a? Tk::Button
         }
       }
       label {
@@ -131,6 +130,7 @@ root {
         grid :row => 4, :column => 1, :pady => 5, :sticky => "w"
         on_drop { |event|
           event.target.text = event.data
+          event.source.destroy
         }
       }
     }
