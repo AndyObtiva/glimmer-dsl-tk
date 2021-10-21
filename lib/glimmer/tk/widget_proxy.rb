@@ -34,7 +34,9 @@ module Glimmer
           begin
             class_name = "#{keyword.camelcase(:upper)}Proxy".to_sym
             Glimmer::Tk.const_get(class_name)
-          rescue
+          rescue => e
+            Glimmer::Config.logger.debug {"Unable to instantiate custom class name for #{keyword} ... defaulting to Glimmer::Tk::WidgetProxy"}
+            Glimmer::Config.logger.debug {e.full_message}
             Glimmer::Tk::WidgetProxy
           end
         end
@@ -54,7 +56,7 @@ module Glimmer
               tk_widget_class = eval(tk_widget_name)
               break
             rescue RuntimeError, SyntaxError, NameError => e
-              Glimmer::Config.logger.debug e.full_message
+              Glimmer::Config.logger.debug {e.full_message}
             end
           end
           tk_widget_class if tk_widget_class.respond_to?(:new)
@@ -104,6 +106,8 @@ module Glimmer
           @tk.send(attribute_setter(attribute), @tk.send(attribute))
           result = true
         rescue => e
+          Glimmer::Config.logger.debug { "No tk attribute setter for #{attribute}" }
+          Glimmer::Config.logger.debug { e.full_message }
           result = false
         end
         result
@@ -114,7 +118,8 @@ module Glimmer
           # TK Widget currently doesn't support respond_to? properly, so I have to resort to this trick for now
           @tk.send(attribute)
           true
-        rescue
+        rescue => e
+          Glimmer::Config.logger.debug { "No tk attribute getter setter for #{attribute}" }
           false
         end
       end
@@ -125,7 +130,8 @@ module Glimmer
           begin
             @tk.tile_instate(attribute)
             true
-          rescue
+          rescue => e
+            Glimmer::Config.logger.debug { "No tk state for #{attribute}" }
             false
           end
         else
@@ -247,7 +253,7 @@ module Glimmer
       
       def apply_style(options)
         @@style_number = 0 unless defined?(@@style_number)
-        style = "style#{@@style_number}.#{@tk.class.name.split('::').last}"
+        style = "style#{@@style_number += 1}.#{@tk.class.name.split('::').last}"
         ::Tk::Tile::Style.configure(style, options)
         @tk.style = style
       end

@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.0.27
+
+- Improve Hello, Text! (toolbar buttons: bold, italic, underline)
+- Set correct `wrap 'word'` attribute for `text` widget in Hello, Text!
+- Default `text` widget to `wrap = 'none'`
+- Default `text` widget to `font = {family: 'Courier New'}`
+- Fix issue with unbolding text in `text` widget when selecting multiple lines with an empty line
+
 ## 0.0.26
 
 - Ensure spinbox data-binding updates on text key changes (without incrementing/decrementing)

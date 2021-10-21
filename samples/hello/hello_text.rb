@@ -52,14 +52,44 @@ class HelloText
       frame {
         grid row: 0, column: 0
         
+        button {
+          grid row: 0, column: 0, column_weight: 0
+          text 'B'
+          style font: {weight: 'bold'}
+          
+          on('command') do
+            @text.toggle_selection_font_format('weight', 'bold')
+          end
+        }
+        
+        button {
+          grid row: 0, column: 1, column_weight: 0
+          text 'I'
+          style font: {slant: 'italic'}
+          
+          on('command') do
+            @text.toggle_selection_font_format('slant', 'italic')
+          end
+        }
+        
+        button {
+          grid row: 0, column: 2, column_weight: 0
+          text 'U'
+          style font: {underline: true}
+          
+          on('command') do
+            @text.toggle_selection_font_format('underline', true)
+          end
+        }
+        
         combobox {
-          grid row: 0, column: 0, column_weight: 1
+          grid row: 0, column: 4, column_weight: 1
           readonly true
           text <=> [self, :foreground, after_write: ->(value) { @text.add_selection_format('foreground', value == FOREGROUND_PROMPT ? 'black' : value) }]
         }
         
         combobox {
-          grid row: 0, column: 1, column_weight: 1
+          grid row: 0, column: 5, column_weight: 1
           readonly true
           text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'black' : value) }]
         }
@@ -67,6 +97,7 @@ class HelloText
       
       @text = text {
         grid row: 1, column: 0, row_weight: 1
+        wrap 'word'
         text <<~MULTI_LINE_STRING
           According to the National Post, a heavy metal-loving high school principal in Canada will be allowed to keep her job, days after a public campaign to oust her made headlines around the globe.
           
