@@ -138,7 +138,7 @@ class HelloText
           image File.expand_path("images/cut.png", __dir__), subsample: 32
           
           on('command') do
-            @text.cut
+            @text.text_cut
           end
         }
         
@@ -147,7 +147,7 @@ class HelloText
           image File.expand_path("images/copy.png", __dir__), subsample: 32
           
           on('command') do
-            @text.copy
+            @text.text_copy
           end
         }
         
@@ -156,7 +156,7 @@ class HelloText
           image File.expand_path("images/paste.png", __dir__), subsample: 32
           
           on('command') do
-            @text.paste
+            @text.text_paste
           end
         }
         

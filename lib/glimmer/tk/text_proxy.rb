@@ -336,26 +336,6 @@ module Glimmer
         ::TkFont.new(Hash[font.actual])
       end
       
-      def cut
-        process_selection_ranges do |range_start, range_end|
-          # TODO copy style too
-          @copied = @tk.get(range_start, range_end)
-          @tk.delete(range_start, range_end)
-        end
-      end
-            
-      def copy
-        process_selection_ranges do |range_start, range_end|
-          # TODO copy style too
-          @copied = @tk.get(range_start, range_end)
-        end
-      end
-            
-      def paste
-        # TODO apply the copied style too
-        @tk.insert('insert', @copied.to_s)
-      end
-            
       private
       
       def initialize_defaults
