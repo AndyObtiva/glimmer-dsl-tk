@@ -74,8 +74,8 @@ class MetaSample
   def launch
     @root = root {
       title 'Glimmer Meta-Sample'
-      width 700
-      height 500
+      width 1280
+      height 720
       
       frame {
         grid row: 0, column: 0, column_weight: 0, row_weight: 1

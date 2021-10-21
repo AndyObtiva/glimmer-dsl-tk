@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.28
+
+- Update default dimensions of Meta-Sample root window to 1280x720
+- Have any widget with a `font` attribute support pre-defined fonts like `'caption'` and `'heading'` (just like `label`)
+
 ## 0.0.27
 
 - Improve Hello, Text! (toolbar buttons: bold, italic, underline)

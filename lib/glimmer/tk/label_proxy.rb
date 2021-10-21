@@ -29,16 +29,6 @@ module Glimmer
     # Follows the Proxy Design Pattern
     class LabelProxy < WidgetProxy
       include TextVariableOwner
-      
-      FONTS_PREDEFINED = %w[default text fixed menu heading caption small_caption icon tooltip]
-      
-      def font=(value)
-        if (value.is_a?(Symbol) || value.is_a?(String)) && FONTS_PREDEFINED.include?(value.to_s.downcase)
-          @tk.font = "tk_#{value}_font".camelcase(:upper)
-        else
-          super
-        end
-      end
     end
   end
 end

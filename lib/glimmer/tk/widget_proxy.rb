@@ -63,6 +63,8 @@ module Glimmer
         end
       end
       
+      FONTS_PREDEFINED = %w[default text fixed menu heading caption small_caption icon tooltip]
+      
       attr_reader :parent_proxy, :tk, :args, :keyword, :children
 
       # Initializes a new Tk Widget
@@ -244,7 +246,11 @@ module Glimmer
       end
       
       def font=(value)
-        @tk.font = value.is_a?(TkFont) ? value : TkFont.new(value)
+        if (value.is_a?(Symbol) || value.is_a?(String)) && FONTS_PREDEFINED.include?(value.to_s.downcase)
+          @tk.font = "tk_#{value}_font".camelcase(:upper)
+        else
+          @tk.font = value.is_a?(TkFont) ? value : TkFont.new(value)
+        end
       rescue => e
         Glimmer::Config.logger.debug {"Failed to set attribute #{attribute} with args #{args.inspect}. Attempting to set through style instead..."}
         Glimmer::Config.logger.debug {e.full_message}
