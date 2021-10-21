@@ -148,7 +148,7 @@ module Glimmer
       # Once add and remove are implemented, implement toggle
       # Also, there is a need for a method that checks if a font option value applies to an entire region (to decide which way to toggle with toggle method)
       def applied_font_format?(region_start, region_end, font_option, value)
-        applied_font_format_tags_and_regions(region_start, region_end).any? do |tag, region_start, region_end|
+        applied_font_format_tags_and_regions(region_start, region_end).all? do |tag, region_start, region_end|
           if tag.nil?
             @tk.font.send(font_option) == value
           else
@@ -170,7 +170,7 @@ module Glimmer
           pd end_character_index
           (start_character_index...end_character_index).each do |character_index|
             text_index = "#{line_number}.#{character_index}"
-            pd text_index
+            pd text_index, h: :t
             # TODO reimplement the following using @tk.tag_names without arg since passing an arg seems broken and returns inaccurate results
             region_tag = all_tag_names.reverse.find do |tag|
               @tk.tag_cget(tag, 'font') && @tk.tag_ranges(tag).any? do |range_start, range_end|
@@ -195,6 +195,7 @@ module Glimmer
       def add_font_format(region_start, region_end, font_option, value)
         pd region_start, region_end
         applied_font_format_tags_and_regions(region_start, region_end).each do |tag, tag_region_start, tag_region_end|
+          pd tag, h: :t
           if tag
             bigger_region_tag = @tk.tag_ranges(tag).any? do |range_start, range_end|
               text_index_less_than_other_text_index?(range_start, tag_region_start) || text_index_greater_than_other_text_index?(range_end, tag_region_end)
@@ -202,30 +203,32 @@ module Glimmer
             if bigger_region_tag
               @tk.tag_ranges(tag).each do |range_start, range_end|
                 pd range_start, range_end, tag_region_start, tag_region_end
-                if text_index_less_than_other_text_index?(range_start, tag_region_start) && text_index_less_than_or_equal_to_other_text_index?(range_end, tag_region_end)
-                  pd
+                if text_index_less_than_other_text_index?(range_start, tag_region_start) && text_index_less_than_or_equal_to_other_text_index?(range_end, tag_region_end) && text_index_greater_than_or_equal_to_other_text_index?(range_end, tag_region_start)
+                  pd 'less than or equal to'
                   font = @tk.tag_cget(tag, 'font')
+                  pd font.actual
                   remove_format(range_start, range_end, 'font', font)
-                  add_format(range_start, add_to_text_index(tag_region_start, 1), 'font', font)
-                  font_clone = font.clone
+                  add_format(range_start, tag_region_start, 'font', font)
+                  font_clone = clone_font(font)
                   font_clone.send("#{font_option}=", value)
+                  pd font.actual, font_clone.actual
                   add_format(tag_region_start, tag_region_end, 'font', font_clone)
-                elsif text_index_greater_than_other_text_index?(range_end, tag_region_end) && text_index_greater_than_or_equal_to_other_text_index?(range_start, tag_region_start)
-                  pd
+                elsif text_index_greater_than_other_text_index?(range_end, tag_region_end) && text_index_greater_than_or_equal_to_other_text_index?(range_start, tag_region_start) && text_index_less_than_or_equal_to_other_text_index?(range_start, tag_region_end)
+                  pd 'greater than or equal to'
                   font = @tk.tag_cget(tag, 'font')
                   remove_format(range_start, range_end, 'font', font)
-                  add_format(add_to_text_index(tag_region_end, 1), range_end, 'font', font)
-                  font_clone = font.clone
+                  add_format(tag_region_end, range_end, 'font', font)
+                  font_clone = clone_font(font)
                   font_clone.send("#{font_option}=", value)
                   add_format(tag_region_start, tag_region_end, 'font', font_clone)
                 elsif text_index_less_than_other_text_index?(range_start, tag_region_start) && text_index_greater_than_other_text_index?(range_end, tag_region_end)
-                  pd
+                  pd 'containing'
                   font = @tk.tag_cget(tag, 'font')
                   remove_format(range_start, range_end, 'font', font)
-                  add_format(range_start, subtract_from_text_index(tag_region_start, 1), 'font', font)
+                  add_format(range_start, tag_region_start, 'font', font)
                   remove_format(range_start, range_end, 'font', font)
-                  add_format(add_to_text_index(tag_region_end, 1), range_end, 'font', font)
-                  font_clone = font.clone
+                  add_format(tag_region_end, range_end, 'font', font)
+                  font_clone = clone_font(font)
                   font_clone.send("#{font_option}=", value)
                   add_format(tag_region_start, tag_region_end, 'font', font_clone)
                 end
@@ -250,18 +253,20 @@ module Glimmer
             end
             if bigger_region_tag
               @tk.tag_ranges(tag).each do |range_start, range_end|
-                if text_index_less_than_other_text_index?(range_start, tag_region_start) && text_index_less_than_or_equal_to_other_text_index?(range_end, tag_region_end)
+                if text_index_less_than_other_text_index?(range_start, tag_region_start) && text_index_less_than_or_equal_to_other_text_index?(range_end, tag_region_end) && text_index_greater_than_or_equal_to_other_text_index?(range_end, tag_region_start)
                   font = @tk.tag_cget(tag, 'font')
+                  pd font
                   remove_format(range_start, range_end, 'font', font)
                   add_format(range_start, subtract_from_text_index(tag_region_start, 1), 'font', font)
-                  font_clone = font.clone
+                  font_clone = clone_font(font)
                   font_clone.send("#{font_option}=", default_for_font_option(font_option))
+                  pd font, font_clone
                   add_format(tag_region_start, tag_region_end, 'font', font_clone)
-                elsif text_index_greater_than_other_text_index?(range_end, tag_region_end) && text_index_greater_than_or_equal_to_other_text_index?(range_start, tag_region_start)
+                elsif text_index_greater_than_other_text_index?(range_end, tag_region_end) && text_index_greater_than_or_equal_to_other_text_index?(range_start, tag_region_start) && text_index_less_than_or_equal_to_other_text_index?(range_start, tag_region_end)
                   font = @tk.tag_cget(tag, 'font')
                   remove_format(range_start, range_end, 'font', font)
                   add_format(add_to_text_index(tag_region_end, 1), range_end, 'font', font)
-                  font_clone = font.clone
+                  font_clone = clone_font(font)
                   font_clone.send("#{font_option}=", default_for_font_option(font_option))
                   add_format(tag_region_start, tag_region_end, 'font', font_clone)
                 elsif text_index_less_than_other_text_index?(range_start, tag_region_start) && text_index_greater_than_other_text_index?(range_end, tag_region_end)
@@ -270,7 +275,7 @@ module Glimmer
                   add_format(range_start, subtract_from_text_index(tag_region_start, 1), 'font', font)
                   remove_format(range_start, range_end, 'font', font)
                   add_format(add_to_text_index(tag_region_end, 1), range_end, 'font', font)
-                  font_clone = font.clone
+                  font_clone = clone_font(font)
                   font_clone.send("#{font_option}=", default_for_font_option(font_option))
                   add_format(tag_region_start, tag_region_end, 'font', font_clone)
                 end
@@ -287,6 +292,7 @@ module Glimmer
 
       # toggles option/value tag (removes if already applied)
       def toggle_font_format(region_start, region_end, option, value)
+        pd applied_font_format?(region_start, region_end, option, value)
         if applied_font_format?(region_start, region_end, option, value)
           remove_font_format(region_start, region_end, option, value)
         else
@@ -303,9 +309,11 @@ module Glimmer
       end
       
       def add_to_text_index(text_index, addition)
-        decimal_points = text_index.to_s.split('.').last.size - 1
-        increment = "0.#{'0'*decimal_points}1"
-        (BigDecimal(text_index.to_s) + (BigDecimal(increment) * addition)).to_s('f')
+        text_index_parts = text_index.split('.')
+        line = text_index_parts.first
+        char_index = text_index_parts.last
+        char_index = char_index.to_i + addition
+        "#{line}.#{char_index}"
       end
             
       def subtract_from_text_index(text_index, subtraction)
@@ -342,6 +350,10 @@ module Glimmer
         return true if region1_parts.first.to_i > region2_parts.first.to_i
         return false if region1_parts.first.to_i < region2_parts.first.to_i
         region1_parts.last.to_i >= region2_parts.last.to_i
+      end
+      
+      def clone_font(font)
+        ::TkFont.new(Hash[font.actual])
       end
             
       private
