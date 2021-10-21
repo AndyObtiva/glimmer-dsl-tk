@@ -93,8 +93,13 @@ class HelloText
           text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'white' : value) }]
         }
         
-        button {
+        separator {
           grid row: 0, column: 4, column_weight: 0
+          orient 'vertical'
+        }
+        
+        button {
+          grid row: 0, column: 5, column_weight: 0
           text 'B'
           style font: {weight: 'bold'}
           
@@ -104,7 +109,7 @@ class HelloText
         }
         
         button {
-          grid row: 0, column: 5, column_weight: 0
+          grid row: 0, column: 6, column_weight: 0
           text 'I'
           style font: {slant: 'italic'}
           
@@ -114,12 +119,44 @@ class HelloText
         }
         
         button {
-          grid row: 0, column: 6, column_weight: 0
+          grid row: 0, column: 7, column_weight: 0
           text 'U'
           style font: {underline: true}
           
           on('command') do
             @text.toggle_selection_font_format('underline', true)
+          end
+        }
+        
+        separator {
+          grid row: 0, column: 8, column_weight: 0
+          orient 'vertical'
+        }
+        
+        button {
+          grid row: 0, column: 9, column_weight: 0
+          image File.expand_path("images/cut.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.cut
+          end
+        }
+        
+        button {
+          grid row: 0, column: 10, column_weight: 0
+          image File.expand_path("images/copy.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.copy
+          end
+        }
+        
+        button {
+          grid row: 0, column: 11, column_weight: 0
+          image File.expand_path("images/paste.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.paste
           end
         }
       }
