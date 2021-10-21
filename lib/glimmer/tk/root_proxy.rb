@@ -59,16 +59,6 @@ module Glimmer
         when 'iconphoto'
           args[0..-1] = [image_argument(args)]
           super
-        when 'width'
-          @width = args.first.to_i
-          self.geometry = "#{args.first.to_i}x#{@height || DEFAULT_HEIGHT}#{x_sign}#{abs_x}#{y_sign}#{abs_y}"
-        when 'height'
-          @height = args.first.to_i
-          self.geometry = "#{@width || DEFAULT_WIDTH}x#{args.first.to_i}#{x_sign}#{abs_x}#{y_sign}#{abs_y}"
-        when 'x'
-          self.geometry = "#{@width || DEFAULT_WIDTH}x#{@height || DEFAULT_HEIGHT}#{args.first.to_i > 0 ? '+' : '-'}#{args.first.to_i.abs}#{y_sign}#{abs_y}"
-        when 'y'
-          self.geometry = "#{@width || DEFAULT_WIDTH}x#{@height || DEFAULT_HEIGHT}#{x_sign}#{abs_x}#{args.first.to_i > 0 ? '+' : '-'}#{args.first.to_i.abs}"
         when 'resizable'
           if args.size == 1 && !args.first.is_a?(Array)
             self.resizable = [args.first]*2
@@ -80,52 +70,38 @@ module Glimmer
         end
       end
       
-      def get_attribute(attribute)
-        attribute = attribute.to_s
-        case attribute
-        when 'width'
-          geometry.split(REGEX_GEOMETRY)[0].to_i
-        when 'height'
-          geometry.split(REGEX_GEOMETRY)[1].to_i
-        when 'x'
-          sign_number(x_sign, geometry.split(REGEX_GEOMETRY)[2].to_i)
-        when 'y'
-          sign_number(y_sign, geometry.split(REGEX_GEOMETRY)[3].to_i)
-        else
-          super
-        end
-      end
-      
       def width
-        get_attribute(:width)
+        geometry.split(REGEX_GEOMETRY)[0].to_i
       end
       
       def height
-        get_attribute(:height)
+        geometry.split(REGEX_GEOMETRY)[1].to_i
       end
       
       def x
-        get_attribute(:x)
+        sign_number(x_sign, geometry.split(REGEX_GEOMETRY)[2].to_i)
       end
       
       def y
-        get_attribute(:y)
+        sign_number(y_sign, geometry.split(REGEX_GEOMETRY)[3].to_i)
       end
       
       def width=(value)
-        set_attribute(:width, value)
+        @width = value.to_i
+        self.geometry = "#{value.to_i}x#{@height || DEFAULT_HEIGHT}#{x_sign}#{abs_x}#{y_sign}#{abs_y}"
       end
       
       def height=(value)
-        set_attribute(:height, value)
+        @height = value.to_i
+        self.geometry = "#{@width || DEFAULT_WIDTH}x#{value.to_i}#{x_sign}#{abs_x}#{y_sign}#{abs_y}"
       end
       
       def x=(value)
-        set_attribute(:x, value)
+        self.geometry = "#{@width || DEFAULT_WIDTH}x#{@height || DEFAULT_HEIGHT}#{value.to_i > 0 ? '+' : '-'}#{value.to_i.abs}#{y_sign}#{abs_y}"
       end
       
       def y=(value)
-        set_attribute(:y, value)
+        self.geometry = "#{@width || DEFAULT_WIDTH}x#{@height || DEFAULT_HEIGHT}#{x_sign}#{abs_x}#{value.to_i > 0 ? '+' : '-'}#{value.to_i.abs}"
       end
       
       def handle_listener(listener_name, &listener)

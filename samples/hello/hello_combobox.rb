@@ -1,3 +1,4 @@
+
 # Copyright (c) 2020-2021 Andy Maleh
 #
 # Permission is hereby granted, free of charge, to any person obtaining
@@ -44,7 +45,7 @@ class HelloCombobox
       title 'Hello, Combobox!'
       
       combobox {
-        state 'readonly'
+        readonly true # this applies to text editing only (item selection still triggers a write to model)
         text <=> [person, :country]
       }
       
