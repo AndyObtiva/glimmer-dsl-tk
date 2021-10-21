@@ -25,12 +25,17 @@ class HelloText
   include Glimmer
   
   COLOR_OPTIONS = %w[black purple blue green orange yellow red white].map(&:capitalize)
-  FOREGROUND_PROMPT = '<select foreground>'
-  BACKGROUND_PROMPT = '<select background>'
+  FONT_FAMILY_OPTIONS = ::TkFont.families
+  FOREGROUND_PROMPT = '<foreground>'
+  BACKGROUND_PROMPT = '<background>'
+  FONT_FAMILY_PROMPT = '<font family>'
+  FONT_SIZE_PROMPT = '<font size>'
   
   def initialize
     @foreground = FOREGROUND_PROMPT
     @background = BACKGROUND_PROMPT
+    @font_family = FONT_FAMILY_PROMPT
+    @font_size = FONT_SIZE_PROMPT
   end
   
   attr_accessor :foreground
@@ -45,6 +50,18 @@ class HelloText
     [BACKGROUND_PROMPT] + COLOR_OPTIONS
   end
   
+  attr_accessor :font_family
+  
+  def font_family_options
+    [FONT_FAMILY_PROMPT] + FONT_FAMILY_OPTIONS
+  end
+  
+  attr_accessor :font_size
+  
+  def font_size_options
+    [FONT_SIZE_PROMPT] + (9..64).to_a.map(&:to_s)
+  end
+  
   def launch
     root {
       title 'Hello, Text!'
@@ -52,8 +69,32 @@ class HelloText
       frame {
         grid row: 0, column: 0
         
+        combobox {
+          grid row: 0, column: 0, column_weight: 1
+          readonly true
+          text <=> [self, :font_family, after_write: ->(value) { @text.toggle_selection_font_format('family', value == FONT_FAMILY_PROMPT ? 'Courier New' : value) }]
+        }
+        
+        combobox {
+          grid row: 0, column: 1, column_weight: 1
+          readonly true
+          text <=> [self, :font_size, after_write: ->(value) { @text.toggle_selection_font_format('size', value == FONT_SIZE_PROMPT ? 13 : value) }]
+        }
+        
+        combobox {
+          grid row: 0, column: 2, column_weight: 1
+          readonly true
+          text <=> [self, :foreground, after_write: ->(value) { @text.add_selection_format('foreground', value == FOREGROUND_PROMPT ? 'black' : value) }]
+        }
+        
+        combobox {
+          grid row: 0, column: 3, column_weight: 1
+          readonly true
+          text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'white' : value) }]
+        }
+        
         button {
-          grid row: 0, column: 0, column_weight: 0
+          grid row: 0, column: 4, column_weight: 0
           text 'B'
           style font: {weight: 'bold'}
           
@@ -63,7 +104,7 @@ class HelloText
         }
         
         button {
-          grid row: 0, column: 1, column_weight: 0
+          grid row: 0, column: 5, column_weight: 0
           text 'I'
           style font: {slant: 'italic'}
           
@@ -73,25 +114,13 @@ class HelloText
         }
         
         button {
-          grid row: 0, column: 2, column_weight: 0
+          grid row: 0, column: 6, column_weight: 0
           text 'U'
           style font: {underline: true}
           
           on('command') do
             @text.toggle_selection_font_format('underline', true)
           end
-        }
-        
-        combobox {
-          grid row: 0, column: 4, column_weight: 1
-          readonly true
-          text <=> [self, :foreground, after_write: ->(value) { @text.add_selection_format('foreground', value == FOREGROUND_PROMPT ? 'black' : value) }]
-        }
-        
-        combobox {
-          grid row: 0, column: 5, column_weight: 1
-          readonly true
-          text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'black' : value) }]
         }
       }
       

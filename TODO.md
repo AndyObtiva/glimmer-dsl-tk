@@ -2,7 +2,7 @@
 
 ## General
 
-- Improve Hello, Text! (toolbar buttons: font, font size, cut, copy, paste, insert image, find dialog, undo, redo)
+- Improve Hello, Text! (toolbar buttons: cut, copy, paste, insert image, find dialog, undo, redo)
 - Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font)
 - Text Data-Binding
 
