@@ -4,7 +4,9 @@
 
 - Improve Hello, Text! (toolbar buttons: font, font size, bold, italic, underline, strikethrough, cut, copy, paste, insert image, find dialog, undo, redo)
 - Fix issue with unbolding text in `text` widget when selecting multiple lines with an empty line
+- For simple text formatting options, on formatting, remove any old conflicting formats first (even if they get overridden)
 
+- Allow setting root x/y without affecting its default width/height
 - Look into updating block_attribute expression to not require defining blocks that simply forward to tk on the widget
 - Support grid keyword arg 'column_span' (with _) and 'row_span' as aliases for columnspan and rowspan
 - Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font)
