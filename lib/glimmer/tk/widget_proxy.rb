@@ -253,7 +253,7 @@ module Glimmer
       
       def apply_style(options)
         @@style_number = 0 unless defined?(@@style_number)
-        style = "style#{@@style_number}.#{@tk.class.name.split('::').last}"
+        style = "style#{@@style_number += 1}.#{@tk.class.name.split('::').last}"
         ::Tk::Tile::Style.configure(style, options)
         @tk.style = style
       end

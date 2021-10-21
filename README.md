@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.26
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.27
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -74,12 +74,15 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Supported Widgets](#supported-widgets)
       - [Common Attributes](#common-attributes)
       - [Common Themed Widget States](#common-themed-widget-states)
+      - [Text Extra API Methods](#text-extra-api-methods)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
       - [Grid Layout](#grid-layout)
       - [Image Attribute](#image-attribute)
       - [Frame Padding](#frame-padding)
       - [Notebook Frame](#notebook-frame)
       - [Icon Photo](#icon-photo)
+      - [Root Background](#root-background)
+      - [Text Defaults](#text-defaults)
   - [The Grid Geometry Manager](#the-grid-geometry-manager)
   - [Data-Binding](#data-binding)
     - [Label Data-Binding](#label-data-binding)
@@ -145,7 +148,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.26'
+gem 'glimmer-dsl-tk', '~> 0.0.27'
 ```
 
 And, then run:
@@ -316,6 +319,59 @@ keyword(args) | attributes | event bindings & callbacks
 - `invalid?`
 - `hover?`
 
+#### Text Extra API Methods
+
+[Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) automatically provides a `text` attribute for the `text` widget that enables updating its content simply without worrying about whether to manually insert by index, delete, or append.
+
+Also, the `text` widget is enhanced by [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) to enable simpler manipulation of text options without dealing with [tags](https://tkdocs.com/tutorial/text.html) directly. Simply specify region to mutate and option/value or font_option/value, and [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) takes care of the rest by automating work of adding/removing [tags](https://tkdocs.com/tutorial/text.html) behind the scenes.
+
+- `add_format(region_start, region_end, option, value)`
+- `remove_format(region_start, region_end, option, value)`
+- `toggle_format(region_start, region_end, option, value)`
+- `add_font_format(region_start, region_end, font_option, value)`
+- `remove_font_format(region_start, region_end, font_option, value)`
+- `toggle_font_format(region_start, region_end, font_option, value)`
+- `add_selection_format(region_start, region_end, option, value)`
+- `remove_selection_format(region_start, region_end, option, value)`
+- `toggle_selection_format(region_start, region_end, option, value)`
+- `add_selection_font_format(region_start, region_end, font_option, value)`
+- `remove_selection_font_format(region_start, region_end, font_option, value)`
+- `toggle_selection_font_format(region_start, region_end, font_option, value)`
+
+Available options:
+
+- `background`
+- `bgstipple`
+- `borderwidth`
+- `elide`
+- `fgstipple`
+- `foreground`
+- `justify`
+- `lmargin1`
+- `lmargin2`
+- `offset`
+- `overstrike`
+- `relief`
+- `rmargin`
+- `spacing1`
+- `spacing2`
+- `spacing3`
+- `tabs`
+- `tabstyle`
+- `underline`
+- `wrap`
+
+Available font options:
+
+- `family` (default: `'Courier New'`)
+- `size` (default: `13`)
+- `weight` (default: `'normal'`) (e.g. `'bold'`)
+- `slant` (default: `'roman'`) (e.g. `'italic`')
+- `underline` (default: `false`)
+- `overstrike` (default: `false`)
+
+Check out the [Hello, Text!](#hello-text) sample for a good demonstration of the `text` widget.
+
 ### Smart Defaults and Conventions
 
 #### Event Bindings
@@ -369,6 +425,12 @@ root {
 #### Root Background
 
 `root` `background` color attribute is automatically set to `'#ececec'` on the Mac to avoid having a non-native-looking light-colored background.
+
+#### Text Defaults
+
+`text` widget has these defaults:
+- `wrap = 'none'`
+- `font = {family: 'Courier New'}`
 
 ## The Grid Geometry Manager
 
@@ -1621,8 +1683,6 @@ Glimmer app:
 
 ### Hello, Text!
 
-[Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) automatically provides a `text` attribute for the `text` widget that enables updating its content simply without worrying about whether to manually insert by index, delete, or append.
-
 Glimmer code (from [samples/hello/hello_text.rb](samples/hello/hello_text.rb)):
 
 ```ruby
@@ -1659,14 +1719,44 @@ class HelloText
       frame {
         grid row: 0, column: 0
         
+        button {
+          grid row: 0, column: 0, column_weight: 0
+          text 'B'
+          style font: {weight: 'bold'}
+          
+          on('command') do
+            @text.toggle_selection_font_format('weight', 'bold')
+          end
+        }
+        
+        button {
+          grid row: 0, column: 1, column_weight: 0
+          text 'I'
+          style font: {slant: 'italic'}
+          
+          on('command') do
+            @text.toggle_selection_font_format('slant', 'italic')
+          end
+        }
+        
+        button {
+          grid row: 0, column: 2, column_weight: 0
+          text 'U'
+          style font: {underline: true}
+          
+          on('command') do
+            @text.toggle_selection_font_format('underline', true)
+          end
+        }
+        
         combobox {
-          grid row: 0, column: 0, column_weight: 1
+          grid row: 0, column: 4, column_weight: 1
           readonly true
           text <=> [self, :foreground, after_write: ->(value) { @text.add_selection_format('foreground', value == FOREGROUND_PROMPT ? 'black' : value) }]
         }
         
         combobox {
-          grid row: 0, column: 1, column_weight: 1
+          grid row: 0, column: 5, column_weight: 1
           readonly true
           text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'black' : value) }]
         }
@@ -1674,6 +1764,7 @@ class HelloText
       
       @text = text {
         grid row: 1, column: 0, row_weight: 1
+        wrap 'word'
         text <<~MULTI_LINE_STRING
           According to the National Post, a heavy metal-loving high school principal in Canada will be allowed to keep her job, days after a public campaign to oust her made headlines around the globe.
           

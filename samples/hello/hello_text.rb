@@ -72,14 +72,24 @@ class HelloText
           end
         }
         
+        button {
+          grid row: 0, column: 2, column_weight: 0
+          text 'U'
+          style font: {underline: true}
+          
+          on('command') do
+            @text.toggle_selection_font_format('underline', true)
+          end
+        }
+        
         combobox {
-          grid row: 0, column: 2, column_weight: 1
+          grid row: 0, column: 4, column_weight: 1
           readonly true
           text <=> [self, :foreground, after_write: ->(value) { @text.add_selection_format('foreground', value == FOREGROUND_PROMPT ? 'black' : value) }]
         }
         
         combobox {
-          grid row: 0, column: 3, column_weight: 1
+          grid row: 0, column: 5, column_weight: 1
           readonly true
           text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'black' : value) }]
         }

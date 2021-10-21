@@ -2,9 +2,11 @@
 
 ## 0.0.27
 
+- Improve Hello, Text! (toolbar buttons: bold, italic, underline)
+- Set correct `wrap 'word'` attribute for `text` widget in Hello, Text!
 - Default `text` widget to `wrap = 'none'`
 - Default `text` widget to `font = {family: 'Courier New'}`
-- Set correct `wrap 'word'` attribute for `text` widget in Hello, Text!
+- Fix issue with unbolding text in `text` widget when selecting multiple lines with an empty line
 
 ## 0.0.26
 
