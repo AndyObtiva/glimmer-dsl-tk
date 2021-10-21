@@ -10,6 +10,7 @@
 - Look into updating block_attribute expression to not require defining blocks that simply forward to tk on the widget
 - Support grid keyword arg 'column_span' (with _) and 'row_span' as aliases for columnspan and rowspan
 - Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font)
+- Document Glimmer debug logging
 
 - Document all the new `text` formatting methods as well as Text Data-Binding
 - Implement `code_text` custom widget using `text` and `rouge` gem

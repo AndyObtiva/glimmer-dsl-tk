@@ -236,7 +236,7 @@ module Glimmer
               current_font.send("#{font_option}=", value)
             end
           else
-            add_format(tag_region_start, tag_region_end, 'font', {font_option => value})
+            add_format(tag_region_start, tag_region_end, 'font', pd(default_font_attributes.merge(font_option => value)))
           end
         end
       end
@@ -280,7 +280,7 @@ module Glimmer
               current_font.send("#{font_option}=", default_for_font_option(font_option))
             end
           else
-            add_format(tag_region_start, tag_region_end, 'font', {font_option => default_for_font_option(font_option)})
+            add_format(tag_region_start, tag_region_end, 'font', pd(default_font_attributes.merge(font_option => default_for_font_option(font_option))))
           end
         end
       end
@@ -296,6 +296,10 @@ module Glimmer
       
       def default_for_font_option(font_option)
         @tk.font.send(font_option)
+      end
+      
+      def default_font_attributes
+        Hash[@tk.font.actual]
       end
       
       def add_to_text_index(text_index, addition)
@@ -344,6 +348,7 @@ module Glimmer
       
       def initialize_defaults
         super
+        self.font = {family: 'Courier New'}
         self.wrap = 'none'
         self.padx = 5
         self.pady = 5
