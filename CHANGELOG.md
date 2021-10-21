@@ -2,7 +2,7 @@
 
 ## 0.0.28
 
-- Improve Hello, Text! (toolbar buttons: font family, font size, cut, copy, paste)
+- Improve Hello, Text! (toolbar buttons: font family, font size, cut, copy, paste, undo, redo)
 - Update default dimensions of Meta-Sample root window to 1280x720
 - Have any widget with a `font` attribute support pre-defined fonts like `'caption'` and `'heading'` (just like `label`)
 

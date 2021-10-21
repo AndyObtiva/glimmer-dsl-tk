@@ -159,11 +159,35 @@ class HelloText
             @text.paste
           end
         }
+        
+        separator {
+          grid row: 0, column: 12, column_weight: 0
+          orient 'vertical'
+        }
+        
+        button {
+          grid row: 0, column: 13, column_weight: 1
+          text 'Undo'
+          
+          on('command') do
+            @text.edit_undo
+          end
+        }
+        
+        button {
+          grid row: 0, column: 14, column_weight: 1
+          text 'Redo'
+          
+          on('command') do
+            @text.edit_redo
+          end
+        }
       }
       
       @text = text {
         grid row: 1, column: 0, row_weight: 1
         wrap 'word'
+        undo true
         text <<~MULTI_LINE_STRING
           According to the National Post, a heavy metal-loving high school principal in Canada will be allowed to keep her job, days after a public campaign to oust her made headlines around the globe.
           

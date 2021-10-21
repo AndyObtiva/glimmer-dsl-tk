@@ -2,7 +2,11 @@
 
 ## General
 
-- Improve Hello, Text! (toolbar buttons: undo, redo, insert image, find dialog)
+- Enhance `text` undo/redo to include format/font-format changes
+- `text` widget cut/copy with style
+- `text` widget paste with cut/copied style
+- `text` widget paste matching insert mark style
+- Improve Hello, Text! (toolbar buttons: insert image, find dialog)
 - Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font)
 - Text Data-Binding
 
