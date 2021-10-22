@@ -4,6 +4,7 @@
 
 - Removed unnecessary `text` widget `text` attribute after realizing `value` does the same thing
 - Support `text` widget data-binding on 'modified' event
+- Support `text#insert_image(text_index, *image_args)`
 
 ## 0.0.28
 

@@ -316,8 +316,8 @@ module Glimmer
         region1_parts.last.to_i >= region2_parts.last.to_i
       end
       
-      def clone_font(font)
-        ::TkFont.new(Hash[font.actual])
+      def insert_image(text_index, *image_args)
+        TkTextImage.new(@tk, 'insert', :image => image_argument(image_args))
       end
       
       private
@@ -328,6 +328,10 @@ module Glimmer
         self.wrap = 'none'
         self.padx = 5
         self.pady = 5
+      end
+      
+      def clone_font(font)
+        ::TkFont.new(Hash[font.actual])
       end
     end
   end

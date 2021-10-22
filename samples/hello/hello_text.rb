@@ -234,8 +234,7 @@ class HelloText
               '{PPM Images} {.ppm}',
             ]
             image_filename = ::Tk::getOpenFile(filetypes: file_types)
-            image = TkPhotoImage.new(:file => image_filename)
-            TkTextImage.new(@text.tk, 'insert', :image => image)
+            @text.insert_image('insert', image_filename)
           end
         }
       }
