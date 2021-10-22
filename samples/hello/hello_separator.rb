@@ -23,46 +23,47 @@ require 'glimmer-dsl-tk'
 
 include Glimmer
 
-root { |w|
-  title 'Hello, Built-in Dialog!'
-  width 400
-  height 400
-  x 150
-  y 150
+root {
+  title 'Hello, Separator!'
+  width 200
+  height 200
   
-  frame {
-    %w[get_open_file get_multiple_open_file get_save_file choose_directory choose_color].each do |dialog|
-      button {
-        text dialog.split('_').map(&:capitalize).join(' ')
-        
-        on('command') do
-          result = send(dialog, parent: w)
-          @result_label.text = [result].flatten.join("\n")
-        end
-      }
-    end
-    
-    button {
-      text 'Choose Font'
-      
-      on('command') do
-        choose_font(family: 'Courier New', size: '30', weight: 'bold') do |chosen_font|
-          @result_label.text = chosen_font(parent: w)
-        end
-      end
-    }
+  label {
+    grid row: 0, column: 0, min_width: 100, min_height: 100, column_weight: 0, sticky: 'nsew'
+    text 'Label 1'
+    anchor 'center'
   }
   
-  frame {
-    grid sticky: 'nsew', padx: 15, pady: 15
-    
-    label {
-      grid row: 0, column: 0
-      text 'Result:'
-    }
-    
-    @result_label = label {
-      grid row: 0, column: 1
-    }
+  separator {
+    grid row: 0, column: 1
+    orient 'vertical'
+  }
+  
+  label {
+    grid row: 0, column: 2, min_width: 100, min_height: 100, sticky: 'nsew'
+    text 'Label 2'
+    anchor 'center'
+  }
+  
+  separator {
+    grid row: 1, column: 0, columnspan: 3
+    orient 'horizontal'
+  }
+  
+  label {
+    grid row: 2, column: 0, min_width: 100, min_height: 100, sticky: 'nsew'
+    text 'Label 3'
+    anchor 'center'
+  }
+  
+  separator {
+    grid row: 2, column: 1
+    orient 'vertical'
+  }
+  
+  label {
+    grid row: 2, column: 2, min_width: 100, min_height: 100, sticky: 'nsew'
+    text 'Label 4'
+    anchor 'center'
   }
 }.open

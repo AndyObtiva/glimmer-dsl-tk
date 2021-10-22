@@ -2,7 +2,7 @@
 
 ## Next
 
-- Hello, Separator!
+- Improve Hello, Text! (toolbar buttons: justify left, justify center, justify right)
 
 ## Soon
 
@@ -11,7 +11,6 @@
 - `text` widget paste with cut/copied style
 - `text` widget paste matching insert mark style
 - Support `text` widget tag_bind events as `on(args) {}`
-- Improve Hello, Text! (toolbar buttons: justify left, justify center, justify right)
 - Improve Hello, Text! (toolbar buttons: find dialog)
 - Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font) and show in top Hello, Text! toolbar comboboxes and buttons
 - When setting a `text` format without a selection in Hello, Text!, have it apply when typing

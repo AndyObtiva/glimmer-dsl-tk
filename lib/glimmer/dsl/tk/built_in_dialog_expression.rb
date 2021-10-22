@@ -40,6 +40,7 @@ module Glimmer
             options = args.first.symbolize_keys
             options[:filetypes] = options.delete(:file_types) if options.keys.include?(:file_types)
             options[:filetypes] = options[:filetypes].map { |key, value| "{#{key}} {#{value}}" } if options[:filetypes].is_a?(Hash)
+            options[:parent] = options[:parent].tk if options[:parent].is_a?(Glimmer::Tk::RootProxy)
             args[0] = options
           end
           keyword = "get_#{keyword}" if keyword.start_with?('open') || keyword.start_with?('save') || keyword.start_with?('multiple')

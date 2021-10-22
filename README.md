@@ -115,6 +115,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Hello, Computed!](#hello-computed)
     - [Hello, Drag and Drop!](#hello-drag-and-drop)
     - [Hello, Built-in Dialog!](#hello-built-in-dialog)
+    - [Hello, Separator!](#hello-separator)
   - [Help](#help)
     - [Issues](#issues)
     - [Chat](#chat)
@@ -347,6 +348,8 @@ The `text` widget is enhanced by [Glimmer DSL for Tk](https://rubygems.org/gems/
 - `add_selection_font_format(region_start, region_end, font_option, value)`
 - `remove_selection_font_format(region_start, region_end, font_option, value)`
 - `toggle_selection_font_format(region_start, region_end, font_option, value)`
+- `text#insert_image(text_index, *image_args)`: inserts image into `text` `value` content at `text_index` location (e.g. `'insert'`)
+- `text#get_open_file_to_insert_image(text_index = 'insert')`: opens a file dialog to select one of the available image formats and then inserts image into `text` `value` content
 
 Available options:
 
@@ -2397,7 +2400,7 @@ require 'glimmer-dsl-tk'
 
 include Glimmer
 
-root {
+root { |w|
   title 'Hello, Built-in Dialog!'
   width 400
   height 400
@@ -2410,7 +2413,7 @@ root {
         text dialog.split('_').map(&:capitalize).join(' ')
         
         on('command') do
-          result = send(dialog)
+          result = send(dialog, parent: w)
           @result_label.text = [result].flatten.join("\n")
         end
       }
@@ -2421,7 +2424,7 @@ root {
       
       on('command') do
         choose_font(family: 'Courier New', size: '30', weight: 'bold') do |chosen_font|
-          @result_label.text = chosen_font
+          @result_label.text = chosen_font(parent: w)
         end
       end
     }
@@ -2458,10 +2461,83 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello built in dialog 1](images/glimmer-dsl-tk-screenshot-sample-hello-built-in-dialog-get-open-file.png)
 ![glimmer dsl tk screenshot sample hello built in dialog 2](images/glimmer-dsl-tk-screenshot-sample-hello-built-in-dialog-get-open-file-done.png)
+
 ![glimmer dsl tk screenshot sample hello built in dialog 3](images/glimmer-dsl-tk-screenshot-sample-hello-built-in-dialog-choose-color.png)
 ![glimmer dsl tk screenshot sample hello built in dialog 4](images/glimmer-dsl-tk-screenshot-sample-hello-built-in-dialog-choose-color-done.png)
+
 ![glimmer dsl tk screenshot sample hello built in dialog 5](images/glimmer-dsl-tk-screenshot-sample-hello-built-in-dialog-choose-font.png)
 ![glimmer dsl tk screenshot sample hello built in dialog 6](images/glimmer-dsl-tk-screenshot-sample-hello-built-in-dialog-choose-font-done.png)
+
+### Hello, Separator!
+
+Glimmer code (from [samples/hello/hello_separator.rb](samples/hello/hello_separator.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+include Glimmer
+
+root {
+  title 'Hello, Separator!'
+  width 200
+  height 200
+  
+  label {
+    grid row: 0, column: 0, min_width: 100, min_height: 100, column_weight: 0, sticky: 'nsew'
+    text 'Label 1'
+    anchor 'center'
+  }
+  
+  separator {
+    grid row: 0, column: 1
+    orient 'vertical'
+  }
+  
+  label {
+    grid row: 0, column: 2, min_width: 100, min_height: 100, sticky: 'nsew'
+    text 'Label 2'
+    anchor 'center'
+  }
+  
+  separator {
+    grid row: 1, column: 0, columnspan: 3
+    orient 'horizontal'
+  }
+  
+  label {
+    grid row: 2, column: 0, min_width: 100, min_height: 100, sticky: 'nsew'
+    text 'Label 3'
+    anchor 'center'
+  }
+  
+  separator {
+    grid row: 2, column: 1
+    orient 'vertical'
+  }
+  
+  label {
+    grid row: 2, column: 2, min_width: 100, min_height: 100, sticky: 'nsew'
+    text 'Label 4'
+    anchor 'center'
+  }
+}.open
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_separator'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_separator.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello separator](images/glimmer-dsl-tk-screenshot-sample-hello-separator.png)
 
 ## Help
 

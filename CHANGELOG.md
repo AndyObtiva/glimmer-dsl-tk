@@ -3,14 +3,15 @@
 ## 0.0.29
 
 - Hello, Built-in Dialog! (demonstrating all built-in dialogs like get_open_file and choose_color)
+- Hello, Separator!
 - Improve Hello, Text! (toolbar buttons: insert image)
 - Removed unnecessary `text` widget `text` attribute after realizing `value` does the same thing
 - Support `text` widget data-binding on 'modified' event and use in Hello, Text!
 - Support `text#insert_image(text_index, *image_args)`
+- Support `text#get_open_file_to_insert_image(text_index = 'insert')` shortcut for doing both `get_open_file` and `insert_image` in one shot
 - Support built-in dialogs: `get_open_file(options = nil)`, `get_multiple_open_file(options = nil)`, `get_save_file(options = nil)`, `get_multiple_save_file(options = nil)`, `choose_directory(options = nil)`, `choose_color(options = nil)`, `choose_font(initial_font_args) {|font| do_something_with_font(font) }`
 - Support built-in dialog aliases: `open_file`, `multiple_open_file`, `save_file`
-- Enhance `::Tk::getOpenFile` `filetypes` support to take a real Ruby hash instead of `['{Image Files} {.png}']`
-- Support `text#get_open_file_to_insert_image(text_index = 'insert')` shortcut for doing both `get_open_file` and `insert_image` in one shot
+- Enhance `get_open_file`/`get_multiple_open_file` `filetypes` support to take a real Ruby hash instead of `['{Image Files} {.png}']`
 
 ## 0.0.28
 
