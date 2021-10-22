@@ -1591,7 +1591,6 @@ ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_message_box.rb
 Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello message box](images/glimmer-dsl-tk-screenshot-sample-hello-message-box.png)
-![glimmer dsl tk screenshot sample hello message box open](images/glimmer-dsl-tk-screenshot-sample-hello-message-box-open.png)
 
 ### Hello, Combobox!
 

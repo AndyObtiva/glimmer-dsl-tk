@@ -6,10 +6,16 @@
 - `text` widget cut/copy with style
 - `text` widget paste with cut/copied style
 - `text` widget paste matching insert mark style
-- Improve Hello, Text! (toolbar buttons: insert image, find dialog)
+- Improve Hello, Text! (toolbar buttons: insert image)
+- Improve Hello, Text! (toolbar buttons: justify left, justify center, justify right)
+- Improve Hello, Text! (toolbar buttons: find dialog)
 - Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font)
 - Text Data-Binding
 - Fix issue with Hello, Text! whereby after applying bold, italic, underline, background, and foreground, font-size and font-family cannot be changed on the same selection
+- Document Drag and Drop
+- Enhance `::Tk::getOpenFile` `filetypes` support to take a real Ruby hash instead of `['{Image Files} {.png}']`
+- Hello, Dialog! (open_file, save_file, choose_directory, choose_color, font_chooser [choose_font alias])
+- `text` widget Find dialog: show find dialog with a text field, case-sensitive checkbox, regex checkbox, and buttons for next and previous + rely on text#tk#search method to search in selection or all document
 
 - Allow setting root x/y without affecting its default width/height
 - Look into updating block_attribute expression to not require defining blocks that simply forward to tk on the widget
@@ -50,7 +56,6 @@
 - Hello, Labelframe!
 - Hello, Panedwindow!
 - Hello, Grid!
-- Hello, Dialog! (open_file, save_file, choose_directory, choose_color, font_chooser [choose_font alias])
 - Hello, Toplevel! (Custom Window and Custom Dialog)
 - Hello, Listbox! (two tabs for single/multi selection)
 - Hello, Treeview!
@@ -1482,3 +1487,5 @@ DiagnosticReports directory in bug reports.
 - Think of a dynamic way of invoking commands on widgets instead of hardcoding commands for each widget
 - Look into why text <Modified> event fires twice on every text change
 - Support on_event listeners (as opposed to on('event')) (e.g. `on_KeyPress {}`)
+- Consider switching drag and drop extension to an included a module
+- Consider generalizing support for drag and drop to fire on any mouse button and indicate the clicked mouse button in the event

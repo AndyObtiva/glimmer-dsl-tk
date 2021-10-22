@@ -43,22 +43,6 @@ module Glimmer
         end
       end
     
-      def text=(value)
-        if value != @text
-          if @text && value.start_with?(@text)
-            insert('end', value[@text.size..-1])
-          else
-            delete('1.0', 'end')
-            insert('end', value)
-          end
-          @text = value
-        end
-      end
-      
-      def text
-        @text = get("1.0", 'end')
-      end
-      
       def add_selection_format(option, value)
         process_selection_ranges { |range_start, range_end| add_format(range_start, range_end, option, value) }
       end
@@ -158,7 +142,7 @@ module Glimmer
       end
 
       def applied_font_format_tags_and_regions(region_start, region_end)
-        lines = text.split("\n")
+        lines = value.split("\n")
         tags_and_regions = []
         all_tag_names = @tk.tag_names - ['sel']
         (region_start.to_i..region_end.to_i).each do |line_number|

@@ -184,6 +184,32 @@ class HelloText
             @text.edit_redo
           end
         }
+        
+        separator {
+          grid row: 0, column: column_index += 1, column_weight: 0
+          orient 'vertical'
+        }
+        
+        button {
+          grid row: 0, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/picture.png", __dir__), subsample: 32
+          
+          on('command') do
+            # TODO open file dialog to select image and insert
+            # Insert image with this code (automate with Glimmer DSL by passing image path only to a method like #insert_image(text_index, image_path)):
+            # flowers = TkPhotoImage.new(:file => 'flowers.gif')
+            # TkTextImage.new(text, 'sel.first', :image => flowers)
+            # Replace everything below with @text.open_file_to_insert_image(text_index = 'insert')
+            file_types = [
+              '{PNG Files} {.png}',
+              '{Gif Files} {.gif}',
+              '{PPM Files} {.ppm}',
+            ]
+            image_filename = ::Tk::getOpenFile(filetypes: file_types)
+            image = TkPhotoImage.new(:file => image_filename)
+            TkTextImage.new(@text.tk, 'insert', :image => image)
+          end
+        }
       }
       
       @text = text {

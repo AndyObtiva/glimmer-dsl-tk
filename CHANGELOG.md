@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.29
+
+- Removed unnecessary `text` widget `text` attribute after realizing `value` does the same thing
+
 ## 0.0.28
 
 - Hello, Drag and Drop!
