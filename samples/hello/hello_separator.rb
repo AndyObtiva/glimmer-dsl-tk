@@ -46,7 +46,7 @@ root {
   }
   
   separator {
-    grid row: 1, column: 0, columnspan: 3
+    grid row: 1, column: 0, column_span: 3
     orient 'horizontal'
   }
   

@@ -228,6 +228,8 @@ module Glimmer
       def grid(options = {})
         options = options.stringify_keys
         index_in_parent = @parent_proxy.children.index(self)
+        options['rowspan'] = options.delete('row_span') if options.keys.include?('row_span')
+        options['columnspan'] = options.delete('column_span') if options.keys.include?('column_span')
         options['rowweight'] = options.delete('row_weight') if options.keys.include?('row_weight')
         options['columnweight'] = options.delete('column_weight') if options.keys.include?('column_weight')
         options['columnweight'] = options['rowweight'] = options.delete('weight')  if options.keys.include?('weight')

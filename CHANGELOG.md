@@ -12,6 +12,7 @@
 - Support built-in dialogs: `get_open_file(options = nil)`, `get_multiple_open_file(options = nil)`, `get_save_file(options = nil)`, `get_multiple_save_file(options = nil)`, `choose_directory(options = nil)`, `choose_color(options = nil)`, `choose_font(initial_font_args) {|font| do_something_with_font(font) }`
 - Support built-in dialog aliases: `open_file`, `multiple_open_file`, `save_file`
 - Enhance `get_open_file`/`get_multiple_open_file` `filetypes` support to take a real Ruby hash instead of `['{Image Files} {.png}']`
+- Support `grid` keyword arg `'column_span'` (with _) and `'row_span'` as aliases for `'columnspan'` and `'rowspan'`
 
 ## 0.0.28
 

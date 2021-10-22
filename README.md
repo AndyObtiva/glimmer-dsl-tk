@@ -75,6 +75,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
       - [Common Attributes](#common-attributes)
       - [Common Themed Widget States](#common-themed-widget-states)
       - [Text API](#text-api)
+      - [Drag and Drop API](#drag-and-drop-api)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
       - [Grid Layout](#grid-layout)
       - [Image Attribute](#image-attribute)
@@ -393,6 +394,19 @@ Other useful built-in API methods:
 
 Check out the [Hello, Text!](#hello-text) sample for a good demonstration of the `text` widget features.
 
+#### Drag and Drop API
+
+Drag and drop works by simply designating a widget as a drag source with attribute `drag_source true`
+
+Alternatively, add listeners:
+- `on_drag_start {|event| ...}`: fires on drag start receiving an `event` arg to set `data` and configure `source`
+- `on_drag_motion {|event| ...}`: fires on drag motion receiving an `event` arg to check `event#drop_accepted`, and configure `source` and `tooltip`
+
+On the drop target, you simply define:
+- `on_drop { |event| ...}`: fires on drop, receiving an `event` arg with `event#target` and `event#data` (set during drag). You can even destroy the `event#source` if you want to get rid of the dragged widget.
+
+Learn more at the [Hello, Drag and Drop!](#hello-drag-and-drop) sample.
+
 ### Smart Defaults and Conventions
 
 #### Event Bindings
@@ -478,6 +492,8 @@ Example:
 ```
 
 Extra convenience options may be passed to `grid` when using [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk):
+- `column_span`: alias for `columnspan` keyword arg
+- `row_span`: alias for `rowspan` keyword arg
 - `min_width`: alias for `columnminsize` being called on `TkGrid.columnconfigure`
 - `min_height`: alias for `rowminsize` being called on `TkGrid.rowconfigure`
 - `column_weight`: alias for `columnweight` being called on `TkGrid.columnconfigure`
@@ -2500,7 +2516,7 @@ root {
   }
   
   separator {
-    grid row: 1, column: 0, columnspan: 3
+    grid row: 1, column: 0, column_span: 3
     orient 'horizontal'
   }
   
