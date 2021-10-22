@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.28
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.29
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -114,6 +114,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Hello, Spinbox!](#hello-spinbox)
     - [Hello, Computed!](#hello-computed)
     - [Hello, Drag and Drop!](#hello-drag-and-drop)
+    - [Hello, Built-in Dialog!](#hello-built-in-dialog)
   - [Help](#help)
     - [Issues](#issues)
     - [Chat](#chat)
@@ -150,7 +151,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.28'
+gem 'glimmer-dsl-tk', '~> 0.0.29'
 ```
 
 And, then run:
@@ -261,8 +262,14 @@ keyword(args) | attributes | event bindings & callbacks
 ------------- | ---------- | ---------
 `button` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `default` (`'active', 'normal'`) | `command {}`
 `checkbutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `onvalue` (default: `1`), `offvalue` (default: `0`) | `command {}`
+`choose_color(options = nil)` | None | None
+`choose_directory(options = nil)` | None | None
+`choose_font(options = nil) {|font| ... }` | None | None
 `combobox` | `state`, `text` | `'ComboboxSelected'`
 `entry` | `width`, `text`, `validate`, `show` (`'none', 'focus', 'focusin', 'focusout', 'key', or 'all'`) | `'validate'`, `'invalid'`, `'change'`, `validatecommand {}`, `invalidcommand {}`
+`get_multiple_open_file(options = nil)` | None | None
+`get_open_file(options = nil)` | None | None
+`get_save_file(options = nil)` | None | None
 `spinbox` | `text`, `from`, `to`, `increment`, `format`, [more attributes](https://tcl.tk/man/tcl8.6/TkCmd/text.htm#M116) | `command {}`, `'increment'`, `'decrement'`
 `frame(text: nil)` | `width`, `height`, `borderwidth`, `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`) | None
 `label` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `font` (`'default', 'text', 'fixed', 'menu', 'heading', 'caption', 'small_caption', 'icon', 'tooltip'`), `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`), `justify` (`'left', 'center', 'right'`), `foreground`, `background` | None
@@ -272,6 +279,9 @@ keyword(args) | attributes | event bindings & callbacks
 `radiobutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `value` (default: `text`) | `command {}`
 `root` | `title`, `iconphoto`, `background`, `alpha`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`, `'OPEN_WINDOW'`
 `text` | `text`, [many more attributes](https://tcl.tk/man/tcl8.6/TkCmd/text.htm#M116) | `'modified'`, `'selection'`
+
+Options for `get_open_file` and `get_multiple_open_file` include:
+- `filetypes`: `Hash` of `'Group Name' => '.ext'` entries (e.g. `filetypes: {'PNG Images' => '.png'}`
 
 #### Common Attributes
 
@@ -1528,8 +1538,6 @@ root { |r|
   title 'Hello, Message Box!'
   
   frame {
-    grid sticky: 'nsew', padx: 15, pady: 15
-    
     button {
       text 'Please Click To Win a Surprise'
       
@@ -1581,8 +1589,6 @@ root { |r|
   }
   
   frame {
-    grid sticky: 'nsew', padx: 15, pady: 15
-    
     label {
       grid row: 0, column: 0
       text 'Result:'
@@ -2381,6 +2387,81 @@ ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_drag_and_drop.rb
 Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello drag and drop](images/glimmer-dsl-tk-screenshot-sample-hello-drag-and-drop.png)
+
+### Hello, Built-in Dialog!
+
+Glimmer code (from [samples/hello/hello_built_in_dialog.rb](samples/hello/hello_built_in_dialog.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+include Glimmer
+
+root {
+  title 'Hello, Built-in Dialog!'
+  width 400
+  height 400
+  x 150
+  y 150
+  
+  frame {
+    %w[get_open_file get_multiple_open_file get_save_file choose_directory choose_color].each do |dialog|
+      button {
+        text dialog.split('_').map(&:capitalize).join(' ')
+        
+        on('command') do
+          result = send(dialog)
+          @result_label.text = [result].flatten.join("\n")
+        end
+      }
+    end
+    
+    button {
+      text 'Choose Font'
+      
+      on('command') do
+        choose_font(family: 'Courier New', size: '30', weight: 'bold') do |chosen_font|
+          @result_label.text = chosen_font
+        end
+      end
+    }
+  }
+  
+  frame {
+    grid sticky: 'nsew', padx: 15, pady: 15
+    
+    label {
+      grid row: 0, column: 0
+      text 'Result:'
+    }
+    
+    @result_label = label {
+      grid row: 0, column: 1
+    }
+  }
+}.open
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_built_in_dialog'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_built_in_dialog.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello built in dialog 1](images/glimmer-dsl-tk-screenshot-sample-hello-built-in-dialog-get-open-file.png)
+![glimmer dsl tk screenshot sample hello built in dialog 2](images/glimmer-dsl-tk-screenshot-sample-hello-built-in-dialog-get-open-file-done.png)
+![glimmer dsl tk screenshot sample hello built in dialog 3](images/glimmer-dsl-tk-screenshot-sample-hello-built-in-dialog-choose-color.png)
+![glimmer dsl tk screenshot sample hello built in dialog 4](images/glimmer-dsl-tk-screenshot-sample-hello-built-in-dialog-choose-color-done.png)
+![glimmer dsl tk screenshot sample hello built in dialog 5](images/glimmer-dsl-tk-screenshot-sample-hello-built-in-dialog-choose-font.png)
+![glimmer dsl tk screenshot sample hello built in dialog 6](images/glimmer-dsl-tk-screenshot-sample-hello-built-in-dialog-choose-font-done.png)
 
 ## Help
 

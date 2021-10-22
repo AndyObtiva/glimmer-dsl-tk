@@ -27,8 +27,6 @@ root { |r|
   title 'Hello, Message Box!'
   
   frame {
-    grid sticky: 'nsew', padx: 15, pady: 15
-    
     button {
       text 'Please Click To Win a Surprise'
       
@@ -80,8 +78,6 @@ root { |r|
   }
   
   frame {
-    grid sticky: 'nsew', padx: 15, pady: 15
-    
     label {
       grid row: 0, column: 0
       text 'Result:'

@@ -2,7 +2,6 @@
 
 ## Next
 
-- Hello, Dialog! (demonstrating all built-in dialogs like get_open_file and choose_color)
 - Hello, Separator!
 
 ## Soon
