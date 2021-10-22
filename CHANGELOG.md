@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.30
+
+- Fixed Hello, Built-in Dialog! Font Dialog issue
+
 ## 0.0.29
 
 - Hello, Built-in Dialog! (demonstrating all built-in dialogs like get_open_file and choose_color)

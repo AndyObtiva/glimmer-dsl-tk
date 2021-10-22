@@ -47,7 +47,7 @@ root { |w|
       
       on('command') do
         choose_font(family: 'Courier New', size: '30', weight: 'bold') do |chosen_font|
-          @result_label.text = chosen_font(parent: w)
+          @result_label.text = chosen_font
         end
       end
     }
