@@ -320,6 +320,15 @@ module Glimmer
         TkTextImage.new(@tk, 'insert', :image => image_argument(image_args))
       end
       
+      def get_open_file_to_insert_image(text_index = 'insert')
+        image_filename = Glimmer::DSL::Tk::BuiltInDialogExpression.new.interpret(nil, 'get_open_file', filetypes: {
+          'PNG Images' => '.png',
+          'Gif Images' => '.gif',
+          'PPM Images' => '.ppm'
+        })
+        insert_image('insert', image_filename) unless image_filename.nil? || image_filename.to_s.empty?
+      end
+      
       private
       
       def initialize_defaults

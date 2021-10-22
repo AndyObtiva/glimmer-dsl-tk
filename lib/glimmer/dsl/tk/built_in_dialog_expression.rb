@@ -27,6 +27,7 @@ module Glimmer
     module Tk
       class BuiltInDialogExpression < Expression
         def can_interpret?(parent, keyword, *args, &block)
+          keyword = "get_#{keyword}" if keyword.start_with?('open')
           (keyword.start_with?('get') or keyword.start_with?('choose')) and
           (
             (block.nil? and ::Tk.respond_to?(keyword.camelcase)) or
@@ -41,6 +42,7 @@ module Glimmer
             options[:filetypes] = options[:filetypes].map { |key, value| "{#{key}} {#{value}}" } if options[:filetypes].is_a?(Hash)
             args[0] = options
           end
+          keyword = "get_#{keyword}" if keyword.start_with?('open') || keyword.start_with?('save') || keyword.start_with?('multiple')
           if keyword == 'choose_font'
             TkFont::Fontchooser.configure(:font => args, :command => block)
             TkFont::Fontchooser.show

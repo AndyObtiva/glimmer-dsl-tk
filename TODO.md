@@ -2,8 +2,6 @@
 
 ## Next
 
-- Support `text#open_file_to_insert_image(text_index = 'insert')`
-- Enhance `::Tk::getOpenFile` `filetypes` support to take a real Ruby hash instead of `['{Image Files} {.png}']`
 - Hello, Dialog! (demonstrating all built-in dialogs like get_open_file and choose_color)
 - Hello, Separator!
 

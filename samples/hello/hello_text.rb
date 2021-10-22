@@ -223,13 +223,7 @@ class HelloText
           image File.expand_path("images/picture.png", __dir__), subsample: 32
           
           on('command') do
-            # TODO Replace everything below with @text.open_file_to_insert_image(text_index = 'insert')
-            image_filename = get_open_file(filetypes: {
-              'PNG Images' => '.png',
-              'Gif Images' => '.gif',
-              'PPM Images' => '.ppm'
-            })
-            @text.insert_image('insert', image_filename) unless image_filename.nil? || image_filename.to_s.empty?
+            @text.get_open_file_to_insert_image
           end
         }
       }
