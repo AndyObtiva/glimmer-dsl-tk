@@ -223,18 +223,13 @@ class HelloText
           image File.expand_path("images/picture.png", __dir__), subsample: 32
           
           on('command') do
-            # TODO open file dialog to select image and insert
-            # Insert image with this code (automate with Glimmer DSL by passing image path only to a method like #insert_image(text_index, image_path)):
-            # flowers = TkPhotoImage.new(:file => 'flowers.gif')
-            # TkTextImage.new(text, 'sel.first', :image => flowers)
-            # Replace everything below with @text.open_file_to_insert_image(text_index = 'insert')
-            file_types = [
-              '{PNG Images} {.png}',
-              '{Gif Images} {.gif}',
-              '{PPM Images} {.ppm}',
-            ]
-            image_filename = ::Tk::getOpenFile(filetypes: file_types)
-            @text.insert_image('insert', image_filename)
+            # TODO Replace everything below with @text.open_file_to_insert_image(text_index = 'insert')
+            image_filename = get_open_file(filetypes: {
+              'PNG Images' => '.png',
+              'Gif Images' => '.gif',
+              'PPM Images' => '.ppm'
+            })
+            @text.insert_image('insert', image_filename) unless image_filename.nil? || image_filename.to_s.empty?
           end
         }
       }

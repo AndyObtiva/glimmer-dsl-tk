@@ -19,32 +19,36 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/engine'
-Dir[File.expand_path('../*_expression.rb', __FILE__)].each {|f| require f}
-
-# Glimmer DSL expression configuration module
-#
-# When DSL engine interprets an expression, it attempts to handle
-# with expressions listed here in the order specified.
-
-# Every expression has a corresponding Expression subclass
-# in glimmer/dsl
+require 'glimmer'
+require 'glimmer/dsl/expression'
 
 module Glimmer
   module DSL
     module Tk
-      Engine.add_dynamic_expressions(
-        Tk,
-        %w[
-          list_selection_data_binding
-          data_binding
-          block_attribute
-          attribute
-          shine_data_binding
-          widget
-          built_in_dialog
-        ]
-      )
+      class BuiltInDialogExpression < Expression
+        def can_interpret?(parent, keyword, *args, &block)
+          (keyword.start_with?('get') or keyword.start_with?('choose')) and
+          (
+            (block.nil? and ::Tk.respond_to?(keyword.camelcase)) or
+            keyword == 'choose_font'
+          )
+        end
+  
+        def interpret(parent, keyword, *args, &block)
+          if args.first.is_a?(Hash)
+            options = args.first.symbolize_keys
+            options[:filetypes] = options.delete(:file_types) if options.keys.include?(:file_types)
+            options[:filetypes] = options[:filetypes].map { |key, value| "{#{key}} {#{value}}" } if options[:filetypes].is_a?(Hash)
+            args[0] = options
+          end
+          if keyword == 'choose_font'
+            TkFont::Fontchooser.configure(:font => args, :command => block)
+            TkFont::Fontchooser.show
+          else
+            ::Tk.send(keyword.camelcase, *args)
+          end
+        end
+      end
     end
   end
 end

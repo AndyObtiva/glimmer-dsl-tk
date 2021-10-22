@@ -1,20 +1,24 @@
 # TODO
 
-## General
+## Next
+
+- Support `text#open_file_to_insert_image(text_index = 'insert')`
+- Enhance `::Tk::getOpenFile` `filetypes` support to take a real Ruby hash instead of `['{Image Files} {.png}']`
+- Hello, Dialog! (demonstrating all built-in dialogs like get_open_file and choose_color)
+- Hello, Separator!
+
+## Soon
 
 - Enhance `text` undo/redo to include format/font-format changes
 - `text` widget cut/copy with style
 - `text` widget paste with cut/copied style
 - `text` widget paste matching insert mark style
 - Support `text` widget tag_bind events as `on(args) {}`
-- Improve Hello, Text! (toolbar buttons: insert image)
 - Improve Hello, Text! (toolbar buttons: justify left, justify center, justify right)
 - Improve Hello, Text! (toolbar buttons: find dialog)
 - Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font)
 - Fix issue with Hello, Text! whereby after applying bold, italic, underline, background, and foreground, font-size and font-family cannot be changed on the same selection
 - Document Drag and Drop
-- Enhance `::Tk::getOpenFile` `filetypes` support to take a real Ruby hash instead of `['{Image Files} {.png}']`
-- Hello, Dialog! (open_file, save_file, choose_directory, choose_color, font_chooser [choose_font alias])
 - `text` widget Find dialog: show find dialog with a text field, case-sensitive checkbox, regex checkbox, and buttons for next and previous + rely on text#tk#search method to search in selection or all document
 
 - Allow setting root x/y without affecting its default width/height
@@ -23,6 +27,9 @@
 - Document Glimmer debug logging
 
 - Document all the new `text` formatting methods as well as Text Data-Binding
+
+## General
+
 - Implement `code_text` custom widget using `text` and `rouge` gem
 - Implement `code_text` line numbers feature, relying on yscrollcommand and yview scroll number
 - Update Meta-Sample to use `code_text` custom widget
@@ -52,7 +59,6 @@
 - Hello, Progressbar!
 - Hello, Menu Bar!
 - Hello, Contextual Menu!
-- Hello, Separator!
 - Hello, Labelframe!
 - Hello, Panedwindow!
 - Hello, Grid!
