@@ -14,10 +14,12 @@
 - Support `text` widget tag_bind events as `on(args) {}`
 - Improve Hello, Text! (toolbar buttons: justify left, justify center, justify right)
 - Improve Hello, Text! (toolbar buttons: find dialog)
-- Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font)
-- Fix issue with Hello, Text! whereby after applying bold, italic, underline, background, and foreground, font-size and font-family cannot be changed on the same selection
+- Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font) and show in top Hello, Text! toolbar comboboxes and buttons
+- When setting a `text` format without a selection in Hello, Text!, have it apply when typing
+- Fix issue with Hello, Text! whereby after applying background, and foreground to a selection, you cannot apply bold, italic, or underscore for the same selection (or font-size or font-family)
 - Document Drag and Drop
 - `text` widget Find dialog: show find dialog with a text field, case-sensitive checkbox, regex checkbox, and buttons for next and previous + rely on text#tk#search method to search in selection or all document
+- Make sure to only allow undo/redo when there are changes to be undoed/redoed
 
 - Allow setting root x/y without affecting its default width/height
 - Look into updating block_attribute expression to not require defining blocks that simply forward to tk on the widget

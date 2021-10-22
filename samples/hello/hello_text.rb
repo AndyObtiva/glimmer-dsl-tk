@@ -97,39 +97,44 @@ class HelloText
       frame {
         grid row: 0, column: 0
         
+        label {
+          grid row: 0, column: 0, columnspan: 17
+          text 'Select a region of text and then apply formatting from the toolbar'
+        }
+        
         column_index = -1
         
         combobox {
-          grid row: 0, column: column_index += 1, column_weight: 1
+          grid row: 1, column: column_index += 1, column_weight: 1
           readonly true
           text <=> [self, :font_family, after_write: ->(value) { @text.toggle_selection_font_format('family', value == FONT_FAMILY_PROMPT ? 'Courier New' : value) }]
         }
         
         combobox {
-          grid row: 0, column: column_index += 1, column_weight: 1
+          grid row: 1, column: column_index += 1, column_weight: 1
           readonly true
           text <=> [self, :font_size, after_write: ->(value) { @text.toggle_selection_font_format('size', value == FONT_SIZE_PROMPT ? 13 : value) }]
         }
         
         combobox {
-          grid row: 0, column: column_index += 1, column_weight: 1
+          grid row: 1, column: column_index += 1, column_weight: 1
           readonly true
           text <=> [self, :foreground, after_write: ->(value) { @text.add_selection_format('foreground', value == FOREGROUND_PROMPT ? 'black' : value) }]
         }
         
         combobox {
-          grid row: 0, column: column_index += 1, column_weight: 1
+          grid row: 1, column: column_index += 1, column_weight: 1
           readonly true
           text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'white' : value) }]
         }
         
         separator {
-          grid row: 0, column: column_index += 1, column_weight: 0
+          grid row: 1, column: column_index += 1, column_weight: 0
           orient 'vertical'
         }
         
         button {
-          grid row: 0, column: column_index += 1, column_weight: 0
+          grid row: 1, column: column_index += 1, column_weight: 0
           text 'B'
           style font: {weight: 'bold'}
           
@@ -139,7 +144,7 @@ class HelloText
         }
         
         button {
-          grid row: 0, column: column_index += 1, column_weight: 0
+          grid row: 1, column: column_index += 1, column_weight: 0
           text 'I'
           style font: {slant: 'italic'}
           
@@ -149,7 +154,7 @@ class HelloText
         }
         
         button {
-          grid row: 0, column: column_index += 1, column_weight: 0
+          grid row: 1, column: column_index += 1, column_weight: 0
           text 'U'
           style font: {underline: true}
           
@@ -159,12 +164,12 @@ class HelloText
         }
         
         separator {
-          grid row: 0, column: column_index += 1, column_weight: 0
+          grid row: 1, column: column_index += 1, column_weight: 0
           orient 'vertical'
         }
         
         button {
-          grid row: 0, column: column_index += 1, column_weight: 0
+          grid row: 1, column: column_index += 1, column_weight: 0
           image File.expand_path("images/cut.png", __dir__), subsample: 32
           
           on('command') do
@@ -173,7 +178,7 @@ class HelloText
         }
         
         button {
-          grid row: 0, column: column_index += 1, column_weight: 0
+          grid row: 1, column: column_index += 1, column_weight: 0
           image File.expand_path("images/copy.png", __dir__), subsample: 32
           
           on('command') do
@@ -182,7 +187,7 @@ class HelloText
         }
         
         button {
-          grid row: 0, column: column_index += 1, column_weight: 0
+          grid row: 1, column: column_index += 1, column_weight: 0
           image File.expand_path("images/paste.png", __dir__), subsample: 32
           
           on('command') do
@@ -191,12 +196,12 @@ class HelloText
         }
         
         separator {
-          grid row: 0, column: column_index += 1, column_weight: 0
+          grid row: 1, column: column_index += 1, column_weight: 0
           orient 'vertical'
         }
         
         button {
-          grid row: 0, column: column_index += 1, column_weight: 0
+          grid row: 1, column: column_index += 1, column_weight: 0
           image File.expand_path("images/undo.png", __dir__), subsample: 32
           
           on('command') do
@@ -205,7 +210,7 @@ class HelloText
         }
         
         button {
-          grid row: 0, column: column_index += 1, column_weight: 0
+          grid row: 1, column: column_index += 1, column_weight: 0
           image File.expand_path("images/redo.png", __dir__), subsample: 32
           
           on('command') do
@@ -214,12 +219,12 @@ class HelloText
         }
         
         separator {
-          grid row: 0, column: column_index += 1, column_weight: 0
+          grid row: 1, column: column_index += 1, column_weight: 0
           orient 'vertical'
         }
         
         button {
-          grid row: 0, column: column_index += 1, column_weight: 0
+          grid row: 1, column: column_index += 1, column_weight: 0
           image File.expand_path("images/picture.png", __dir__), subsample: 32
           
           on('command') do
