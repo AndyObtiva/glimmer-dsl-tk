@@ -47,7 +47,7 @@ root {
   
   separator {
     grid row: 1, column: 0, column_span: 3
-    orient 'horizontal'
+    # orient 'horizontal' # default
   }
   
   label {

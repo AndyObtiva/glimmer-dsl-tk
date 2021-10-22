@@ -5,6 +5,7 @@
 - Improve Hello, Text! (toolbar buttons: justify left, justify center, justify right)
 - Improve Hello, Text! (toolbar buttons: find dialog)
 - `text` widget Find dialog: show find dialog with a text field, case-sensitive checkbox, regex checkbox, and buttons for next and previous + rely on text#tk#search method to search in selection or all document
+- Hello, Toplevel! (Custom Window and Custom Dialog)
 
 ## Soon
 
@@ -56,7 +57,6 @@
 - Hello, Labelframe!
 - Hello, Panedwindow!
 - Hello, Grid!
-- Hello, Toplevel! (Custom Window and Custom Dialog)
 - Hello, Listbox! (two tabs for single/multi selection)
 - Hello, Treeview!
 - Hello, Table! (adapt treeview as a table)
@@ -1490,3 +1490,5 @@ DiagnosticReports directory in bug reports.
 - Consider switching drag and drop extension to an included a module
 - Consider generalizing support for drag and drop to fire on any mouse button and indicate the clicked mouse button in the event
 - `text` widget selection data-binding (relying on `tag_ranges 'sel'` and on `tag_add 'sel', 5.0, 6.0`)
+- Support `validate_command` and `invalid_command` as aliases to `validatecommand` and `invalidcommand` on `entry`
+`
