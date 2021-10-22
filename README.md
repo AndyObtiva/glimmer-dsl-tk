@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.27
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.28
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -12,7 +12,7 @@
 
 [Tcl/Tk](https://www.tcl.tk/) has recently improved by gaining native looking themed widgets on Mac, Windows, and Linux in [Tk version 8.5](https://www.tcl.tk/software/tcltk/8.5.html#:~:text=Highlights%20of%20Tk%208.5&text=Font%20rendering%3A%20Now%20uses%20anti,and%20window%20layout%2C%20and%20more.). Additionally, [Ruby](https://www.ruby-lang.org/en/) 3.0 Ractor (formerly known as [Guilds](https://olivierlacan.com/posts/concurrency-in-ruby-3-with-guilds/)) supports truly parallel multi-threading, making both [MRI](https://github.com/ruby/ruby) and [Tk](https://www.tcl.tk/) finally viable for support in [Glimmer](https://github.com/AndyObtiva/glimmer) (Ruby Desktop Development GUI Library) as an alternative to [JRuby on SWT](https://github.com/AndyObtiva/glimmer-dsl-swt).
 
-The trade-off is that while [SWT](https://www.eclipse.org/swt/) provides a plethora of high quality reusable widgets for the Enterprise (such as [Nebula](https://github.com/AndyObtiva/glimmer-cw-nebula)), [Tk](https://www.tcl.tk/) enables very fast app startup time and a small memory footprint via [MRI Ruby](https://www.ruby-lang.org/en/).
+The trade-off is that while [SWT](https://www.eclipse.org/swt/) provides a plethora of high quality reusable widgets for the Enterprise (such as [Nebula](https://github.com/AndyObtiva/glimmer-cw-nebula)), [Tk](https://www.tcl.tk/) has a very fast app startup time and a small memory footprint courtesy of [MRI Ruby](https://www.ruby-lang.org/en/).
 
 [Glimmer DSL for Tk](https://github.com/AndyObtiva/glimmer-dsl-tk) aims to provide a DSL similar to the [Glimmer DSL for SWT](https://github.com/AndyObtiva/glimmer-dsl-swt) to enable more productive desktop development in Ruby with:
 - Declarative DSL syntax that visually maps to the GUI widget hierarchy
@@ -112,6 +112,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Hello, Text!](#hello-text)
     - [Hello, Spinbox!](#hello-spinbox)
     - [Hello, Computed!](#hello-computed)
+    - [Hello, Drag and Drop!](#hello-drag-and-drop)
   - [Help](#help)
     - [Issues](#issues)
     - [Chat](#chat)
@@ -148,7 +149,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.27'
+gem 'glimmer-dsl-tk', '~> 0.0.28'
 ```
 
 And, then run:
@@ -1990,6 +1991,167 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello computed](images/glimmer-dsl-tk-screenshot-sample-hello-computed.png)
 
+### Hello, Drag and Drop!
+
+Glimmer code (from [samples/hello/hello_drag_and_drop.rb](samples/hello/hello_drag_and_drop.rb)):
+
+```ruby
+require "glimmer-dsl-tk"
+require "glimmer/tk/drag_and_drop_extension"
+
+include Glimmer
+
+root {
+  title "Hello, Drag and Drop!"
+  frame {
+    padding 5
+    labelframe {
+      text "Drag sources"
+      padding 5
+      label {
+        text "Entry"
+        grid :row => 0, :column => 0
+      }
+      entry {
+        text "Drag entry text"
+        width 30
+        grid :row => 0, :column => 1, :pady => 5, :sticky => "e"
+        on_drag_start { |event|
+          event.data = event.source.textvariable&.value
+          event.source.configure(:cursor => "hand2")
+          TkLabel.new(event.tooltip) {
+            text event.data + " "
+            bg "yellow"
+            bitmap "warning"
+            compound "right"
+          }.pack
+        }
+        on_drag_motion { |event|
+          if event.drop_accepted
+            event.source.configure(:cursor => "hand1")
+          else
+            event.source.configure(:cursor => "hand2")
+          end
+          event.tooltip.geometry("+#{event.x_root + 10}+#{event.y_root - 4}")
+        }
+      }
+      label {
+        text "Label"
+        grid :row => 1, :column => 0
+      }
+      label {
+        text "Drag label text"
+        width 30
+        grid :row => 1, :column => 1, :pady => 10, :sticky => "e"
+        drag_source true
+      }
+      label {
+        text "Combobox"
+        grid :row => 2, :column => 0
+      }
+      combobox {
+        text "Spain"
+        values %w[USA Canada Mexico Columbia UK Australia Germany Italy Spain]
+        width 27
+        grid :row => 2, :column => 1, :pady => 5, :sticky => "e"
+        on_drag_start { |event|
+          event.data = event.source.textvariable&.value
+        }
+      }
+      label {
+        text "Button"
+        grid :row => 3, :column => 0
+      }
+      button {
+        text "Drag it"
+        grid :row => 3, :column => 1, :pady => 5, :sticky => "w"
+        drag_source true
+      }
+    }
+
+    labelframe {
+      text "Drop targets"
+      grid :sticky => "nsew", :pady => 15
+      padding 5
+      label {
+        text "Entry"
+        grid :row => 0, :column => 0
+      }
+      entry {
+        width 30
+        grid :row => 0, :column => 1, :pady => 5, :sticky => "e"
+        on_drop { |event|
+          event.target.textvariable.value = event.data
+        }
+      }
+      label {
+        text "Label"
+        grid :row => 1, :column => 0
+      }
+      label {
+        width 30
+        grid :row => 1, :column => 1, :pady => 10, :sticky => "e"
+        borderwidth 2
+        relief "solid"
+        on_drop { |event|
+          event.target.textvariable.value = event.data
+        }
+      }
+      label {
+        text "Combobox"
+        grid :row => 2, :column => 0
+      }
+      combobox {
+        width 27
+        grid :row => 2, :column => 1, :pady => 5, :sticky => "e"
+        on_drop { |event|
+          event.target.textvariable.value = event.data
+        }
+      }
+      label {
+        text "Button"
+        grid :row => 3, :column => 0
+      }
+      button {
+        text "Drop here"
+        grid :row => 3, :column => 1, :pady => 5, :sticky => "w"
+        on_drop { |event|
+          event.target.text = event.data
+        }
+      }
+      label {
+        text "Checkbutton"
+        grid :row => 4, :column => 0
+      }
+      checkbutton {
+        text "Drop here to destroy a widget\n(except button)"
+        grid :row => 4, :column => 1, :pady => 5, :sticky => "w"
+        on_drop { |event|
+          event.target.text = event.data
+          event.source.destroy unless event.source.is_a? Tk::Button
+        }
+      }
+    }
+  }
+}.open
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_drag_and_drop'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_drag_and_drop.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello drag and drop](images/glimmer-dsl-tk-screenshot-sample-hello-drag-and-drop.png)
+
 ## Help
 
 ### Issues
@@ -2023,6 +2185,7 @@ These features have been planned or suggested. You might see them in a future ve
 ## Contributors
 
 * [Andy Maleh](https://github.com/AndyObtiva) (Founder)
+* [vin1antme](https://github.com/vin1antme)
 
 [Click here to view contributor commits.](https://github.com/AndyObtiva/glimmer-dsl-tk/graphs/contributors)
 

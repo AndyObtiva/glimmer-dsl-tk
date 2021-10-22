@@ -2,7 +2,7 @@ GEM
   remote: https://rubygems.org/
   specs:
     addressable (2.4.0)
-    array_include_methods (1.0.4)
+    array_include_methods (1.4.0)
     awesome_print (1.9.2)
     builder (3.2.4)
     coveralls (0.8.23)
@@ -27,8 +27,8 @@ GEM
       hashie (>= 3.4)
       mime-types (>= 1.16, < 3.0)
       oauth2 (~> 1.0)
-    glimmer (2.1.2)
-      array_include_methods (>= 1.0.4, < 2.0.0)
+    glimmer (2.4.0)
+      array_include_methods (~> 1.4.0)
       facets (>= 3.1.0, < 4.0.0)
     hashie (4.1.0)
     highline (2.0.3)
@@ -44,16 +44,16 @@ GEM
       rdoc
       semver2
     json (2.5.1)
-    jwt (2.2.3)
+    jwt (2.3.0)
     mime-types (2.99.3)
     mini_portile2 (2.6.1)
     multi_json (1.15.0)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
-    nokogiri (1.12.4)
+    nokogiri (1.12.5)
       mini_portile2 (~> 2.6.1)
       racc (~> 1.4)
-    nokogiri (1.12.4-x64-mingw32)
+    nokogiri (1.12.5-x64-mingw32)
       racc (~> 1.4)
     oauth2 (1.4.7)
       faraday (>= 0.8, < 2.0)
@@ -64,10 +64,10 @@ GEM
     os (1.1.1)
     pastel (0.8.0)
       tty-color (~> 0.5)
-    psych (4.0.1)
+    psych (4.0.2)
     puts_debuggerer (0.13.1)
       awesome_print (~> 1.9.2)
-    racc (1.5.2)
+    racc (1.6.0)
     rack (2.2.3)
     rake (13.0.6)
     rake-tui (0.2.3)
@@ -121,7 +121,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (>= 1.0)
   coveralls (= 0.8.23)
-  glimmer (~> 2.1.2)
+  glimmer (~> 2.4.0)
   jeweler (>= 2.3.9, < 3.0.0)
   json (= 2.5.1)
   os (>= 1.0.0, < 2.0.0)
@@ -133,4 +133,4 @@ DEPENDENCIES
   tk (~> 0.4.0)
 
 BUNDLED WITH
-   2.2.28
+   2.2.29

@@ -4,7 +4,7 @@ source "https://rubygems.org"
 #   gem "activesupport", ">= 2.3.5"
 
 # Glimmer project owner gems
-gem 'glimmer', '~> 2.1.2' #, path: '../glimmer'
+gem 'glimmer', '~> 2.4.0' #, path: '../glimmer'
 # gem 'super_module', '~> 1.4.1'
 gem 'puts_debuggerer', '~> 0.13.1', require: false
 # gem 'rake-tui', '>= 0.2.1'

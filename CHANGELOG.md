@@ -2,9 +2,11 @@
 
 ## 0.0.28
 
+- Hello, Drag and Drop!
 - Improve Hello, Text! (toolbar buttons: font family, font size, cut, copy, paste, undo, redo)
+- Drag & Drop support
 - Update default dimensions of Meta-Sample root window to 1280x720
-- Have any widget with a `font` attribute support pre-defined fonts like `'caption'` and `'heading'` (just like `label`)
+- Have any widget with a `font` attribute (like `text`) support pre-defined fonts like `'caption'` and `'heading'` (just like `label`)
 
 ## 0.0.27
 
