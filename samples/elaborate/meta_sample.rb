@@ -87,7 +87,7 @@ class MetaSample
             
             on('command') do
               @selected_sample_index = index
-              @code_text.text = File.read(file_path_for(selected_sample))
+              @code_text.value = File.read(file_path_for(selected_sample))
             end
           }
         end
@@ -102,7 +102,7 @@ class MetaSample
                 parent_dir = File.join(Dir.home, '.glimmer-dsl-tk', 'samples', 'hello')
                 FileUtils.mkdir_p(parent_dir)
                 sample_file = File.join(parent_dir, "#{selected_sample.underscore}.rb")
-                File.write(sample_file, @code_text.text)
+                File.write(sample_file, @code_text.value)
                 FileUtils.cp_r(File.expand_path('../../icons', __dir__), File.dirname(File.dirname(parent_dir)))
                 FileUtils.cp_r(File.expand_path('../hello/images', __dir__), parent_dir)
                 sample_namespace_directory = File.expand_path("../hello/#{selected_sample.underscore}", __dir__)
@@ -120,7 +120,7 @@ class MetaSample
             text 'Reset'
             
             on('command') do
-              @code_text.text = File.read(file_path_for(selected_sample))
+              @code_text.value = File.read(file_path_for(selected_sample))
             end
           }
         }
@@ -128,7 +128,7 @@ class MetaSample
       
       @code_text = text {
         grid row: 0, column: 1, column_weight: 1
-        text File.read(file_path_for(selected_sample))
+        value File.read(file_path_for(selected_sample))
       }
     }
     @root.open

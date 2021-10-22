@@ -69,37 +69,39 @@ class HelloText
       frame {
         grid row: 0, column: 0
         
+        column_index = -1
+        
         combobox {
-          grid row: 0, column: 0, column_weight: 1
+          grid row: 0, column: column_index += 1, column_weight: 1
           readonly true
           text <=> [self, :font_family, after_write: ->(value) { @text.toggle_selection_font_format('family', value == FONT_FAMILY_PROMPT ? 'Courier New' : value) }]
         }
         
         combobox {
-          grid row: 0, column: 1, column_weight: 1
+          grid row: 0, column: column_index += 1, column_weight: 1
           readonly true
           text <=> [self, :font_size, after_write: ->(value) { @text.toggle_selection_font_format('size', value == FONT_SIZE_PROMPT ? 13 : value) }]
         }
         
         combobox {
-          grid row: 0, column: 2, column_weight: 1
+          grid row: 0, column: column_index += 1, column_weight: 1
           readonly true
           text <=> [self, :foreground, after_write: ->(value) { @text.add_selection_format('foreground', value == FOREGROUND_PROMPT ? 'black' : value) }]
         }
         
         combobox {
-          grid row: 0, column: 3, column_weight: 1
+          grid row: 0, column: column_index += 1, column_weight: 1
           readonly true
           text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'white' : value) }]
         }
         
         separator {
-          grid row: 0, column: 4, column_weight: 0
+          grid row: 0, column: column_index += 1, column_weight: 0
           orient 'vertical'
         }
         
         button {
-          grid row: 0, column: 5, column_weight: 0
+          grid row: 0, column: column_index += 1, column_weight: 0
           text 'B'
           style font: {weight: 'bold'}
           
@@ -109,7 +111,7 @@ class HelloText
         }
         
         button {
-          grid row: 0, column: 6, column_weight: 0
+          grid row: 0, column: column_index += 1, column_weight: 0
           text 'I'
           style font: {slant: 'italic'}
           
@@ -119,7 +121,7 @@ class HelloText
         }
         
         button {
-          grid row: 0, column: 7, column_weight: 0
+          grid row: 0, column: column_index += 1, column_weight: 0
           text 'U'
           style font: {underline: true}
           
@@ -129,12 +131,12 @@ class HelloText
         }
         
         separator {
-          grid row: 0, column: 8, column_weight: 0
+          grid row: 0, column: column_index += 1, column_weight: 0
           orient 'vertical'
         }
         
         button {
-          grid row: 0, column: 9, column_weight: 0
+          grid row: 0, column: column_index += 1, column_weight: 0
           image File.expand_path("images/cut.png", __dir__), subsample: 32
           
           on('command') do
@@ -143,7 +145,7 @@ class HelloText
         }
         
         button {
-          grid row: 0, column: 10, column_weight: 0
+          grid row: 0, column: column_index += 1, column_weight: 0
           image File.expand_path("images/copy.png", __dir__), subsample: 32
           
           on('command') do
@@ -152,7 +154,7 @@ class HelloText
         }
         
         button {
-          grid row: 0, column: 11, column_weight: 0
+          grid row: 0, column: column_index += 1, column_weight: 0
           image File.expand_path("images/paste.png", __dir__), subsample: 32
           
           on('command') do
@@ -161,12 +163,12 @@ class HelloText
         }
         
         separator {
-          grid row: 0, column: 12, column_weight: 0
+          grid row: 0, column: column_index += 1, column_weight: 0
           orient 'vertical'
         }
         
         button {
-          grid row: 0, column: 13, column_weight: 1
+          grid row: 0, column: column_index += 1, column_weight: 0
           image File.expand_path("images/undo.png", __dir__), subsample: 32
           
           on('command') do
@@ -175,7 +177,7 @@ class HelloText
         }
         
         button {
-          grid row: 0, column: 14, column_weight: 1
+          grid row: 0, column: column_index += 1, column_weight: 0
           image File.expand_path("images/redo.png", __dir__), subsample: 32
           
           on('command') do
@@ -188,7 +190,7 @@ class HelloText
         grid row: 1, column: 0, row_weight: 1
         wrap 'word'
         undo true
-        text <<~MULTI_LINE_STRING
+        value <<~MULTI_LINE_STRING
           According to the National Post, a heavy metal-loving high school principal in Canada will be allowed to keep her job, days after a public campaign to oust her made headlines around the globe.
           
           Parents at Eden High School in St. Catharines, Ontario launched a petition to remove principal Sharon Burns after discovering she's an IRON MAIDEN fan.

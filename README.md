@@ -322,9 +322,7 @@ keyword(args) | attributes | event bindings & callbacks
 
 #### Text API
 
-[Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) automatically provides a `text` attribute for the `text` widget that enables updating its content simply without worrying about whether to manually insert by index, delete, or append.
-
-Also, the `text` widget is enhanced by [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) to enable simpler manipulation of text options without dealing with [tags](https://tkdocs.com/tutorial/text.html) directly. Simply specify region to mutate and option/value or font_option/value, and [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) takes care of the rest by automating work of adding/removing [tags](https://tkdocs.com/tutorial/text.html) behind the scenes.
+The `text` widget is enhanced by [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) to enable simpler manipulation of text options without dealing with [tags](https://tkdocs.com/tutorial/text.html) directly. Simply specify region to mutate and option/value or font_option/value, and [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) takes care of the rest by automating work of adding/removing [tags](https://tkdocs.com/tutorial/text.html) behind the scenes.
 
 - `add_format(region_start, region_end, option, value)`
 - `remove_format(region_start, region_end, option, value)`
@@ -697,6 +695,128 @@ ruby -r ./lib/glimmer-dsl-tk.rb samples/elaborate/meta_sample.rb
 ```
 
 ![glimmer dsl tk screenshot sample meta sample](images/glimmer-dsl-tk-screenshot-sample-elaborate-meta-sample.png)
+
+Code:
+
+```ruby
+require 'glimmer-dsl-tk'
+require 'facets'
+require 'fileutils'
+
+class MetaSample
+  include Glimmer
+  
+  attr_accessor :selected_sample_index
+  
+  def initialize
+    @selected_sample_index = 0
+  end
+  
+  def samples
+    if @samples.nil?
+      sample_files = Dir.glob(File.join(File.expand_path('../hello', __dir__), '**', 'hello_*.rb'))
+      sample_file_names = sample_files.map { |f| File.basename(f, '.rb') }
+      sample_file_names = sample_file_names.reject { |f| f == 'meta_sample' || f.match(/\d$/) }
+      @samples = sample_file_names.map { |f| f.underscore.titlecase }
+    end
+    @samples
+  end
+  
+  def file_path_for(sample)
+    File.join(File.expand_path('../hello', __dir__), "#{sample.underscore}.rb")
+  end
+  
+  def glimmer_dsl_tk_file
+    File.expand_path('../../lib/glimmer-dsl-tk', __dir__)
+  end
+  
+  def selected_sample
+    samples[@selected_sample_index]
+  end
+  
+  def run_sample(sample)
+    Thread.new do
+      command = "ruby -r #{glimmer_dsl_tk_file} #{sample} 2>&1"
+      result = ''
+      IO.popen(command) do |f|
+        f.each_line do |line|
+          result << line
+          puts line
+          $stdout.flush
+        end
+      end
+      ::Tk.after(100) do
+        message_box(parent: @root, title: 'Error Running Sample', message: result) if result.downcase.include?('error')
+      end
+    end
+  end
+  
+  def launch
+    @root = root {
+      title 'Glimmer Meta-Sample'
+      width 1280
+      height 720
+      
+      frame {
+        grid row: 0, column: 0, column_weight: 0, row_weight: 1
+        
+        samples.each_with_index do |sample, index|
+          radiobutton {
+            text sample
+            variable <=> [self, :selected_sample_index, on_write: ->(v) {v ? index : selected_sample_index}, on_read: ->(v) {v == index}]
+            
+            on('command') do
+              @selected_sample_index = index
+              @code_text.value = File.read(file_path_for(selected_sample))
+            end
+          }
+        end
+        
+        frame {
+          button {
+            grid row: 0, column: 0
+            text 'Launch'
+            
+            on('command') do
+              begin
+                parent_dir = File.join(Dir.home, '.glimmer-dsl-tk', 'samples', 'hello')
+                FileUtils.mkdir_p(parent_dir)
+                sample_file = File.join(parent_dir, "#{selected_sample.underscore}.rb")
+                File.write(sample_file, @code_text.value)
+                FileUtils.cp_r(File.expand_path('../../icons', __dir__), File.dirname(File.dirname(parent_dir)))
+                FileUtils.cp_r(File.expand_path('../hello/images', __dir__), parent_dir)
+                sample_namespace_directory = File.expand_path("../hello/#{selected_sample.underscore}", __dir__)
+                FileUtils.cp_r(sample_namespace_directory, parent_dir) if Dir.exist?(sample_namespace_directory)
+                run_sample(sample_file)
+              rescue => e
+                puts e.full_message
+                puts 'Unable to write code changes! Running original sample...'
+                run_sample(file_path_for(selected_sample))
+              end
+            end
+          }
+          button {
+            grid row: 0, column: 1
+            text 'Reset'
+            
+            on('command') do
+              @code_text.value = File.read(file_path_for(selected_sample))
+            end
+          }
+        }
+      }
+      
+      @code_text = text {
+        grid row: 0, column: 1, column_weight: 1
+        value File.read(file_path_for(selected_sample))
+      }
+    }
+    @root.open
+  end
+end
+
+MetaSample.new.launch
+```
 
 ### Hello, World!
 
@@ -1711,12 +1831,17 @@ class HelloText
   include Glimmer
   
   COLOR_OPTIONS = %w[black purple blue green orange yellow red white].map(&:capitalize)
-  FOREGROUND_PROMPT = '<select foreground>'
-  BACKGROUND_PROMPT = '<select background>'
+  FONT_FAMILY_OPTIONS = ::TkFont.families
+  FOREGROUND_PROMPT = '<foreground>'
+  BACKGROUND_PROMPT = '<background>'
+  FONT_FAMILY_PROMPT = '<font family>'
+  FONT_SIZE_PROMPT = '<font size>'
   
   def initialize
     @foreground = FOREGROUND_PROMPT
     @background = BACKGROUND_PROMPT
+    @font_family = FONT_FAMILY_PROMPT
+    @font_size = FONT_SIZE_PROMPT
   end
   
   attr_accessor :foreground
@@ -1731,6 +1856,18 @@ class HelloText
     [BACKGROUND_PROMPT] + COLOR_OPTIONS
   end
   
+  attr_accessor :font_family
+  
+  def font_family_options
+    [FONT_FAMILY_PROMPT] + FONT_FAMILY_OPTIONS
+  end
+  
+  attr_accessor :font_size
+  
+  def font_size_options
+    [FONT_SIZE_PROMPT] + (9..64).to_a.map(&:to_s)
+  end
+  
   def launch
     root {
       title 'Hello, Text!'
@@ -1738,8 +1875,39 @@ class HelloText
       frame {
         grid row: 0, column: 0
         
+        column_index = -1
+        
+        combobox {
+          grid row: 0, column: column_index += 1, column_weight: 1
+          readonly true
+          text <=> [self, :font_family, after_write: ->(value) { @text.toggle_selection_font_format('family', value == FONT_FAMILY_PROMPT ? 'Courier New' : value) }]
+        }
+        
+        combobox {
+          grid row: 0, column: column_index += 1, column_weight: 1
+          readonly true
+          text <=> [self, :font_size, after_write: ->(value) { @text.toggle_selection_font_format('size', value == FONT_SIZE_PROMPT ? 13 : value) }]
+        }
+        
+        combobox {
+          grid row: 0, column: column_index += 1, column_weight: 1
+          readonly true
+          text <=> [self, :foreground, after_write: ->(value) { @text.add_selection_format('foreground', value == FOREGROUND_PROMPT ? 'black' : value) }]
+        }
+        
+        combobox {
+          grid row: 0, column: column_index += 1, column_weight: 1
+          readonly true
+          text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'white' : value) }]
+        }
+        
+        separator {
+          grid row: 0, column: column_index += 1, column_weight: 0
+          orient 'vertical'
+        }
+        
         button {
-          grid row: 0, column: 0, column_weight: 0
+          grid row: 0, column: column_index += 1, column_weight: 0
           text 'B'
           style font: {weight: 'bold'}
           
@@ -1749,7 +1917,7 @@ class HelloText
         }
         
         button {
-          grid row: 0, column: 1, column_weight: 0
+          grid row: 0, column: column_index += 1, column_weight: 0
           text 'I'
           style font: {slant: 'italic'}
           
@@ -1759,7 +1927,7 @@ class HelloText
         }
         
         button {
-          grid row: 0, column: 2, column_weight: 0
+          grid row: 0, column: column_index += 1, column_weight: 0
           text 'U'
           style font: {underline: true}
           
@@ -1768,23 +1936,67 @@ class HelloText
           end
         }
         
-        combobox {
-          grid row: 0, column: 4, column_weight: 1
-          readonly true
-          text <=> [self, :foreground, after_write: ->(value) { @text.add_selection_format('foreground', value == FOREGROUND_PROMPT ? 'black' : value) }]
+        separator {
+          grid row: 0, column: column_index += 1, column_weight: 0
+          orient 'vertical'
         }
         
-        combobox {
-          grid row: 0, column: 5, column_weight: 1
-          readonly true
-          text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'black' : value) }]
+        button {
+          grid row: 0, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/cut.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.text_cut
+          end
+        }
+        
+        button {
+          grid row: 0, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/copy.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.text_copy
+          end
+        }
+        
+        button {
+          grid row: 0, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/paste.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.text_paste
+          end
+        }
+        
+        separator {
+          grid row: 0, column: column_index += 1, column_weight: 0
+          orient 'vertical'
+        }
+        
+        button {
+          grid row: 0, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/undo.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.edit_undo
+          end
+        }
+        
+        button {
+          grid row: 0, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/redo.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.edit_redo
+          end
         }
       }
       
       @text = text {
         grid row: 1, column: 0, row_weight: 1
         wrap 'word'
-        text <<~MULTI_LINE_STRING
+        undo true
+        value <<~MULTI_LINE_STRING
           According to the National Post, a heavy metal-loving high school principal in Canada will be allowed to keep her job, days after a public campaign to oust her made headlines around the globe.
           
           Parents at Eden High School in St. Catharines, Ontario launched a petition to remove principal Sharon Burns after discovering she's an IRON MAIDEN fan.
