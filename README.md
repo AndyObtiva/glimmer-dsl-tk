@@ -74,7 +74,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Supported Widgets](#supported-widgets)
       - [Common Attributes](#common-attributes)
       - [Common Themed Widget States](#common-themed-widget-states)
-      - [Text Extra API Methods](#text-extra-api-methods)
+      - [Text API](#text-api)
     - [Smart Defaults and Conventions](#smart-defaults-and-conventions)
       - [Grid Layout](#grid-layout)
       - [Image Attribute](#image-attribute)
@@ -319,7 +319,7 @@ keyword(args) | attributes | event bindings & callbacks
 - `invalid?`
 - `hover?`
 
-#### Text Extra API Methods
+#### Text API
 
 [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) automatically provides a `text` attribute for the `text` widget that enables updating its content simply without worrying about whether to manually insert by index, delete, or append.
 
@@ -370,7 +370,15 @@ Available font options:
 - `underline` (default: `false`)
 - `overstrike` (default: `false`)
 
-Check out the [Hello, Text!](#hello-text) sample for a good demonstration of the `text` widget.
+Other useful built-in API methods:
+
+- `text_cut`
+- `text_copy`
+- `text_paste`
+- `text_edit_undo`
+- `text_edit_redo`
+
+Check out the [Hello, Text!](#hello-text) sample for a good demonstration of the `text` widget features.
 
 ### Smart Defaults and Conventions
 

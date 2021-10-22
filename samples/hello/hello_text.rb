@@ -167,7 +167,7 @@ class HelloText
         
         button {
           grid row: 0, column: 13, column_weight: 1
-          text 'Undo'
+          image File.expand_path("images/undo.png", __dir__), subsample: 32
           
           on('command') do
             @text.edit_undo
@@ -176,7 +176,7 @@ class HelloText
         
         button {
           grid row: 0, column: 14, column_weight: 1
-          text 'Redo'
+          image File.expand_path("images/redo.png", __dir__), subsample: 32
           
           on('command') do
             @text.edit_redo
