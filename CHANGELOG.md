@@ -3,6 +3,7 @@
 ## 0.0.29
 
 - Removed unnecessary `text` widget `text` attribute after realizing `value` does the same thing
+- Support `text` widget data-binding on 'modified' event
 
 ## 0.0.28
 

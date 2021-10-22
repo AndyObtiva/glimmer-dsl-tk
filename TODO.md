@@ -6,11 +6,11 @@
 - `text` widget cut/copy with style
 - `text` widget paste with cut/copied style
 - `text` widget paste matching insert mark style
+- Support `text` widget tag_bind events as `on(args) {}`
 - Improve Hello, Text! (toolbar buttons: insert image)
 - Improve Hello, Text! (toolbar buttons: justify left, justify center, justify right)
 - Improve Hello, Text! (toolbar buttons: find dialog)
 - Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font)
-- Text Data-Binding
 - Fix issue with Hello, Text! whereby after applying bold, italic, underline, background, and foreground, font-size and font-family cannot be changed on the same selection
 - Document Drag and Drop
 - Enhance `::Tk::getOpenFile` `filetypes` support to take a real Ruby hash instead of `['{Image Files} {.png}']`
@@ -1489,3 +1489,4 @@ DiagnosticReports directory in bug reports.
 - Support on_event listeners (as opposed to on('event')) (e.g. `on_KeyPress {}`)
 - Consider switching drag and drop extension to an included a module
 - Consider generalizing support for drag and drop to fire on any mouse button and indicate the clicked mouse button in the event
+- `text` widget selection data-binding (relying on `tag_ranges 'sel'` and on `tag_add 'sel', 5.0, 6.0`)

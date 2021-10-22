@@ -90,6 +90,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [List Single Selection Data-Binding](#list-single-selection-data-binding)
     - [List Multi Selection Data-Binding](#list-multi-selection-data-binding)
     - [Entry Data-Binding](#entry-data-binding)
+    - [Text Data-Binding](#text-data-binding)
     - [Spinbox Data-Binding](#spinbox-data-binding)
     - [Checkbutton Data-Binding](#checkbutton-data-binding)
     - [Radiobutton Data-Binding](#radiobutton-data-binding)
@@ -575,6 +576,24 @@ That code binds the `textvariable` value of the `entry` to the `country` attribu
 It automatically handles all the Tk plumbing behind the scenes.
 
 More details can be found in [Hello, Entry!](#hello-entry) and [Hello, Computed!](#hello-computed) samples below.
+
+### Text Data-Binding
+
+Example:
+
+This assumes a `Person` model with a `biography` attribute.
+
+```ruby
+  text {
+    value <=> [person, :biography]
+  }
+```
+
+That code binds the `value` of `text` to the `biography` attribute on the `person` model.
+
+It automatically handles all the Tk plumbing behind the scenes.
+
+More details can be found in [Hello, Text!](#hello-text) sample below.
 
 ### Spinbox Data-Binding
 

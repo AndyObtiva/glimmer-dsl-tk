@@ -379,9 +379,9 @@ module Glimmer
             end,
           },
           ::Tk::Text => {
-            'text' => lambda do |observer|
+            'value' => lambda do |observer|
               handle_listener('modified') do
-                observer.call(text)
+                observer.call(value)
               end
             end,
           },
@@ -422,6 +422,7 @@ module Glimmer
         begin
           @tk.bind(listener_name, &listener)
         rescue => e
+          Glimmer::Config.logger.debug {"Unable to bind to #{listener_name} .. attempting to surround with <>"}
           Glimmer::Config.logger.debug {e.full_message}
           listener_name = "<#{listener_name}" if !listener_name.start_with?('<')
           listener_name = "#{listener_name}>" if !listener_name.end_with?('>')
