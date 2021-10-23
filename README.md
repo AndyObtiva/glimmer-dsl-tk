@@ -120,7 +120,8 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
   - [Applications](#applications)
     - [Glimmer Tk Calculator](#glimmer-tk-calculator)
     - [Y3network Ruby UI](#y3network-ruby-ui)
-    - [Cryptopunks GUI](#cryptopunks-gui)
+    - [CryptoPunks GUI](#cryptopunks-gui)
+  - [Resources](#resources)
   - [Process](#process)
   - [Help](#help)
     - [Issues](#issues)
@@ -2624,19 +2625,24 @@ Glimmer app:
 
 https://github.com/ancorgs/glimmer-tk-calculator
 
-https://raw.githubusercontent.com/ancorgs/glimmer-tk-calculator/master/screenshot.png
+![Glimmer Tk Calculator Screenshot](https://raw.githubusercontent.com/ancorgs/glimmer-tk-calculator/master/screenshot.png)
 
 ### Y3network Ruby UI
 
 https://github.com/ancorgs/y3network-ruby-ui
 
-### Cryptopunks GUI
+### CryptoPunks GUI
 
-This is a Graphical User Interface for the famous [Cryptopunks Ruby gem](https://github.com/cryptopunksnotdead/cryptopunks/tree/master/cryptopunks).
+This is a Graphical User Interface for the famous [cryptopunks Ruby gem](https://github.com/cryptopunksnotdead/cryptopunks/tree/master/cryptopunks).
 
 https://github.com/AndyObtiva/cryptopunks-gui
 
-![Cryptopunks GUI Screenshot](https://raw.githubusercontent.com/AndyObtiva/cryptopunks-gui/master/screenshots/cryptopunks-gui-screenshot.png)
+![CryptoPunks GUI Screenshot](https://raw.githubusercontent.com/AndyObtiva/cryptopunks-gui/master/screenshots/cryptopunks-gui-screenshot.png)
+
+## Resources
+
+- [Tk Tutorial](https://tkdocs.com/tutorial/index.html)
+- [Code Master Blog](https://andymaleh.blogspot.com/search/label/Tk)
 
 ## Process
 
@@ -2646,9 +2652,7 @@ https://github.com/AndyObtiva/cryptopunks-gui
 
 ### Issues
 
-You may submit [issues](https://github.com/AndyObtiva/glimmer/issues) on [GitHub](https://github.com/AndyObtiva/glimmer/issues).
-
-[Click here to submit an issue.](https://github.com/AndyObtiva/glimmer/issues)
+If you encounter [issues](https://github.com/AndyObtiva/glimmer-dsl-tk/issues) that are not reported, discover missing features that are not mentioned in [TODO.md](TODO.md), or think up better ways to use [Tk](https://www.tcl.tk/) than what is possible with [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk), you may submit an [issue](https://github.com/AndyObtiva/glimmer-dsl-tk/issues/new) or [pull request](https://github.com/AndyObtiva/glimmer-dsl-tk/compare) on [GitHub](https://github.com).
 
 ### Chat
 

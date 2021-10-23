@@ -227,7 +227,7 @@ module Glimmer
       
       def grid(options = {})
         options = options.stringify_keys
-        index_in_parent = @parent_proxy.children.index(self)
+        index_in_parent = @parent_proxy&.children&.index(self)
         options['rowspan'] = options.delete('row_span') if options.keys.include?('row_span')
         options['columnspan'] = options.delete('column_span') if options.keys.include?('column_span')
         options['rowweight'] = options.delete('row_weight') if options.keys.include?('row_weight')
@@ -240,10 +240,12 @@ module Glimmer
         options['columnminsize'] = options.delete('minwidth') if options.keys.include?('minwidth')
         options['columnminsize'] = options.delete('min_width') if options.keys.include?('min_width')
         options['columnminsize'] = options['rowminsize'] = options.delete('minsize')  if options.keys.include?('minsize')
-        TkGrid.rowconfigure(@parent_proxy.tk, index_in_parent, 'weight'=> options.delete('rowweight')) if options.keys.include?('rowweight')
-        TkGrid.rowconfigure(@parent_proxy.tk, index_in_parent, 'minsize'=> options.delete('rowminsize')) if options.keys.include?('rowminsize')
-        TkGrid.columnconfigure(@parent_proxy.tk, index_in_parent, 'weight'=> options.delete('columnweight')) if options.keys.include?('columnweight')
-        TkGrid.columnconfigure(@parent_proxy.tk, index_in_parent, 'minsize'=> options.delete('columnminsize')) if options.keys.include?('columnminsize')
+        if index_in_parent
+          TkGrid.rowconfigure(@parent_proxy.tk, index_in_parent, 'weight'=> options.delete('rowweight')) if options.keys.include?('rowweight')
+          TkGrid.rowconfigure(@parent_proxy.tk, index_in_parent, 'minsize'=> options.delete('rowminsize')) if options.keys.include?('rowminsize')
+          TkGrid.columnconfigure(@parent_proxy.tk, index_in_parent, 'weight'=> options.delete('columnweight')) if options.keys.include?('columnweight')
+          TkGrid.columnconfigure(@parent_proxy.tk, index_in_parent, 'minsize'=> options.delete('columnminsize')) if options.keys.include?('columnminsize')
+        end
         @tk.grid(options)
       end
       

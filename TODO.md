@@ -5,6 +5,8 @@
 - Improve Hello, Text! (toolbar buttons: find dialog)
 - `text` widget Find dialog: show find dialog with a text field, case-sensitive checkbox, regex checkbox, and buttons for next and previous + rely on text#tk#search method to search in selection or all document
 - Hello, Toplevel! (Custom Window and Custom Dialog)
+- `icon_photo` as alias for `iconphoto` attribute
+- Add defensive programming for preventing spinbox from allowing value to go over `to` (max) when typing by keyboard
 
 ## Soon
 
