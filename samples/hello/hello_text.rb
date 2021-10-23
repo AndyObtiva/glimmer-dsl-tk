@@ -93,6 +93,8 @@ class HelloText
   def launch
     root {
       title 'Hello, Text!'
+      width 1280
+      height 800
       
       frame {
         grid row: 0, column: 0
@@ -192,6 +194,38 @@ class HelloText
           
           on('command') do
             @text.text_paste
+          end
+        }
+        
+        separator {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          orient 'vertical'
+        }
+        
+        button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/align-left.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.add_selection_format('justify', 'left')
+          end
+        }
+        
+        button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/align-center.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.add_selection_format('justify', 'center')
+          end
+        }
+        
+        button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/align-right.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.add_selection_format('justify', 'right')
           end
         }
         

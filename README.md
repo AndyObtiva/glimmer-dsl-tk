@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.29
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.30
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -157,7 +157,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.29'
+gem 'glimmer-dsl-tk', '~> 0.0.30'
 ```
 
 And, then run:
@@ -1947,6 +1947,8 @@ class HelloText
   def launch
     root {
       title 'Hello, Text!'
+      width 1280
+      height 800
       
       frame {
         grid row: 0, column: 0
@@ -2046,6 +2048,38 @@ class HelloText
           
           on('command') do
             @text.text_paste
+          end
+        }
+        
+        separator {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          orient 'vertical'
+        }
+        
+        button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/align-left.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.add_selection_format('justify', 'left')
+          end
+        }
+        
+        button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/align-center.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.add_selection_format('justify', 'center')
+          end
+        }
+        
+        button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/align-right.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.add_selection_format('justify', 'right')
           end
         }
         

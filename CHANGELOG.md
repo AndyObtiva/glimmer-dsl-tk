@@ -2,6 +2,7 @@
 
 ## 0.0.30
 
+- Improve Hello, Text! (toolbar buttons: justify left, justify center, justify right)
 - Fixed Hello, Built-in Dialog! Font Dialog issue
 
 ## 0.0.29
