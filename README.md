@@ -117,10 +117,14 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Hello, Drag and Drop!](#hello-drag-and-drop)
     - [Hello, Built-in Dialog!](#hello-built-in-dialog)
     - [Hello, Separator!](#hello-separator)
+  - [Applications](#applications)
+    - [Glimmer Tk Calculator](#glimmer-tk-calculator)
+    - [Y3network Ruby UI](#y3network-ruby-ui)
+    - [Cryptopunks GUI](#cryptopunks-gui)
+  - [Process](#process)
   - [Help](#help)
     - [Issues](#issues)
     - [Chat](#chat)
-  - [Process](#process)
   - [Planned Features and Feature Suggestions](#planned-features-and-feature-suggestions)
   - [Change Log](#change-log)
   - [Contributing](#contributing)
@@ -2578,6 +2582,32 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello separator](images/glimmer-dsl-tk-screenshot-sample-hello-separator.png)
 
+## Applications
+
+### Glimmer Tk Calculator
+
+"I wanted to try how it feels to write an UI in glimmer-dsl-tk so I decided to write an alternative version of the [Glimmer Calculator](https://github.com/AndyObtiva/glimmer-cs-calculator) that uses [Tk]([Tk](https://www.tcl.tk/)) and runs in the regular [MRI Ruby interpreter](https://www.ruby-lang.org/en/)." - [Ancor Gonzalez Sosa](https://github.com/ancorgs)
+
+https://github.com/ancorgs/glimmer-tk-calculator
+
+https://raw.githubusercontent.com/ancorgs/glimmer-tk-calculator/master/screenshot.png
+
+### Y3network Ruby UI
+
+https://github.com/ancorgs/y3network-ruby-ui
+
+### Cryptopunks GUI
+
+This is a Graphical User Interface for the famous [Cryptopunks Ruby gem](https://github.com/cryptopunksnotdead/cryptopunks/tree/master/cryptopunks).
+
+https://github.com/AndyObtiva/cryptopunks-gui
+
+![Cryptopunks GUI Screenshot](https://raw.githubusercontent.com/AndyObtiva/cryptopunks-gui/master/screenshots/cryptopunks-gui-screenshot.png)
+
+## Process
+
+[Glimmer Process](https://github.com/AndyObtiva/glimmer/blob/master/PROCESS.md)
+
 ## Help
 
 ### Issues
@@ -2589,10 +2619,6 @@ You may submit [issues](https://github.com/AndyObtiva/glimmer/issues) on [GitHub
 ### Chat
 
 If you need live help, try to [![Join the chat at https://gitter.im/AndyObtiva/glimmer](https://badges.gitter.im/AndyObtiva/glimmer.svg)](https://gitter.im/AndyObtiva/glimmer?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
-
-## Process
-
-[Glimmer Process](https://github.com/AndyObtiva/glimmer/blob/master/PROCESS.md)
 
 ## Planned Features and Feature Suggestions
 
