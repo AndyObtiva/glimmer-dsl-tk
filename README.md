@@ -121,8 +121,8 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Glimmer Tk Calculator](#glimmer-tk-calculator)
     - [Y3network Ruby UI](#y3network-ruby-ui)
     - [CryptoPunks GUI](#cryptopunks-gui)
-  - [Resources](#resources)
   - [Process](#process)
+  - [Resources](#resources)
   - [Help](#help)
     - [Issues](#issues)
     - [Chat](#chat)
@@ -2639,14 +2639,14 @@ https://github.com/AndyObtiva/cryptopunks-gui
 
 ![CryptoPunks GUI Screenshot](https://raw.githubusercontent.com/AndyObtiva/cryptopunks-gui/master/screenshots/cryptopunks-gui-screenshot.png)
 
+## Process
+
+[Glimmer Process](https://github.com/AndyObtiva/glimmer/blob/master/PROCESS.md)
+
 ## Resources
 
 - [Tk Tutorial](https://tkdocs.com/tutorial/index.html)
 - [Code Master Blog](https://andymaleh.blogspot.com/search/label/Tk)
-
-## Process
-
-[Glimmer Process](https://github.com/AndyObtiva/glimmer/blob/master/PROCESS.md)
 
 ## Help
 
