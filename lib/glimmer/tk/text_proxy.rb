@@ -28,8 +28,7 @@ module Glimmer
     # Follows the Proxy Design Pattern
     class TextProxy < WidgetProxy
       def handle_listener(listener_name, &listener)
-        listener_name = listener_name.to_s.downcase
-        case listener_name
+        case listener_name.to_s.downcase
         when '<<modified>>', '<modified>', 'modified'
           modified_listener = Proc.new do |*args|
             listener.call(*args)
@@ -39,7 +38,17 @@ module Glimmer
         when '<<selection>>', '<selection>', 'selection'
           bind('<Selection>', listener)
         else
-          super
+          @tk.tag_add('__all__', '1.0', 'end') unless @tk.tag_names.include?('__all__')
+          # TODO make listener pass an event that has a modifiers attribute for easy representation of :shift, :meta, :control, etc... while a letter button is pressed
+          begin
+            @tk.tag_bind('__all__', listener_name, &listener)
+          rescue => e
+            Glimmer::Config.logger.debug {"Unable to bind to #{listener_name} .. attempting to surround with <>"}
+            Glimmer::Config.logger.debug {e.full_message}
+            listener_name = "<#{listener_name}" if !listener_name.start_with?('<')
+            listener_name = "#{listener_name}>" if !listener_name.end_with?('>')
+            @tk.tag_bind('__all__', listener_name, &listener)
+          end
         end
       end
     

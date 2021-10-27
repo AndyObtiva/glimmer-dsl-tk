@@ -64,7 +64,7 @@ class HelloText
     MULTI_LINE_STRING
   end
   
-  attr_accessor :document
+  attr_accessor :document, :find_text
       
   attr_accessor :foreground
   
@@ -91,7 +91,7 @@ class HelloText
   end
   
   def launch
-    root {
+    root { |r|
       title 'Hello, Text!'
       width 1280
       height 800
@@ -272,6 +272,38 @@ class HelloText
         wrap 'word'
         undo true
         value <=> [self, :document]
+        
+        on('KeyPress') do |event|
+          if event.state == 8 && event.char == 'f'
+            toplevel(r) { |tl|
+              title 'Find'
+              
+              ::Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", tl.tk, "modal")
+              
+              label {
+                text 'Text:'
+              }
+              entry { |e|
+                text <=> [self, :find_text]
+                focus true
+                
+                on('change') do
+                  text_index = @text.search(find_text, 'insert')
+                  @text.tag_remove('sel', '1.0', 'end')
+                  @text.tag_add('sel', text_index, "#{text_index} + #{find_text.size} chars")
+                end
+                
+                on('KeyPress') do |event|
+                  if event.keysym == 'Return'
+                    text_index = @text.search(find_text, @text.tag_ranges('sel')&.first&.last)
+                    @text.tag_remove('sel', '1.0', 'end')
+                    @text.tag_add('sel', text_index, "#{text_index} + #{find_text.size} chars")
+                  end
+                end
+              }
+            }
+          end
+        end
       }
     }.open
   end

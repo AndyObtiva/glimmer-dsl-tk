@@ -33,11 +33,15 @@ module Glimmer
   
         def can_interpret?(parent, keyword, *args, &block)
           !EXCLUDED_KEYWORDS.include?(keyword) and
-            parent.respond_to?(:tk) and
             Glimmer::Tk::WidgetProxy.widget_exists?(keyword)
+            (parent.respond_to?(:tk) or args.first.respond_to?(:tk))
         end
   
         def interpret(parent, keyword, *args, &block)
+          if keyword == 'toplevel' && args.first.respond_to?(:tk)
+            parent = args.first
+            args[0] = args.first.tk
+          end
           Glimmer::Tk::WidgetProxy.create(keyword, parent, args, &block)
         end
         

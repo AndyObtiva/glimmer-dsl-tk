@@ -2,11 +2,14 @@
 
 ## Next
 
+- Support `text` widget tag_bind events as `on(args) {}`
 - Improve Hello, Text! (toolbar buttons: find dialog)
 - `text` widget Find dialog: show find dialog with a text field, case-sensitive checkbox, regex checkbox, and buttons for next and previous + rely on text#tk#search method to search in selection or all document
 - Hello, Toplevel! (Custom Window and Custom Dialog)
 - `icon_photo` as alias for `iconphoto` attribute
 - Add defensive programming for preventing spinbox from allowing value to go over `to` (max) when typing by keyboard
+- Provide a simple way to bind events on `text`
+- Provide a simple way to track `'insert'` mark movement on `text`
 
 ## Soon
 
@@ -14,7 +17,6 @@
 - `text` widget cut/copy with style
 - `text` widget paste with cut/copied style
 - `text` widget paste matching insert mark style
-- Support `text` widget tag_bind events as `on(args) {}`
 - Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font) and show in top Hello, Text! toolbar comboboxes and buttons
 - When setting a `text` format without a selection in Hello, Text!, have it apply when typing
 - Fix issue with Hello, Text! whereby after applying background, and foreground to a selection, you cannot apply bold, italic, or underscore for the same selection (or font-size or font-family)

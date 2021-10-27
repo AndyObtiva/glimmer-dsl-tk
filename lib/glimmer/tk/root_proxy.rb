@@ -31,6 +31,8 @@ module Glimmer
       DEFAULT_WIDTH = 190
       DEFAULT_HEIGHT = 95
       
+      attr_reader :tk
+      
       def initialize(*args, &block)
         @tk = ::TkRoot.new
         @tk.minsize = DEFAULT_WIDTH, DEFAULT_HEIGHT
