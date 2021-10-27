@@ -3,6 +3,7 @@
 ## Next
 
 - Support `text` widget tag_bind events as `on(args) {}`
+- Ensure unregistering observers (like data-binding observers) when destroying a widget
 - Improve Hello, Text! (toolbar buttons: find dialog)
 - `text` widget Find dialog: show find dialog with a text field, case-sensitive checkbox, regex checkbox, and buttons for next and previous + rely on text#tk#search method to search in selection or all document
 - Hello, Toplevel! (Custom Window and Custom Dialog)

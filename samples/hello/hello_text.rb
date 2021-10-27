@@ -284,18 +284,36 @@ class HelloText
                 text 'Text:'
               }
               entry { |e|
-                text <=> [self, :find_text]
                 focus true
-                
-                on('change') do
-                  text_index = @text.search(find_text, 'insert')
-                  @text.tag_remove('sel', '1.0', 'end')
-                  @text.tag_add('sel', text_index, "#{text_index} + #{find_text.size} chars")
-                end
+                text <=> [
+                  self,
+                  :find_text,
+                  after_write: lambda do
+                    text_index = @text.search(/#{find_text}/i, 'insert')
+                    unless text_index.to_s.empty?
+                      @text.tag_remove('sel', '1.0', 'end')
+                      @text.tag_add('sel', text_index, "#{text_index} + #{find_text.size} chars")
+                    end
+                  end
+                ]
                 
                 on('KeyPress') do |event|
                   if event.keysym == 'Return'
-                    text_index = @text.search(find_text, @text.tag_ranges('sel')&.first&.last)
+                    text_index = @text.search(/#{find_text}/i, @text.tag_ranges('sel')&.first&.last) if @text.tag_ranges('sel')&.first&.last
+                    unless text_index.to_s.empty?
+                      @text.tag_remove('sel', '1.0', 'end')
+                      @text.tag_add('sel', text_index, "#{text_index} + #{find_text.size} chars")
+                    end
+                  end
+                end
+              }
+              button {
+                text 'Find'
+                default 'active'
+                
+                on('command') do
+                  text_index = @text.search(/#{find_text}/i, @text.tag_ranges('sel')&.first&.last) if @text.tag_ranges('sel')&.first&.last
+                  unless text_index.to_s.empty?
                     @text.tag_remove('sel', '1.0', 'end')
                     @text.tag_add('sel', text_index, "#{text_index} + #{find_text.size} chars")
                   end
