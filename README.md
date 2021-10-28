@@ -1869,6 +1869,8 @@ Glimmer app:
 
 ### Hello, Text!
 
+You may use the META+F shortcut to bring up the Find Dialog.
+
 Icons used in this sample were made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
 
 Glimmer code (from [samples/hello/hello_text.rb](samples/hello/hello_text.rb)):
@@ -2150,6 +2152,8 @@ ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_text.rb
 Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello text](images/glimmer-dsl-tk-screenshot-sample-hello-text.png)
+
+![glimmer dsl tk screenshot sample hello text find dialog](images/glimmer-dsl-tk-screenshot-sample-hello-text-find-dialog.png)
 
 ### Hello, Spinbox!
 
