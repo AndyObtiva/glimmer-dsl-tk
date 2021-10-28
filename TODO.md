@@ -2,8 +2,11 @@
 
 ## Next
 
+- Hello, Text! Find Dialog Windows/Linux CONTROL+F shortcut alternative to Mac CMD+F
+- Fix issue with encountering error 'NoMethodError: undefined method "size" for' when launching Hello, Text!, performing Select-All (CMD+A or CONTROL+A) and then attempting to Bold all the text.
 - Provide a simple way to track `'insert'` mark movement on `text`
-- `text` widget Find dialog: show find dialog with a text field, case-sensitive checkbox, regex checkbox, and buttons for next and previous + rely on text#tk#search method to search in selection or all document
+- Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font) and show in top Hello, Text! toolbar comboboxes and buttons
+- When setting a `text` format without a selection in Hello, Text!, have it apply when typing
 - Hello, Toplevel! (Custom Window and Custom Dialog)
 - `icon_photo` as alias for `iconphoto` attribute
 - Add defensive programming for preventing spinbox from allowing value to go over `to` (max) when typing by keyboard
@@ -11,11 +14,9 @@
 ## Soon
 
 - Enhance `text` undo/redo to include format/font-format changes
-- `text` widget cut/copy with style
-- `text` widget paste with cut/copied style
-- `text` widget paste matching insert mark style
-- Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font) and show in top Hello, Text! toolbar comboboxes and buttons
-- When setting a `text` format without a selection in Hello, Text!, have it apply when typing
+- `text` widget cut/copy with style (perhaps track all applied formatting tags and reapply them to new indexes)
+- `text` widget paste with cut/copied style (perhaps track all applied formatting tags and reapply them to new indexes)
+- `text` widget paste matching insert mark style (track all applied tags to that location and reapply)
 - Fix issue with Hello, Text! whereby after applying background, and foreground to a selection, you cannot apply bold, italic, or underscore for the same selection (or font-size or font-family)
 - Make sure to only allow undo/redo when there are changes to be undoed/redoed
 

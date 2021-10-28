@@ -99,7 +99,7 @@ class HelloText
   end
   
   def launch
-    root { |r|
+    @root = root {
       title 'Hello, Text!'
       width 1280
       height 800
@@ -273,6 +273,15 @@ class HelloText
             @text.get_open_file_to_insert_image
           end
         }
+        
+        button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/search.png", __dir__), subsample: 32
+          
+          on('command') do
+            show_find_dialog
+          end
+        }
       }
       
       @text = text {
@@ -282,49 +291,52 @@ class HelloText
         value <=> [self, :document]
         
         on('KeyPress') do |event|
-          if event.state == 8 && event.char == 'f'
-            toplevel(r) { |tl|
-              title 'Find'
-              
-              label {
-                text 'Text:'
-              }
-              entry { |e|
-                focus true
-                text <=> [
-                  self,
-                  :find_text,
-                  after_write: lambda do
-                    text_index = @text.search(/#{find_text}/i, 'insert')
-                    unless text_index.to_s.empty?
-                      @text.tag_remove('sel', '1.0', 'end')
-                      @text.tag_add('sel', text_index, "#{text_index} + #{find_text.size} chars")
-                    end
-                  end
-                ]
-                
-                on('KeyPress') do |event|
-                  if event.keysym == 'Return'
-                    find
-                  elsif event.keysym == 'Escape'
-                    tl.grab_release
-                    tl.destroy
-                  end
-                end
-              }
-              button {
-                text 'Find'
-                default 'active'
-                
-                on('command') do
-                  find
-                end
-              }
-            }
+          show_find_dialog if event.state == 8 && event.char == 'f'
+        end
+      }
+    }
+    @root.open
+  end
+  
+  def show_find_dialog
+    toplevel(@root) { |tl|
+      title 'Find'
+      
+      label {
+        text 'Text:'
+      }
+      entry { |e|
+        focus true
+        text <=> [
+          self,
+          :find_text,
+          after_write: lambda do
+            text_index = @text.search(/#{find_text}/i, 'insert')
+            unless text_index.to_s.empty?
+              @text.tag_remove('sel', '1.0', 'end')
+              @text.tag_add('sel', text_index, "#{text_index} + #{find_text.size} chars")
+            end
+          end
+        ]
+        
+        on('KeyPress') do |event|
+          if event.keysym == 'Return'
+            find
+          elsif event.keysym == 'Escape'
+            tl.grab_release
+            tl.destroy
           end
         end
       }
-    }.open
+      button {
+        text 'Find'
+        default 'active'
+        
+        on('command') do
+          find
+        end
+      }
+    }
   end
 end
 

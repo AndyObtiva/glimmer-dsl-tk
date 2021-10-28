@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.32
+
+- Hello, Text! Find Dialog toolbar button
+
 ## 0.0.31
 
 - Improve Hello, Text! (toolbar buttons: justify left, justify center, justify right)
