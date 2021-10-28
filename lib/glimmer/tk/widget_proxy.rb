@@ -19,6 +19,8 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'glimmer/data_binding/tk/one_time_observer'
+
 module Glimmer
   module Tk
     # Proxy for Tk Widget objects
@@ -81,6 +83,27 @@ module Glimmer
         @parent_proxy.post_initialize_child(self)
         initialize_defaults
         post_add_content if @block.nil?
+      end
+      
+      def root_parent_proxy
+        current = self
+        current = current.parent_proxy while current.parent_proxy
+        current
+      end
+      
+      def toplevel_parent_proxy
+        ancestor_proxies.find {|widget_proxy| widget_proxy.is_a?(ToplevelProxy)}
+      end
+      
+      # returns list of ancestors ordered from direct parent to root parent
+      def ancestor_proxies
+        ancestors = []
+        current = self
+        while current.parent_proxy
+          ancestors << current.parent_proxy
+          current = current.parent_proxy
+        end
+        ancestors
       end
       
       def children
@@ -261,6 +284,11 @@ module Glimmer
         apply_style({"font" => value})
       end
       
+      def destroy
+        @tk.destroy
+        @on_destroy_procs&.each {|p| p.call(@tk)}
+      end
+      
       def apply_style(options)
         @@style_number = 0 unless defined?(@@style_number)
         style = "style#{@@style_number += 1}.#{@tk.class.name.split('::').last}"
@@ -423,15 +451,29 @@ module Glimmer
       
       def handle_listener(listener_name, &listener)
         listener_name = listener_name.to_s
-        begin
-          @tk.bind(listener_name, &listener)
-        rescue => e
-          Glimmer::Config.logger.debug {"Unable to bind to #{listener_name} .. attempting to surround with <>"}
-          Glimmer::Config.logger.debug {e.full_message}
-          listener_name = "<#{listener_name}" if !listener_name.start_with?('<')
-          listener_name = "#{listener_name}>" if !listener_name.end_with?('>')
-          @tk.bind(listener_name, &listener)
+        if listener_name == 'destroy'
+          # 'destroy' is a more reliable alternative listener binding to '<Destroy>'
+          @on_destroy_procs ||= []
+          listener.singleton_class.include(Glimmer::DataBinding::Tk::OneTimeObserver) unless listener.is_a?(Glimmer::DataBinding::Tk::OneTimeObserver)
+          @on_destroy_procs << listener
+          @tk.bind('<Destroy>', listener)
+          parent_proxy.handle_listener(listener_name, &listener) if parent_proxy
+          # TODO return a listener registration object that has a deregister method
+        else
+          begin
+            @tk.bind(listener_name, &listener)
+          rescue => e
+            Glimmer::Config.logger.debug {"Unable to bind to #{listener_name} .. attempting to surround with <>"}
+            Glimmer::Config.logger.debug {e.full_message}
+            listener_name = "<#{listener_name}" if !listener_name.start_with?('<')
+            listener_name = "#{listener_name}>" if !listener_name.end_with?('>')
+            @tk.bind(listener_name, &listener)
+          end
         end
+      end
+      
+      def on(listener_name, &listener)
+        handle_listener(listener_name, &listener)
       end
       
       def content(&block)

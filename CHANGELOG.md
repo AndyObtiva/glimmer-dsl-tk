@@ -1,10 +1,17 @@
 # Change Log
 
-## 0.0.30
+## 0.0.31
 
 - Improve Hello, Text! (toolbar buttons: justify left, justify center, justify right)
-- Fixed Hello, Built-in Dialog! Font Dialog issue
+- `on('destroy') {|widget| ...}` support in widgets to better track calls to "destroy" method and `'<Destroy>'` binding event (as opposed to the unreliable tracking of '<Destroy>' alone)
+- Support observing `text` general events (e.g. `'<KeyPress>'`) through `on(event) {}` (was not working before because it required applying a tag, a general `__all__` tag is applied automatically now on full range (`1.0` to `end`))
+- Ensure unregistering observers (like data-binding observers) when destroying a widget
+- Add `Glimmer::Tk::ToplevelProxy` widget proxy support similar to `Glimmer::Tk::RootProxy`
 
+## 0.0.30
+
+- Improve Hello, Text! (toolbar buttons: find dialog)
+- Fixed Hello, Built-in Dialog! Font Dialog issue
 ## 0.0.29
 
 - Hello, Built-in Dialog! (demonstrating all built-in dialogs like get_open_file and choose_color)

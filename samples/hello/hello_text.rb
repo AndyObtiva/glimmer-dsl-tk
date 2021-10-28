@@ -90,6 +90,14 @@ class HelloText
     [FONT_SIZE_PROMPT] + (9..64).to_a.map(&:to_s)
   end
   
+  def find
+    text_index = @text.search(/#{find_text}/i, @text.tag_ranges('sel')&.first&.last || @text.index('insert'))
+    unless text_index.to_s.empty?
+      @text.tag_remove('sel', '1.0', 'end')
+      @text.tag_add('sel', text_index, "#{text_index} + #{find_text.size} chars")
+    end
+  end
+  
   def launch
     root { |r|
       title 'Hello, Text!'
@@ -278,8 +286,6 @@ class HelloText
             toplevel(r) { |tl|
               title 'Find'
               
-              ::Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", tl.tk, "modal")
-              
               label {
                 text 'Text:'
               }
@@ -299,11 +305,10 @@ class HelloText
                 
                 on('KeyPress') do |event|
                   if event.keysym == 'Return'
-                    text_index = @text.search(/#{find_text}/i, @text.tag_ranges('sel')&.first&.last) if @text.tag_ranges('sel')&.first&.last
-                    unless text_index.to_s.empty?
-                      @text.tag_remove('sel', '1.0', 'end')
-                      @text.tag_add('sel', text_index, "#{text_index} + #{find_text.size} chars")
-                    end
+                    find
+                  elsif event.keysym == 'Escape'
+                    tl.grab_release
+                    tl.destroy
                   end
                 end
               }
@@ -312,11 +317,7 @@ class HelloText
                 default 'active'
                 
                 on('command') do
-                  text_index = @text.search(/#{find_text}/i, @text.tag_ranges('sel')&.first&.last) if @text.tag_ranges('sel')&.first&.last
-                  unless text_index.to_s.empty?
-                    @text.tag_remove('sel', '1.0', 'end')
-                    @text.tag_add('sel', text_index, "#{text_index} + #{find_text.size} chars")
-                  end
+                  find
                 end
               }
             }

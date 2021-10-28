@@ -2,15 +2,11 @@
 
 ## Next
 
-- Support `text` widget tag_bind events as `on(args) {}`
-- Ensure unregistering observers (like data-binding observers) when destroying a widget
-- Improve Hello, Text! (toolbar buttons: find dialog)
+- Provide a simple way to track `'insert'` mark movement on `text`
 - `text` widget Find dialog: show find dialog with a text field, case-sensitive checkbox, regex checkbox, and buttons for next and previous + rely on text#tk#search method to search in selection or all document
 - Hello, Toplevel! (Custom Window and Custom Dialog)
 - `icon_photo` as alias for `iconphoto` attribute
 - Add defensive programming for preventing spinbox from allowing value to go over `to` (max) when typing by keyboard
-- Provide a simple way to bind events on `text`
-- Provide a simple way to track `'insert'` mark movement on `text`
 
 ## Soon
 

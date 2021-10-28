@@ -37,6 +37,8 @@ module Glimmer
           bind('<Modified>', modified_listener)
         when '<<selection>>', '<selection>', 'selection'
           bind('<Selection>', listener)
+        when 'destroy'
+          super
         else
           @tk.tag_add('__all__', '1.0', 'end') unless @tk.tag_names.include?('__all__')
           # TODO make listener pass an event that has a modifiers attribute for easy representation of :shift, :meta, :control, etc... while a letter button is pressed
