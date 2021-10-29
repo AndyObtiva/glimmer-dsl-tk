@@ -2,7 +2,6 @@
 
 ## Next
 
-- Hello, Text! Find Dialog Windows/Linux CONTROL+F shortcut alternative to Mac CMD+F
 - Fix issue with encountering error 'NoMethodError: undefined method "size" for' when launching Hello, Text!, performing Select-All (CMD+A or CONTROL+A) and then attempting to Bold all the text.
 - Provide a simple way to track `'insert'` mark movement on `text`
 - Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font) and show in top Hello, Text! toolbar comboboxes and buttons
@@ -1492,4 +1491,4 @@ DiagnosticReports directory in bug reports.
 - Consider generalizing support for drag and drop to fire on any mouse button and indicate the clicked mouse button in the event
 - `text` widget selection data-binding (relying on `tag_ranges 'sel'` and on `tag_add 'sel', 5.0, 6.0`)
 - Support `validate_command` and `invalid_command` as aliases to `validatecommand` and `invalidcommand` on `entry`
-`
+- Provide a convenience `#modifiers` method on KeyPress/KeyRelease event that provides an English-description of held modifiers (e.g. `['shift_l', 'meta_l']`) as that would be more convenient than reliance on `event.state` cryptic integer values

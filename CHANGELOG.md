@@ -3,6 +3,7 @@
 ## 0.0.32
 
 - Hello, Text! Find Dialog toolbar button
+- Hello, Text! Find Dialog Windows/Linux CONTROL+F shortcut alternative to Mac CMD+F
 
 ## 0.0.31
 

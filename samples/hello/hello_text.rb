@@ -291,7 +291,7 @@ class HelloText
         value <=> [self, :document]
         
         on('KeyPress') do |event|
-          show_find_dialog if event.state == 8 && event.char == 'f'
+          show_find_dialog if (event.keysym == 'f') && ((OS.mac? && event.state == 8) || (!OS.mac? && event.state == 4))
         end
       }
     }
