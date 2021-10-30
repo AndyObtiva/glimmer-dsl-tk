@@ -225,6 +225,27 @@ module Glimmer
         end
         tags_and_regions
       end
+      
+      def applied_font_format_value(text_index = nil, font_option)
+        text_index ||= @tk.index('insert')
+        region_start = text_index
+        region_end = @tk.index("#{text_index} + 1 chars")
+        tag_names = applied_font_format_tags_and_regions(region_start, region_end).map(&:first)
+        
+        values = tag_names.map do |tag_name|
+          @tk.tag_ranges(tag_name).map do |range|
+            if text_index_less_than_or_equal_to_other_text_index?(range.first, region_start) && text_index_greater_than_or_equal_to_other_text_index?(range.last, region_end)
+              @tk.tag_cget(tag_name, 'font')
+            end
+          end
+        end.flatten.reject {|value| value.to_s.empty?}
+        
+        font = values.last
+        
+        value = font && font.send(font_option)
+        
+        value || Hash[@tk.font.actual][font_option]
+      end
 
       def add_font_format(region_start, region_end, font_option, value)
         applied_font_format_tags_and_regions(region_start, region_end).each do |tag, tag_region_start, tag_region_end|

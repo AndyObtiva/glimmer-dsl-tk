@@ -143,7 +143,7 @@ class HelloText
           orient 'vertical'
         }
         
-        button {
+        @bold_button = button {
           grid row: 1, column: column_index += 1, column_weight: 0
           text 'B'
           style font: {weight: 'bold'}
@@ -153,7 +153,7 @@ class HelloText
           end
         }
         
-        button {
+        @italic_button = button {
           grid row: 1, column: column_index += 1, column_weight: 0
           text 'I'
           style font: {slant: 'italic'}
@@ -163,7 +163,7 @@ class HelloText
           end
         }
         
-        button {
+        @underline_button = button {
           grid row: 1, column: column_index += 1, column_weight: 0
           text 'U'
           style font: {underline: true}
@@ -295,6 +295,9 @@ class HelloText
         end
         
         on('InsertMarkMoved') do
+          @bold_button.default = @text.applied_font_format_value('weight') == 'bold' ? 'active' : 'normal'
+          @italic_button.default = @text.applied_font_format_value('slant') == 'italic' ? 'active' : 'normal'
+          @underline_button.default = @text.applied_font_format_value('underline') == true ? 'active' : 'normal'
           self.background = @text.applied_format_value('background')
           self.foreground = @text.applied_format_value('foreground')
           @justify_left_button.default = @text.applied_format_value('justify') == 'left' ? 'active' : 'normal'
