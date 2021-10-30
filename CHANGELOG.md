@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.33
+
+- Fix issue with encountering error 'NoMethodError: undefined method "size" for' when launching Hello, Text!, performing Select-All (CMD+A or CONTROL+A) and then attempting to Bold all the text.
+- Fix issue in Hello, Text! whereby bolding a small region of text affects the font of the following region of text till the end of the document
+
 ## 0.0.32
 
 - Hello, Text! Find Dialog toolbar button

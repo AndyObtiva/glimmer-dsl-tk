@@ -2,7 +2,7 @@
 
 ## Next
 
-- Fix issue with encountering error 'NoMethodError: undefined method "size" for' when launching Hello, Text!, performing Select-All (CMD+A or CONTROL+A) and then attempting to Bold all the text.
+- Update Hello, Text! screenshot
 - Provide a simple way to track `'insert'` mark movement on `text`
 - Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font) and show in top Hello, Text! toolbar comboboxes and buttons
 - When setting a `text` format without a selection in Hello, Text!, have it apply when typing

@@ -91,7 +91,7 @@ module Glimmer
       end
       
       def applied_format_tags(region_start, region_end, option, value)
-        tag_names = @tk.tag_names - ['sel']
+        tag_names = @tk.tag_names - ['sel', '__all__']
         
         tag_names.select do |tag_name|
           @tk.tag_ranges(tag_name).any? do |range|
@@ -155,15 +155,14 @@ module Glimmer
       def applied_font_format_tags_and_regions(region_start, region_end)
         lines = value.split("\n")
         tags_and_regions = []
-        all_tag_names = @tk.tag_names - ['sel']
+        all_tag_names = @tk.tag_names - ['sel', '__all__']
         (region_start.to_i..region_end.to_i).each do |line_number|
           start_character_index = 0
           start_character_index = region_start.to_s.split('.').last.to_i if line_number == region_start.to_i
-          end_character_index = lines[line_number - 1].size
+          end_character_index = lines[line_number - 1].to_s.size
           end_character_index = region_end.to_s.split('.').last.to_i if line_number == region_end.to_i
           (start_character_index...end_character_index).each do |character_index|
             text_index = "#{line_number}.#{character_index}"
-            # TODO reimplement the following using @tk.tag_names without arg since passing an arg seems broken and returns inaccurate results
             region_tag = all_tag_names.reverse.find do |tag|
               @tk.tag_cget(tag, 'font') && @tk.tag_ranges(tag).any? do |range_start, range_end|
                 text_index_less_than_or_equal_to_other_text_index?(range_start, text_index) && text_index_greater_than_or_equal_to_other_text_index?(range_end, text_index)
