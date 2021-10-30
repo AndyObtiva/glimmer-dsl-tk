@@ -2,8 +2,6 @@
 
 ## Next
 
-- Update Hello, Text! screenshot
-- Document entry changed alias for change event, and text insertmarkchange/insertmarkchanged
 - Fix issue with `on('KeyPress')`/`on('KeyRelease')` not firing on `text` widget arrow key presses after deleting all text and typing new text (it fires on mouse clicks and typing new text)
 - When setting a `text` format without a selection in Hello, Text!, have it apply when typing
 - Hello, Toplevel! (Custom Window and Custom Dialog)
@@ -45,6 +43,10 @@
   - text
   - widget
 - Support canvas (composite) shape
+
+- Package native executable for Mac
+- Package native executable for Windows
+- Package native executable for Linux
 
 ## Samples
 

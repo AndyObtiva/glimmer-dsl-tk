@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.32
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.33
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -158,7 +158,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.32'
+gem 'glimmer-dsl-tk', '~> 0.0.33'
 ```
 
 And, then run:
@@ -273,7 +273,7 @@ keyword(args) | attributes | event bindings & callbacks
 `choose_directory(options = nil)` | None | None
 `choose_font(options = nil) {|font| ... }` | None | None
 `combobox` | `state`, `text` | `'ComboboxSelected'`
-`entry` | `width`, `text`, `validate`, `show` (`'none', 'focus', 'focusin', 'focusout', 'key', or 'all'`) | `'validate'`, `'invalid'`, `'change'`, `validatecommand {}`, `invalidcommand {}`
+`entry` | `width`, `text`, `validate`, `show` (`'none', 'focus', 'focusin', 'focusout', 'key', or 'all'`) | `'validate'`, `'invalid'`, `'change'` (alias: `'changed'`), `validatecommand {}`, `invalidcommand {}`
 `get_multiple_open_file(options = nil)` | None | None
 `get_open_file(options = nil)` | None | None
 `get_save_file(options = nil)` | None | None
@@ -286,7 +286,7 @@ keyword(args) | attributes | event bindings & callbacks
 `radiobutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `value` (default: `text`) | `command {}`
 `root` | `title`, `iconphoto`, `background`, `alpha`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`, `'OPEN_WINDOW'`
 `separator` | `orient` (`'horizontal' (default) or 'vertical'`) | None
-`text` | `value`, [many more attributes](https://tcl.tk/man/tcl8.6/TkCmd/text.htm#M116) | `'modified'`, `'selection'`
+`text` | `value`, [many more attributes](https://tcl.tk/man/tcl8.6/TkCmd/text.htm#M116) | `'modified'`, `'selection'`, `'insert_mark_moved'` (alias: `'insert_mark_move', 'InsertMarkMove', 'InsertMarkMoved'`)
 
 Options for `get_open_file` and `get_multiple_open_file` include:
 - `filetypes`: `Hash` of `'Group Name' => '.ext'` entries (e.g. `filetypes: {'PNG Images' => '.png'}`
