@@ -295,6 +295,8 @@ class HelloText
         end
         
         on('InsertMarkMoved') do
+          self.font_family = @text.applied_font_format_value('family')
+          self.font_size = @text.applied_font_format_value('size')
           @bold_button.default = @text.applied_font_format_value('weight') == 'bold' ? 'active' : 'normal'
           @italic_button.default = @text.applied_font_format_value('slant') == 'italic' ? 'active' : 'normal'
           @underline_button.default = @text.applied_font_format_value('underline') == true ? 'active' : 'normal'
