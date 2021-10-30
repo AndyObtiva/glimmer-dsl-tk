@@ -4,6 +4,7 @@
 
 - Support `text` widget `InsertMarkMoved` listener event to track insert mark movement (or alises `InsertMarkMove`, `insert_mark_move`, `insert_mark_moved`, all case-insensitive)
 - Support `entry` widget `changed` and `modified` listener event aliases for `change` event
+- Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font) and show in top Hello, Text! toolbar comboboxes and buttons
 - Fix issue with encountering error 'NoMethodError: undefined method "size" for' when launching Hello, Text!, performing Select-All (CMD+A or CONTROL+A) and then attempting to Bold all the text.
 - Fix issue in Hello, Text! whereby bolding a small region of text affects the font of the following region of text till the end of the document
 - Fix issue in Hello, Text! where if all text is copied and then pasted multiple times, the `text` widget loses its keyboard/mouse listeners and CMD+F does not work anymore to bring Find dialog

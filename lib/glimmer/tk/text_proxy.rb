@@ -28,6 +28,9 @@ module Glimmer
     # Follows the Proxy Design Pattern
     class TextProxy < WidgetProxy
       ALL_TAG = '__all__'
+      FORMAT_DEFAULT_MAP = {
+        'justify' => 'left',
+      }
     
       def handle_listener(listener_name, &listener)
         case listener_name.to_s.downcase
@@ -127,6 +130,23 @@ module Glimmer
             end
           end
         end
+      end
+            
+      def applied_format_value(text_index = nil, option)
+        text_index ||= @tk.index('insert')
+        region_start = text_index
+        region_end = text_index
+        tag_names = @tk.tag_names - ['sel', ALL_TAG]
+        
+        values = tag_names.map do |tag_name|
+          @tk.tag_ranges(tag_name).map do |range|
+            if text_index_less_than_or_equal_to_other_text_index?(range.first, region_start) && text_index_greater_than_or_equal_to_other_text_index?(range.last, region_end)
+              @tk.tag_cget(tag_name, option)
+            end
+          end
+        end.flatten.reject {|value| value.to_s.empty?}
+        
+        values.last || (@tk.send(option) rescue FORMAT_DEFAULT_MAP[option])
       end
             
       def add_format(region_start, region_end, option, value)

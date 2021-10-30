@@ -4,7 +4,7 @@
 
 - Update Hello, Text! screenshot
 - Document entry changed alias for change event, and text insertmarkchange/insertmarkchanged
-- Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font) and show in top Hello, Text! toolbar comboboxes and buttons
+- Fix issue with `on('KeyPress')`/`on('KeyRelease')` not firing on `text` widget arrow key presses after deleting all text and typing new text (it fires on mouse clicks and typing new text)
 - When setting a `text` format without a selection in Hello, Text!, have it apply when typing
 - Hello, Toplevel! (Custom Window and Custom Dialog)
 - `icon_photo` as alias for `iconphoto` attribute

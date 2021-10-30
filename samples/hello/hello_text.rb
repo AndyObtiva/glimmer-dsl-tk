@@ -210,7 +210,7 @@ class HelloText
           orient 'vertical'
         }
         
-        button {
+        @justify_left_button = button {
           grid row: 1, column: column_index += 1, column_weight: 0
           image File.expand_path("images/align-left.png", __dir__), subsample: 32
           
@@ -219,7 +219,7 @@ class HelloText
           end
         }
         
-        button {
+        @justify_center_button = button {
           grid row: 1, column: column_index += 1, column_weight: 0
           image File.expand_path("images/align-center.png", __dir__), subsample: 32
           
@@ -228,7 +228,7 @@ class HelloText
           end
         }
         
-        button {
+        @justify_right_button = button {
           grid row: 1, column: column_index += 1, column_weight: 0
           image File.expand_path("images/align-right.png", __dir__), subsample: 32
           
@@ -292,6 +292,14 @@ class HelloText
         
         on('KeyPress') do |event|
           show_find_dialog if (event.keysym == 'f') && ((OS.mac? && event.state == 8) || (!OS.mac? && event.state == 4))
+        end
+        
+        on('InsertMarkMoved') do
+          self.background = @text.applied_format_value('background')
+          self.foreground = @text.applied_format_value('foreground')
+          @justify_left_button.default = @text.applied_format_value('justify') == 'left' ? 'active' : 'normal'
+          @justify_center_button.default = @text.applied_format_value('justify') == 'center' ? 'active' : 'normal'
+          @justify_right_button.default = @text.applied_format_value('justify') == 'right' ? 'active' : 'normal'
         end
       }
     }
