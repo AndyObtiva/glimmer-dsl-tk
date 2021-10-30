@@ -3,7 +3,7 @@
 ## Next
 
 - Update Hello, Text! screenshot
-- Provide a simple way to track `'insert'` mark movement on `text`
+- Document entry changed alias for change event, and text insertmarkchange/insertmarkchanged
 - Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font) and show in top Hello, Text! toolbar comboboxes and buttons
 - When setting a `text` format without a selection in Hello, Text!, have it apply when typing
 - Hello, Toplevel! (Custom Window and Custom Dialog)

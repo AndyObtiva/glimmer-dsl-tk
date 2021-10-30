@@ -27,33 +27,60 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class TextProxy < WidgetProxy
+      ALL_TAG = '__all__'
+    
       def handle_listener(listener_name, &listener)
         case listener_name.to_s.downcase
         when '<<modified>>', '<modified>', 'modified'
           modified_listener = Proc.new do |*args|
             listener.call(*args)
+            apply_all_tag
+            @insert_mark_moved_proc.call
             @tk.modified = false
           end
-          bind('<Modified>', modified_listener)
+          @tk.bind('<Modified>', modified_listener)
         when '<<selection>>', '<selection>', 'selection'
-          bind('<Selection>', listener)
+          @tk.bind('<Selection>', listener)
         when 'destroy'
           super
+        when 'insertmarkmove', 'insertmarkmoved', 'insert_mark_move', 'insert_mark_moved'
+          if @insert_mark_moved_proc.nil?
+            handle_listener('KeyPress') do |event|
+              @insert_mark_moved_proc.call
+            end
+            handle_listener('KeyRelease') do |event|
+              @insert_mark_moved_proc.call
+            end
+            handle_listener('ButtonPress') do |event|
+              @insert_mark_moved_proc.call
+            end
+            handle_listener('ButtonRelease') do |event|
+              @insert_mark_moved_proc.call
+            end
+          end
+          @insert_mark = @tk.index('insert')
+          @insert_mark_moved_proc = Proc.new do
+            new_insert_mark = @tk.index('insert')
+            if new_insert_mark != @insert_mark
+              @insert_mark = new_insert_mark
+              listener.call(new_insert_mark)
+            end
+          end
         else
-          @tk.tag_add('__all__', '1.0', 'end') unless @tk.tag_names.include?('__all__')
+          apply_all_tag
           # TODO make listener pass an event that has a modifiers attribute for easy representation of :shift, :meta, :control, etc... while a letter button is pressed
           begin
-            @tk.tag_bind('__all__', listener_name, &listener)
+            @tk.tag_bind(ALL_TAG, listener_name, &listener)
           rescue => e
             Glimmer::Config.logger.debug {"Unable to bind to #{listener_name} .. attempting to surround with <>"}
             Glimmer::Config.logger.debug {e.full_message}
             listener_name = "<#{listener_name}" if !listener_name.start_with?('<')
             listener_name = "#{listener_name}>" if !listener_name.end_with?('>')
-            @tk.tag_bind('__all__', listener_name, &listener)
+            @tk.tag_bind(ALL_TAG, listener_name, &listener)
           end
         end
       end
-    
+      
       def add_selection_format(option, value)
         process_selection_ranges { |range_start, range_end| add_format(range_start, range_end, option, value) }
       end
@@ -91,7 +118,7 @@ module Glimmer
       end
       
       def applied_format_tags(region_start, region_end, option, value)
-        tag_names = @tk.tag_names - ['sel', '__all__']
+        tag_names = @tk.tag_names - ['sel', ALL_TAG]
         
         tag_names.select do |tag_name|
           @tk.tag_ranges(tag_name).any? do |range|
@@ -155,7 +182,7 @@ module Glimmer
       def applied_font_format_tags_and_regions(region_start, region_end)
         lines = value.split("\n")
         tags_and_regions = []
-        all_tag_names = @tk.tag_names - ['sel', '__all__']
+        all_tag_names = @tk.tag_names - ['sel', ALL_TAG]
         (region_start.to_i..region_end.to_i).each do |line_number|
           start_character_index = 0
           start_character_index = region_start.to_s.split('.').last.to_i if line_number == region_start.to_i
@@ -347,10 +374,15 @@ module Glimmer
         self.wrap = 'none'
         self.padx = 5
         self.pady = 5
+        on('Modified') { apply_all_tag }
       end
       
       def clone_font(font)
         ::TkFont.new(Hash[font.actual])
+      end
+      
+      def apply_all_tag
+        @tk.tag_add(ALL_TAG, '1.0', 'end')
       end
     end
   end

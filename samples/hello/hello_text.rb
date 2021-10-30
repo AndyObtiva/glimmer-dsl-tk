@@ -318,7 +318,7 @@ class HelloText
             end
           end
         ]
-        
+                
         on('KeyPress') do |event|
           if event.keysym == 'Return'
             find

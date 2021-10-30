@@ -40,7 +40,7 @@ module Glimmer
       
       def handle_listener(listener_name, &listener)
         case listener_name.to_s.downcase
-        when 'change'
+        when 'change', 'changed', 'modified'
           tk.textvariable.trace('write') {
             listener.call(@tk.textvariable)
           }
