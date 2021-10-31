@@ -1869,7 +1869,7 @@ Glimmer app:
 
 ### Hello, Text!
 
-You may use the META+F shortcut to bring up the Find Dialog.
+You may press META+F to bring up the Find Dialog on the Mac and CONTROL+F to bring it up on Windows/Linux.
 
 Icons used in this sample were made by <a href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon"> www.flaticon.com</a>
 

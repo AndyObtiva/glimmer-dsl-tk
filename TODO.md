@@ -2,8 +2,11 @@
 
 ## Next
 
-- Fix issue with `on('KeyPress')`/`on('KeyRelease')` not firing on `text` widget arrow key presses after deleting all text and typing new text (it fires on mouse clicks and typing new text)
 - When setting a `text` format without a selection in Hello, Text!, have it apply when typing
+- Fix issue with Hello, Text! whereby after applying background, and foreground to a selection, you cannot apply bold, italic, or underscore for the same selection (or font-size or font-family) (it is probably getting confusing in picking up the tag with font vs tags not about font)
+- Fix issue with `on('KeyPress')`/`on('KeyRelease')` not firing on `text` widget arrow key presses after deleting all text and typing new text (it fires on mouse clicks and typing new text)
+- Update Hello, Text! to split toolbar into two levels (having non-formatting buttons on the second level)
+- Update Hello, Text! screenshot (ensure using justify center in it)
 - Hello, Toplevel! (Custom Window and Custom Dialog)
 - `icon_photo` as alias for `iconphoto` attribute
 - Add defensive programming for preventing spinbox from allowing value to go over `to` (max) when typing by keyboard
@@ -14,7 +17,6 @@
 - `text` widget cut/copy with style (perhaps track all applied formatting tags and reapply them to new indexes)
 - `text` widget paste with cut/copied style (perhaps track all applied formatting tags and reapply them to new indexes)
 - `text` widget paste matching insert mark style (track all applied tags to that location and reapply)
-- Fix issue with Hello, Text! whereby after applying background, and foreground to a selection, you cannot apply bold, italic, or underscore for the same selection (or font-size or font-family)
 - Make sure to only allow undo/redo when there are changes to be undoed/redoed
 
 - Allow setting root x/y without affecting its default width/height

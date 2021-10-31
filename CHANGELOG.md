@@ -2,7 +2,7 @@
 
 ## 0.0.33
 
-- Support `text` widget `InsertMarkMoved` listener event to track insert mark movement (or alises `InsertMarkMove`, `insert_mark_move`, `insert_mark_moved`, all case-insensitive)
+- Support `text` widget `InsertMarkMoved` listener event to track insert mark movement (or aliases `InsertMarkMove`, `insert_mark_move`, `insert_mark_moved`, all case-insensitive)
 - Support `entry` widget `changed` and `modified` listener event aliases for `change` event
 - Autodiscover format options when moving cursor in `text` widget (auto-derive from applied tags and widget font) and show in top Hello, Text! toolbar comboboxes and buttons
 - Fix issue with encountering error 'NoMethodError: undefined method "size" for' when launching Hello, Text!, performing Select-All (CMD+A or CONTROL+A) and then attempting to Bold all the text.
