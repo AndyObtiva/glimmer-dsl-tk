@@ -107,11 +107,6 @@ class HelloText
       frame {
         grid row: 0, column: 0
         
-        label {
-          grid row: 0, column: 0, columnspan: 17
-          text 'Select a region of text and then apply formatting from the toolbar'
-        }
-        
         column_index = -1
         
         combobox {
@@ -172,39 +167,7 @@ class HelloText
             @text.toggle_selection_font_format('underline', true)
           end
         }
-        
-        separator {
-          grid row: 1, column: column_index += 1, column_weight: 0
-          orient 'vertical'
-        }
-        
-        button {
-          grid row: 1, column: column_index += 1, column_weight: 0
-          image File.expand_path("images/cut.png", __dir__), subsample: 32
-          
-          on('command') do
-            @text.text_cut
-          end
-        }
-        
-        button {
-          grid row: 1, column: column_index += 1, column_weight: 0
-          image File.expand_path("images/copy.png", __dir__), subsample: 32
-          
-          on('command') do
-            @text.text_copy
-          end
-        }
-        
-        button {
-          grid row: 1, column: column_index += 1, column_weight: 0
-          image File.expand_path("images/paste.png", __dir__), subsample: 32
-          
-          on('command') do
-            @text.text_paste
-          end
-        }
-        
+
         separator {
           grid row: 1, column: column_index += 1, column_weight: 0
           orient 'vertical'
@@ -244,29 +207,6 @@ class HelloText
         
         button {
           grid row: 1, column: column_index += 1, column_weight: 0
-          image File.expand_path("images/undo.png", __dir__), subsample: 32
-          
-          on('command') do
-            @text.edit_undo
-          end
-        }
-        
-        button {
-          grid row: 1, column: column_index += 1, column_weight: 0
-          image File.expand_path("images/redo.png", __dir__), subsample: 32
-          
-          on('command') do
-            @text.edit_redo
-          end
-        }
-        
-        separator {
-          grid row: 1, column: column_index += 1, column_weight: 0
-          orient 'vertical'
-        }
-        
-        button {
-          grid row: 1, column: column_index += 1, column_weight: 0
           image File.expand_path("images/picture.png", __dir__), subsample: 32
           
           on('command') do
@@ -280,6 +220,62 @@ class HelloText
           
           on('command') do
             show_find_dialog
+          end
+        }
+        
+        separator {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          orient 'vertical'
+        }
+        
+        button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/cut.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.text_cut
+          end
+        }
+        
+        button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/copy.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.text_copy
+          end
+        }
+        
+        button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/paste.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.text_paste
+          end
+        }
+        
+        separator {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          orient 'vertical'
+        }
+        
+        
+        button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/undo.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.edit_undo
+          end
+        }
+        
+        button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/redo.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.edit_redo
           end
         }
       }

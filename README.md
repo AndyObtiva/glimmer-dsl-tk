@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.33
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.34
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -158,7 +158,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.33'
+gem 'glimmer-dsl-tk', '~> 0.0.34'
 ```
 
 And, then run:
@@ -1927,7 +1927,7 @@ class HelloText
     MULTI_LINE_STRING
   end
   
-  attr_accessor :document
+  attr_accessor :document, :find_text
       
   attr_accessor :foreground
   
@@ -1953,19 +1953,22 @@ class HelloText
     [FONT_SIZE_PROMPT] + (9..64).to_a.map(&:to_s)
   end
   
+  def find
+    text_index = @text.search(/#{find_text}/i, @text.tag_ranges('sel')&.first&.last || @text.index('insert'))
+    unless text_index.to_s.empty?
+      @text.tag_remove('sel', '1.0', 'end')
+      @text.tag_add('sel', text_index, "#{text_index} + #{find_text.size} chars")
+    end
+  end
+  
   def launch
-    root {
+    @root = root {
       title 'Hello, Text!'
       width 1280
       height 800
       
       frame {
         grid row: 0, column: 0
-        
-        label {
-          grid row: 0, column: 0, columnspan: 17
-          text 'Select a region of text and then apply formatting from the toolbar'
-        }
         
         column_index = -1
         
@@ -1998,7 +2001,7 @@ class HelloText
           orient 'vertical'
         }
         
-        button {
+        @bold_button = button {
           grid row: 1, column: column_index += 1, column_weight: 0
           text 'B'
           style font: {weight: 'bold'}
@@ -2008,7 +2011,7 @@ class HelloText
           end
         }
         
-        button {
+        @italic_button = button {
           grid row: 1, column: column_index += 1, column_weight: 0
           text 'I'
           style font: {slant: 'italic'}
@@ -2018,13 +2021,68 @@ class HelloText
           end
         }
         
-        button {
+        @underline_button = button {
           grid row: 1, column: column_index += 1, column_weight: 0
           text 'U'
           style font: {underline: true}
           
           on('command') do
             @text.toggle_selection_font_format('underline', true)
+          end
+        }
+
+        separator {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          orient 'vertical'
+        }
+        
+        @justify_left_button = button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/align-left.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.add_selection_format('justify', 'left')
+          end
+        }
+        
+        @justify_center_button = button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/align-center.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.add_selection_format('justify', 'center')
+          end
+        }
+        
+        @justify_right_button = button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/align-right.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.add_selection_format('justify', 'right')
+          end
+        }
+        
+        separator {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          orient 'vertical'
+        }
+        
+        button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/picture.png", __dir__), subsample: 32
+          
+          on('command') do
+            @text.get_open_file_to_insert_image
+          end
+        }
+        
+        button {
+          grid row: 1, column: column_index += 1, column_weight: 0
+          image File.expand_path("images/search.png", __dir__), subsample: 32
+          
+          on('command') do
+            show_find_dialog
           end
         }
         
@@ -2065,37 +2123,6 @@ class HelloText
           orient 'vertical'
         }
         
-        button {
-          grid row: 1, column: column_index += 1, column_weight: 0
-          image File.expand_path("images/align-left.png", __dir__), subsample: 32
-          
-          on('command') do
-            @text.add_selection_format('justify', 'left')
-          end
-        }
-        
-        button {
-          grid row: 1, column: column_index += 1, column_weight: 0
-          image File.expand_path("images/align-center.png", __dir__), subsample: 32
-          
-          on('command') do
-            @text.add_selection_format('justify', 'center')
-          end
-        }
-        
-        button {
-          grid row: 1, column: column_index += 1, column_weight: 0
-          image File.expand_path("images/align-right.png", __dir__), subsample: 32
-          
-          on('command') do
-            @text.add_selection_format('justify', 'right')
-          end
-        }
-        
-        separator {
-          grid row: 1, column: column_index += 1, column_weight: 0
-          orient 'vertical'
-        }
         
         button {
           grid row: 1, column: column_index += 1, column_weight: 0
@@ -2114,20 +2141,6 @@ class HelloText
             @text.edit_redo
           end
         }
-        
-        separator {
-          grid row: 1, column: column_index += 1, column_weight: 0
-          orient 'vertical'
-        }
-        
-        button {
-          grid row: 1, column: column_index += 1, column_weight: 0
-          image File.expand_path("images/picture.png", __dir__), subsample: 32
-          
-          on('command') do
-            @text.get_open_file_to_insert_image
-          end
-        }
       }
       
       @text = text {
@@ -2135,8 +2148,67 @@ class HelloText
         wrap 'word'
         undo true
         value <=> [self, :document]
+        
+        on('KeyPress') do |event|
+          show_find_dialog if (event.keysym == 'f') && ((OS.mac? && event.state == 8) || (!OS.mac? && event.state == 4))
+        end
+                
+        on('InsertMarkMoved') do
+          self.font_family = @text.applied_font_format_value('family')
+          self.font_size = @text.applied_font_format_value('size')
+          @bold_button.default = @text.applied_font_format_value('weight') == 'bold' ? 'active' : 'normal'
+          @italic_button.default = @text.applied_font_format_value('slant') == 'italic' ? 'active' : 'normal'
+          @underline_button.default = @text.applied_font_format_value('underline') == true ? 'active' : 'normal'
+          self.background = @text.applied_format_value('background')
+          self.foreground = @text.applied_format_value('foreground')
+          @justify_left_button.default = @text.applied_format_value('justify') == 'left' ? 'active' : 'normal'
+          @justify_center_button.default = @text.applied_format_value('justify') == 'center' ? 'active' : 'normal'
+          @justify_right_button.default = @text.applied_format_value('justify') == 'right' ? 'active' : 'normal'
+        end
       }
-    }.open
+    }
+    @root.open
+  end
+  
+  def show_find_dialog
+    toplevel(@root) { |tl|
+      title 'Find'
+      
+      label {
+        text 'Text:'
+      }
+      entry { |e|
+        focus true
+        text <=> [
+          self,
+          :find_text,
+          after_write: lambda do
+            text_index = @text.search(/#{find_text}/i, 'insert')
+            unless text_index.to_s.empty?
+              @text.tag_remove('sel', '1.0', 'end')
+              @text.tag_add('sel', text_index, "#{text_index} + #{find_text.size} chars")
+            end
+          end
+        ]
+                
+        on('KeyPress') do |event|
+          if event.keysym == 'Return'
+            find
+          elsif event.keysym == 'Escape'
+            tl.grab_release
+            tl.destroy
+          end
+        end
+      }
+      button {
+        text 'Find'
+        default 'active'
+        
+        on('command') do
+          find
+        end
+      }
+    }
   end
 end
 

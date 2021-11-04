@@ -5,6 +5,7 @@
 - When applying a `text` selection format without having a selection, have it apply to current insert mark word
 - Support registering multiple general event listeners on `text` widget (previously, later event listener registrations replaced former ones)
 - Implement `:no_selection_default` option of `:insert_word`, `insert_letter`, or `none` for `text` selection formatting methods (`add_selection_format`, `remove_selection_format`, `toggle_selection_format`, `add_selection_font_format`, `remove_selection_font_format`, `toggle_selection_font_format`)
+- Make sure to only allow `text` undo/redo when there are changes to be undoed/redoed
 - Fix issue with Hello, Text! Find Dialog not coming up with keyboard shortcut (e.g. CMD+F) anymore
 - Fix issue with Hello, Text! whereby after applying background, and foreground to a selection, you cannot apply bold, italic, or underline for the same selection (or font-size or font-family)
 

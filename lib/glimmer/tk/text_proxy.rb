@@ -36,6 +36,8 @@ module Glimmer
         case listener_name.to_s.downcase
         when '<<modified>>', '<modified>', 'modified'
           modified_listener = Proc.new do |*args|
+            @modified_count ||= 0
+            @modified_count += 1
             listener.call(*args)
             apply_all_tag
             @insert_mark_moved_proc&.call
@@ -87,6 +89,18 @@ module Glimmer
             @tk.tag_bind(ALL_TAG, listener_name) { |event| @listeners[listener_name].each {|l| l.call(event)} } if @listeners[listener_name].empty?
             @listeners[listener_name] << listener
           end
+        end
+      end
+      
+      def edit_undo
+        @tk.edit_undo if @modified_count.to_i > 2 # <Modified> fires twice the first time, which is equivalent to one change.
+      end
+      
+      def edit_redo
+        begin
+          @tk.edit_redo
+        rescue => e
+          # No Op
         end
       end
       

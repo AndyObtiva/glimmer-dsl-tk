@@ -2,21 +2,16 @@
 
 ## Next
 
-- Update Hello, Text! to split toolbar into two levels (having non-formatting buttons on the second level)
-- Update Hello, Text! screenshot (ensure using justify center in it)
-
-- Hello, Toplevel! (Custom Window and Custom Dialog)
-- `icon_photo` as alias for `iconphoto` attribute
-- Add defensive programming for preventing spinbox from allowing value to go over `to` (max) when typing by keyboard
-
-## Soon
-
 - Enhance `text` undo/redo to include format/font-format changes
 - `text` widget cut/copy with style (perhaps track all applied formatting tags and reapply them to new indexes)
 - `text` widget paste with cut/copied style (perhaps track all applied formatting tags and reapply them to new indexes)
 - `text` widget paste matching insert mark style (track all applied tags to that location and reapply)
-- Make sure to only allow undo/redo when there are changes to be undoed/redoed
 
+## Soon
+
+- Hello, Toplevel! (Custom Window and Custom Dialog)
+- `icon_photo` as alias for `iconphoto` attribute
+- Add defensive programming for preventing spinbox from allowing value to go over `to` (max) when typing by keyboard
 - Allow setting root x/y without affecting its default width/height
 - Look into updating block_attribute expression to not require defining blocks that simply forward to tk on the widget
 - Document Glimmer debug logging
