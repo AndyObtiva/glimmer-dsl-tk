@@ -38,7 +38,7 @@ module Glimmer
           modified_listener = Proc.new do |*args|
             listener.call(*args)
             apply_all_tag
-            @insert_mark_moved_proc.call
+            @insert_mark_moved_proc&.call
             @tk.modified = false
           end
           @tk.bind('<Modified>', modified_listener)
@@ -49,16 +49,16 @@ module Glimmer
         when 'insertmarkmove', 'insertmarkmoved', 'insert_mark_move', 'insert_mark_moved'
           if @insert_mark_moved_proc.nil?
             handle_listener('KeyPress') do |event|
-              @insert_mark_moved_proc.call
+              @insert_mark_moved_proc&.call
             end
             handle_listener('KeyRelease') do |event|
-              @insert_mark_moved_proc.call
+              @insert_mark_moved_proc&.call
             end
             handle_listener('ButtonPress') do |event|
-              @insert_mark_moved_proc.call
+              @insert_mark_moved_proc&.call
             end
             handle_listener('ButtonRelease') do |event|
-              @insert_mark_moved_proc.call
+              @insert_mark_moved_proc&.call
             end
           end
           @insert_mark = @tk.index('insert')
@@ -72,14 +72,20 @@ module Glimmer
         else
           apply_all_tag
           # TODO make listener pass an event that has a modifiers attribute for easy representation of :shift, :meta, :control, etc... while a letter button is pressed
+          @listeners ||= {}
           begin
-            @tk.tag_bind(ALL_TAG, listener_name, &listener)
+            @listeners[listener_name] ||= []
+            @tk.tag_bind(ALL_TAG, listener_name) { |event| @listeners[listener_name].each {|l| l.call(event)} } if @listeners[listener_name].empty?
+            @listeners[listener_name] << listener
           rescue => e
+            @listeners.delete(listener_name)
             Glimmer::Config.logger.debug {"Unable to bind to #{listener_name} .. attempting to surround with <>"}
             Glimmer::Config.logger.debug {e.full_message}
             listener_name = "<#{listener_name}" if !listener_name.start_with?('<')
             listener_name = "#{listener_name}>" if !listener_name.end_with?('>')
-            @tk.tag_bind(ALL_TAG, listener_name, &listener)
+            @listeners[listener_name] ||= []
+            @tk.tag_bind(ALL_TAG, listener_name) { |event| @listeners[listener_name].each {|l| l.call(event)} } if @listeners[listener_name].empty?
+            @listeners[listener_name] << listener
           end
         end
       end

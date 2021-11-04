@@ -3,6 +3,8 @@
 ## 0.0.34
 
 - When applying a `text` selection format without having a selection, have it apply to current insert mark word
+- Support registering multiple general event listeners on `text` widget (previously, later event listener registrations replaced former ones)
+- Fix issue with Hello, Text! Find Dialog not coming up with keyboard shortcut (e.g. CMD+F) anymore
 - Fix issue with Hello, Text! whereby after applying background, and foreground to a selection, you cannot apply bold, italic, or underline for the same selection (or font-size or font-family)
 
 ## 0.0.33

@@ -293,7 +293,7 @@ class HelloText
         on('KeyPress') do |event|
           show_find_dialog if (event.keysym == 'f') && ((OS.mac? && event.state == 8) || (!OS.mac? && event.state == 4))
         end
-        
+                
         on('InsertMarkMoved') do
           self.font_family = @text.applied_font_format_value('family')
           self.font_size = @text.applied_font_format_value('size')
