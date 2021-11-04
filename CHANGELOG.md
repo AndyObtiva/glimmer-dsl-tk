@@ -3,6 +3,7 @@
 ## 0.0.34
 
 - When applying a `text` selection format without having a selection, have it apply to current insert mark word
+- Fix issue with Hello, Text! whereby after applying background, and foreground to a selection, you cannot apply bold, italic, or underline for the same selection (or font-size or font-family)
 
 ## 0.0.33
 

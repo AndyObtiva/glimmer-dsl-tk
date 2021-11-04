@@ -153,7 +153,7 @@ module Glimmer
             
       def add_format(region_start, region_end, option, value)
         @@tag_number = 0 unless defined?(@@tag_number)
-        tag = "tag#{@@tag_number += 1}"
+        tag = "tag_#{option}_#{@@tag_number += 1}"
         @tk.tag_configure(tag, {option => value})
         @tk.tag_add(tag, region_start, region_end)
         tag
@@ -204,7 +204,7 @@ module Glimmer
       def applied_font_format_tags_and_regions(region_start, region_end)
         lines = value.split("\n")
         tags_and_regions = []
-        all_tag_names = @tk.tag_names - ['sel', ALL_TAG]
+        all_tag_names = (@tk.tag_names - ['sel', ALL_TAG]).select {|tag_name| tag_name.include?('_font_')}
         (region_start.to_i..region_end.to_i).each do |line_number|
           start_character_index = 0
           start_character_index = region_start.to_s.split('.').last.to_i if line_number == region_start.to_i

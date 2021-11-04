@@ -349,9 +349,9 @@ The `text` widget is enhanced by [Glimmer DSL for Tk](https://rubygems.org/gems/
 - `add_font_format(region_start, region_end, font_option, value)`
 - `remove_font_format(region_start, region_end, font_option, value)`
 - `toggle_font_format(region_start, region_end, font_option, value)`
-- `add_selection_format(region_start, region_end, option, value)`
+- `add_selection_format(region_start, region_end, option, value)`: adds format to selection. If there is no selection, then applies format to current insert mark word.
 - `remove_selection_format(region_start, region_end, option, value)`
-- `toggle_selection_format(region_start, region_end, option, value)`
+- `toggle_selection_format(region_start, region_end, option, value)`: toggles format on selection. If there is no selection, then toggles format on current insert mark word.
 - `add_selection_font_format(region_start, region_end, font_option, value)`
 - `remove_selection_font_format(region_start, region_end, font_option, value)`
 - `toggle_selection_font_format(region_start, region_end, font_option, value)`
@@ -731,6 +731,7 @@ More details can be found in the [Hello, Button!](#hello-button) sample below.
 ## Gotchas
 
 - Setting `background` attribute on `frame` or `label` does not work in `'aqua'` theme on the Mac (only in `'classic'` theme)
+- `text` widget does not track `KeyPress`/`KeyRelease` events perfectly (installed via `on()` listener keyword). It seems that when all text is deleted, it stops tracking key presses/releases until a number of new lines have been added to `text` `value` attribute
 
 ## Samples
 
