@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.34
+
+- When applying a `text` selection format without having a selection, have it apply to current insert mark word
+
 ## 0.0.33
 
 - Support `text` widget `InsertMarkMoved` listener event to track insert mark movement (or aliases `InsertMarkMove`, `insert_mark_move`, `insert_mark_moved`, all case-insensitive)

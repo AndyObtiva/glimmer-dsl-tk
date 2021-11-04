@@ -109,7 +109,9 @@ module Glimmer
       end
       
       def process_selection_ranges(&processor)
-        @tk.tag_ranges('sel').each do |region|
+        regions = @tk.tag_ranges('sel')
+        regions = [[@tk.index('insert wordstart'), @tk.index('insert wordend + 1 char')]] if regions.empty?
+        regions.each do |region|
           range_start = region.first
           range_end = region.last
           processor.call(range_start, range_end)

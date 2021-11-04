@@ -2,7 +2,6 @@
 
 ## Next
 
-- When setting a `text` format without a selection in Hello, Text!, have it apply when typing
 - Fix issue with Hello, Text! whereby after applying background, and foreground to a selection, you cannot apply bold, italic, or underscore for the same selection (or font-size or font-family) (it is probably getting confusing in picking up the tag with font vs tags not about font)
 - Fix issue with `on('KeyPress')`/`on('KeyRelease')` not firing on `text` widget arrow key presses after deleting all text and typing new text (it fires on mouse clicks and typing new text)
 - Update Hello, Text! to split toolbar into two levels (having non-formatting buttons on the second level)
