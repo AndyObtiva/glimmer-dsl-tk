@@ -2,9 +2,9 @@
 
 ## Next
 
-- Implement `:no_selection_default` values of `:current_word`, `current_letter`, or `none` for `text` selection formatting methods
 - Update Hello, Text! to split toolbar into two levels (having non-formatting buttons on the second level)
 - Update Hello, Text! screenshot (ensure using justify center in it)
+
 - Hello, Toplevel! (Custom Window and Custom Dialog)
 - `icon_photo` as alias for `iconphoto` attribute
 - Add defensive programming for preventing spinbox from allowing value to go over `to` (max) when typing by keyboard

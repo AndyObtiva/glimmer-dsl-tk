@@ -349,14 +349,19 @@ The `text` widget is enhanced by [Glimmer DSL for Tk](https://rubygems.org/gems/
 - `add_font_format(region_start, region_end, font_option, value)`
 - `remove_font_format(region_start, region_end, font_option, value)`
 - `toggle_font_format(region_start, region_end, font_option, value)`
-- `add_selection_format(region_start, region_end, option, value)`: adds format to selection. If there is no selection, then applies format to current insert mark word.
-- `remove_selection_format(region_start, region_end, option, value)`
-- `toggle_selection_format(region_start, region_end, option, value)`: toggles format on selection. If there is no selection, then toggles format on current insert mark word.
-- `add_selection_font_format(region_start, region_end, font_option, value)`
-- `remove_selection_font_format(region_start, region_end, font_option, value)`
-- `toggle_selection_font_format(region_start, region_end, font_option, value)`
+- `add_selection_format(option, value, no_selection_default: :insert_word)`: adds format to selection. If there is no selection, then applies format to current insert mark word.
+- `remove_selection_format(option, value, no_selection_default: :insert_word)`
+- `toggle_selection_format(option, value, no_selection_default: :insert_word)`: toggles format on selection. If there is no selection, then toggles format on current insert mark word.
+- `add_selection_font_format(font_option, value, no_selection_default: :insert_word)`
+- `remove_selection_font_format(font_option, value, no_selection_default: :insert_word)`
+- `toggle_selection_font_format(font_option, value, no_selection_default: :insert_word)`
 - `text#insert_image(text_index, *image_args)`: inserts image into `text` `value` content at `text_index` location (e.g. `'insert'`)
 - `text#get_open_file_to_insert_image(text_index = 'insert')`: opens a file dialog to select one of the available image formats and then inserts image into `text` `value` content
+
+The `:no_selection_default` keyword arg to `*_selection_*` methods determines what region to cover when no explicit selection is set:
+- `:insert_word`: current word for insert mark
+- `:insert_letter`: current letter for insert mark
+- `:none`: no behavior when no selection is in place
 
 Available options:
 

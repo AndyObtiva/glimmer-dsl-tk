@@ -90,33 +90,40 @@ module Glimmer
         end
       end
       
-      def add_selection_format(option, value)
-        process_selection_ranges { |range_start, range_end| add_format(range_start, range_end, option, value) }
+      def add_selection_format(option, value, no_selection_default: :insert_word)
+        process_selection_ranges(no_selection_default: no_selection_default) { |range_start, range_end| add_format(range_start, range_end, option, value) }
       end
       
-      def remove_selection_format(option, value)
-        process_selection_ranges { |range_start, range_end| remove_format(range_start, range_end, option, value) }
+      def remove_selection_format(option, value, no_selection_default: :insert_word)
+        process_selection_ranges(no_selection_default: no_selection_default) { |range_start, range_end| remove_format(range_start, range_end, option, value) }
       end
       
-      def toggle_selection_format(option, value)
-        process_selection_ranges { |range_start, range_end| toggle_format(range_start, range_end, option, value) }
+      def toggle_selection_format(option, value, no_selection_default: :insert_word)
+        process_selection_ranges(no_selection_default: no_selection_default) { |range_start, range_end| toggle_format(range_start, range_end, option, value) }
       end
       
-      def add_selection_font_format(option, value)
-        process_selection_ranges { |range_start, range_end| add_font_format(range_start, range_end, option, value) }
+      def add_selection_font_format(option, value, no_selection_default: :insert_word)
+        process_selection_ranges(no_selection_default: no_selection_default) { |range_start, range_end| add_font_format(range_start, range_end, option, value) }
       end
       
-      def remove_selection_font_format(option, value)
-        process_selection_ranges { |range_start, range_end| remove_font_format(range_start, range_end, option, value) }
+      def remove_selection_font_format(option, value, no_selection_default: :insert_word)
+        process_selection_ranges(no_selection_default: no_selection_default) { |range_start, range_end| remove_font_format(range_start, range_end, option, value) }
       end
       
-      def toggle_selection_font_format(option, value)
-        process_selection_ranges { |range_start, range_end| toggle_font_format(range_start, range_end, option, value) }
+      def toggle_selection_font_format(option, value, no_selection_default: :insert_word)
+        process_selection_ranges(no_selection_default: no_selection_default) { |range_start, range_end| toggle_font_format(range_start, range_end, option, value) }
       end
       
-      def process_selection_ranges(&processor)
+      def process_selection_ranges(no_selection_default: :insert_word, &processor)
         regions = @tk.tag_ranges('sel')
-        regions = [[@tk.index('insert wordstart'), @tk.index('insert wordend + 1 char')]] if regions.empty?
+        if regions.empty?
+          case no_selection_default
+          when :insert_word
+            regions = [[@tk.index('insert wordstart'), @tk.index('insert wordend + 1 char')]]
+          when :insert_letter
+            regions = [[@tk.index('insert'), @tk.index('insert + 1 char')]]
+          end
+        end
         regions.each do |region|
           range_start = region.first
           range_end = region.last
