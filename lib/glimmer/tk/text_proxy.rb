@@ -432,16 +432,11 @@ module Glimmer
         self.wrap = 'none'
         self.padx = 5
         self.pady = 5
-#         on('Modified') { apply_all_tag }
       end
       
       def clone_font(font)
         ::TkFont.new(Hash[font.actual])
       end
-      
-#       def apply_all_tag
-#         @tk.tag_add(ALL_TAG, '1.0', 'end')
-#       end
     end
   end
 end

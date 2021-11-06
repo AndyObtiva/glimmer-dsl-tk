@@ -32,6 +32,19 @@ module Glimmer
       DEFAULT_HEIGHT = 95
       
       attr_reader :tk
+      attr_accessor :escapable
+      alias escapable? escapable
+      
+      def post_add_content
+        if escapable?
+           on('KeyPress') do |event|
+            if event.keysym == 'Escape'
+              grab_release
+              destroy
+            end
+          end
+        end
+      end
       
       def has_attribute?(attribute, *args)
         %w[width height x y].include?(attribute.to_s) || super

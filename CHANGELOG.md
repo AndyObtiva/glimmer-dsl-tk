@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.36
+
+- Hello, Toplevel! (Custom Window and Custom Dialog)
+- Support registering multiple general event listeners on widgets (previously, later event listener registrations replaced former ones)
+- Support `escapable true` property under `root` and `toplevel` to close on hitting ESCAPE button
+
 ## 0.0.35
 
 - Improved Meta-Sample by utilizing Ruby from `RbConfig.ruby`

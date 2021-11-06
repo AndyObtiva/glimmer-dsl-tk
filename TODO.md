@@ -2,14 +2,16 @@
 
 ## Next
 
+- Hello, Menu Bar!
+
+## Soon
+
+- Hello, Contextual Menu!
 - Enhance `text` undo/redo to include format/font-format changes
 - `text` widget cut/copy with style (perhaps track all applied formatting tags and reapply them to new indexes)
 - `text` widget paste with cut/copied style (perhaps track all applied formatting tags and reapply them to new indexes)
 - `text` widget paste matching insert mark style (track all applied tags to that location and reapply)
 
-## Soon
-
-- Hello, Toplevel! (Custom Window and Custom Dialog)
 - `icon_photo` as alias for `iconphoto` attribute
 - Add defensive programming for preventing spinbox from allowing value to go over `to` (max) when typing by keyboard
 - Allow setting root x/y without affecting its default width/height
@@ -50,8 +52,6 @@
 
 - Hello, Scale!
 - Hello, Progressbar!
-- Hello, Menu Bar!
-- Hello, Contextual Menu!
 - Hello, Panedwindow!
 - Hello, Grid!
 - Hello, Listbox! (two tabs for single/multi selection)

@@ -460,14 +460,20 @@ module Glimmer
           parent_proxy.handle_listener(listener_name, &listener) if parent_proxy
           # TODO return a listener registration object that has a deregister method
         else
+          @listeners ||= {}
           begin
-            @tk.bind(listener_name, &listener)
+            @listeners[listener_name] ||= []
+            @tk.bind(listener_name) { |event| @listeners[listener_name].each {|l| l.call(event)} } if @listeners[listener_name].empty?
+            @listeners[listener_name] << listener
           rescue => e
+            @listeners.delete(listener_name)
             Glimmer::Config.logger.debug {"Unable to bind to #{listener_name} .. attempting to surround with <>"}
             Glimmer::Config.logger.debug {e.full_message}
             listener_name = "<#{listener_name}" if !listener_name.start_with?('<')
             listener_name = "#{listener_name}>" if !listener_name.end_with?('>')
-            @tk.bind(listener_name, &listener)
+            @listeners[listener_name] ||= []
+            @tk.bind(listener_name) { |event| @listeners[listener_name].each {|l| l.call(event)} } if @listeners[listener_name].empty?
+            @listeners[listener_name] << listener
           end
         end
       end

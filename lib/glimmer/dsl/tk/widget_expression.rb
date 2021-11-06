@@ -33,7 +33,7 @@ module Glimmer
   
         def can_interpret?(parent, keyword, *args, &block)
           !EXCLUDED_KEYWORDS.include?(keyword) and
-            Glimmer::Tk::WidgetProxy.widget_exists?(keyword)
+            Glimmer::Tk::WidgetProxy.widget_exists?(keyword) and
             (parent.respond_to?(:tk) or args.first.respond_to?(:tk))
         end
   

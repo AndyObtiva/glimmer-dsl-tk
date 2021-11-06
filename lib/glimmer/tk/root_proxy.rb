@@ -36,6 +36,7 @@ module Glimmer
 
       def post_add_content
         set_attribute('iconphoto', File.expand_path('../../../icons/glimmer.png', __dir__)) if @tk.iconphoto.nil?
+        super
       end
       
       def open

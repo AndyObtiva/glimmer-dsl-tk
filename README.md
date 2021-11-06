@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.35
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.36
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -105,6 +105,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Hello, Radiobutton!](#hello-radiobutton)
     - [Hello, Frame!](#hello-frame)
     - [Hello, Root!](#hello-root)
+    - [Hello, Toplevel!](#hello-toplevel)
     - [Hello, Notebook!](#hello-notebook)
     - [Hello, Label!](#hello-label)
     - [Hello, Message Box!](#hello-message-box)
@@ -159,7 +160,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.35'
+gem 'glimmer-dsl-tk', '~> 0.0.36'
 ```
 
 And, then run:
@@ -1333,7 +1334,7 @@ Glimmer app:
 
 ### Hello, Root!
 
-Glimmer code (from [samples/hello/hello_frame.rb](samples/hello/hello_frame.rb)):
+Glimmer code (from [samples/hello/hello_root.rb](samples/hello/hello_root.rb)):
 
 ```ruby
 require 'glimmer-dsl-tk'
@@ -1384,6 +1385,203 @@ Glimmer app:
 ![glimmer dsl tk screenshot sample hello root](images/glimmer-dsl-tk-screenshot-sample-hello-root.png)
 
 ![glimmer dsl tk screenshot sample hello root bye](images/glimmer-dsl-tk-screenshot-sample-hello-root-bye.png)
+
+### Hello, Toplevel!
+
+`toplevel` widgets represent windows nested under `root`, which can be modeless (custom windows) or modal (dialogs that take the focus away from the owning window behind them until closed).
+
+Glimmer code (from [samples/hello/hello_toplevel.rb](samples/hello/hello_toplevel.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+include Glimmer
+
+def toplevel_content
+  frame {
+    label {
+      text "This is a fully custom toplevel, meaning you can add any widgets here!\nYou can press the ESCAPE button on the keyboard to close."
+    }
+    separator
+    checkbutton {
+      text 'This is a checkbutton'
+    }
+    radiobutton {
+      text 'This is a radiobutton'
+    }
+  }
+end
+
+root { |root_window|
+  title 'Hello, Toplevel!'
+  
+  button {
+    text 'Nested Window'
+    
+    on('command') do
+      toplevel(root_window) {
+        title 'Custom Window'
+        escapable true
+        x 150
+        y 180
+        width 500
+        height 200
+        minsize 500, 100
+        maxsize 1000, 300
+          
+        toplevel_content
+      }
+    end
+  }
+  
+  button {
+    text 'Transparent Window'
+    
+    on('command') do
+      toplevel(root_window) {
+        title 'Transparent Window'
+        escapable true
+        alpha 0.85
+        width 250
+        height 100
+        resizable false, false # not resizable horizontally or vertically
+          
+        frame {
+          label {
+            text "This is a transparent window\nYou can hit ESCAPE to close."
+            anchor 'center'
+          }
+        }
+      }
+    end
+  }
+  
+  button {
+    text 'Fullscreen Window'
+    
+    on('command') do
+      toplevel(root_window) {
+        title 'Fullscreen Window'
+        escapable true
+        fullscreen true
+          
+        frame {
+          label {
+            text "This is a fullscreen window\nYou can hit ESCAPE to close."
+            anchor 'center'
+          }
+        }
+      }
+    end
+  }
+  
+  if OS.mac?
+    # mac_class (Tk.tk_call args[3]) and mac_attribute_list (Tk.tk_call args[4]) can be chosen from this page: https://wiki.tcl-lang.org/page/MacWindowStyle
+    
+    button {
+      text 'Mac Plain (No-Button-Modeless) Window'
+      
+      on('command') do
+        toplevel(root_window) { |t|
+          title 'Mac Plain (No-Button-Modeless) Window'
+          escapable true
+          Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", t.tk, "plain")
+          
+          toplevel_content
+        }
+      end
+    }
+    
+    button {
+      text 'Mac Floating (Close-Button-Modeless) Window'
+      
+      on('command') do
+        toplevel(root_window) { |t|
+          title 'Mac Floating (Close-Button-Modeless) Window'
+          escapable true
+          Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", t.tk, "floating")
+          
+          toplevel_content
+        }
+      end
+    }
+    
+    button {
+      text 'Mac Document (All-Button-Modeless) Window'
+      
+      on('command') do
+        toplevel(root_window) { |t|
+          title 'Mac Document (All-Button-Modeless) Window'
+          escapable true
+          Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", t.tk, "document")
+          
+          toplevel_content
+        }
+      end
+    }
+    
+    button {
+      text 'Mac Utility (Close-Button-Modal) Dialog'
+      
+      on('command') do
+        toplevel(root_window) { |t|
+          title 'Mac Utility (Close-Button-Modal) Dialog'
+          escapable true
+          Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", t.tk, "utility")
+          
+          toplevel_content
+        }
+      end
+    }
+    
+    button {
+      text 'Mac Utility with Attribute List (All-Button-Modal) Dialog'
+      
+      on('command') do
+        toplevel(root_window) { |t|
+          title 'Mac Utility with Attribute List (All-Button-Modal) Dialog'
+          escapable true
+          Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", t.tk, "utility", "closeBox collapseBox resizable horizontalZoom verticalZoom sideTitlebar")
+          
+          toplevel_content
+        }
+      end
+    }
+  end
+}.open
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_toplevel'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_toplevel.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello toplevel 1](images/glimmer-dsl-tk-screenshot-sample-hello-toplevel.png)
+
+![glimmer dsl tk screenshot sample hello toplevel 2](images/glimmer-dsl-tk-screenshot-sample-hello-toplevel-custom-window.png)
+
+![glimmer dsl tk screenshot sample hello toplevel 3](images/glimmer-dsl-tk-screenshot-sample-hello-toplevel-transparent-window.png)
+
+![glimmer dsl tk screenshot sample hello toplevel 4](images/glimmer-dsl-tk-screenshot-sample-hello-toplevel-fullscreen-window.png)
+
+![glimmer dsl tk screenshot sample hello toplevel 5](images/glimmer-dsl-tk-screenshot-sample-hello-toplevel-mac-plain-window.png)
+
+![glimmer dsl tk screenshot sample hello toplevel 6](images/glimmer-dsl-tk-screenshot-sample-hello-toplevel-mac-floating-window.png)
+
+![glimmer dsl tk screenshot sample hello toplevel 7](images/glimmer-dsl-tk-screenshot-sample-hello-toplevel-mac-document-window.png)
+
+![glimmer dsl tk screenshot sample hello toplevel 8](images/glimmer-dsl-tk-screenshot-sample-hello-toplevel-mac-utility-window.png)
+
+![glimmer dsl tk screenshot sample hello toplevel 9](images/glimmer-dsl-tk-screenshot-sample-hello-toplevel-mac-utility-with-attribute-list-window.png)
 
 ### Hello, Notebook!
 
