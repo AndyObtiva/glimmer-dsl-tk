@@ -2,6 +2,7 @@
 
 ## 0.0.37
 
+- Support `focus: true` or `focus: [integer]` option for all selection formatting methods (`add_selection_format`, `remove_selection_format`, `toggle_selection_format`, `add_selection_font_format`, `remove_selection_font_format`, `toggle_selection_font_format`)
 - Have `text` widget grab focus after every formatting modification in Hello, Text! (e.g. after clicking `B` for Bold)
 
 ## 0.0.36
