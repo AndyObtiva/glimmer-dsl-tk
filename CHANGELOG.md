@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.37
+
+- Have `text` widget grab focus after every formatting modification in Hello, Text! (e.g. after clicking `B` for Bold)
+
 ## 0.0.36
 
 - Hello, Toplevel! (Custom Window and Custom Dialog)

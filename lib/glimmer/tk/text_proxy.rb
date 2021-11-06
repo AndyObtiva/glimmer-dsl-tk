@@ -92,31 +92,31 @@ module Glimmer
         end
       end
       
-      def add_selection_format(option, value, no_selection_default: :insert_word)
-        process_selection_ranges(no_selection_default: no_selection_default) { |range_start, range_end| add_format(range_start, range_end, option, value) }
+      def add_selection_format(option, value, no_selection_default: :insert_word, focus: true)
+        process_selection_ranges(no_selection_default: no_selection_default, focus: focus) { |range_start, range_end| add_format(range_start, range_end, option, value) }
       end
       
-      def remove_selection_format(option, value, no_selection_default: :insert_word)
-        process_selection_ranges(no_selection_default: no_selection_default) { |range_start, range_end| remove_format(range_start, range_end, option, value) }
+      def remove_selection_format(option, value, no_selection_default: :insert_word, focus: true)
+        process_selection_ranges(no_selection_default: no_selection_default, focus: focus) { |range_start, range_end| remove_format(range_start, range_end, option, value) }
       end
       
-      def toggle_selection_format(option, value, no_selection_default: :insert_word)
-        process_selection_ranges(no_selection_default: no_selection_default) { |range_start, range_end| toggle_format(range_start, range_end, option, value) }
+      def toggle_selection_format(option, value, no_selection_default: :insert_word, focus: true)
+        process_selection_ranges(no_selection_default: no_selection_default, focus: focus) { |range_start, range_end| toggle_format(range_start, range_end, option, value) }
       end
       
-      def add_selection_font_format(option, value, no_selection_default: :insert_word)
-        process_selection_ranges(no_selection_default: no_selection_default) { |range_start, range_end| add_font_format(range_start, range_end, option, value) }
+      def add_selection_font_format(option, value, no_selection_default: :insert_word, focus: true)
+        process_selection_ranges(no_selection_default: no_selection_default, focus: focus) { |range_start, range_end| add_font_format(range_start, range_end, option, value) }
       end
       
-      def remove_selection_font_format(option, value, no_selection_default: :insert_word)
-        process_selection_ranges(no_selection_default: no_selection_default) { |range_start, range_end| remove_font_format(range_start, range_end, option, value) }
+      def remove_selection_font_format(option, value, no_selection_default: :insert_word, focus: true)
+        process_selection_ranges(no_selection_default: no_selection_default, focus: focus) { |range_start, range_end| remove_font_format(range_start, range_end, option, value) }
       end
       
-      def toggle_selection_font_format(option, value, no_selection_default: :insert_word)
-        process_selection_ranges(no_selection_default: no_selection_default) { |range_start, range_end| toggle_font_format(range_start, range_end, option, value) }
+      def toggle_selection_font_format(option, value, no_selection_default: :insert_word, focus: true)
+        process_selection_ranges(no_selection_default: no_selection_default, focus: focus) { |range_start, range_end| toggle_font_format(range_start, range_end, option, value) }
       end
       
-      def process_selection_ranges(no_selection_default: :insert_word, &processor)
+      def process_selection_ranges(no_selection_default: :insert_word, focus: true, &processor)
         regions = @tk.tag_ranges('sel')
         if regions.empty?
           case no_selection_default
@@ -130,6 +130,11 @@ module Glimmer
           range_start = region.first
           range_end = region.last
           processor.call(range_start, range_end)
+        end
+        if focus == true
+          @tk.focus
+        elsif focus.is_a?(Integer)
+          ::Tk.after(focus) { @tk.focus }
         end
       end
       

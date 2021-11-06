@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.36
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.37
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -161,7 +161,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.36'
+gem 'glimmer-dsl-tk', '~> 0.0.37'
 ```
 
 And, then run:
@@ -352,12 +352,12 @@ The `text` widget is enhanced by [Glimmer DSL for Tk](https://rubygems.org/gems/
 - `add_font_format(region_start, region_end, font_option, value)`
 - `remove_font_format(region_start, region_end, font_option, value)`
 - `toggle_font_format(region_start, region_end, font_option, value)`
-- `add_selection_format(option, value, no_selection_default: :insert_word)`: adds format to selection. If there is no selection, then applies format to current insert mark word.
-- `remove_selection_format(option, value, no_selection_default: :insert_word)`
-- `toggle_selection_format(option, value, no_selection_default: :insert_word)`: toggles format on selection. If there is no selection, then toggles format on current insert mark word.
-- `add_selection_font_format(font_option, value, no_selection_default: :insert_word)`
-- `remove_selection_font_format(font_option, value, no_selection_default: :insert_word)`
-- `toggle_selection_font_format(font_option, value, no_selection_default: :insert_word)`
+- `add_selection_format(option, value, no_selection_default: :insert_word, focus: true)`: adds format to selection. If there is no selection, then applies format to current insert mark word.
+- `remove_selection_format(option, value, no_selection_default: :insert_word, focus: true)`
+- `toggle_selection_format(option, value, no_selection_default: :insert_word, focus: true)`: toggles format on selection. If there is no selection, then toggles format on current insert mark word.
+- `add_selection_font_format(font_option, value, no_selection_default: :insert_word, focus: true)`
+- `remove_selection_font_format(font_option, value, no_selection_default: :insert_word, focus: true)`
+- `toggle_selection_font_format(font_option, value, no_selection_default: :insert_word, focus: true)`
 - `text#insert_image(text_index, *image_args)`: inserts image into `text` `value` content at `text_index` location (e.g. `'insert'`)
 - `text#get_open_file_to_insert_image(text_index = 'insert')`: opens a file dialog to select one of the available image formats and then inserts image into `text` `value` content
 
@@ -365,6 +365,9 @@ The `:no_selection_default` keyword arg to `*_selection_*` methods determines wh
 - `:insert_word`: current word for insert mark
 - `:insert_letter`: current letter for insert mark
 - `:none`: no behavior when no selection is in place
+
+The `:focus` keyword arg defaults to `true` to indicate that the `text` widget should automatically grab focus after formatting modification.
+Also, the `:focus` keyword arg can have an integer value representing number of milliseconds after which to grab focus once the formatting modification is done. This helps in special situations like when making the formatting modification from a combobox, which takes a while before relinquishing focus, so adding `100` millisecond delay helps ensure the `text` widget grabs focus after modification. Check [Hello, Text!](#hello-text) for an example of that.
 
 Available options:
 
@@ -2190,28 +2193,28 @@ class HelloText
         
         column_index = -1
         
-        combobox {
+        combobox { |cb|
           grid row: 1, column: column_index += 1, column_weight: 1
           readonly true
-          text <=> [self, :font_family, after_write: ->(value) { @text.toggle_selection_font_format('family', value == FONT_FAMILY_PROMPT ? 'Courier New' : value) }]
+          text <=> [self, :font_family, after_write: ->(value) { @text.toggle_selection_font_format('family', value == FONT_FAMILY_PROMPT ? 'Courier New' : value, focus: 100) }]
         }
         
         combobox {
           grid row: 1, column: column_index += 1, column_weight: 1
           readonly true
-          text <=> [self, :font_size, after_write: ->(value) { @text.toggle_selection_font_format('size', value == FONT_SIZE_PROMPT ? 13 : value) }]
+          text <=> [self, :font_size, after_write: ->(value) { @text.toggle_selection_font_format('size', value == FONT_SIZE_PROMPT ? 13 : value, focus: 100) }]
         }
         
         combobox {
           grid row: 1, column: column_index += 1, column_weight: 1
           readonly true
-          text <=> [self, :foreground, after_write: ->(value) { @text.add_selection_format('foreground', value == FOREGROUND_PROMPT ? 'black' : value) }]
+          text <=> [self, :foreground, after_write: ->(value) { @text.add_selection_format('foreground', value == FOREGROUND_PROMPT ? 'black' : value, focus: 100) }]
         }
         
         combobox {
           grid row: 1, column: column_index += 1, column_weight: 1
           readonly true
-          text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'white' : value) }]
+          text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'white' : value, focus: 100) }]
         }
         
         separator {
@@ -2367,10 +2370,6 @@ class HelloText
         undo true
         value <=> [self, :document]
         
-        on('KeyPress') do |event|
-          show_find_dialog if (event.keysym == 'f') && ((OS.mac? && event.state == 8) || (!OS.mac? && event.state == 4))
-        end
-                
         on('InsertMarkMoved') do
           self.font_family = @text.applied_font_format_value('family')
           self.font_size = @text.applied_font_format_value('size')
@@ -2382,6 +2381,10 @@ class HelloText
           @justify_left_button.default = @text.applied_format_value('justify') == 'left' ? 'active' : 'normal'
           @justify_center_button.default = @text.applied_format_value('justify') == 'center' ? 'active' : 'normal'
           @justify_right_button.default = @text.applied_format_value('justify') == 'right' ? 'active' : 'normal'
+        end
+        
+        on('KeyPress') do |event|
+          show_find_dialog if (event.keysym == 'f') && ((OS.mac? && event.state == 8) || (!OS.mac? && event.state == 4))
         end
       }
     }
