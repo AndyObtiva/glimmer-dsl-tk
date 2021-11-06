@@ -24,7 +24,8 @@
 
 - Auto-Default to `validate 'key'` when defining `validatecommand {}` or `on('validate') {}` on an `entry`
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
-- Add default padding to `root`, `frame`, and `labelframe`
+- Add default padding to `labelframe`
+- Hello, Labelframe!
 
 - Support themes
 - Custom Widgets
@@ -51,7 +52,6 @@
 - Hello, Progressbar!
 - Hello, Menu Bar!
 - Hello, Contextual Menu!
-- Hello, Labelframe!
 - Hello, Panedwindow!
 - Hello, Grid!
 - Hello, Listbox! (two tabs for single/multi selection)

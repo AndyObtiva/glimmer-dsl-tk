@@ -56,7 +56,7 @@ class MetaSample
   
   def run_sample(sample)
     Thread.new do
-      command = "ruby -r #{glimmer_dsl_tk_file} #{sample} 2>&1"
+      command = "#{RbConfig.ruby} -r #{glimmer_dsl_tk_file} #{sample} 2>&1"
       result = ''
       IO.popen(command) do |f|
         f.each_line do |line|

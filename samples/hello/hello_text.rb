@@ -286,10 +286,6 @@ class HelloText
         undo true
         value <=> [self, :document]
         
-        on('KeyPress') do |event|
-          show_find_dialog if (event.keysym == 'f') && ((OS.mac? && event.state == 8) || (!OS.mac? && event.state == 4))
-        end
-                
         on('InsertMarkMoved') do
           self.font_family = @text.applied_font_format_value('family')
           self.font_size = @text.applied_font_format_value('size')
@@ -301,6 +297,10 @@ class HelloText
           @justify_left_button.default = @text.applied_format_value('justify') == 'left' ? 'active' : 'normal'
           @justify_center_button.default = @text.applied_format_value('justify') == 'center' ? 'active' : 'normal'
           @justify_right_button.default = @text.applied_format_value('justify') == 'right' ? 'active' : 'normal'
+        end
+        
+        on('KeyPress') do |event|
+          show_find_dialog if (event.keysym == 'f') && ((OS.mac? && event.state == 8) || (!OS.mac? && event.state == 4))
         end
       }
     }

@@ -39,7 +39,6 @@ module Glimmer
             @modified_count ||= 0
             @modified_count += 1
             listener.call(*args)
-            apply_all_tag
             @insert_mark_moved_proc&.call
             @tk.modified = false
           end
@@ -72,28 +71,17 @@ module Glimmer
             end
           end
         else
-          apply_all_tag
-          # TODO make listener pass an event that has a modifiers attribute for easy representation of :shift, :meta, :control, etc... while a letter button is pressed
-          @listeners ||= {}
-          begin
-            @listeners[listener_name] ||= []
-            @tk.tag_bind(ALL_TAG, listener_name) { |event| @listeners[listener_name].each {|l| l.call(event)} } if @listeners[listener_name].empty?
-            @listeners[listener_name] << listener
-          rescue => e
-            @listeners.delete(listener_name)
-            Glimmer::Config.logger.debug {"Unable to bind to #{listener_name} .. attempting to surround with <>"}
-            Glimmer::Config.logger.debug {e.full_message}
-            listener_name = "<#{listener_name}" if !listener_name.start_with?('<')
-            listener_name = "#{listener_name}>" if !listener_name.end_with?('>')
-            @listeners[listener_name] ||= []
-            @tk.tag_bind(ALL_TAG, listener_name) { |event| @listeners[listener_name].each {|l| l.call(event)} } if @listeners[listener_name].empty?
-            @listeners[listener_name] << listener
-          end
+          super
         end
       end
       
       def edit_undo
-        @tk.edit_undo if @modified_count.to_i > 2 # <Modified> fires twice the first time, which is equivalent to one change.
+        # <Modified> fires twice the first time, which is equivalent to one change.
+        if @modified_count.to_i > 2
+          # must count the extra 2 modified count that will occur upon undo too
+          @modified_count -= 4
+          @tk.edit_undo
+        end
       end
       
       def edit_redo
@@ -444,16 +432,16 @@ module Glimmer
         self.wrap = 'none'
         self.padx = 5
         self.pady = 5
-        on('Modified') { apply_all_tag }
+#         on('Modified') { apply_all_tag }
       end
       
       def clone_font(font)
         ::TkFont.new(Hash[font.actual])
       end
       
-      def apply_all_tag
-        @tk.tag_add(ALL_TAG, '1.0', 'end')
-      end
+#       def apply_all_tag
+#         @tk.tag_add(ALL_TAG, '1.0', 'end')
+#       end
     end
   end
 end

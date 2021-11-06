@@ -1,5 +1,13 @@
 # Change Log
 
+## 0.0.35
+
+- Improved Meta-Sample by utilizing Ruby from `RbConfig.ruby`
+- Improved girb_runner.rb to be more platform independent
+- Fixed `text` widget binding of standard bind events (e.g. `'KeyPress'` or `'ButtonPress'`)
+- Fixed Hello, Text! issue with not being able to bring up Find Dialog once all text is deleted and new text is entered
+- Fixed undo/redo issue
+
 ## 0.0.34
 
 - When applying a `text` selection format without having a selection, have it apply to current insert mark word
