@@ -2942,6 +2942,14 @@ https://github.com/AndyObtiva/cryptopunks-gui
 
 ![CryptoPunks GUI Screenshot](https://raw.githubusercontent.com/AndyObtiva/cryptopunks-gui/master/screenshots/cryptopunks-gui-screenshot.png)
 
+### Circule
+
+Generate an icon of overlapping circles derived from a hash.
+
+https://gitlab.com/fjc/circule
+
+[Demo Video](https://gitlab.com/fjc/circule/-/raw/master/circule-demo.mp4)
+
 ## Process
 
 [Glimmer Process](https://github.com/AndyObtiva/glimmer/blob/master/PROCESS.md)
