@@ -124,6 +124,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Glimmer Tk Calculator](#glimmer-tk-calculator)
     - [Y3network Ruby UI](#y3network-ruby-ui)
     - [CryptoPunks GUI](#cryptopunks-gui)
+    - [Circule](#circule)
   - [Process](#process)
   - [Resources](#resources)
   - [Help](#help)
