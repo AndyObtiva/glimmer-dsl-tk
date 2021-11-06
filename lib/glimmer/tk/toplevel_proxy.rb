@@ -127,6 +127,17 @@ module Glimmer
           destroy
         end
       end
+      
+      def mac_style=(mac_class, mac_attribute_list = nil)
+        if OS.mac?
+          @mac_style = [mac_class, mac_attribute_list]
+          ::Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", @tk, *@mac_style.compact)
+        end
+      end
+      
+      def mac_style
+        @mac_style
+      end
     end
   end
 end

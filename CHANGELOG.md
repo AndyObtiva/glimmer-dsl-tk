@@ -3,6 +3,7 @@
 ## 0.0.36
 
 - Hello, Toplevel! (Custom Window and Custom Dialog)
+- Support `mac_style` attribute under `toplevel`
 - Support registering multiple general event listeners on widgets (previously, later event listener registrations replaced former ones)
 - Support `escapable true` property under `root` and `toplevel` to close on hitting ESCAPE button
 

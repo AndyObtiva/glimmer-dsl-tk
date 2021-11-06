@@ -84,6 +84,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
       - [Notebook Frame](#notebook-frame)
       - [Icon Photo](#icon-photo)
       - [Root Background](#root-background)
+      - [Toplevel Mac Style](#toplevel-mac-style)
       - [Text Defaults](#text-defaults)
   - [The Grid Geometry Manager](#the-grid-geometry-manager)
   - [Data-Binding](#data-binding)
@@ -479,6 +480,20 @@ root {
 #### Root Background
 
 `root` `background` color attribute is automatically set to `'#ececec'` on the Mac to avoid having a non-native-looking light-colored background.
+
+#### Toplevel Mac Style
+
+Mac has special support for mac styles in Tk `toplevel` via the `mac_style` attribute, which can receive 1 to 2 arguments. `mac_style`'s first argument (`mac_class`) and second argument (`mac_attribute_list`) can be chosen from this page:
+
+https://wiki.tcl-lang.org/page/MacWindowStyle
+
+Behind the scenes, `mac_style` automatically calls out to:
+
+```ruby
+Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", tk_toplevel_widget, mac_class, mac_attribute_list)
+```
+
+More details can be found at the [Hello, Toplevel!](#hello-toplevel) sample.
 
 #### Text Defaults
 
@@ -1390,6 +1405,10 @@ Glimmer app:
 
 `toplevel` widgets represent windows nested under `root`, which can be modeless (custom windows) or modal (dialogs that take the focus away from the owning window behind them until closed).
 
+Mac has special support for mac styles in Tk `toplevel` via the `mac_style` attribute, which can receive 1 to 2 arguments. `mac_style`'s first argument (`mac_class`) and second argument (`mac_attribute_list`) can be chosen from this page:
+
+https://wiki.tcl-lang.org/page/MacWindowStyle
+
 Glimmer code (from [samples/hello/hello_toplevel.rb](samples/hello/hello_toplevel.rb)):
 
 ```ruby
@@ -1476,7 +1495,8 @@ root { |root_window|
   }
   
   if OS.mac?
-    # mac_class (Tk.tk_call args[3]) and mac_attribute_list (Tk.tk_call args[4]) can be chosen from this page: https://wiki.tcl-lang.org/page/MacWindowStyle
+    # Mac has special support for mac styles in Tk `toplevel`
+    # `mac_style` first argument (`mac_class`) and second argument (`mac_attribute_list`) can be chosen from this page: https://wiki.tcl-lang.org/page/MacWindowStyle
     
     button {
       text 'Mac Plain (No-Button-Modeless) Window'
@@ -1485,7 +1505,7 @@ root { |root_window|
         toplevel(root_window) { |t|
           title 'Mac Plain (No-Button-Modeless) Window'
           escapable true
-          Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", t.tk, "plain")
+          mac_style 'plain'
           
           toplevel_content
         }
@@ -1499,7 +1519,7 @@ root { |root_window|
         toplevel(root_window) { |t|
           title 'Mac Floating (Close-Button-Modeless) Window'
           escapable true
-          Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", t.tk, "floating")
+          mac_style 'floating'
           
           toplevel_content
         }
@@ -1513,7 +1533,7 @@ root { |root_window|
         toplevel(root_window) { |t|
           title 'Mac Document (All-Button-Modeless) Window'
           escapable true
-          Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", t.tk, "document")
+          mac_style 'document'
           
           toplevel_content
         }
@@ -1527,7 +1547,7 @@ root { |root_window|
         toplevel(root_window) { |t|
           title 'Mac Utility (Close-Button-Modal) Dialog'
           escapable true
-          Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", t.tk, "utility")
+          mac_style 'utility'
           
           toplevel_content
         }
@@ -1541,7 +1561,7 @@ root { |root_window|
         toplevel(root_window) { |t|
           title 'Mac Utility with Attribute List (All-Button-Modal) Dialog'
           escapable true
-          Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", t.tk, "utility", "closeBox collapseBox resizable horizontalZoom verticalZoom sideTitlebar")
+          mac_style 'utility', 'closeBox collapseBox resizable horizontalZoom verticalZoom sideTitlebar'
           
           toplevel_content
         }

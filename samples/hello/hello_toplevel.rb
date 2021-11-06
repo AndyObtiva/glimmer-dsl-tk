@@ -102,7 +102,8 @@ root { |root_window|
   }
   
   if OS.mac?
-    # mac_class (Tk.tk_call args[3]) and mac_attribute_list (Tk.tk_call args[4]) can be chosen from this page: https://wiki.tcl-lang.org/page/MacWindowStyle
+    # Mac has special support for mac styles in Tk `toplevel`
+    # `mac_style` first argument (`mac_class`) and second argument (`mac_attribute_list`) can be chosen from this page: https://wiki.tcl-lang.org/page/MacWindowStyle
     
     button {
       text 'Mac Plain (No-Button-Modeless) Window'
@@ -111,7 +112,7 @@ root { |root_window|
         toplevel(root_window) { |t|
           title 'Mac Plain (No-Button-Modeless) Window'
           escapable true
-          Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", t.tk, "plain")
+          mac_style 'plain'
           
           toplevel_content
         }
@@ -125,7 +126,7 @@ root { |root_window|
         toplevel(root_window) { |t|
           title 'Mac Floating (Close-Button-Modeless) Window'
           escapable true
-          Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", t.tk, "floating")
+          mac_style 'floating'
           
           toplevel_content
         }
@@ -139,7 +140,7 @@ root { |root_window|
         toplevel(root_window) { |t|
           title 'Mac Document (All-Button-Modeless) Window'
           escapable true
-          Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", t.tk, "document")
+          mac_style 'document'
           
           toplevel_content
         }
@@ -153,7 +154,7 @@ root { |root_window|
         toplevel(root_window) { |t|
           title 'Mac Utility (Close-Button-Modal) Dialog'
           escapable true
-          Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", t.tk, "utility")
+          mac_style 'utility'
           
           toplevel_content
         }
@@ -167,7 +168,7 @@ root { |root_window|
         toplevel(root_window) { |t|
           title 'Mac Utility with Attribute List (All-Button-Modal) Dialog'
           escapable true
-          Tk.tk_call("::tk::unsupported::MacWindowStyle", "style", t.tk, "utility", "closeBox collapseBox resizable horizontalZoom verticalZoom sideTitlebar")
+          mac_style 'utility', 'closeBox collapseBox resizable horizontalZoom verticalZoom sideTitlebar'
           
           toplevel_content
         }
