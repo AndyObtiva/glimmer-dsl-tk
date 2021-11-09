@@ -147,6 +147,12 @@ For example, on the Mac, you can:
 - Run: `rvm install 3.0.2 --enable-shared --enable-pthread --with-tk --with-tcl`
 - Run: `gem install tk -v0.4.0`
 
+On Windows, you can follow the [instructions over here](https://tkdocs.com/tutorial/install.html), specifically the following:
+- Install Ruby+Devkit (including MSYS/MINGW toolchains) through Windows Installer: https://rubyinstaller.org/downloads/
+- Install the ActiveTcl Windows package from [ActiveState.com](https://activestate.com)
+- Follow this instruction: "First, Ruby needs to find the tcl86t.dll and tk86t.dll shared libraries. These are located in C:\ActiveTcl\bin. Make a copy of them somewhere Ruby can find them, e.g. C:\Ruby26\bin."
+- Setup environment variables TCL_LIBRARY=C:\ActiveTcl\lib\tcl8.6 & TK_LIBRARY=C:\ActiveTcl\lib\tk8.6
+
 Afterwards, if you open `irb`, you should be able to run `require 'tk'` successfully.
 
 ## Setup
