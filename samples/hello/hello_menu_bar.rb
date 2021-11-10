@@ -134,60 +134,50 @@ root { |r|
       }
     }
     menu(label: 'View', underline: 0) {
-      menu_item(:radiobutton, label: 'Small') {
+      menu_item(:radiobutton, label: 'Small', underline: 0) {
+        accelerator 'Command+S'
+        
         on('command') do
           @label.font = {size: 25}
         end
       }
-      menu_item(:radiobutton, label: 'Medium') {
+      menu_item(:radiobutton, label: 'Medium', underline: 0) {
+        accelerator 'Command+M'
         selection true
 
         on('command') do
           @label.font = {size: 50}
         end
       }
-      menu_item(:radiobutton, label: 'Large') {
+      menu_item(:radiobutton, label: 'Large', underline: 0) {
+        accelerator 'Command+L'
+        
         on('command') do
           @label.font = {size: 75}
         end
       }
     }
-#     menu {
-#       text '&Help'
-#       menu_item {
-#         text '&Manual'
-#         accelerator :command, :shift, :M
-#
-#         on_widget_selected {
-#           message_box {
-#             text 'Manual'
-#             message 'Manual Contents'
-#           }.open
-#         }
-#       }
-#       menu_item {
-#         text '&Tutorial'
-#         accelerator :command, :shift, :T
-#
-#         on_widget_selected {
-#           message_box {
-#             text 'Tutorial'
-#             message 'Tutorial Contents'
-#           }.open
-#         }
-#       }
-#       menu_item(:separator)
-#       menu_item {
-#         text '&Report an Issue...'
-#
-#         on_widget_selected {
-#           message_box {
-#             text 'Report an Issue'
-#             message 'Reporting an issue...'
-#           }.open
-#         }
-#       }
-#     }
-    # TODO add image and image compound menu items
+    menu(label: 'Help', underline: 0) {
+      menu_item(label: 'Manual', underline: 0) {
+        accelerator 'Command+Shift+M'
+
+        on('command') do
+          message_box(parent: r, title: 'Manual', message: 'Manual Contents')
+        end
+      }
+      menu_item(label: 'Tutorial', underline: 0) {
+        accelerator 'Command+Shift+T'
+
+        on('command') do
+          message_box(parent: r, title: 'Tutorial', message: 'Tutorial Contents')
+        end
+      }
+      menu_item(:separator)
+      menu_item(label: 'Report an Issue...', underline: 0) {
+        on('command') do
+          message_box(parent: r, title: 'Report an Issue', message: 'Reporting an issue...')
+        end
+      }
+    }
   }
 }.open
