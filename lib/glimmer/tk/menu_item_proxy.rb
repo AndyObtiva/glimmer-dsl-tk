@@ -60,6 +60,15 @@ module Glimmer
         end.join('-')
       end
       
+      def state=(value)
+        @state = value
+        @parent_proxy.tk.entryconfigure @options[:label], :state => value
+      end
+      
+      def state
+        @state
+      end
+      
       def command_block=(proc)
         @command_block = proc
         @parent_proxy.tk.entryconfigure @options[:label], command: @command_block

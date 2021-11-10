@@ -80,46 +80,36 @@ root { |r|
         accelerator 'Command+V'
       }
     }
-#     menu {
-#       text '&Options'
-#
-#       menu_item(:radio) {
-#         text '&Enabled'
-#
-#         on_widget_selected {
-#           @select_one_menu.enabled = true
-#           @select_multiple_menu.enabled = true
-#         }
-#       }
-#       @select_one_menu = menu {
-#         text '&Select One'
-#         enabled false
-#
-#         menu_item(:radio) {
-#           text 'Option 1'
-#         }
-#         menu_item(:radio) {
-#           text 'Option 2'
-#         }
-#         menu_item(:radio) {
-#           text 'Option 3'
-#         }
-#       }
-#       @select_multiple_menu = menu {
-#         text '&Select Multiple'
-#         enabled false
-#
-#         menu_item(:check) {
-#           text 'Option 4'
-#         }
-#         menu_item(:check) {
-#           text 'Option 5'
-#         }
-#         menu_item(:check) {
-#           text 'Option 6'
-#         }
-#       }
-#     }
+    menu(label: 'Options', underline: 0) {
+      menu_item(:checkbutton, label: 'Enabled', underline: 0) {
+        on('command') do
+          @select_one_menu.children.each { |menu_item| menu_item.state = menu_item.state == 'disabled' ? 'normal' : 'disabled' }
+          @select_multiple_menu.children.each { |menu_item| menu_item.state = menu_item.state == 'disabled' ? 'normal' : 'disabled' }
+        end
+      }
+      @select_one_menu = menu(label: 'Select One', underline: 0) {
+        menu_item(:radiobutton, label: 'Option 1') {
+          state 'disabled'
+        }
+        menu_item(:radiobutton, label: 'Option 2') {
+          state 'disabled'
+        }
+        menu_item(:radiobutton, label: 'Option 3') {
+          state 'disabled'
+        }
+      }
+      @select_multiple_menu = menu(label: 'Select Multiple', underline: 0) {
+        menu_item(:checkbutton, label: 'Option 4') {
+          state 'disabled'
+        }
+        menu_item(:checkbutton, label: 'Option 5') {
+          state 'disabled'
+        }
+        menu_item(:checkbutton, label: 'Option 6') {
+          state 'disabled'
+        }
+      }
+    }
 #     menu {
 #       text '&Format'
 #       menu {
