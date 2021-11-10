@@ -56,7 +56,7 @@ module Glimmer
       def accelerator_event
         accelerator_parts = @accelerator.split('+')
         accelerator_parts.map do |accelerator_part|
-          ACCELERATOR_MODIFIER_EVENT_MAP[accelerator_part] || accelerator_part.downcase
+          ACCELERATOR_MODIFIER_EVENT_MAP[accelerator_part.capitalize] || accelerator_part.downcase
         end.join('-')
       end
       

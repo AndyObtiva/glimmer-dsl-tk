@@ -37,14 +37,14 @@ root { |r|
   menu {
     menu(label: 'File', underline: 0) {
       menu_item(label: 'New', underline: 0) {
-        accelerator "Command+N"
+        accelerator 'Command+N'
 
         on('command') do
           message_box(parent: r, title: 'New', message: 'New file created.')
         end
       }
       menu_item(label: 'Open...', underline: 0) {
-        accelerator "Command+O"
+        accelerator 'Command+O'
 
         on('command') do
           message_box(parent: r, title: 'Open', message: 'Opening File...')
@@ -69,22 +69,17 @@ root { |r|
         end
       }
     }
-    # TODO add image and image compound menu items
-#     menu {
-#       text '&Edit'
-#       menu_item {
-#         text 'Cut'
-#         accelerator :command, :X
-#       }
-#       menu_item {
-#         text 'Copy'
-#         accelerator :command, :C
-#       }
-#       menu_item {
-#         text 'Paste'
-#         accelerator :command, :V
-#       }
-#     }
+    menu(label: 'Edit', underline: 0) {
+      menu_item(label: 'Cut', underline: 2) {
+        accelerator 'Command+X'
+      }
+      menu_item(label: 'Copy', underline: 0) {
+        accelerator 'Command+C'
+      }
+      menu_item(label: 'Paste', underline: 0) {
+        accelerator 'Command+V'
+      }
+    }
 #     menu {
 #       text '&Options'
 #
@@ -216,5 +211,6 @@ root { |r|
 #         }
 #       }
 #     }
+    # TODO add image and image compound menu items
   }
 }.open
