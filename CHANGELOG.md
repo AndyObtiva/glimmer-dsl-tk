@@ -3,8 +3,11 @@
 ## 0.0.38
 
 - Hello, Menu Bar! sample
-- Support `menu` and `menu_item` including `:separator`, `:radiobutton`, and `:checkbutton` styles
-- Support menu item accelerators
+- Support `menu` and `menu_item` widgets including `:command` (default), `:separator`, `:radiobutton`, and `:checkbutton` styles
+- Support menu item `accelerator` attribute
+- Support menu item `selection` attribute
+- Support menu item `state` attribute
+- Support menu item command event, which is triggered on mouse/keyboard menu item selection or via accelerator
 
 ## 0.0.37
 
