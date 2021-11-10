@@ -77,9 +77,10 @@ module Glimmer
       private
       
       def build_widget
+        @args.prepend(:command) if @args.first.is_a?(Hash)
         case @parent_proxy
         when MenuProxy
-          @parent_proxy.tk.add(:command, @options)
+          @parent_proxy.tk.add(*@args)
         end
       end
     end

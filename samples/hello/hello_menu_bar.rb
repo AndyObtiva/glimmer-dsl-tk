@@ -62,7 +62,7 @@ root { |r|
           end
         }
       }
-      separator_menu_item
+      menu_item(:separator)
       menu_item(label: 'Exit', underline: 1) {
         on('command') do
           exit(0)
