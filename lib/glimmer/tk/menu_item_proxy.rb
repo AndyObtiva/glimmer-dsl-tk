@@ -24,15 +24,45 @@ require 'glimmer/tk/widget_proxy'
 module Glimmer
   module Tk
     class MenuItemProxy < WidgetProxy
-      def post_add_content
-        case @parent_proxy
-        when MenuProxy
-          @parent_proxy.tk.add(:command, {command: @command_block}.merge(@args.first || {}))
+      ACCELERATOR_MODIFIER_EVENT_MAP = {
+        'Command' => 'Command',
+        'Cmd' => 'Command',
+        'Meta' => 'Command',
+        'Option' => 'Option',
+        'Opt' => 'Option',
+        'Alt' => 'Option',
+        'Shift' => 'Shift',
+        'Ctrl' => 'Control',
+        'Control' => 'Control',
+      }
+    
+      def initialize(underscored_widget_name, parent_proxy, args, &block)
+        @options = args.last.is_a?(Hash) ? args.last : {}
+        super
+      end
+    
+      def accelerator=(value)
+        @accelerator = value
+        @parent_proxy.tk.entryconfigure @options[:label], accelerator: value
+        root_parent_proxy.bind(accelerator_event) do |event|
+          @command_block&.call(event)
         end
+      end
+      
+      def accelerator
+        @accelerator
+      end
+      
+      def accelerator_event
+        accelerator_parts = @accelerator.split('+')
+        accelerator_parts.map do |accelerator_part|
+          ACCELERATOR_MODIFIER_EVENT_MAP[accelerator_part] || accelerator_part.downcase
+        end.join('-')
       end
       
       def command_block=(proc)
         @command_block = proc
+        @parent_proxy.tk.entryconfigure @options[:label], command: @command_block
       end
       
       def handle_listener(listener_name, &listener)
@@ -47,7 +77,10 @@ module Glimmer
       private
       
       def build_widget
-        # No Op
+        case @parent_proxy
+        when MenuProxy
+          @parent_proxy.tk.add(:command, @options)
+        end
       end
     end
   end

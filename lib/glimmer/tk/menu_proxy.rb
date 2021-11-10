@@ -24,20 +24,22 @@ require 'glimmer/tk/widget_proxy'
 module Glimmer
   module Tk
     class MenuProxy < WidgetProxy
-      def post_add_content
-        case @parent_proxy
-        when ToplevelProxy
-          @parent_proxy.tk['menu'] = @tk
-        when MenuProxy
-          @parent_proxy.tk.add(:cascade, {menu: @tk}.merge(@args.first || {}))
-        end
+      def initialize(underscored_widget_name, parent_proxy, args, &block)
+        @options = args.last.is_a?(Hash) ? args.last : {}
+        super
       end
       
       private
       
       def build_widget
         tk_widget_class = self.class.tk_widget_class_for(@keyword)
-        tk_widget_class.new(@parent_proxy.tk)
+        @tk = tk_widget_class.new(@parent_proxy.tk)
+        case @parent_proxy
+        when ToplevelProxy
+          @parent_proxy.tk['menu'] = @tk
+        when MenuProxy
+          @parent_proxy.tk.add(:cascade, {menu: @tk}.merge(@options))
+        end
       end
     end
   end

@@ -24,17 +24,13 @@ require 'glimmer/tk/widget_proxy'
 module Glimmer
   module Tk
     class SeparatorMenuItemProxy < WidgetProxy
-      def post_add_content
+      private
+      
+      def build_widget
         case @parent_proxy
         when MenuProxy
           @parent_proxy.tk.add_separator
         end
-      end
-      
-      private
-      
-      def build_widget
-        # No Op
       end
     end
   end

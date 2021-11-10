@@ -77,7 +77,7 @@ module Glimmer
         @args = args
         @keyword = underscored_widget_name
         @block = block
-        @tk = build_widget
+        build_widget
         # a common widget initializer
         @parent_proxy.post_initialize_child(self)
         initialize_defaults
@@ -212,8 +212,8 @@ module Glimmer
             raise "#{self} cannot handle attribute #{attribute} with args #{args.inspect}"
           end
         rescue => e
-          Glimmer::Config.logger.debug {"Failed to set attribute #{attribute} with args #{args.inspect}. Attempting to set through style instead..."}
-          Glimmer::Config.logger.debug {e.full_message}
+          Glimmer::Config.logger.error {"Failed to set attribute #{attribute} with args #{args.inspect}. Attempting to set through style instead..."}
+          Glimmer::Config.logger.error {e.full_message}
           apply_style(attribute => args.first)
         end
       end
@@ -508,7 +508,7 @@ module Glimmer
       
       def build_widget
         tk_widget_class = self.class.tk_widget_class_for(@keyword)
-        tk_widget_class.new(@parent_proxy.tk, *args)
+        @tk = tk_widget_class.new(@parent_proxy.tk, *args)
       end
       
       def initialize_defaults

@@ -7,6 +7,25 @@
 - Menu Item Accelerators
 - Check menu Items
 - Radio menu items
+- Mac About menu item
+- Mac Preferences menu item
+- Mac Quit menu item
+- Mac Help menu
+- Mac Window menu
+- Other Mac Menu Handlers (https://tcl.tk/man/tcl8.6/TkCmd/tk_mac.htm):
+```
+`tk::mac::ShowPreferences:` Called when the "Preferences..." menu item is selected.
+`tk::mac::ShowHelp:` Called to display main online help for the application.
+`tk::mac::Quit:` Called when the Quit menu item is selected, when a user is trying to shut down the system etc.
+`tk::mac::OnHide:` Called when your application has been hidden.
+`tk::mac::OnShow:` Called when your application is shown after being hidden.
+`tk::mac::OpenApplication:` Called when your application is first opened.
+`tk::mac::ReopenApplication:` Called when a user "reopens" your already-running application (e.g. clicks on it in the Dock)
+`tk::mac::OpenDocument:` Called when the Finder wants the application to open one or more documents (e.g. that were dropped on it). The procedure is passed a list of pathnames of files to be opened.
+`tk::mac::PrintDocument:` As with OpenDocument, but the documents should be printed rather than opened.
+```
+- Windows System menu
+- X11 (Linux) Help menu
 
 ## Soon
 

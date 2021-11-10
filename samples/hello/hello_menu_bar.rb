@@ -37,14 +37,14 @@ root { |r|
   menu {
     menu(label: 'File', underline: 0) {
       menu_item(label: 'New', underline: 0) {
-#         accelerator :command, :N
+        accelerator "Command+N"
 
         on('command') do
           message_box(parent: r, title: 'New', message: 'New file created.')
         end
       }
       menu_item(label: 'Open...', underline: 0) {
-#         accelerator :command, :O
+        accelerator "Command+O"
 
         on('command') do
           message_box(parent: r, title: 'Open', message: 'Opening File...')
@@ -69,6 +69,7 @@ root { |r|
         end
       }
     }
+    # TODO add image and image compound menu items
 #     menu {
 #       text '&Edit'
 #       menu_item {
