@@ -19,25 +19,26 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-$LOAD_PATH.unshift(File.expand_path('..', __FILE__))
+require 'glimmer/tk/widget_proxy'
 
-# External requires
-require 'glimmer'
-# require 'logging'
-require 'puts_debuggerer' if ENV['pd'].to_s.downcase == 'true'
-# require 'super_module'
-require 'tk'
-require 'os'
-require 'facets/hash/symbolize_keys'
-
-# Internal requires
-# require 'ext/glimmer/config'
-# require 'ext/glimmer'
-require 'glimmer/dsl/tk/dsl'
-Glimmer::Config.loop_max_count = -1
-Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
-  method = method_symbol.to_s
-  result = false
-  result ||= method == 'load_iseq'
+module Glimmer
+  module Tk
+    class MenuProxy < WidgetProxy
+      def post_add_content
+        case @parent_proxy
+        when ToplevelProxy
+          @parent_proxy.tk['menu'] = @tk
+        when MenuProxy
+          @parent_proxy.tk.add(:cascade, {menu: @tk}.merge(@args.first))
+        end
+      end
+      
+      private
+      
+      def build_widget
+        tk_widget_class = self.class.tk_widget_class_for(@keyword)
+        tk_widget_class.new(@parent_proxy.tk)
+      end
+    end
+  end
 end
-::TkOption.add '*tearOff', 0

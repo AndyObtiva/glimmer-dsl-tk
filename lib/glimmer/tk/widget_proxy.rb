@@ -77,8 +77,7 @@ module Glimmer
         @args = args
         @keyword = underscored_widget_name
         @block = block
-        tk_widget_class = self.class.tk_widget_class_for(underscored_widget_name)
-        @tk = tk_widget_class.new(@parent_proxy.tk, *args)
+        @tk = build_widget
         # a common widget initializer
         @parent_proxy.post_initialize_child(self)
         initialize_defaults
@@ -507,11 +506,16 @@ module Glimmer
       
       private
       
+      def build_widget
+        tk_widget_class = self.class.tk_widget_class_for(@keyword)
+        tk_widget_class.new(@parent_proxy.tk, *args)
+      end
+      
       def initialize_defaults
         options = {}
         options[:sticky] = 'nsew'
         options[:column_weight] = 1 if @parent_proxy.children.count == 1
-        grid(options) unless @tk.is_a?(::Tk::Toplevel)
+        grid(options) unless @tk.is_a?(::Tk::Toplevel) || @tk.is_a?(::Tk::Menu)
       end
     end
   end
