@@ -82,6 +82,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
       - [Image Attribute](#image-attribute)
       - [Frame Padding](#frame-padding)
       - [Notebook Frame](#notebook-frame)
+      - [Menu Item Accelerator](#menu-item-accelerator)
       - [Icon Photo](#icon-photo)
       - [Root Background](#root-background)
       - [Toplevel Mac Style](#toplevel-mac-style)
@@ -294,10 +295,13 @@ keyword(args) | attributes | event bindings & callbacks
 `label` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `font` (`'default', 'text', 'fixed', 'menu', 'heading', 'caption', 'small_caption', 'icon', 'tooltip'`), `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`), `justify` (`'left', 'center', 'right'`), `foreground`, `background` | None
 `list` | `selectmode`, `selection` | None
 `message_box(type: , message: , detail: , title: , icon: , default: , parent: )` | None | None
+`menu(label: nil) (label is nil if nested under root/toplevel for menu bar)` | None | None
+`menu_item(style = :command, label: , underline: )` (style also can be `:radiobutton`, `:checkbutton`, or `:separator`) | `state`, `accelerator`, `selection` & `variable` (if `:radiobutton` or `:checkbutton`) | `command`
 `notebook` | None | None
 `radiobutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `value` (default: `text`) | `command {}`
-`root` | `title`, `iconphoto`, `background`, `alpha`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`, `'OPEN_WINDOW'`
+`root` | `title`, `iconphoto`, `background`, `alpha`, `escapable`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`, `'OPEN_WINDOW'`
 `separator` | `orient` (`'horizontal' (default) or 'vertical'`) | None
+`toplevel` | `title`, `iconphoto`, `background`, `alpha`, `escapable`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`
 `text` | `value`, [many more attributes](https://tcl.tk/man/tcl8.6/TkCmd/text.htm#M116) | `'modified'`, `'selection'`, `'insert_mark_moved'` (alias: `'insert_mark_move', 'InsertMarkMove', 'InsertMarkMoved'`)
 
 Options for `get_open_file` and `get_multiple_open_file` include:
@@ -464,6 +468,10 @@ Frames have a padding of `15` all around by default to produce more user-friendl
 #### Notebook Frame
 
 When nesting `frame` under `notebook`, you can pass a `:text` keyword argument to indicate the tab title.
+
+#### Menu Item Accelerator
+
+`menu_item` `accelerator` is automatically bound to the `command` set inside `menu_item` content (no need to do manual binding as per [Tk docs](https://tkdocs.com/tutorial/menus.html)).
 
 #### Icon Photo
 
@@ -2934,27 +2942,6 @@ Glimmer app:
 Glimmer code (from [samples/hello/hello_menu_bar.rb](samples/hello/hello_menu_bar.rb)):
 
 ```ruby
-# Copyright (c) 2020-2021 Andy Maleh
-#
-# Permission is hereby granted, free of charge, to any person obtaining
-# a copy of this software and associated documentation files (the
-# "Software"), to deal in the Software without restriction, including
-# without limitation the rights to use, copy, modify, merge, publish,
-# distribute, sublicense, and/or sell copies of the Software, and to
-# permit persons to whom the Software is furnished to do so, subject to
-# the following conditions:
-#
-# The above copyright notice and this permission notice shall be
-# included in all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-# EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-# NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-# LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-# OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-# WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
 require 'glimmer-dsl-tk'
 
 include Glimmer

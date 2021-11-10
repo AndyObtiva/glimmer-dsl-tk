@@ -47,22 +47,6 @@ module Glimmer
         Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Tk::RootExpression.new, keyword, *args, &block)
       end
       
-      def set_attribute(attribute, *args)
-        case attribute.to_s
-        when 'iconphoto'
-          args[0..-1] = [image_argument(args)]
-          super
-        when 'resizable'
-          if args.size == 1 && !args.first.is_a?(Array)
-            self.resizable = [args.first]*2
-          else
-            super
-          end
-        else
-          super
-        end
-      end
-      
       def handle_listener(listener_name, &listener)
         case listener_name.to_s.upcase
         when 'WM_OPEN_WINDOW', 'OPEN_WINDOW'

@@ -50,6 +50,22 @@ module Glimmer
         %w[width height x y].include?(attribute.to_s) || super
       end
       
+      def set_attribute(attribute, *args)
+        case attribute.to_s
+        when 'iconphoto'
+          args[0..-1] = [image_argument(args)]
+          super
+        when 'resizable'
+          if args.size == 1 && !args.first.is_a?(Array)
+            self.resizable = [args.first]*2
+          else
+            super
+          end
+        else
+          super
+        end
+      end
+      
       def width
         geometry.split(REGEX_GEOMETRY)[0].to_i
       end

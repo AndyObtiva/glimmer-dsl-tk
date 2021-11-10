@@ -8,6 +8,7 @@
 - Support menu item `selection` attribute
 - Support menu item `state` attribute
 - Support menu item command event, which is triggered on mouse/keyboard menu item selection or via accelerator
+- Support `toplevel` `iconphoto` (more conveniently via direct path) and `resizable` attributes
 
 ## 0.0.37
 
