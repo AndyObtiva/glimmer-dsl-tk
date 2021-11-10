@@ -24,6 +24,8 @@ require 'glimmer/tk/widget_proxy'
 module Glimmer
   module Tk
     class MenuProxy < WidgetProxy
+      attr_reader :options
+      
       def initialize(underscored_widget_name, parent_proxy, args, &block)
         @options = args.last.is_a?(Hash) ? args.last : {}
         super

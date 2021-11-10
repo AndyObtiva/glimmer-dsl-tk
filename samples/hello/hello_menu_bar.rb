@@ -25,10 +25,13 @@ include Glimmer
 
 COLORS = [:white, :red, :yellow, :green, :blue, :magenta, :gray, :black]
 
+Tk::Tile::Style.theme_use "classic" # this enables setting background on label just for demo purposes
+
 root { |r|
   title 'Hello, Menu Bar!'
   
   @label = label {
+    grid row_weight: 1, column_weight: 1
     text 'Check Out The Menu Bar Above!'
     font size: 50
     anchor 'center'
@@ -110,33 +113,26 @@ root { |r|
         }
       }
     }
-#     menu {
-#       text '&Format'
-#       menu {
-#         text '&Background Color'
-#         COLORS.each { |color_style|
-#           menu_item(:radio) {
-#             text color_style.to_s.split('_').map(&:capitalize).join(' ')
-#
-#             on_widget_selected {
-#               @label.background = color_style
-#             }
-#           }
-#         }
-#       }
-#       menu {
-#         text 'Foreground &Color'
-#         COLORS.each { |color_style|
-#           menu_item(:radio) {
-#             text color_style.to_s.split('_').map(&:capitalize).join(' ')
-#
-#             on_widget_selected {
-#               @label.foreground = color_style
-#             }
-#           }
-#         }
-#       }
-#     }
+    menu(label: 'Format', underline: 0) {
+      menu(label: 'Background Color', underline: 0) {
+        COLORS.each { |color_style|
+          menu_item(:radiobutton, label: color_style.to_s.split('_').map(&:capitalize).join(' ')) {
+            on('command') do
+              @label.background = color_style
+            end
+          }
+        }
+      }
+      menu(label: 'Foreground Color', underline: 11) {
+        COLORS.each { |color_style|
+          menu_item(:radiobutton, label: color_style.to_s.split('_').map(&:capitalize).join(' ')) {
+            on('command') do
+              @label.foreground = color_style
+            end
+          }
+        }
+      }
+    }
 #     menu {
 #       text '&View'
 #       menu_item(:radio) {

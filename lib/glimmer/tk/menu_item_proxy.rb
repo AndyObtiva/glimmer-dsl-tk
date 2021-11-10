@@ -35,6 +35,8 @@ module Glimmer
         'Ctrl' => 'Control',
         'Control' => 'Control',
       }
+      
+      attr_reader :options
     
       def initialize(underscored_widget_name, parent_proxy, args, &block)
         @options = args.last.is_a?(Hash) ? args.last : {}
@@ -83,10 +85,42 @@ module Glimmer
         end
       end
       
+      def command?
+        @args.first.nil? || @args.first == :command || @args.first.is_a?(Hash)
+      end
+      
+      def radiobutton?
+        @args.first == :radiobutton
+      end
+      
+      def checkbutton?
+        @args.first == :radiobutton
+      end
+      
+      def separator?
+        @args.first == :separator
+      end
+      
+      def variable(auto_create: true)
+        if @variable.nil? && auto_create
+          sibling_variable = sibling_radio_menu_items.map {|mi| mi.variable(auto_create: false)}.compact.first
+          @variable = sibling_variable.nil? ? ::TkVariable.new : sibling_variable
+        else
+          @variable
+        end
+        @variable
+      end
+      
       private
+      
+      def sibling_radio_menu_items
+        @parent_proxy.children.select {|child| child.is_a?(MenuItemProxy) && radiobutton? && child != self}
+      end
       
       def build_widget
         @args.prepend(:command) if @args.first.is_a?(Hash)
+        @args.append({}) if !@args.last.is_a?(Hash)
+        @args.last.merge!(variable: variable) if radiobutton? || checkbutton?
         case @parent_proxy
         when MenuProxy
           @parent_proxy.tk.add(*@args)
