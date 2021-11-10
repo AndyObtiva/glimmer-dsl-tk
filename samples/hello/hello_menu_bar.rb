@@ -25,7 +25,7 @@ include Glimmer
 
 COLORS = [:white, :red, :yellow, :green, :blue, :magenta, :gray, :black]
 
-root {
+root { |r|
   title 'Hello, Menu Bar!'
   
   @label = label {
@@ -36,17 +36,13 @@ root {
   
   menu {
     menu(label: 'File') {
-#       menu_item {
-#         text '&New'
+      menu_item(label: 'New') {
 #         accelerator :command, :N
-#
-#         on_widget_selected {
-#           message_box {
-#             text 'New'
-#             message 'New file created.'
-#           }.open
-#         }
-#       }
+
+        on('command') {
+          message_box(parent: r, title: 'New', message: 'New file created.')
+        }
+      }
 #       menu_item {
 #         text '&Open...'
 #         accelerator :command, :O

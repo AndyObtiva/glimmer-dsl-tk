@@ -120,7 +120,7 @@ module Glimmer
       end
 
       def self.widget_exists?(underscored_widget_name)
-        !!tk_widget_class_for(underscored_widget_name)
+        !!tk_widget_class_for(underscored_widget_name) || (Glimmer::Tk.constants.include?("#{underscored_widget_name.camelcase(:upper)}Proxy".to_sym) && Glimmer::Tk.const_get("#{underscored_widget_name.camelcase(:upper)}Proxy".to_sym).respond_to?(:new))
       end
 
       def tk_widget_has_attribute_setter?(attribute)
@@ -515,7 +515,7 @@ module Glimmer
         options = {}
         options[:sticky] = 'nsew'
         options[:column_weight] = 1 if @parent_proxy.children.count == 1
-        grid(options) unless @tk.is_a?(::Tk::Toplevel) || @tk.is_a?(::Tk::Menu)
+        grid(options) unless @tk.is_a?(::Tk::Toplevel) || @tk.is_a?(::Tk::Menu) || @tk.nil? # TODO refactor by adding a griddable? method that could be overriden by subclasses to consult for this call
       end
     end
   end

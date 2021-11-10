@@ -17,7 +17,7 @@
 - Allow setting root x/y without affecting its default width/height
 - Look into updating block_attribute expression to not require defining blocks that simply forward to tk on the widget
 - Document Glimmer debug logging
-- Make Glimmer tolerate adding extra '<>' to event names when they don't need it (e.g. binding `'<KeyPress>'` on `text` widget works just like `'KeyPress'`)
+- Refactor `WidgetProxy` by adding a `griddable?` method that could be overriden by subclasses to consult for auto-gridding on `initialize_defaults`
 
 ## General
 
