@@ -111,6 +111,19 @@ module Glimmer
         @variable
       end
       
+      def selection=(value)
+        if value
+          variable.value = @options[:label]
+          # TODO handle image case where there is no label
+        elsif checkbutton?
+          variable.value = '__unchecked__'
+        end
+      end
+      
+      def selection
+        variable.value == @options[:label]
+      end
+      
       private
       
       def sibling_radio_menu_items
@@ -120,7 +133,7 @@ module Glimmer
       def build_widget
         @args.prepend(:command) if @args.first.is_a?(Hash)
         @args.append({}) if !@args.last.is_a?(Hash)
-        @args.last.merge!(variable: variable) if radiobutton? || checkbutton?
+        @args.last.merge!(variable: variable, value: @options[:label]) if radiobutton? || checkbutton?
         case @parent_proxy
         when MenuProxy
           @parent_proxy.tk.add(*@args)

@@ -2,11 +2,8 @@
 
 ## Next
 
-- Hello, Menu Bar!
-- separator_menu_item
-- Menu Item Accelerators
-- Check menu Items
-- Radio menu items
+- Image Menu Item
+- Text/Image Compound Menu Item
 - Mac About menu item
 - Mac Preferences menu item
 - Mac Quit menu item

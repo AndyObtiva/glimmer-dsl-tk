@@ -133,34 +133,25 @@ root { |r|
         }
       }
     }
-#     menu {
-#       text '&View'
-#       menu_item(:radio) {
-#         text 'Small'
-#
-#         on_widget_selected {
-#           @label.font = {height: 25}
-#           @label.parent.pack
-#         }
-#       }
-#       menu_item(:radio) {
-#         text 'Medium'
-#         selection true
-#
-#         on_widget_selected {
-#           @label.font = {height: 50}
-#           @label.parent.pack
-#         }
-#       }
-#       menu_item(:radio) {
-#         text 'Large'
-#
-#         on_widget_selected {
-#           @label.font = {height: 75}
-#           @label.parent.pack
-#         }
-#       }
-#     }
+    menu(label: 'View', underline: 0) {
+      menu_item(:radiobutton, label: 'Small') {
+        on('command') do
+          @label.font = {size: 25}
+        end
+      }
+      menu_item(:radiobutton, label: 'Medium') {
+        selection true
+
+        on('command') do
+          @label.font = {size: 50}
+        end
+      }
+      menu_item(:radiobutton, label: 'Large') {
+        on('command') do
+          @label.font = {size: 75}
+        end
+      }
+    }
 #     menu {
 #       text '&Help'
 #       menu_item {
