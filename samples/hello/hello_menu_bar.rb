@@ -35,54 +35,39 @@ root { |r|
   }
   
   menu {
-    menu(label: 'File') {
-      menu_item(label: 'New') {
+    menu(label: 'File', underline: 0) {
+      menu_item(label: 'New', underline: 0) {
 #         accelerator :command, :N
 
-        on('command') {
+        on('command') do
           message_box(parent: r, title: 'New', message: 'New file created.')
+        end
+      }
+      menu_item(label: 'Open...', underline: 0) {
+#         accelerator :command, :O
+
+        on('command') do
+          message_box(parent: r, title: 'Open', message: 'Opening File...')
+        end
+      }
+      menu(label: 'Open Recent', underline: 5) {
+        menu_item(label: 'File 1') {
+          on('command') do
+            message_box(parent: r, title: 'File 1', message: 'File 1 Contents')
+          end
+        }
+        menu_item(label: 'File 2') {
+          on('command') do
+            message_box(parent: r, title: 'File 2', message: 'File 2 Contents')
+          end
         }
       }
-#       menu_item {
-#         text '&Open...'
-#         accelerator :command, :O
-#
-#         on_widget_selected {
-#           message_box {
-#             text 'Open'
-#             message 'Opening File...'
-#           }.open
-#         }
-#       }
-#       menu {
-#         text 'Open &Recent'
-#         menu_item {
-#           text 'File 1'
-#           on_widget_selected {
-#             message_box {
-#               text 'File 1'
-#               message 'File 1 Contents'
-#             }.open
-#           }
-#         }
-#         menu_item {
-#           text 'File 2'
-#           on_widget_selected {
-#             message_box {
-#               text 'File 2'
-#               message 'File 2 Contents'
-#             }.open
-#           }
-#         }
-#       }
-#       menu_item(:separator)
-#       menu_item {
-#         text 'E&xit'
-#
-#         on_widget_selected {
-#           exit(0)
-#         }
-#       }
+      separator_menu_item
+      menu_item(label: 'Exit', underline: 1) {
+        on('command') do
+          exit(0)
+        end
+      }
     }
 #     menu {
 #       text '&Edit'

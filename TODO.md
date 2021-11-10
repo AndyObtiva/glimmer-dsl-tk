@@ -3,6 +3,10 @@
 ## Next
 
 - Hello, Menu Bar!
+- separator_menu_item
+- Menu Item Accelerators
+- Check menu Items
+- Radio menu items
 
 ## Soon
 
