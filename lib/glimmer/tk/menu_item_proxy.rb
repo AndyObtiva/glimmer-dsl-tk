@@ -24,8 +24,6 @@ require 'glimmer/tk/widget_proxy'
 module Glimmer
   module Tk
     class MenuItemProxy < WidgetProxy
-      # TODO consider generalizing use of @parent_proxy.tk.entryconfigure label, arg_hash
-      
       ACCELERATOR_MODIFIER_EVENT_MAP = {
         'Command' => 'Command',
         'Cmd' => 'Command',
@@ -47,7 +45,7 @@ module Glimmer
     
       def accelerator=(value)
         @accelerator = value
-        @parent_proxy.tk.entryconfigure label, accelerator: value
+        configure_menu_item_attribute(accelerator: value)
         root_parent_proxy.bind(accelerator_event) do |event|
           @command_block&.call(event)
         end
@@ -66,7 +64,7 @@ module Glimmer
       
       def state=(value)
         @state = value
-        @parent_proxy.tk.entryconfigure label, state: value
+        configure_menu_item_attribute(state: value)
       end
       
       def state
@@ -79,7 +77,7 @@ module Glimmer
       
       def image=(*args)
         @image = image_argument(args)
-        @parent_proxy.tk.entryconfigure label, image: @image
+        configure_menu_item_attribute(image: @image)
       end
       
       def image
@@ -88,7 +86,7 @@ module Glimmer
       
       def compound=(value)
         @compound = value
-        @parent_proxy.tk.entryconfigure label, compound: @compound
+        configure_menu_item_attribute(compound: @compound)
       end
       
       def compound
@@ -97,7 +95,7 @@ module Glimmer
       
       def command_block=(proc)
         @command_block = proc
-        @parent_proxy.tk.entryconfigure label, command: @command_block
+        configure_menu_item_attribute(command: @command_block)
       end
       
       def handle_listener(listener_name, &listener)
@@ -146,6 +144,11 @@ module Glimmer
       
       def selection
         variable.value == label
+      end
+      
+      # configures menu item attribute through parent menu
+      def configure_menu_item_attribute(attribute_value_hash)
+        @parent_proxy.tk.entryconfigure label, attribute_value_hash
       end
       
       private
