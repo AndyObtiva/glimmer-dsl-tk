@@ -112,25 +112,25 @@ class HelloText
         combobox { |cb|
           grid row: 1, column: column_index += 1, column_weight: 1
           readonly true
-          text <=> [self, :font_family, after_write: ->(value) { @text.toggle_selection_font_format('family', value == FONT_FAMILY_PROMPT ? 'Courier New' : value, focus: OS.mac? ? 100 : true) }]
+          text <=> [self, :font_family, after_write: ->(value) { @text.toggle_selection_font_format('family', value == FONT_FAMILY_PROMPT ? 'Courier New' : value, focus: 100) }]
         }
         
         combobox {
           grid row: 1, column: column_index += 1, column_weight: 1
           readonly true
-          text <=> [self, :font_size, after_write: ->(value) { @text.toggle_selection_font_format('size', value == FONT_SIZE_PROMPT ? 13 : value, focus: OS.mac? ? 100 : true) }]
+          text <=> [self, :font_size, after_write: ->(value) { @text.toggle_selection_font_format('size', value == FONT_SIZE_PROMPT ? 13 : value, focus: 100) }]
         }
         
         combobox {
           grid row: 1, column: column_index += 1, column_weight: 1
           readonly true
-          text <=> [self, :foreground, after_write: ->(value) { @text.add_selection_format('foreground', value == FOREGROUND_PROMPT ? 'black' : value, focus: OS.mac? ? 100 : true) }]
+          text <=> [self, :foreground, after_write: ->(value) { @text.add_selection_format('foreground', value == FOREGROUND_PROMPT ? 'black' : value, focus: 100) }]
         }
         
         combobox {
           grid row: 1, column: column_index += 1, column_weight: 1
           readonly true
-          text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'white' : value, focus: OS.mac? ? 100 : true) }]
+          text <=> [self, :background, after_write: ->(value) { @text.add_selection_format('background', value == BACKGROUND_PROMPT ? 'white' : value, focus: 100) }]
         }
         
         separator {
