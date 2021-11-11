@@ -159,9 +159,7 @@ module Glimmer
       
       # configures menu item attribute through parent menu
       def configure_menu_item_attribute(attribute_value_hash)
-        if about?
-          @tk.entryconfigure label, attribute_value_hash
-        elsif preferences? && attribute_value_hash[:command]
+        if preferences? && attribute_value_hash[:command]
           ::Tk.ip_eval("proc ::tk::mac::ShowPreferences {} {#{::Tk.install_cmd(attribute_value_hash[:command])}}")
         elsif help? && attribute_value_hash[:command]
           ::Tk.ip_eval("proc ::tk::mac::ShowHelp {} {#{::Tk.install_cmd(attribute_value_hash[:command])}}")
@@ -185,9 +183,7 @@ module Glimmer
           if @parent_proxy.application?
             if OS.mac?
               if about?
-                @tk = ::TkSysMenu_Apple.new(@parent_proxy.parent_proxy.tk)
-                @parent_proxy.parent_proxy.tk.add :cascade, :menu => @tk
-                @tk.add :command, :label => label
+                @parent_proxy.tk.add :command, :label => label
               end
             end
           else

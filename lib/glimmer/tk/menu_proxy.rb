@@ -57,7 +57,10 @@ module Glimmer
       private
       
       def build_widget
-        unless application?
+        if application?
+          @tk = ::TkSysMenu_Apple.new(@parent_proxy.tk)
+          @parent_proxy.tk.add :cascade, :menu => @tk
+        else
           if @parent_proxy.parent_proxy.is_a?(ToplevelProxy) && OS.mac? && help?
             @tk = ::TkSysMenu_Help.new(@parent_proxy.tk)
           else

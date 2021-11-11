@@ -40,6 +40,8 @@ root { |r|
   menu {
     menu(:application) {
       menu_item(:about, label: 'About My Application') {
+        accelerator 'Command+A'
+        
         on('command') do
           message_box(parent: r, title: 'About', message: 'About my application.')
         end
