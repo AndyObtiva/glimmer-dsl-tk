@@ -2,6 +2,7 @@
 
 ## 0.0.40
 
+- Added Windows/Linux accelerators to Hello, Menu Bar!
 - Fix issue with Hello, Menu Bar! help menu item crashing in Linux (it is restricted to Mac only)
 - Fix issue with Hello, Text! focus losing selection in Linux upon setting background/foreground/font/font-size
 

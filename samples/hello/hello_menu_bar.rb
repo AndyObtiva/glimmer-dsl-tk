@@ -72,7 +72,7 @@ root { |r|
     
     menu(label: 'File', underline: 0) {
       menu_item(label: 'New', underline: 0) {
-        accelerator 'Command+N'
+        accelerator OS.mac? ? 'Command+N' : 'Control+N'
 
         on('command') do
           message_box(parent: r, title: 'New', message: 'New file created.')
@@ -80,7 +80,7 @@ root { |r|
       }
       
       menu_item(label: 'Open...', underline: 0) {
-        accelerator 'Command+O'
+        accelerator OS.mac? ? 'Command+O' : 'Control+O'
 
         on('command') do
           message_box(parent: r, title: 'Open', message: 'Opening File...')
@@ -112,15 +112,15 @@ root { |r|
     
     menu(label: 'Edit', underline: 0) {
       menu_item(label: 'Cut', underline: 2) {
-        accelerator 'Command+X'
+        accelerator OS.mac? ? 'Command+X' : 'Control+X'
       }
       
       menu_item(label: 'Copy', underline: 0) {
-        accelerator 'Command+C'
+        accelerator OS.mac? ? 'Command+C' : 'Control+C'
       }
       
       menu_item(label: 'Paste', underline: 0) {
-        accelerator 'Command+V'
+        accelerator OS.mac? ? 'Command+V' : 'Control+V'
       }
     }
     
@@ -200,7 +200,7 @@ root { |r|
     
     menu(label: 'View', underline: 0) {
       menu_item(:radiobutton, label: 'Small', underline: 0) {
-        accelerator 'Command+S'
+        accelerator OS.mac? ? 'Command+S' : 'Control+S'
         
         on('command') do
           @label.font = {size: 25}
@@ -208,7 +208,7 @@ root { |r|
       }
       
       menu_item(:radiobutton, label: 'Medium', underline: 0) {
-        accelerator 'Command+M'
+        accelerator OS.mac? ? 'Command+M' : 'Control+M'
         selection true
 
         on('command') do
@@ -217,7 +217,7 @@ root { |r|
       }
       
       menu_item(:radiobutton, label: 'Large', underline: 0) {
-        accelerator 'Command+L'
+        accelerator OS.mac? ? 'Command+L' : 'Control+L'
         
         on('command') do
           @label.font = {size: 75}
@@ -238,7 +238,7 @@ root { |r|
       end
       
       menu_item(label: 'Manual', underline: 0) {
-        accelerator 'Command+Shift+M'
+        accelerator OS.mac? ? 'Command+Shift+M' : 'Control+U'
 
         on('command') do
           message_box(parent: r, title: 'Manual', message: 'Manual Contents')
@@ -246,7 +246,7 @@ root { |r|
       }
       
       menu_item(label: 'Tutorial', underline: 0) {
-        accelerator 'Command+Shift+T'
+        accelerator OS.mac? ? 'Command+Shift+T' : 'Control+T'
 
         on('command') do
           message_box(parent: r, title: 'Tutorial', message: 'Tutorial Contents')
