@@ -3237,7 +3237,7 @@ https://github.com/ancorgs/y3network-ruby-ui
 
 ### CryptoPunks GUI
 
-This is a Graphical User Interface for the famous [cryptopunks Ruby gem](https://github.com/cryptopunksnotdead/cryptopunks/tree/master/cryptopunks).
+This is a Graphical User Interface for the [cryptopunks Ruby gem](https://github.com/cryptopunksnotdead/cryptopunks/tree/master/cryptopunks).
 
 https://github.com/cryptopunksnotdead/cryptopunks-gui
 
