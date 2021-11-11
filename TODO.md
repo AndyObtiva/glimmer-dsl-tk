@@ -32,6 +32,10 @@
 - Document Glimmer debug logging
 - Refactor `WidgetProxy` by adding a `griddable?` method that could be overriden by subclasses to consult for auto-gridding on `initialize_defaults`
 
+## Issues
+
+- Fix Hello, Text! issue in Linux with changing background/foreground/font/font-size on a selection only changing it to first word in selection
+
 ## General
 
 - Implement `code_text` custom widget using `text` and `rouge` gem
@@ -118,10 +122,6 @@
 - Add Packaging support for Windows to Scaffolding
 - Implement Packaging support for Linux
 - Add Packaging support for Linux to Scaffolding
-
-## Issues
-
-- Fix issue with `on('KeyPress')`/`on('KeyRelease')` not firing on `text` widget arrow key presses after deleting all text and typing new text (it fires on mouse clicks and typing new text)
 
 ## Maybe
 

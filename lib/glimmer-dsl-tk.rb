@@ -46,6 +46,8 @@ Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
   result ||= method == 'load_iseq'
 end
 
+Tk::Tile::Style.theme_use "clam" if OS.linux?
+
 ::TkOption.add '*tearOff', 0
 
 class ::Tk::TkSysMenu_Window < Tk::Menu
