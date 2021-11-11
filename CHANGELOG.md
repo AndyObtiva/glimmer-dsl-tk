@@ -8,7 +8,9 @@
 - Support Mac `menu_item(:preferences) { on('command') {} }`
 - Support Mac `menu_item(:help) { on('command') {} }`
 - Support Mac `menu_item(:quit) { on('command') {} }`
-- Support Mac `'Help'` and `'Window'` menus
+- Support Mac/X11 `'Help'` menu
+- Support Mac `'Window'` menu
+- Support Windows `'System'` menu
 
 
 ## 0.0.38

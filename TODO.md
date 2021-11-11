@@ -14,8 +14,6 @@
 `tk::mac::OpenDocument:` Called when the Finder wants the application to open one or more documents (e.g. that were dropped on it). The procedure is passed a list of pathnames of files to be opened.
 `tk::mac::PrintDocument:` As with OpenDocument, but the documents should be printed rather than opened.
 ```
-- Windows System menu
-- X11 (Linux) Help menu
 
 ## Soon
 

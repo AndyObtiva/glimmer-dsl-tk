@@ -64,6 +64,10 @@ root { |r|
       }
     end
     
+    if OS.windows?
+      menu(label: 'System')
+    end
+    
     menu(label: 'File', underline: 0) {
       menu_item(label: 'New', underline: 0) {
         accelerator 'Command+N'
