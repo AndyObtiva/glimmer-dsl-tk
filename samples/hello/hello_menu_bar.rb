@@ -44,12 +44,14 @@ root { |r|
           message_box(parent: r, title: 'About', message: 'About my application.')
         end
       }
+      
       menu_item(:preferences) {
         on('command') do
           message_box(parent: r, title: 'Preferences', message: 'Preferences of my application.')
         end
       }
     }
+    
     menu(label: 'File', underline: 0) {
       menu_item(label: 'New', underline: 0) {
         accelerator 'Command+N'
@@ -58,6 +60,7 @@ root { |r|
           message_box(parent: r, title: 'New', message: 'New file created.')
         end
       }
+      
       menu_item(label: 'Open...', underline: 0) {
         accelerator 'Command+O'
 
@@ -65,36 +68,44 @@ root { |r|
           message_box(parent: r, title: 'Open', message: 'Opening File...')
         end
       }
+      
       menu(label: 'Open Recent', underline: 5) {
         menu_item(label: 'File 1') {
           on('command') do
             message_box(parent: r, title: 'File 1', message: 'File 1 Contents')
           end
         }
+        
         menu_item(label: 'File 2') {
           on('command') do
             message_box(parent: r, title: 'File 2', message: 'File 2 Contents')
           end
         }
       }
+      
       menu_item(:separator)
+      
       menu_item(label: 'Exit', underline: 1) {
         on('command') do
           exit(0)
         end
       }
     }
+    
     menu(label: 'Edit', underline: 0) {
       menu_item(label: 'Cut', underline: 2) {
         accelerator 'Command+X'
       }
+      
       menu_item(label: 'Copy', underline: 0) {
         accelerator 'Command+C'
       }
+      
       menu_item(label: 'Paste', underline: 0) {
         accelerator 'Command+V'
       }
     }
+    
     menu(label: 'Options', underline: 0) {
       menu_item(:checkbutton, label: 'Enabled', underline: 0) {
         on('command') do
@@ -102,6 +113,7 @@ root { |r|
           @select_multiple_menu.children.each { |menu_item| menu_item.state = menu_item.state == 'disabled' ? 'normal' : 'disabled' }
         end
       }
+      
       @select_one_menu = menu(label: 'Select One', underline: 0) {
         menu_item(:radiobutton, label: 'Option 1') {
           state 'disabled'
@@ -113,6 +125,7 @@ root { |r|
           state 'disabled'
         }
       }
+      
       @select_multiple_menu = menu(label: 'Select Multiple', underline: 0) {
         menu_item(:checkbutton, label: 'Option 4') {
           state 'disabled'
@@ -125,6 +138,7 @@ root { |r|
         }
       }
     }
+    
     menu(label: 'Language', underline: 3) {
       ['denmark', 'finland', 'france', 'germany', 'italy', 'mexico', 'netherlands', 'norway', 'usa'].each do |image_name|
         menu_item(:radiobutton, label: image_name.capitalize) {
@@ -133,6 +147,7 @@ root { |r|
         }
       end
     }
+    
     menu(label: 'Language Name', underline: 3) {
       ['denmark', 'finland', 'france', 'germany', 'italy', 'mexico', 'netherlands', 'norway', 'usa'].each do |image_name|
         menu_item(:radiobutton, label: image_name.capitalize) {
@@ -142,6 +157,7 @@ root { |r|
         }
       end
     }
+    
     menu(label: 'Format', underline: 0) {
       menu(label: 'Background Color', underline: 0) {
         COLORS.each { |color_style|
@@ -152,6 +168,7 @@ root { |r|
           }
         }
       }
+      
       menu(label: 'Foreground Color', underline: 11) {
         COLORS.each { |color_style|
           menu_item(:radiobutton, label: color_style.to_s.split('_').map(&:capitalize).join(' ')) {
@@ -162,6 +179,7 @@ root { |r|
         }
       }
     }
+    
     menu(label: 'View', underline: 0) {
       menu_item(:radiobutton, label: 'Small', underline: 0) {
         accelerator 'Command+S'
@@ -170,6 +188,7 @@ root { |r|
           @label.font = {size: 25}
         end
       }
+      
       menu_item(:radiobutton, label: 'Medium', underline: 0) {
         accelerator 'Command+M'
         selection true
@@ -178,6 +197,7 @@ root { |r|
           @label.font = {size: 50}
         end
       }
+      
       menu_item(:radiobutton, label: 'Large', underline: 0) {
         accelerator 'Command+L'
         
@@ -186,12 +206,14 @@ root { |r|
         end
       }
     }
+    
     menu(label: 'Help', underline: 0) {
       menu_item(:help) {
         on('command') do
           message_box(parent: r, title: 'Help', message: 'Help for my application.')
         end
       }
+      
       menu_item(label: 'Manual', underline: 0) {
         accelerator 'Command+Shift+M'
 
@@ -199,6 +221,7 @@ root { |r|
           message_box(parent: r, title: 'Manual', message: 'Manual Contents')
         end
       }
+      
       menu_item(label: 'Tutorial', underline: 0) {
         accelerator 'Command+Shift+T'
 
@@ -206,7 +229,9 @@ root { |r|
           message_box(parent: r, title: 'Tutorial', message: 'Tutorial Contents')
         end
       }
+      
       menu_item(:separator)
+      
       menu_item(label: 'Report an Issue...', underline: 0) {
         on('command') do
           message_box(parent: r, title: 'Report an Issue', message: 'Reporting an issue...')

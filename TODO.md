@@ -2,10 +2,7 @@
 
 ## Next
 
-- Separate menus with new lines in hello menu bar to make more readable
-- Mac Preferences menu item
 - Mac Quit menu item
-- Mac Help menu
 - Mac Window menu
 - Other Mac Menu Handlers (https://tcl.tk/man/tcl8.6/TkCmd/tk_mac.htm):
 ```
