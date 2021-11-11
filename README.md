@@ -156,6 +156,14 @@ For example, on Windows, you can follow the [instructions over here](https://tkd
 - Setup environment variables TCL_LIBRARY=C:\ActiveTcl\lib\tcl8.6 & TK_LIBRARY=C:\ActiveTcl\lib\tk8.6
 - Run: `gem install tk -v0.4.0`
 
+For example, on Linux, you can:
+- Download the ActiveTcl Linux package from [ActiveState.com](https://activestate.com)
+- Extract the tar gz file using command `tar zxvf ActiveTcl-version-number.tar.gz`
+- Run included install shell script `./ActiveTcl-version-number/install.sh`
+- Install [RVM](https://rvm.io/) by running `\curl -sSL https://get.rvm.io | bash -s stable` (and run `curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -` if needed for mentioned security reasons)
+- Run: `rvm install 3.0.2 --enable-shared --enable-pthread --with-tk --with-tcl`
+- Run: `gem install tk -v0.4.0`
+
 Afterwards, if you open `irb`, you should be able to run `require 'tk'` successfully.
 
 ## Setup
@@ -3089,7 +3097,7 @@ root { |r|
       end
     }
     
-    menu(label: 'Language Name', underline: 3) {
+    menu(label: 'Language Country', underline: 3) {
       ['denmark', 'finland', 'france', 'germany', 'italy', 'mexico', 'netherlands', 'norway', 'usa'].each do |image_name|
         menu_item(:radiobutton, label: image_name.capitalize) {
           selection image_name == 'usa'

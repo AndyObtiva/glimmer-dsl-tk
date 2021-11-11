@@ -2,6 +2,13 @@
 
 ## Next
 
+- Hello, Scrollbar!
+- Support displaying scrollbars automatically with `scrollable true` on `frame` or explore laying widgets in a `canvas` as an alternative
+- Default About Menu Item label to 'About' if not specified
+- Update Hello, Menu Bar! screenshots with Language Country
+
+## Soon
+
 - Support Mac application handlers/events (https://tcl.tk/man/tcl8.6/TkCmd/tk_mac.htm):
 ```
 `tk::mac::OnHide:` Called when your application has been hidden.
@@ -11,8 +18,6 @@
 `tk::mac::OpenDocument:` Called when the Finder wants the application to open one or more documents (e.g. that were dropped on it). The procedure is passed a list of pathnames of files to be opened.
 `tk::mac::PrintDocument:` As with OpenDocument, but the documents should be printed rather than opened.
 ```
-
-## Soon
 
 - Hello, Contextual Menu!
 - Enhance `text` undo/redo to include format/font-format changes
@@ -66,7 +71,6 @@
 - Hello, Listbox! (two tabs for single/multi selection)
 - Hello, Treeview!
 - Hello, Table! (adapt treeview as a table)
-- Hello, Scrollbar!
 - Hello, Drag & Drop!
 - Hello, Canvas!
 - Hello, Canvas Drag and Drop!

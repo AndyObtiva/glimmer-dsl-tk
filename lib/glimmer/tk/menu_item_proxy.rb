@@ -164,11 +164,11 @@ module Glimmer
       # configures menu item attribute through parent menu
       def configure_menu_item_attribute(attribute_value_hash)
         if preferences? && attribute_value_hash[:command]
-          ::Tk.ip_eval("proc ::tk::mac::ShowPreferences {} {#{::Tk.install_cmd(attribute_value_hash[:command])}}")
+          ::Tk.ip_eval("proc ::tk::mac::ShowPreferences {} {#{::Tk.install_cmd(attribute_value_hash[:command])}}") if OS.mac?
         elsif help? && attribute_value_hash[:command]
-          ::Tk.ip_eval("proc ::tk::mac::ShowHelp {} {#{::Tk.install_cmd(attribute_value_hash[:command])}}")
+          ::Tk.ip_eval("proc ::tk::mac::ShowHelp {} {#{::Tk.install_cmd(attribute_value_hash[:command])}}") if OS.mac?
         elsif quit? && attribute_value_hash[:command]
-          ::Tk.ip_eval("proc ::tk::mac::Quit {} {#{::Tk.install_cmd(attribute_value_hash[:command])}}")
+          ::Tk.ip_eval("proc ::tk::mac::Quit {} {#{::Tk.install_cmd(attribute_value_hash[:command])}}") if OS.mac?
         else
           @parent_proxy.tk.entryconfigure label, attribute_value_hash
         end

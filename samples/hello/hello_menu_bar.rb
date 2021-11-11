@@ -166,7 +166,7 @@ root { |r|
       end
     }
     
-    menu(label: 'Language Name', underline: 3) {
+    menu(label: 'Country', underline: 3) {
       ['denmark', 'finland', 'france', 'germany', 'italy', 'mexico', 'netherlands', 'norway', 'usa'].each do |image_name|
         menu_item(:radiobutton, label: image_name.capitalize) {
           selection image_name == 'usa'
@@ -225,14 +225,17 @@ root { |r|
       }
     }
     
-    menu(label: 'Window', underline: 0)
+    # Mac-specific window menu (containing zooming/resizing menu items)
+    menu(label: 'Window', underline: 0) if OS.mac?
     
     menu(label: 'Help', underline: 0) {
-      menu_item(:help) {
-        on('command') do
-          message_box(parent: r, title: 'Help', message: 'Help for my application.')
-        end
-      }
+      if OS.mac?
+        menu_item(:help) {
+          on('command') do
+            message_box(parent: r, title: 'Help', message: 'Help for my application.')
+          end
+        }
+      end
       
       menu_item(label: 'Manual', underline: 0) {
         accelerator 'Command+Shift+M'

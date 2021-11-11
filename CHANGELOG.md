@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.40
+
+- Fix issue with Hello, Menu Bar! help menu item crashing in Linux (it is restricted to Mac only)
+- Fix issue with Hello, Text! focus losing selection in Linux upon setting background/foreground/font/font-size
+
 ## 0.0.39
 
 - Add Language and Language Name menus to Hello, Menu Bar! sample
