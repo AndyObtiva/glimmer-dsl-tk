@@ -38,6 +38,7 @@ root { |r|
   }
   
   menu {
+    # Mac-specific application menu (right next to the Apple menu)
     if OS.mac?
       menu(:application) {
         menu_item(:about, label: 'About My Application') {
@@ -64,6 +65,7 @@ root { |r|
       }
     end
     
+    # Windows-specific system menu (to the top-left of the window frame)
     if OS.windows?
       menu(label: 'System')
     end
