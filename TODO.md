@@ -2,11 +2,8 @@
 
 ## Next
 
-- Other Mac Menu Handlers (https://tcl.tk/man/tcl8.6/TkCmd/tk_mac.htm):
+- Support Mac application handlers/events (https://tcl.tk/man/tcl8.6/TkCmd/tk_mac.htm):
 ```
-`tk::mac::ShowPreferences:` Called when the "Preferences..." menu item is selected.
-`tk::mac::ShowHelp:` Called to display main online help for the application.
-`tk::mac::Quit:` Called when the Quit menu item is selected, when a user is trying to shut down the system etc.
 `tk::mac::OnHide:` Called when your application has been hidden.
 `tk::mac::OnShow:` Called when your application is shown after being hidden.
 `tk::mac::OpenApplication:` Called when your application is first opened.

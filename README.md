@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.38
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.39
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -171,7 +171,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.38'
+gem 'glimmer-dsl-tk', '~> 0.0.39'
 ```
 
 And, then run:
@@ -296,7 +296,7 @@ keyword(args) | attributes | event bindings & callbacks
 `list` | `selectmode`, `selection` | None
 `message_box(type: , message: , detail: , title: , icon: , default: , parent: )` | None | None
 `menu(label: nil) (label is nil if nested under root/toplevel for menu bar)` | None | None
-`menu_item(style = :command, label: , underline: )` (style also can be `:radiobutton`, `:checkbutton`, or `:separator`) | `state`, `accelerator`, `selection` & `variable` (if `:radiobutton` or `:checkbutton`) | `command`
+`menu_item(style = :command, label: , underline: )` (style also can be `:radiobutton`, `:checkbutton`, `:separator`, `:about`, `:preferences`, `:quit`, `:help`) | `state`, `accelerator`, `selection` & `variable` (if `:radiobutton` or `:checkbutton`), `image`, `compound` | `command`
 `notebook` | None | None
 `radiobutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `value` (default: `text`) | `command {}`
 `root` | `title`, `iconphoto`, `background`, `alpha`, `escapable`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`, `'OPEN_WINDOW'`
@@ -3122,11 +3122,19 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello menu-bar](images/glimmer-dsl-tk-screenshot-sample-hello-menu-bar.png)
 
+![glimmer dsl tk screenshot sample hello menu-bar](images/glimmer-dsl-tk-screenshot-sample-hello-menu-bar-application.png)
+
 ![glimmer dsl tk screenshot sample hello menu-bar](images/glimmer-dsl-tk-screenshot-sample-hello-menu-bar-file.png)
 
 ![glimmer dsl tk screenshot sample hello menu-bar](images/glimmer-dsl-tk-screenshot-sample-hello-menu-bar-edit.png)
 
 ![glimmer dsl tk screenshot sample hello menu-bar](images/glimmer-dsl-tk-screenshot-sample-hello-menu-bar-options.png)
+
+![glimmer dsl tk screenshot sample hello menu-bar](images/glimmer-dsl-tk-screenshot-sample-hello-menu-bar-language.png)
+
+![glimmer dsl tk screenshot sample hello menu-bar](images/glimmer-dsl-tk-screenshot-sample-hello-menu-bar-language-name.png)
+
+![glimmer dsl tk screenshot sample hello menu-bar](images/glimmer-dsl-tk-screenshot-sample-hello-menu-bar-window.png)
 
 ![glimmer dsl tk screenshot sample hello menu-bar](images/glimmer-dsl-tk-screenshot-sample-hello-menu-bar-format.png)
 
