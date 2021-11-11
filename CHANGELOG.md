@@ -7,7 +7,9 @@
 - Support Mac `menu_item(:about, label: ) { on('command') {} }`
 - Support Mac `menu_item(:preferences) { on('command') {} }`
 - Support Mac `menu_item(:help) { on('command') {} }`
+- Support Mac `menu_item(:quit) { on('command') {} }`
 - Support Mac `'Help'` and `'Window'` menus
+
 
 ## 0.0.38
 

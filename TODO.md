@@ -2,7 +2,6 @@
 
 ## Next
 
-- Mac Quit menu item
 - Other Mac Menu Handlers (https://tcl.tk/man/tcl8.6/TkCmd/tk_mac.htm):
 ```
 `tk::mac::ShowPreferences:` Called when the "Preferences..." menu item is selected.

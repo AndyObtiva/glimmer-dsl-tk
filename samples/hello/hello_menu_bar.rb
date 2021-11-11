@@ -38,21 +38,31 @@ root { |r|
   }
   
   menu {
-    menu(:application) {
-      menu_item(:about, label: 'About My Application') {
-        accelerator 'Command+A'
+    if OS.mac?
+      menu(:application) {
+        menu_item(:about, label: 'About My Application') {
+          accelerator 'Command+A'
+          
+          on('command') do
+            message_box(parent: r, title: 'About', message: 'About my application.')
+          end
+        }
         
-        on('command') do
-          message_box(parent: r, title: 'About', message: 'About my application.')
-        end
+        menu_item(:preferences) {
+          on('command') do
+            message_box(parent: r, title: 'Preferences', message: 'Preferences of my application.')
+          end
+        }
+        
+        # If not defined, application simply quits upon selecting Quit menu item
+        menu_item(:quit) {
+          on('command') do
+            message_box(parent: r, title: 'Quit', message: 'Quitting my application...')
+            exit(0)
+          end
+        }
       }
-      
-      menu_item(:preferences) {
-        on('command') do
-          message_box(parent: r, title: 'Preferences', message: 'Preferences of my application.')
-        end
-      }
-    }
+    end
     
     menu(label: 'File', underline: 0) {
       menu_item(label: 'New', underline: 0) {

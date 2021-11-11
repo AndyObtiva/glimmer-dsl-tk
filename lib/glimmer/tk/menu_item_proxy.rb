@@ -135,6 +135,10 @@ module Glimmer
         @args.first == :help
       end
       
+      def quit?
+        @args.first == :quit
+      end
+      
       def variable(auto_create: true)
         if @variable.nil? && auto_create
           sibling_variable = sibling_radio_menu_items.map {|mi| mi.variable(auto_create: false)}.compact.first
@@ -163,6 +167,8 @@ module Glimmer
           ::Tk.ip_eval("proc ::tk::mac::ShowPreferences {} {#{::Tk.install_cmd(attribute_value_hash[:command])}}")
         elsif help? && attribute_value_hash[:command]
           ::Tk.ip_eval("proc ::tk::mac::ShowHelp {} {#{::Tk.install_cmd(attribute_value_hash[:command])}}")
+        elsif quit? && attribute_value_hash[:command]
+          ::Tk.ip_eval("proc ::tk::mac::Quit {} {#{::Tk.install_cmd(attribute_value_hash[:command])}}")
         else
           @parent_proxy.tk.entryconfigure label, attribute_value_hash
         end
