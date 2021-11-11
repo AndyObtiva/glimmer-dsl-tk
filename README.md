@@ -3152,9 +3152,9 @@ https://github.com/ancorgs/y3network-ruby-ui
 
 This is a Graphical User Interface for the famous [cryptopunks Ruby gem](https://github.com/cryptopunksnotdead/cryptopunks/tree/master/cryptopunks).
 
-https://github.com/AndyObtiva/cryptopunks-gui
+https://github.com/cryptopunksnotdead/cryptopunks-gui
 
-![CryptoPunks GUI Screenshot](https://raw.githubusercontent.com/AndyObtiva/cryptopunks-gui/master/screenshots/cryptopunks-gui-screenshot.png)
+![CryptoPunks GUI Screenshot](https://raw.githubusercontent.com/cryptopunksnotdead/cryptopunks-gui/master/screenshots/cryptopunks-gui-screenshot.png)
 
 ### Circule
 
