@@ -136,9 +136,8 @@ module Glimmer
       def selection=(value)
         if value
           variable.value = label
-          # TODO handle image case where there is no label
         elsif checkbutton?
-          variable.value = '__unchecked__'
+          variable.value = ''
         end
       end
       
