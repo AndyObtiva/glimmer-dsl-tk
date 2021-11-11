@@ -132,7 +132,7 @@ root { |r|
         end
       }
       
-      @select_one_menu = menu(label: 'Select One', underline: 0) {
+      @select_one_menu = menu(label: 'Select One', underline: 7) {
         menu_item(:radiobutton, label: 'Option 1') {
           state 'disabled'
         }
@@ -144,7 +144,7 @@ root { |r|
         }
       }
       
-      @select_multiple_menu = menu(label: 'Select Multiple', underline: 0) {
+      @select_multiple_menu = menu(label: 'Select Multiple', underline: 7) {
         menu_item(:checkbutton, label: 'Option 4') {
           state 'disabled'
         }
