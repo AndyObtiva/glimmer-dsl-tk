@@ -2,8 +2,9 @@
 
 ## 0.0.40
 
-- Default to 'clam' Tk theme on Linux
+- Default to 'alt' Tk theme on Linux
 - Added Windows/Linux accelerators to Hello, Menu Bar!
+- Fix issue with extra junk character added to beginning of Hello, Checkbutton! by mistake
 - Fix issue with Hello, Menu Bar! help menu item crashing in Linux (it is restricted to Mac only)
 - Fix issue with Hello, Text! focus losing selection in Linux upon setting background/foreground/font/font-size
 
