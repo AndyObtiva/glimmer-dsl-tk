@@ -38,15 +38,17 @@ root { |r|
   }
   
   menu {
-    menu_item(:about, label: 'About My Application') {
-      on('command') do
-        message_box(parent: r, title: 'About', message: 'About my application.')
-      end
-    }
-    menu_item(:preferences) {
-      on('command') do
-        message_box(parent: r, title: 'Preferences', message: 'Preferences of my application.')
-      end
+    menu(:application) {
+      menu_item(:about, label: 'About My Application') {
+        on('command') do
+          message_box(parent: r, title: 'About', message: 'About my application.')
+        end
+      }
+      menu_item(:preferences) {
+        on('command') do
+          message_box(parent: r, title: 'Preferences', message: 'Preferences of my application.')
+        end
+      }
     }
     menu(label: 'File', underline: 0) {
       menu_item(label: 'New', underline: 0) {
@@ -185,6 +187,11 @@ root { |r|
       }
     }
     menu(label: 'Help', underline: 0) {
+      menu_item(:help) {
+        on('command') do
+          message_box(parent: r, title: 'Help', message: 'Help for my application.')
+        end
+      }
       menu_item(label: 'Manual', underline: 0) {
         accelerator 'Command+Shift+M'
 

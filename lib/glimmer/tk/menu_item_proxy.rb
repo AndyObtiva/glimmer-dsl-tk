@@ -131,6 +131,10 @@ module Glimmer
         @args.first == :preferences
       end
       
+      def help?
+        @args.first == :help
+      end
+      
       def variable(auto_create: true)
         if @variable.nil? && auto_create
           sibling_variable = sibling_radio_menu_items.map {|mi| mi.variable(auto_create: false)}.compact.first
@@ -159,6 +163,8 @@ module Glimmer
           @tk.entryconfigure label, attribute_value_hash
         elsif preferences? && attribute_value_hash[:command]
           ::Tk.ip_eval("proc ::tk::mac::ShowPreferences {} {#{::Tk.install_cmd(attribute_value_hash[:command])}}")
+        elsif help? && attribute_value_hash[:command]
+          ::Tk.ip_eval("proc ::tk::mac::ShowHelp {} {#{::Tk.install_cmd(attribute_value_hash[:command])}}")
         else
           @parent_proxy.tk.entryconfigure label, attribute_value_hash
         end
@@ -176,16 +182,16 @@ module Glimmer
         @args.last.merge!(variable: variable, value: label) if radiobutton? || checkbutton?
         case @parent_proxy
         when MenuProxy
-          if @parent_proxy.parent_proxy.is_a?(ToplevelProxy)
+          if @parent_proxy.application?
             if OS.mac?
               if about?
-                @tk = ::TkSysMenu_Apple.new(@parent_proxy.tk)
-                @parent_proxy.tk.add :cascade, :menu => @tk
+                @tk = ::TkSysMenu_Apple.new(@parent_proxy.parent_proxy.tk)
+                @parent_proxy.parent_proxy.tk.add :cascade, :menu => @tk
                 @tk.add :command, :label => label
               end
             end
           else
-            @parent_proxy.tk.add(*@args)
+            @parent_proxy.tk.add(*@args) unless help?
           end
         end
       end

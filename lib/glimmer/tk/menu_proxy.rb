@@ -38,14 +38,36 @@ module Glimmer
         end
       end
       
+      def label
+        @options[:label]
+      end
+      
+      def help?
+        label == 'Help'
+      end
+      
+      def window?
+        label == 'Window'
+      end
+      
+      def application?
+        @args.first == :application
+      end
+      
       private
       
       def build_widget
-        tk_widget_class = self.class.tk_widget_class_for(@keyword)
-        @tk = tk_widget_class.new(@parent_proxy.tk)
-        case @parent_proxy
-        when MenuProxy
-          @parent_proxy.tk.add(:cascade, {menu: @tk}.merge(@options))
+        unless application?
+          if @parent_proxy.parent_proxy.is_a?(ToplevelProxy) && OS.mac? && help?
+            @tk = ::TkSysMenu_Help.new(@parent_proxy.tk)
+          else
+            tk_widget_class = self.class.tk_widget_class_for(@keyword)
+            @tk = tk_widget_class.new(@parent_proxy.tk)
+          end
+          case @parent_proxy
+          when MenuProxy
+            @parent_proxy.tk.add(:cascade, {menu: @tk}.merge(@options))
+          end
         end
       end
     end

@@ -2,6 +2,7 @@
 
 ## Next
 
+- Separate menus with new lines in hello menu bar to make more readable
 - Mac Preferences menu item
 - Mac Quit menu item
 - Mac Help menu
