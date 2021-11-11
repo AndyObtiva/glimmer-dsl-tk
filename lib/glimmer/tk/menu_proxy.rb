@@ -31,14 +31,19 @@ module Glimmer
         super
       end
       
+      def post_add_content
+        case @parent_proxy
+        when ToplevelProxy
+          @parent_proxy.tk['menu'] = @tk
+        end
+      end
+      
       private
       
       def build_widget
         tk_widget_class = self.class.tk_widget_class_for(@keyword)
         @tk = tk_widget_class.new(@parent_proxy.tk)
         case @parent_proxy
-        when ToplevelProxy
-          @parent_proxy.tk['menu'] = @tk
         when MenuProxy
           @parent_proxy.tk.add(:cascade, {menu: @tk}.merge(@options))
         end

@@ -38,6 +38,11 @@ root { |r|
   }
   
   menu {
+    menu_item(:about, label: 'About My Application') {
+      on('command') do
+        message_box(parent: r, title: 'About', message: 'About my application.')
+      end
+    }
     menu(label: 'File', underline: 0) {
       menu_item(label: 'New', underline: 0) {
         accelerator 'Command+N'

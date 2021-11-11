@@ -4,6 +4,8 @@
 
 - Add Language and Language Name menus to Hello, Menu Bar! sample
 - Update Hello, Button! sample to indicate compound option value on image text buttons
+- Support Mac `menu_item(:about, label: )`
+
 
 ## 0.0.38
 

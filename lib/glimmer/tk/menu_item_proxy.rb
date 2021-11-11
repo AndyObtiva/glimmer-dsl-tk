@@ -123,6 +123,10 @@ module Glimmer
         @args.first == :separator
       end
       
+      def about?
+        @args.first == :about
+      end
+      
       def variable(auto_create: true)
         if @variable.nil? && auto_create
           sibling_variable = sibling_radio_menu_items.map {|mi| mi.variable(auto_create: false)}.compact.first
@@ -147,7 +151,11 @@ module Glimmer
       
       # configures menu item attribute through parent menu
       def configure_menu_item_attribute(attribute_value_hash)
-        @parent_proxy.tk.entryconfigure label, attribute_value_hash
+        if about?
+          @tk.entryconfigure label, attribute_value_hash
+        else
+          @parent_proxy.tk.entryconfigure label, attribute_value_hash
+        end
       end
       
       private
@@ -162,7 +170,17 @@ module Glimmer
         @args.last.merge!(variable: variable, value: label) if radiobutton? || checkbutton?
         case @parent_proxy
         when MenuProxy
-          @parent_proxy.tk.add(*@args)
+          if @parent_proxy.parent_proxy.is_a?(ToplevelProxy)
+            if about?
+              if OS.mac?
+                @tk = ::TkSysMenu_Apple.new(@parent_proxy.tk)
+                @parent_proxy.tk.add :cascade, :menu => @tk
+                @tk.add :command, :label => label
+              end
+            end
+          else
+            @parent_proxy.tk.add(*@args)
+          end
         end
       end
     end

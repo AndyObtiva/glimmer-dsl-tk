@@ -2,7 +2,6 @@
 
 ## Next
 
-- Mac About menu item
 - Mac Preferences menu item
 - Mac Quit menu item
 - Mac Help menu
