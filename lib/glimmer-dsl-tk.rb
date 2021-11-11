@@ -37,10 +37,18 @@ require 'delegate'
 # require 'ext/glimmer/config'
 # require 'ext/glimmer'
 require 'glimmer/dsl/tk/dsl'
+
 Glimmer::Config.loop_max_count = -1
+
 Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
   method = method_symbol.to_s
   result = false
   result ||= method == 'load_iseq'
 end
+
 ::TkOption.add '*tearOff', 0
+
+class ::Tk::TkSysMenu_Window < Tk::Menu
+  include Tk::SystemMenu
+  SYSMENU_NAME = 'window'
+end

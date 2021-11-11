@@ -63,6 +63,8 @@ module Glimmer
         else
           if @parent_proxy.parent_proxy.is_a?(ToplevelProxy) && OS.mac? && help?
             @tk = ::TkSysMenu_Help.new(@parent_proxy.tk)
+          elsif @parent_proxy.parent_proxy.is_a?(ToplevelProxy) && OS.mac? && window?
+            @tk = ::Tk::TkSysMenu_Window.new(@parent_proxy.tk)
           else
             tk_widget_class = self.class.tk_widget_class_for(@keyword)
             @tk = tk_widget_class.new(@parent_proxy.tk)

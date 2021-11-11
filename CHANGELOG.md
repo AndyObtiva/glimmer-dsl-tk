@@ -6,7 +6,8 @@
 - Update Hello, Button! sample to indicate compound option value on image text buttons
 - Support Mac `menu_item(:about, label: ) { on('command') {} }`
 - Support Mac `menu_item(:preferences) { on('command') {} }`
-
+- Support Mac `menu_item(:help) { on('command') {} }`
+- Support Mac `'Help'` and `'Window'` menus
 
 ## 0.0.38
 

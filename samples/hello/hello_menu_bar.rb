@@ -209,6 +209,8 @@ root { |r|
       }
     }
     
+    menu(label: 'Window', underline: 0)
+    
     menu(label: 'Help', underline: 0) {
       menu_item(:help) {
         on('command') do
