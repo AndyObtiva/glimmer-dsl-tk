@@ -127,6 +127,10 @@ module Glimmer
         @args.first == :about
       end
       
+      def preferences?
+        @args.first == :preferences
+      end
+      
       def variable(auto_create: true)
         if @variable.nil? && auto_create
           sibling_variable = sibling_radio_menu_items.map {|mi| mi.variable(auto_create: false)}.compact.first
@@ -153,6 +157,8 @@ module Glimmer
       def configure_menu_item_attribute(attribute_value_hash)
         if about?
           @tk.entryconfigure label, attribute_value_hash
+        elsif preferences? && attribute_value_hash[:command]
+          ::Tk.ip_eval("proc ::tk::mac::ShowPreferences {} {#{::Tk.install_cmd(attribute_value_hash[:command])}}")
         else
           @parent_proxy.tk.entryconfigure label, attribute_value_hash
         end
@@ -171,8 +177,8 @@ module Glimmer
         case @parent_proxy
         when MenuProxy
           if @parent_proxy.parent_proxy.is_a?(ToplevelProxy)
-            if about?
-              if OS.mac?
+            if OS.mac?
+              if about?
                 @tk = ::TkSysMenu_Apple.new(@parent_proxy.tk)
                 @parent_proxy.tk.add :cascade, :menu => @tk
                 @tk.add :command, :label => label
