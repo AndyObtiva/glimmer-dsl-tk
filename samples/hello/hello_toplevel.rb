@@ -74,7 +74,7 @@ root { |root_window|
           
         frame {
           label {
-            text "This is a transparent window\nYou can hit ESCAPE to close."
+            text "This is a transparent window\n(Varies per platform)\nYou can hit ESCAPE to close."
             anchor 'center'
           }
         }
