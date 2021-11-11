@@ -113,6 +113,23 @@ root { |r|
         }
       }
     }
+    menu(label: 'Language', underline: 3) {
+      ['denmark', 'finland', 'france', 'germany', 'italy', 'mexico', 'netherlands', 'norway', 'usa'].each do |image_name|
+        menu_item(:radiobutton, label: image_name.capitalize) {
+          selection image_name == 'usa'
+          image File.expand_path("images/#{image_name}.png", __dir__)
+        }
+      end
+    }
+    menu(label: 'Language Name', underline: 3) {
+      ['denmark', 'finland', 'france', 'germany', 'italy', 'mexico', 'netherlands', 'norway', 'usa'].each do |image_name|
+        menu_item(:radiobutton, label: image_name.capitalize) {
+          selection image_name == 'usa'
+          image File.expand_path("images/#{image_name}.png", __dir__)
+          compound 'left'
+        }
+      end
+    }
     menu(label: 'Format', underline: 0) {
       menu(label: 'Background Color', underline: 0) {
         COLORS.each { |color_style|

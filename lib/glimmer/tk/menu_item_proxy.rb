@@ -24,6 +24,8 @@ require 'glimmer/tk/widget_proxy'
 module Glimmer
   module Tk
     class MenuItemProxy < WidgetProxy
+      # TODO consider generalizing use of @parent_proxy.tk.entryconfigure label, arg_hash
+      
       ACCELERATOR_MODIFIER_EVENT_MAP = {
         'Command' => 'Command',
         'Cmd' => 'Command',
@@ -45,7 +47,7 @@ module Glimmer
     
       def accelerator=(value)
         @accelerator = value
-        @parent_proxy.tk.entryconfigure @options[:label], accelerator: value
+        @parent_proxy.tk.entryconfigure label, accelerator: value
         root_parent_proxy.bind(accelerator_event) do |event|
           @command_block&.call(event)
         end
@@ -64,16 +66,38 @@ module Glimmer
       
       def state=(value)
         @state = value
-        @parent_proxy.tk.entryconfigure @options[:label], :state => value
+        @parent_proxy.tk.entryconfigure label, state: value
       end
       
       def state
         @state
       end
       
+      def label
+        @options[:label]
+      end
+      
+      def image=(*args)
+        @image = image_argument(args)
+        @parent_proxy.tk.entryconfigure label, image: @image
+      end
+      
+      def image
+        @image
+      end
+      
+      def compound=(value)
+        @compound = value
+        @parent_proxy.tk.entryconfigure label, compound: @compound
+      end
+      
+      def compound
+        @compound
+      end
+      
       def command_block=(proc)
         @command_block = proc
-        @parent_proxy.tk.entryconfigure @options[:label], command: @command_block
+        @parent_proxy.tk.entryconfigure label, command: @command_block
       end
       
       def handle_listener(listener_name, &listener)
@@ -113,7 +137,7 @@ module Glimmer
       
       def selection=(value)
         if value
-          variable.value = @options[:label]
+          variable.value = label
           # TODO handle image case where there is no label
         elsif checkbutton?
           variable.value = '__unchecked__'
@@ -121,7 +145,7 @@ module Glimmer
       end
       
       def selection
-        variable.value == @options[:label]
+        variable.value == label
       end
       
       private
@@ -133,7 +157,7 @@ module Glimmer
       def build_widget
         @args.prepend(:command) if @args.first.is_a?(Hash)
         @args.append({}) if !@args.last.is_a?(Hash)
-        @args.last.merge!(variable: variable, value: @options[:label]) if radiobutton? || checkbutton?
+        @args.last.merge!(variable: variable, value: label) if radiobutton? || checkbutton?
         case @parent_proxy
         when MenuProxy
           @parent_proxy.tk.add(*@args)

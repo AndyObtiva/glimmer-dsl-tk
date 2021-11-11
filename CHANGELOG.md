@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.39
+
+- Add Language and Language Name menus to Hello, Menu Bar! sample
+- Update Hello, Button! sample to indicate compound option value on image text buttons
+
 ## 0.0.38
 
 - Hello, Menu Bar! sample

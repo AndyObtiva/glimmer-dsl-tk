@@ -2,8 +2,6 @@
 
 ## Next
 
-- Image Menu Items
-- Text/Image Compound Menu Items
 - Mac About menu item
 - Mac Preferences menu item
 - Mac Quit menu item

@@ -81,7 +81,7 @@ class HelloButton
         ['center', 'top', 'bottom', 'left', 'right'].each do |compound_option|
           button {
             image File.expand_path('../../icons/glimmer.png', __dir__), subsample: 5
-            text 'Text Image Button'
+            text "#{compound_option.capitalize} Image"
             compound compound_option
             
             command {
