@@ -27,12 +27,13 @@ root { |main_window|
   title 'Hello, Scrollbar!'
   width 400
   height 300
+  background 'green'
   
-  @scrolledframe = scrolledframe {
+  @scrollbar_frame = scrollbar_frame {
     grid sticky: 'nsew', row: 0, column: 0, row_weight: 1, column_weight: 1
     
-    20.times do |row|
-      20.times do |column|
+    10.times do |row|
+      10.times do |column|
         button {
           grid row: row, column: column, column_weight: 0
           text "Row #{row} | Column #{column}"
