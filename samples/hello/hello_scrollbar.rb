@@ -29,7 +29,7 @@ root { |main_window|
   height 300
   background 'green'
   
-  @scrollbar_frame = scrollbar_frame {
+  @scroll_frame = scroll_frame(width: 400, height: 300, scrollbarwidth: 10) {
     grid sticky: 'nsew', row: 0, column: 0, row_weight: 1, column_weight: 1
     
     10.times do |row|

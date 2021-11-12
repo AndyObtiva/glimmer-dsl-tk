@@ -139,3 +139,4 @@
 - Support `validate_command` and `invalid_command` as aliases to `validatecommand` and `invalidcommand` on `entry`
 - Provide a convenience `#modifiers` method on KeyPress/KeyRelease event that provides an English-description of held modifiers (e.g. `['shift_l', 'meta_l']`) as that would be more convenient than reliance on `event.state` cryptic integer values
 - Support installing multiple event listeners on any widget (tk by default supports installing one event listener only, with subsequent installations overriding previous ones)
+- Consider exposing WidgetProxy Tk possible class names (e.g. ::Tk#{SomeWidget}) via Glimmer::Config to make configurable

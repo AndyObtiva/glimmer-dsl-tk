@@ -46,8 +46,10 @@ module Glimmer
         # This supports widgets in and out of basic Tk
         def tk_widget_class_for(underscored_widget_name)
           tk_widget_class_basename = underscored_widget_name.camelcase(:upper)
+          # TODO consider exposing this via Glimmer::Config
           potential_tk_widget_class_names = [
             "::Tk::Tile::#{tk_widget_class_basename}",
+            "::Tk::RbWidget::#{tk_widget_class_basename}",
             "::Tk::BWidget::#{tk_widget_class_basename}",
             "::Tk::Iwidgets::#{tk_widget_class_basename}",
             "::Tk#{tk_widget_class_basename}",
