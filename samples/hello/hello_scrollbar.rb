@@ -23,63 +23,45 @@ require 'glimmer-dsl-tk'
 
 include Glimmer
 
-root { |main_window|
+root {
   title 'Hello, Scrollbar!'
   width 400
-  height 300
-  background 'green'
+  height 500
   
-  @scroll_frame = scroll_frame(width: 400, height: 300, scrollbarwidth: 10) {
-    grid sticky: 'nsew', row: 0, column: 0, row_weight: 1, column_weight: 1
+  notebook {
+    grid sticky: 'nsew', row_weight: 1, column_weight: 1
     
-    10.times do |row|
-      10.times do |column|
-        button {
-          grid row: row, column: column, column_weight: 0
-          text "Row #{row} | Column #{column}"
-        }
-      end
-    end
+    frame(text: 'Scrollable List') {
+      @list = list {
+        grid sticky: 'nsew', row: 0, column: 0, row_weight: 1, column_weight: 1
+        items 40.times.map {|n| "Item #{n + 1} of a very long list" }
+      }
+      
+      @scrollbar = scrollbar {
+        grid row: 0, column: 1
+        # orient 'vertical' # default
+      }
+      @list.yscrollbar @scrollbar
+    }
     
-#     xscrollcommand do |*args|
-#       @xscrollbar&.tk&.set(*args)
-#     end
-#
-#     yscrollcommand do |*args|
-#       @yscrollbar&.tk&.set(*args)
-#     end
+    frame(text: 'Scrollable Text') {
+      @text = text {
+        grid sticky: 'nsew', row: 0, column: 0, row_weight: 1, column_weight: 1
+        value ("This is a random sample of text that will repeat over and over and over"*2 + "\n")*40
+      }
+      
+      @yscrollbar = scrollbar {
+        grid row: 0, column: 1
+        # orient 'vertical' # default
+      }
+      @text.yscrollbar @yscrollbar
+       
+      @xscrollbar = scrollbar {
+        grid row: 1, column: 0, column_span: 2, row_weight: 0
+        orient 'horizontal'
+      }
+      @text.xscrollbar @xscrollbar
+    }
   }
-  
-#   @yscrollbar = scrollbar {
-#     grid row: 0, column: 1
-    # orient 'vertical' # default
-#     command do |*args|
-#       pd args
-#       pd frame_bbox = TkGrid.bbox(main_window.tk, 0, 0)
-#       height = frame_bbox[3]
-#       @y_position = @y_position.to_i + 1 # args.first.to_i
-#       pd (@y_position.abs / height.to_f).to_s
-#       @yscrollbar.tk.set((@y_position.abs / height.to_f).to_s, ((@y_position.abs / height.to_f) + 0.01).to_s)
-#       @frame.tk.place x: @x_position.to_i, y: @y_position.to_i
-#       @scrolledframe.scrolledframe_tk.yview(*args)
-#     end
-#   }
-#   @scrolledframe.scrolledframe_tk.yscrollbar @yscrollbar
-   
-#   @xscrollbar = scrollbar {
-#     grid row: 1, column: 0, column_span: 2, row_weight: 0
-#     orient 'horizontal'
-#     command do |*args|
-#       pd args
-#       pd frame_bbox = TkGrid.bbox(main_window.tk, 0, 0)
-#       width = frame_bbox[2]
-#       @x_position = @x_position.to_i + 1 # args.first.to_i
-#       @xscrollbar.tk.set((@x_position.abs / width.to_f).to_s, ((@x_position.abs / width.to_f) + 0.01).to_s)
-#       @frame.tk.place x: @x_position.to_i, y: @y_position.to_i
-#       @scrolledframe.scrolledframe_tk.xview(*args)
-#     end
-#   }
-#   @scrolledframe.scrolledframe_tk.xscrollbar @xscrollbar
-
   
 }.open

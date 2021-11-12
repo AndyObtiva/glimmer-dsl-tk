@@ -38,7 +38,6 @@ require 'delegate'
 # Internal requires
 # require 'ext/glimmer/config'
 # require 'ext/glimmer'
-require 'ext/tk/rb_widget/scroll_frame'
 require 'glimmer/dsl/tk/dsl'
 
 Glimmer::Config.loop_max_count = -1

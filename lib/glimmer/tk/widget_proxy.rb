@@ -49,7 +49,6 @@ module Glimmer
           # TODO consider exposing this via Glimmer::Config
           potential_tk_widget_class_names = [
             "::Tk::Tile::#{tk_widget_class_basename}",
-            "::Tk::RbWidget::#{tk_widget_class_basename}",
             "::Tk::BWidget::#{tk_widget_class_basename}",
             "::Tk::Iwidgets::#{tk_widget_class_basename}",
             "::Tk#{tk_widget_class_basename}",

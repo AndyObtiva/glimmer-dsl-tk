@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.39
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.40
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -121,6 +121,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Hello, Drag and Drop!](#hello-drag-and-drop)
     - [Hello, Built-in Dialog!](#hello-built-in-dialog)
     - [Hello, Separator!](#hello-separator)
+    - [Hello, Scrollbar!](#hello-scrollbar)
     - [Hello, Menu Bar!](#hello-menu-bar)
   - [Applications](#applications)
     - [Glimmer Tk Calculator](#glimmer-tk-calculator)
@@ -179,7 +180,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.39'
+gem 'glimmer-dsl-tk', '~> 0.0.40'
 ```
 
 And, then run:
@@ -308,6 +309,9 @@ keyword(args) | attributes | event bindings & callbacks
 `notebook` | None | None
 `radiobutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `value` (default: `text`) | `command {}`
 `root` | `title`, `iconphoto`, `background`, `alpha`, `escapable`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`, `'OPEN_WINDOW'`
+`scrollbar` | `orient` | `command`
+`x_scrollbar` | `orient` (`'horizontal'`) | `command`
+`y_scrollbar` | `orient` (`'vertical'`) | `command`
 `separator` | `orient` (`'horizontal' (default) or 'vertical'`) | None
 `toplevel` | `title`, `iconphoto`, `background`, `alpha`, `escapable`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`
 `text` | `value`, [many more attributes](https://tcl.tk/man/tcl8.6/TkCmd/text.htm#M116) | `'modified'`, `'selection'`, `'insert_mark_moved'` (alias: `'insert_mark_move', 'InsertMarkMove', 'InsertMarkMoved'`)
@@ -465,6 +469,8 @@ Example of adding both a horizontal `scrollbar` and a vertical `scrollbar` (must
 ```
 
 Check out the [Hello, Text!](#hello-text) sample for a good demonstration of the `text` widget features.
+
+Check out the [Hello, Scrollbar!](#hello-scrollbar) sample for a `text` demo with scrolling.
 
 #### Drag and Drop API
 
@@ -2978,6 +2984,77 @@ ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_separator.rb
 Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello separator](images/glimmer-dsl-tk-screenshot-sample-hello-separator.png)
+
+### Hello, Scrollbar!
+
+Glimmer code (from [samples/hello/hello_scrollbar.rb](samples/hello/hello_scrollbar.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+include Glimmer
+
+root {
+  title 'Hello, Scrollbar!'
+  width 400
+  height 500
+  
+  notebook {
+    grid sticky: 'nsew', row_weight: 1, column_weight: 1
+    
+    frame(text: 'Scrollable List') {
+      @list = list {
+        grid sticky: 'nsew', row: 0, column: 0, row_weight: 1, column_weight: 1
+        items 40.times.map {|n| "Item #{n + 1} of a very long list" }
+      }
+      
+      @scrollbar = scrollbar {
+        grid row: 0, column: 1
+        # orient 'vertical' # default
+      }
+      @list.yscrollbar @scrollbar
+    }
+    
+    frame(text: 'Scrollable Text') {
+      @text = text {
+        grid sticky: 'nsew', row: 0, column: 0, row_weight: 1, column_weight: 1
+        value ("This is a random sample of text that will repeat over and over and over"*2 + "\n")*40
+      }
+      
+      @yscrollbar = scrollbar {
+        grid row: 0, column: 1
+        # orient 'vertical' # default
+      }
+      @text.yscrollbar @yscrollbar
+       
+      @xscrollbar = scrollbar {
+        grid row: 1, column: 0, column_span: 2, row_weight: 0
+        orient 'horizontal'
+      }
+      @text.xscrollbar @xscrollbar
+    }
+  }
+  
+}.open
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_scrollbar'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_scrollbar.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello scrollbar](images/glimmer-dsl-tk-screenshot-sample-hello-scrollbar-list.png)
+
+![glimmer dsl tk screenshot sample hello scrollbar](images/glimmer-dsl-tk-screenshot-sample-hello-scrollbar-text.png)
 
 ### Hello, Menu Bar!
 
