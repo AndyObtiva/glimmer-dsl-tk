@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/tk/widget_proxy'
+require 'glimmer/tk/scrollable'
 
 module Glimmer
   module Tk
@@ -27,6 +28,8 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class TextProxy < WidgetProxy
+      include Scrollable
+      
       ALL_TAG = '__all__'
       FORMAT_DEFAULT_MAP = {
         'justify' => 'left',

@@ -430,6 +430,40 @@ Other useful built-in API methods:
 - `text_edit_undo`
 - `text_edit_redo`
 
+If you would like to add scrollbars, you can set the `xscrollbar` and `yscrollbar` attributes.
+
+Example of adding a vertical `scrollbar`:
+
+```ruby
+    textarea_yscrollbar = y_scrollbar {
+      grid row:0, column:1
+    }
+
+    textarea = text {
+      grid row:0, column:0, column_weight: 0
+      wrap "word"
+      yscrollbar textarea_yscrollbar
+    }
+```
+
+Example of adding both a horizontal `scrollbar` and a vertical `scrollbar` (must disable `wrap "word"` for horizontal scrolling to work):
+
+```ruby
+    textarea_xscrollbar = x_scrollbar {
+      grid row:1, column:0, column_span: 2, row_weight: 0
+    }
+
+    textarea_yscrollbar = y_scrollbar {
+      grid row:0, column:1
+    }
+
+    textarea = text {
+      grid row:0, column:0, column_weight: 0
+      xscrollbar textarea_xscrollbar
+      yscrollbar textarea_yscrollbar
+    }
+```
+
 Check out the [Hello, Text!](#hello-text) sample for a good demonstration of the `text` widget features.
 
 #### Drag and Drop API

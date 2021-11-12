@@ -19,40 +19,31 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-$LOAD_PATH.unshift(File.expand_path('..', __FILE__))
+require 'glimmer/tk/widget_proxy'
 
-# External requires
-require 'glimmer'
-# require 'logging'
-require 'puts_debuggerer' if ENV['pd'].to_s.downcase == 'true'
-# require 'super_module'
-require 'tk'
-require 'tkextlib/bwidget'
-require 'tkextlib/iwidgets'
-require 'os'
-require 'facets/hash/symbolize_keys'
-require 'facets/string/underscore'
-require 'facets/string/camelcase'
-require 'delegate'
-
-# Internal requires
-# require 'ext/glimmer/config'
-# require 'ext/glimmer'
-require 'glimmer/dsl/tk/dsl'
-
-Glimmer::Config.loop_max_count = -1
-
-Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
-  method = method_symbol.to_s
-  result = false
-  result ||= method == 'load_iseq'
+module Glimmer
+  module Tk
+    # Represents widgets that can scroll vertically and horizontally
+    module Scrollable
+      def xscrollcommand_block=(proc)
+        tk.xscrollcommand(proc)
+      end
+      
+      def yscrollcommand_block=(proc)
+        tk.yscrollcommand(proc)
+      end
+      
+      def handle_listener(listener_name, &listener)
+        case listener_name.to_s.downcase
+        when 'xscrollcommand'
+          xscrollcommand(listener)
+        when 'yscrollcommand'
+          yscrollcommand(listener)
+        else
+          super
+        end
+      end
+    end
+  end
 end
-
-Tk::Tile::Style.theme_use 'alt' if OS.linux?
-
-::TkOption.add '*tearOff', 0
-
-class ::Tk::TkSysMenu_Window < Tk::Menu
-  include Tk::SystemMenu
-  SYSMENU_NAME = 'window'
-end
+      

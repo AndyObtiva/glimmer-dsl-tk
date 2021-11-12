@@ -19,40 +19,34 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-$LOAD_PATH.unshift(File.expand_path('..', __FILE__))
+require 'glimmer/tk/widget_proxy'
 
-# External requires
-require 'glimmer'
-# require 'logging'
-require 'puts_debuggerer' if ENV['pd'].to_s.downcase == 'true'
-# require 'super_module'
-require 'tk'
-require 'tkextlib/bwidget'
-require 'tkextlib/iwidgets'
-require 'os'
-require 'facets/hash/symbolize_keys'
-require 'facets/string/underscore'
-require 'facets/string/camelcase'
-require 'delegate'
+module Glimmer
+  module Tk
+    # Scrolledframe (#scrolledframe_tk attribute)
+    # Nested widgets go into the child site (#tk attribute or @scrolledframe_tk.child_site)
+    class ScrolledframeProxy < WidgetProxy
+      attr_reader :scrolledframe_tk
+      
+      private
+      
+      def griddable_tk
+        @scrolledframe_tk
+      end
 
-# Internal requires
-# require 'ext/glimmer/config'
-# require 'ext/glimmer'
-require 'glimmer/dsl/tk/dsl'
-
-Glimmer::Config.loop_max_count = -1
-
-Glimmer::Config.excluded_keyword_checkers << lambda do |method_symbol, *args|
-  method = method_symbol.to_s
-  result = false
-  result ||= method == 'load_iseq'
-end
-
-Tk::Tile::Style.theme_use 'alt' if OS.linux?
-
-::TkOption.add '*tearOff', 0
-
-class ::Tk::TkSysMenu_Window < Tk::Menu
-  include Tk::SystemMenu
-  SYSMENU_NAME = 'window'
+      def build_widget
+        tk_widget_class = self.class.tk_widget_class_for(@keyword)
+        @scrolledframe_tk = tk_widget_class.new(@parent_proxy.tk, *args)
+        @tk = @scrolledframe_tk.child_site
+      end
+      
+      def initialize_defaults
+        options = {}
+        options[:sticky] = 'nsew'
+        options[:column_weight] = 1 if @parent_proxy.children.count == 1
+        options[:row_weight] = 1 if @parent_proxy.children.count == 1
+        grid(options)
+      end
+    end
+  end
 end

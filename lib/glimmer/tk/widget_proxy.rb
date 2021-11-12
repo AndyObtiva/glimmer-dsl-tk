@@ -48,8 +48,10 @@ module Glimmer
           tk_widget_class_basename = underscored_widget_name.camelcase(:upper)
           potential_tk_widget_class_names = [
             "::Tk::Tile::#{tk_widget_class_basename}",
-            "::Tk::#{tk_widget_class_basename}",
+            "::Tk::BWidget::#{tk_widget_class_basename}",
+            "::Tk::Iwidgets::#{tk_widget_class_basename}",
             "::Tk#{tk_widget_class_basename}",
+            "::Tk::#{tk_widget_class_basename}",
             "::Glimmer::Tk::#{tk_widget_class_basename}Proxy",
           ]
           tk_widget_class = nil
@@ -79,7 +81,7 @@ module Glimmer
         @block = block
         build_widget
         # a common widget initializer
-        @parent_proxy.post_initialize_child(self)
+        @parent_proxy&.post_initialize_child(self)
         initialize_defaults
         post_add_content if @block.nil?
       end
@@ -247,9 +249,12 @@ module Glimmer
         end
       end
       
+      def index_in_parent
+        @parent_proxy&.children&.index(self)
+      end
+        
       def grid(options = {})
         options = options.stringify_keys
-        index_in_parent = @parent_proxy&.children&.index(self)
         options['rowspan'] = options.delete('row_span') if options.keys.include?('row_span')
         options['columnspan'] = options.delete('column_span') if options.keys.include?('column_span')
         options['rowweight'] = options.delete('row_weight') if options.keys.include?('row_weight')
@@ -268,7 +273,7 @@ module Glimmer
           TkGrid.columnconfigure(@parent_proxy.tk, index_in_parent, 'weight'=> options.delete('columnweight')) if options.keys.include?('columnweight')
           TkGrid.columnconfigure(@parent_proxy.tk, index_in_parent, 'minsize'=> options.delete('columnminsize')) if options.keys.include?('columnminsize')
         end
-        @tk.grid(options)
+        griddable_tk&.grid(options)
       end
       
       def font=(value)
@@ -505,6 +510,11 @@ module Glimmer
       end
       
       private
+      
+      # The Tk element to apply grid to (is different from @tk in composite widgets like notebook or scrolledframe)
+      def griddable_tk
+        @tk
+      end
       
       def build_widget
         tk_widget_class = self.class.tk_widget_class_for(@keyword)

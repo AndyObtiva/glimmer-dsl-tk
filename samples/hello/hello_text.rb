@@ -105,7 +105,7 @@ class HelloText
       height 800
       
       frame {
-        grid row: 0, column: 0
+        grid row: 0, column: 0, column_span: 2
         
         column_index = -1
         
@@ -282,7 +282,7 @@ class HelloText
       
       @text = text {
         grid row: 1, column: 0, row_weight: 1
-        wrap 'word'
+#         wrap 'word'
         undo true
         value <=> [self, :document]
         
@@ -303,6 +303,16 @@ class HelloText
           show_find_dialog if (event.keysym == 'f') && ((OS.mac? && event.state == 8) || (!OS.mac? && event.state == 4))
         end
       }
+      
+      @yscrollbar = y_scrollbar {
+        grid row: 1, column: 1
+      }
+      @text.yscrollbar @yscrollbar
+      
+      @xscrollbar = x_scrollbar {
+        grid row: 2, column: 0, column_span: 2, row_weight: 0
+      }
+      @text.xscrollbar @xscrollbar
     }
     @root.open
   end
