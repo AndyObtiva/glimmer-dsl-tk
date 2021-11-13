@@ -127,6 +127,7 @@ module Glimmer
       end
 
       def tk_widget_has_attribute_setter?(attribute)
+        return true if @tk.respond_to?(attribute)
         result = nil
         begin
           # TK Widget currently doesn't support respond_to? properly, so I have to resort to this trick for now
@@ -250,10 +251,6 @@ module Glimmer
         end
       end
       
-      def index_in_parent
-        @parent_proxy&.children&.index(self)
-      end
-        
       def grid(options = {})
         options = options.stringify_keys
         options['rowspan'] = options.delete('row_span') if options.keys.include?('row_span')
@@ -268,13 +265,14 @@ module Glimmer
         options['columnminsize'] = options.delete('minwidth') if options.keys.include?('minwidth')
         options['columnminsize'] = options.delete('min_width') if options.keys.include?('min_width')
         options['columnminsize'] = options['rowminsize'] = options.delete('minsize')  if options.keys.include?('minsize')
+        index_in_parent = griddable_parent_proxy&.children&.index(griddable_proxy)
         if index_in_parent
-          TkGrid.rowconfigure(@parent_proxy.tk, index_in_parent, 'weight'=> options.delete('rowweight')) if options.keys.include?('rowweight')
-          TkGrid.rowconfigure(@parent_proxy.tk, index_in_parent, 'minsize'=> options.delete('rowminsize')) if options.keys.include?('rowminsize')
-          TkGrid.columnconfigure(@parent_proxy.tk, index_in_parent, 'weight'=> options.delete('columnweight')) if options.keys.include?('columnweight')
-          TkGrid.columnconfigure(@parent_proxy.tk, index_in_parent, 'minsize'=> options.delete('columnminsize')) if options.keys.include?('columnminsize')
+          TkGrid.rowconfigure(griddable_parent_proxy.tk, index_in_parent, 'weight'=> options.delete('rowweight')) if options.keys.include?('rowweight')
+          TkGrid.rowconfigure(griddable_parent_proxy.tk, index_in_parent, 'minsize'=> options.delete('rowminsize')) if options.keys.include?('rowminsize')
+          TkGrid.columnconfigure(griddable_parent_proxy.tk, index_in_parent, 'weight'=> options.delete('columnweight')) if options.keys.include?('columnweight')
+          TkGrid.columnconfigure(griddable_parent_proxy.tk, index_in_parent, 'minsize'=> options.delete('columnminsize')) if options.keys.include?('columnminsize')
         end
-        griddable_tk&.grid(options)
+        griddable_proxy&.tk&.grid(options)
       end
       
       def font=(value)
@@ -517,9 +515,14 @@ module Glimmer
       
       private
       
-      # The Tk element to apply grid to (is different from @tk in composite widgets like notebook or scrolledframe)
-      def griddable_tk
-        @tk
+      # The griddable parent widget proxy to apply grid to (is different from @tk in composite widgets like notebook or scrolledframe)
+      def griddable_parent_proxy
+        @parent_proxy
+      end
+      
+      # The griddable widget proxy to apply grid to (is different from @tk in composite widgets like notebook or scrolledframe)
+      def griddable_proxy
+        self
       end
       
       def build_widget

@@ -24,43 +24,54 @@ require 'glimmer-dsl-tk'
 include Glimmer
 
 root {
-  title 'Hello, Scrollbar!'
+  title 'Hello, Scrollbar Frame!'
   width 400
-  height 500
+  height 400
   
   notebook {
     grid sticky: 'nsew'
     
-    frame(text: 'Scrollable List') {
-      @list = list {
-        grid sticky: 'nsew', row: 0, column: 0, row_weight: 1, column_weight: 1
-        items 40.times.map {|n| "Item #{n + 1} of a very long list" }
+    frame(text: 'X/Y Scroll') {
+      scrollbar_frame {
+        30.times do |row|
+          10.times do |column|
+            button {
+              grid row: row, column: column, row_weight: 0, column_weight: 0
+              text "Row #{row} | Column #{column}"
+            }
+          end
+        end
       }
-      
-      @scrollbar = scrollbar {
-        grid row: 0, column: 1
-        # orient 'vertical' # default
-      }
-      @list.yscrollbar @scrollbar
     }
     
-    frame(text: 'Scrollable Text') {
-      @text = text {
-        grid sticky: 'nsew', row: 0, column: 0, row_weight: 1, column_weight: 1
-        value ("This is a random sample of text that will repeat over and over and over"*2 + "\n")*40
+    frame(text: 'Y Scroll') {
+      scrollbar_frame {
+        xscrollbar false
+        
+        30.times do |row|
+          2.times do |column|
+            button {
+              grid row: row, column: column, row_weight: 0, column_weight: 0
+              text "Row #{row} | Column #{column}"
+            }
+          end
+        end
       }
-      
-      @yscrollbar = scrollbar {
-        grid row: 0, column: 1
-        # orient 'vertical' # default
+    }
+    
+    frame(text: 'X Scroll') {
+      scrollbar_frame {
+        yscrollbar false
+        
+        13.times do |row|
+          10.times do |column|
+            button {
+              grid row: row, column: column, row_weight: 0, column_weight: 0
+              text "Row #{row} | Column #{column}"
+            }
+          end
+        end
       }
-      @text.yscrollbar @yscrollbar
-       
-      @xscrollbar = scrollbar {
-        grid row: 1, column: 0, column_span: 2, row_weight: 0
-        orient 'horizontal'
-      }
-      @text.xscrollbar @xscrollbar
     }
   }
 }.open

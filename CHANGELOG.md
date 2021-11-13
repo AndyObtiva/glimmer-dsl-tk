@@ -2,6 +2,9 @@
 
 ## 0.0.41
 
+- Support `scrollbar_frame` Glimmer custom widget as a frame that automatically provides scrollbars when its content's size exceeds its size
+- Support `scrollbar_frame` `xscrollbar` and `yscrollbar` attributes (to enable/disable via boolean or set to a custom externally instantiated scrollbar if needed)
+- Hello, Scrollbar Frame!
 
 ## 0.0.40
 

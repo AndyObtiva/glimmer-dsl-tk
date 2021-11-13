@@ -16,7 +16,7 @@ module GlimmerSpec # used to house Glimmer mixin
         }
       }
       
-      expect(@subject_proxy).to be_a(Glimmer::Tk::ButtonProxy)
+      expect(@subject_proxy).to be_a(Glimmer::Tk::WidgetProxy)
       expect(@subject_proxy.tk).to be_a(::Tk::Tile::Button)
       expect(@subject_proxy.parent_proxy).to eq(@root_proxy)
       expect(@subject_proxy.tk.text).to eq(button_text)

@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.40
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.41
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -122,6 +122,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Hello, Built-in Dialog!](#hello-built-in-dialog)
     - [Hello, Separator!](#hello-separator)
     - [Hello, Scrollbar!](#hello-scrollbar)
+    - [Hello, Scrollbar Frame!](#hello-scrollbar-frame)
     - [Hello, Menu Bar!](#hello-menu-bar)
   - [Applications](#applications)
     - [Glimmer Tk Calculator](#glimmer-tk-calculator)
@@ -180,7 +181,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '~> 0.0.40'
+gem 'glimmer-dsl-tk', '~> 0.0.41'
 ```
 
 And, then run:
@@ -310,11 +311,12 @@ keyword(args) | attributes | event bindings & callbacks
 `radiobutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `value` (default: `text`) | `command {}`
 `root` | `title`, `iconphoto`, `background`, `alpha`, `escapable`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`, `'OPEN_WINDOW'`
 `scrollbar` | `orient` | `command`
-`x_scrollbar` | `orient` (`'horizontal'`) | `command`
-`y_scrollbar` | `orient` (`'vertical'`) | `command`
+`scrollbar_frame` | `xscrollbar` (Boolean or scrollbar widget proxy), `yscrollbar` (Boolean or scrollbar widget proxy) | None
 `separator` | `orient` (`'horizontal' (default) or 'vertical'`) | None
 `toplevel` | `title`, `iconphoto`, `background`, `alpha`, `escapable`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`
 `text` | `value`, [many more attributes](https://tcl.tk/man/tcl8.6/TkCmd/text.htm#M116) | `'modified'`, `'selection'`, `'insert_mark_moved'` (alias: `'insert_mark_move', 'InsertMarkMove', 'InsertMarkMoved'`)
+`x_scrollbar` | `orient` (`'horizontal'`) | `command`
+`y_scrollbar` | `orient` (`'vertical'`) | `command`
 
 Options for `get_open_file` and `get_multiple_open_file` include:
 - `filetypes`: `Hash` of `'Group Name' => '.ext'` entries (e.g. `filetypes: {'PNG Images' => '.png'}`
@@ -3000,7 +3002,7 @@ root {
   height 500
   
   notebook {
-    grid sticky: 'nsew', row_weight: 1, column_weight: 1
+    grid sticky: 'nsew'
     
     frame(text: 'Scrollable List') {
       @list = list {
@@ -3055,6 +3057,89 @@ Glimmer app:
 ![glimmer dsl tk screenshot sample hello scrollbar](images/glimmer-dsl-tk-screenshot-sample-hello-scrollbar-list.png)
 
 ![glimmer dsl tk screenshot sample hello scrollbar](images/glimmer-dsl-tk-screenshot-sample-hello-scrollbar-text.png)
+
+### Hello, Scrollbar Frame!
+
+Glimmer code (from [samples/hello/hello_scrollbar_frame.rb](samples/hello/hello_scrollbar_frame.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+include Glimmer
+
+root {
+  title 'Hello, Scrollbar Frame!'
+  width 400
+  height 400
+  
+  notebook {
+    grid sticky: 'nsew'
+    
+    frame(text: 'X/Y Scroll') {
+      scrollbar_frame {
+        30.times do |row|
+          10.times do |column|
+            button {
+              grid row: row, column: column, row_weight: 0, column_weight: 0
+              text "Row #{row} | Column #{column}"
+            }
+          end
+        end
+      }
+    }
+    
+    frame(text: 'Y Scroll') {
+      scrollbar_frame {
+        xscrollbar false
+        
+        30.times do |row|
+          2.times do |column|
+            button {
+              grid row: row, column: column, row_weight: 0, column_weight: 0
+              text "Row #{row} | Column #{column}"
+            }
+          end
+        end
+      }
+    }
+    
+    frame(text: 'X Scroll') {
+      scrollbar_frame {
+        yscrollbar false
+        
+        13.times do |row|
+          10.times do |column|
+            button {
+              grid row: row, column: column, row_weight: 0, column_weight: 0
+              text "Row #{row} | Column #{column}"
+            }
+          end
+        end
+      }
+    }
+  }
+}.open
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_scrollbar_frame'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_scrollbar_frame.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello scrollbar frame x y scroll](images/glimmer-dsl-tk-screenshot-sample-hello-scrollbar-frame-x-y-scroll.png)
+
+![glimmer dsl tk screenshot sample hello scrollbar frame y scroll](images/glimmer-dsl-tk-screenshot-sample-hello-scrollbar-frame-y-scroll.png)
+
+![glimmer dsl tk screenshot sample hello scrollbar frame x scroll](images/glimmer-dsl-tk-screenshot-sample-hello-scrollbar-frame-x-scroll.png)
 
 ### Hello, Menu Bar!
 

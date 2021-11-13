@@ -2,7 +2,7 @@
 
 ## Next
 
-- Support displaying scrollbars automatically with `scrollable true` on `frame` or explore laying widgets in a `canvas` as an alternative
+- Support a `scrollbar_frame` widget that automatically displays scrollbars and permits scrolling when content is bigger than its dimensions
 - Default About Menu Item label to 'About' if not specified
 - Update Hello, Menu Bar! screenshots with Language Country
 - Auto-Default to `validate 'key'` when defining `validatecommand {}` or `on('validate') {}` on an `entry`
@@ -137,3 +137,4 @@
 - Provide a convenience `#modifiers` method on KeyPress/KeyRelease event that provides an English-description of held modifiers (e.g. `['shift_l', 'meta_l']`) as that would be more convenient than reliance on `event.state` cryptic integer values
 - Support installing multiple event listeners on any widget (tk by default supports installing one event listener only, with subsequent installations overriding previous ones)
 - Consider exposing WidgetProxy Tk possible class names (e.g. ::Tk#{SomeWidget}) via Glimmer::Config to make configurable
+- Support `MouseWheel` event in `scrollbar_frame` to permit scrolling with mouse wheel in the content region outside of `scrollbar`s.
