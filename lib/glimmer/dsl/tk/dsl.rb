@@ -38,11 +38,11 @@ module Glimmer
         %w[
           list_selection_data_binding
           data_binding
-          block_attribute
           attribute
           shine_data_binding
           widget
           built_in_dialog
+          block_attribute
         ]
       )
     end

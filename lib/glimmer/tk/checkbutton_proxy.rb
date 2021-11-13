@@ -20,7 +20,6 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/tk/widget_proxy'
-require 'glimmer/tk/commandable'
 require 'glimmer/tk/variable_owner'
 
 module Glimmer
@@ -29,7 +28,6 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class CheckbuttonProxy < WidgetProxy
-      include Commandable
       include VariableOwner
     end
   end

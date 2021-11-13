@@ -20,7 +20,6 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/tk/widget_proxy'
-require 'glimmer/tk/commandable'
 
 module Glimmer
   module Tk
@@ -28,8 +27,6 @@ module Glimmer
     #
     # Follows the Proxy Design Pattern
     class RadiobuttonProxy < WidgetProxy
-      include Commandable
-      
       def sibling_radio_buttons
         @parent_proxy.children.select {|child| child.is_a?(RadiobuttonProxy) && child != self}
       end

@@ -3114,7 +3114,7 @@ root { |r|
     
     menu(label: 'File', underline: 0) {
       menu_item(label: 'New', underline: 0) {
-        accelerator 'Command+N'
+        accelerator OS.mac? ? 'Command+N' : 'Control+N'
 
         on('command') do
           message_box(parent: r, title: 'New', message: 'New file created.')
@@ -3122,7 +3122,7 @@ root { |r|
       }
       
       menu_item(label: 'Open...', underline: 0) {
-        accelerator 'Command+O'
+        accelerator OS.mac? ? 'Command+O' : 'Control+O'
 
         on('command') do
           message_box(parent: r, title: 'Open', message: 'Opening File...')
@@ -3154,15 +3154,15 @@ root { |r|
     
     menu(label: 'Edit', underline: 0) {
       menu_item(label: 'Cut', underline: 2) {
-        accelerator 'Command+X'
+        accelerator OS.mac? ? 'Command+X' : 'Control+X'
       }
       
       menu_item(label: 'Copy', underline: 0) {
-        accelerator 'Command+C'
+        accelerator OS.mac? ? 'Command+C' : 'Control+C'
       }
       
       menu_item(label: 'Paste', underline: 0) {
-        accelerator 'Command+V'
+        accelerator OS.mac? ? 'Command+V' : 'Control+V'
       }
     }
     
@@ -3174,7 +3174,7 @@ root { |r|
         end
       }
       
-      @select_one_menu = menu(label: 'Select One', underline: 0) {
+      @select_one_menu = menu(label: 'Select One', underline: 7) {
         menu_item(:radiobutton, label: 'Option 1') {
           state 'disabled'
         }
@@ -3186,7 +3186,7 @@ root { |r|
         }
       }
       
-      @select_multiple_menu = menu(label: 'Select Multiple', underline: 0) {
+      @select_multiple_menu = menu(label: 'Select Multiple', underline: 7) {
         menu_item(:checkbutton, label: 'Option 4') {
           state 'disabled'
         }
@@ -3208,7 +3208,7 @@ root { |r|
       end
     }
     
-    menu(label: 'Language Country', underline: 3) {
+    menu(label: 'Country', underline: 3) {
       ['denmark', 'finland', 'france', 'germany', 'italy', 'mexico', 'netherlands', 'norway', 'usa'].each do |image_name|
         menu_item(:radiobutton, label: image_name.capitalize) {
           selection image_name == 'usa'
@@ -3242,7 +3242,7 @@ root { |r|
     
     menu(label: 'View', underline: 0) {
       menu_item(:radiobutton, label: 'Small', underline: 0) {
-        accelerator 'Command+S'
+        accelerator OS.mac? ? 'Command+S' : 'Control+S'
         
         on('command') do
           @label.font = {size: 25}
@@ -3250,7 +3250,7 @@ root { |r|
       }
       
       menu_item(:radiobutton, label: 'Medium', underline: 0) {
-        accelerator 'Command+M'
+        accelerator OS.mac? ? 'Command+M' : 'Control+M'
         selection true
 
         on('command') do
@@ -3259,7 +3259,7 @@ root { |r|
       }
       
       menu_item(:radiobutton, label: 'Large', underline: 0) {
-        accelerator 'Command+L'
+        accelerator OS.mac? ? 'Command+L' : 'Control+L'
         
         on('command') do
           @label.font = {size: 75}
@@ -3267,17 +3267,20 @@ root { |r|
       }
     }
     
-    menu(label: 'Window', underline: 0)
+    # Mac-specific window menu (containing zooming/resizing menu items)
+    menu(label: 'Window', underline: 0) if OS.mac?
     
     menu(label: 'Help', underline: 0) {
-      menu_item(:help) {
-        on('command') do
-          message_box(parent: r, title: 'Help', message: 'Help for my application.')
-        end
-      }
+      if OS.mac?
+        menu_item(:help) {
+          on('command') do
+            message_box(parent: r, title: 'Help', message: 'Help for my application.')
+          end
+        }
+      end
       
       menu_item(label: 'Manual', underline: 0) {
-        accelerator 'Command+Shift+M'
+        accelerator OS.mac? ? 'Command+Shift+M' : 'Control+U'
 
         on('command') do
           message_box(parent: r, title: 'Manual', message: 'Manual Contents')
@@ -3285,7 +3288,7 @@ root { |r|
       }
       
       menu_item(label: 'Tutorial', underline: 0) {
-        accelerator 'Command+Shift+T'
+        accelerator OS.mac? ? 'Command+Shift+T' : 'Control+T'
 
         on('command') do
           message_box(parent: r, title: 'Tutorial', message: 'Tutorial Contents')
@@ -3356,7 +3359,7 @@ https://github.com/ancorgs/y3network-ruby-ui
 
 ### CryptoPunks GUI
 
-This is a Graphical User Interface for the [cryptopunks Ruby gem](https://github.com/cryptopunksnotdead/cryptopunks/tree/master/cryptopunks).
+This is a Graphical User Interface for the famous [cryptopunks Ruby gem](https://github.com/cryptopunksnotdead/cryptopunks/tree/master/cryptopunks).
 
 https://github.com/cryptopunksnotdead/cryptopunks-gui
 

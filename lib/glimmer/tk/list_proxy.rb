@@ -20,14 +20,11 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/tk/widget_proxy'
-require 'glimmer/tk/scrollable'
 
 module Glimmer
   module Tk
     # Custom list widget implementation
     class ListProxy < WidgetProxy
-      include Scrollable
-      
       def initialize(underscored_widget_name, parent_proxy, args)
         super('treeview', parent_proxy, args)
         @tk.show = 'tree'

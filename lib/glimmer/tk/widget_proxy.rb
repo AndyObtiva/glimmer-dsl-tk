@@ -456,6 +456,7 @@ module Glimmer
       
       def handle_listener(listener_name, &listener)
         listener_name = listener_name.to_s
+        # TODO return a listener registration object that has a deregister method
         if listener_name == 'destroy'
           # 'destroy' is a more reliable alternative listener binding to '<Destroy>'
           @on_destroy_procs ||= []
@@ -463,22 +464,26 @@ module Glimmer
           @on_destroy_procs << listener
           @tk.bind('<Destroy>', listener)
           parent_proxy.handle_listener(listener_name, &listener) if parent_proxy
-          # TODO return a listener registration object that has a deregister method
         else
           @listeners ||= {}
           begin
             @listeners[listener_name] ||= []
-            @tk.bind(listener_name) { |event| @listeners[listener_name].each {|l| l.call(event)} } if @listeners[listener_name].empty?
+            if @tk.respond_to?(listener_name)
+              @tk.send(listener_name) { |*args| @listeners[listener_name].each {|l| l.call(*args)} } if @listeners[listener_name].empty?
+            else
+              @tk.bind(listener_name) { |*args| @listeners[listener_name].each {|l| l.call(*args)} } if @listeners[listener_name].empty?
+            end
             @listeners[listener_name] << listener
           rescue => e
             @listeners.delete(listener_name)
-            Glimmer::Config.logger.debug {"Unable to bind to #{listener_name} .. attempting to surround with <>"}
+            Glimmer::Config.logger.debug {"Unable to bind to #{listener_name} .. attempting to surround with <> ..."}
             Glimmer::Config.logger.debug {e.full_message}
-            listener_name = "<#{listener_name}" if !listener_name.start_with?('<')
-            listener_name = "#{listener_name}>" if !listener_name.end_with?('>')
-            @listeners[listener_name] ||= []
-            @tk.bind(listener_name) { |event| @listeners[listener_name].each {|l| l.call(event)} } if @listeners[listener_name].empty?
-            @listeners[listener_name] << listener
+            new_listener_name = listener_name
+            new_listener_name = "<#{new_listener_name}" if !new_listener_name.start_with?('<')
+            new_listener_name = "#{new_listener_name}>" if !new_listener_name.end_with?('>')
+            @listeners[new_listener_name] ||= []
+            @tk.bind(new_listener_name) { |*args| @listeners[new_listener_name].each {|l| l.call(*args)} } if @listeners[new_listener_name].empty?
+            @listeners[new_listener_name] << listener
           end
         end
       end

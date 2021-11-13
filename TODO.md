@@ -2,10 +2,16 @@
 
 ## Next
 
-- Hello, Scrollbar!
 - Support displaying scrollbars automatically with `scrollable true` on `frame` or explore laying widgets in a `canvas` as an alternative
 - Default About Menu Item label to 'About' if not specified
 - Update Hello, Menu Bar! screenshots with Language Country
+- Auto-Default to `validate 'key'` when defining `validatecommand {}` or `on('validate') {}` on an `entry`
+- Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
+- Refactor `WidgetProxy` by adding a `griddable?` method that could be overriden by subclasses to consult for auto-gridding on `initialize_defaults`
+- Allow setting root x/y without affecting its default width/height
+- `icon_photo` as alias for `iconphoto` attribute
+- Add defensive programming for preventing spinbox from allowing value to go over `to` (max) when typing by keyboard
+- Document Glimmer debug logging
 
 ## Soon
 
@@ -25,13 +31,6 @@
 - `text` widget paste with cut/copied style (perhaps track all applied formatting tags and reapply them to new indexes)
 - `text` widget paste matching insert mark style (track all applied tags to that location and reapply)
 
-- `icon_photo` as alias for `iconphoto` attribute
-- Add defensive programming for preventing spinbox from allowing value to go over `to` (max) when typing by keyboard
-- Allow setting root x/y without affecting its default width/height
-- Look into updating block_attribute expression to not require defining blocks that simply forward to tk on the widget
-- Document Glimmer debug logging
-- Refactor `WidgetProxy` by adding a `griddable?` method that could be overriden by subclasses to consult for auto-gridding on `initialize_defaults`
-
 ## Issues
 
 - Fix Hello, Text! issue in Linux with changing background/foreground/font/font-size on a selection only changing it to first word in selection
@@ -42,8 +41,6 @@
 - Implement `code_text` line numbers feature, relying on yscrollcommand and yview scroll number
 - Update Meta-Sample to use `code_text` custom widget
 
-- Auto-Default to `validate 'key'` when defining `validatecommand {}` or `on('validate') {}` on an `entry`
-- Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 - Add default padding to `labelframe`
 - Hello, Labelframe!
 

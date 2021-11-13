@@ -28,11 +28,15 @@ module Glimmer
         def can_interpret?(parent, keyword, *args, &block)
           block_given? and
             args.size == 0 and
-            parent.respond_to?("#{keyword}_block=")
+            (parent.respond_to?("#{keyword}_block=") || (parent.respond_to?(:tk) && parent.tk.respond_to?(keyword)))
         end
   
         def interpret(parent, keyword, *args, &block)
-          parent.send("#{keyword}_block=", block)
+          if parent.respond_to?("#{keyword}_block=")
+            parent.send("#{keyword}_block=", block)
+          else
+            parent.tk.send(keyword, block)
+          end
           nil
         end
       end
