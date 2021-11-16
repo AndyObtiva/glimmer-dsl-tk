@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.42
+
+- Fix issue with including bwidgets and iwidgets in Windows
+
 ## 0.0.41
 
 - Support `scrollbar_frame` Glimmer custom widget as a frame that automatically provides scrollbars when its content's size exceeds its size

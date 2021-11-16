@@ -27,8 +27,8 @@ require 'glimmer'
 require 'puts_debuggerer' if ENV['pd'].to_s.downcase == 'true'
 # require 'super_module'
 require 'tk'
-require 'tkextlib/bwidget'
-require 'tkextlib/iwidgets'
+#require 'tkextlib/bwidget' # does not work on Windows
+#require 'tkextlib/iwidgets' # does not work on Windows
 require 'os'
 require 'facets/hash/symbolize_keys'
 require 'facets/string/underscore'
