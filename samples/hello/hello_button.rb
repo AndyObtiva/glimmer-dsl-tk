@@ -47,9 +47,9 @@ class HelloButton
           default 'active'
           focus true
           
-          on('command') {
+          on('command') do
             self.count += 1
-          }
+          end
         }
       }
         
@@ -64,9 +64,9 @@ class HelloButton
         button {
           image File.expand_path('../../icons/glimmer.png', __dir__), subsample: 5
           
-          on('command') {
+          on('command') do
             message_box(title: 'Image Button', message: 'Image Button Clicked!')
-          }
+          end
         }
       }
       
@@ -84,9 +84,9 @@ class HelloButton
             text "#{compound_option.capitalize} Image"
             compound compound_option
             
-            on('command') {
+            on('command') do
               message_box(title: 'Text Image Button', message: 'Text Image Button Clicked!', detail: "(#{compound_option})")
-            }
+            end
           }
         end
       }

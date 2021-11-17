@@ -57,7 +57,7 @@ root {
         on_drag_start do |event|
           event.data = event.source.text
           event.source.configure(:cursor => "hand2")
-          event.tooltip.content {
+          event.tooltip.content { # re-open tooltip content and add a label
             lbl { # non-tile-theme version of label
               text event.data + " "
               bg "yellow"

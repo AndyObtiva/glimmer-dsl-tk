@@ -1038,14 +1038,14 @@ class HelloButton
           text 'Text Button'
         }
         
-        button {
+        button { |b|
           text <= [self, :count, on_read: ->(value) { "Click To Increment: #{value}  " }]
           default 'active'
           focus true
           
-          command {
+          on('command') do
             self.count += 1
-          }
+          end
         }
       }
         
@@ -1060,9 +1060,9 @@ class HelloButton
         button {
           image File.expand_path('../../icons/glimmer.png', __dir__), subsample: 5
           
-          command {
+          on('command') do
             message_box(title: 'Image Button', message: 'Image Button Clicked!')
-          }
+          end
         }
       }
       
@@ -1077,12 +1077,12 @@ class HelloButton
         ['center', 'top', 'bottom', 'left', 'right'].each do |compound_option|
           button {
             image File.expand_path('../../icons/glimmer.png', __dir__), subsample: 5
-            text 'Text Image Button'
+            text "#{compound_option.capitalize} Image"
             compound compound_option
             
-            command {
+            on('command') do
               message_box(title: 'Text Image Button', message: 'Text Image Button Clicked!', detail: "(#{compound_option})")
-            }
+            end
           }
         end
       }
