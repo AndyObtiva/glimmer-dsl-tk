@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.44
+
+- Fix issue with not being able to drop list into checkbox in Hello, Drag and Drop! by disabling functionality for list just like button
+
 ## 0.0.43
 
 - Modified Hello, Drag and Drop! to include a list

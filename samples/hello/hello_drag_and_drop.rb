@@ -206,11 +206,11 @@ root {
       
       checkbutton {
         grid :row => 5, :column => 1, :pady => 5, :sticky => "w"
-        text "Drop here to destroy a widget\n(except button)"
+        text "Drop here to destroy a widget\n(except button and list)"
         
         on_drop do |event|
           event.target.text = event.data
-          event.source.destroy unless event.source.is_a? Tk::Button
+          event.source.destroy unless event.source.is_a?(Tk::Button) || event.source.is_a?(Tk::Tile::Treeview)
         end
       }
     }
