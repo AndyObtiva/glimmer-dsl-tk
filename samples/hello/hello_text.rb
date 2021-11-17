@@ -282,7 +282,7 @@ class HelloText
       
       @text = text {
         grid row: 1, column: 0, row_weight: 1
-#         wrap 'word'
+        wrap 'word'
         undo true
         value <=> [self, :document]
         
@@ -308,11 +308,6 @@ class HelloText
         grid row: 1, column: 1
       }
       @text.yscrollbar @yscrollbar
-      
-      @xscrollbar = x_scrollbar {
-        grid row: 2, column: 0, column_span: 2, row_weight: 0
-      }
-      @text.xscrollbar @xscrollbar
     }
     @root.open
   end
