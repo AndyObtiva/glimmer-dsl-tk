@@ -127,7 +127,7 @@ module Glimmer
       end
 
       def tk_widget_has_attribute_setter?(attribute)
-        return true if @tk.respond_to?(attribute)
+        return true if @tk.respond_to?(attribute) && attribute != 'focus' # TODO configure exceptions via constant if needed
         result = nil
         begin
           # TK Widget currently doesn't support respond_to? properly, so I have to resort to this trick for now
@@ -384,6 +384,7 @@ module Glimmer
               if observer.is_a?(Glimmer::DataBinding::ModelBinding)
                 model = observer.model
                 options_model_property = observer.property_name + '_options'
+                # TODO perform data-binding to values too
                 @tk.values = model.send(options_model_property) if model.respond_to?(options_model_property)
               end
               @tk.bind('<ComboboxSelected>') {
