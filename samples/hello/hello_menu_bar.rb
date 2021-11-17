@@ -25,7 +25,7 @@ include Glimmer
 
 COLORS = [:white, :red, :yellow, :green, :blue, :magenta, :gray, :black]
 
-Tk::Tile::Style.theme_use "classic" # this enables setting background on label just for demo purposes
+Tk::Tile::Style.theme_use 'classic' if OS.mac? # this enables setting background on label just for demo purposes
 
 root { |r|
   title 'Hello, Menu Bar!'
@@ -63,11 +63,6 @@ root { |r|
           end
         }
       }
-    end
-    
-    # Windows-specific system menu (to the top-left of the window frame)
-    if OS.windows?
-      menu(label: 'System')
     end
     
     menu(label: 'File', underline: 0) {
@@ -166,7 +161,7 @@ root { |r|
       end
     }
     
-    menu(label: 'Country', underline: 3) {
+    menu(label: 'Country', underline: 0) {
       ['denmark', 'finland', 'france', 'germany', 'italy', 'mexico', 'netherlands', 'norway', 'usa'].each do |image_name|
         menu_item(:radiobutton, label: image_name.capitalize) {
           selection image_name == 'usa'
@@ -176,7 +171,7 @@ root { |r|
       end
     }
     
-    menu(label: 'Format', underline: 0) {
+    menu(label: 'Format', underline: 3) {
       menu(label: 'Background Color', underline: 0) {
         COLORS.each { |color_style|
           menu_item(:radiobutton, label: color_style.to_s.split('_').map(&:capitalize).join(' ')) {

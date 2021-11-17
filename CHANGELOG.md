@@ -3,6 +3,7 @@
 ## 0.0.42
 
 - Fix issue with including bwidgets and iwidgets in Windows
+- Fix Hello, Menu Bar! sample in Windows (by disabling Windows-special System menu, which does not seem to be working in Tk)
 
 ## 0.0.41
 

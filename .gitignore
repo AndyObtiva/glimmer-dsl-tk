@@ -53,3 +53,4 @@ pkg
 # Gladiator (Glimmer Editor)
 .gladiator
 tmp
+.mvn
