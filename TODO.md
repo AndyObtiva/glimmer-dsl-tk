@@ -2,7 +2,7 @@
 
 ## Next
 
-- Support inter-application Drag and Drop (e.g. drag a file from Finder/Explorer and drop it in Glimmer DSL for Tk app drop zone to store it in a list)
+- Move `DragAndDropEvent` from `Glimmer::Tk::DraggableAndDroppable` into `Glimmer::Tk` namespace directly as `Glimmer::Tk::DragAndDropEvent`
 
 ## Soon
 
@@ -139,6 +139,7 @@
 - Support `validate_command` and `invalid_command` as aliases to `validatecommand` and `invalidcommand` on `entry`
 - Provide a convenience `#modifiers` method on KeyPress/KeyRelease event that provides an English-description of held modifiers (e.g. `['shift_l', 'meta_l']`) as that would be more convenient than reliance on `event.state` cryptic integer values
 - Support installing multiple event listeners on any widget (tk by default supports installing one event listener only, with subsequent installations overriding previous ones)
-- Consider exposing WidgetProxy Tk possible class names (e.g. ::Tk#{SomeWidget}) via Glimmer::Config to make configurable
 - Support `MouseWheel` event in `scrollbar_frame` to permit scrolling with mouse wheel in the content region outside of `scrollbar`s.
 - Consider adding `value` alias for `variable` in `checkbutton` and `radiobutton` (plus any widgets using variable)
+- Consider exposing WidgetProxy Tk possible class names (e.g. ::Tk#{SomeWidget}) via Glimmer::Config to make configurable
+- Support inter-application Drag and Drop (e.g. drag a file from Finder/Explorer and drop it in Glimmer DSL for Tk app drop zone to store it in a list)
