@@ -63,20 +63,20 @@ module Glimmer
       def build_widget
         if application?
           if OS.mac?
-            @tk = ::TkSysMenu_Apple.new(@parent_proxy.tk)
+            @tk = ::TkSysMenu_Apple.new(@parent_proxy.tk).tap {|tk| tk.singleton_class.include(Glimmer::Tk::Widget); tk.proxy = self}
             @parent_proxy.tk.add :cascade, :menu => @tk
           end
         else
           if @parent_proxy.parent_proxy.is_a?(ToplevelProxy) && (OS.mac? || OS.linux?) && help?
-            @tk = ::TkSysMenu_Help.new(@parent_proxy.tk)
+            @tk = ::TkSysMenu_Help.new(@parent_proxy.tk).tap {|tk| tk.singleton_class.include(Glimmer::Tk::Widget); tk.proxy = self}
           elsif @parent_proxy.parent_proxy.is_a?(ToplevelProxy) && OS.mac? && window?
-            @tk = ::Tk::TkSysMenu_Window.new(@parent_proxy.tk)
+            @tk = ::Tk::TkSysMenu_Window.new(@parent_proxy.tk).tap {|tk| tk.singleton_class.include(Glimmer::Tk::Widget); tk.proxy = self}
           # Windows system menu does not seem to work
 #           elsif @parent_proxy.parent_proxy.is_a?(ToplevelProxy) && OS.windows? && system?
-#             @tk = ::TkSysMenu_System.new(@parent_proxy.tk)
+#             @tk = ::TkSysMenu_System.new(@parent_proxy.tk).tap {|tk| tk.singleton_class.include(Glimmer::Tk::Widget); tk.proxy = self}
           else
             tk_widget_class = self.class.tk_widget_class_for(@keyword)
-            @tk = tk_widget_class.new(@parent_proxy.tk)
+            @tk = tk_widget_class.new(@parent_proxy.tk).tap {|tk| tk.singleton_class.include(Glimmer::Tk::Widget); tk.proxy = self}
           end
           case @parent_proxy
           when MenuProxy

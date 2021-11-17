@@ -97,7 +97,7 @@ root {
         text 'List'
       }
       
-      country_list = list {
+      list {
         grid :row => 3, :column => 1, :pady => 5, :sticky => "e"
         selectmode 'browse'
         items %w[USA Canada Mexico]
@@ -206,11 +206,12 @@ root {
       
       checkbutton {
         grid :row => 5, :column => 1, :pady => 5, :sticky => "w"
-        text "Drop here to destroy a widget\n(except button and list)"
+        text "Drop here to destroy a widget"
         
         on_drop do |event|
           event.target.text = event.data
-          event.source.destroy unless event.source.is_a?(Tk::Button) || event.source.is_a?(Tk::Tile::Treeview)
+          # execute asynchronously after 100ms to ensure all events have been processed before destruction
+          ::Tk.after(100) {event.source.destroy}
         end
       }
     }

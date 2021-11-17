@@ -2,6 +2,17 @@
 
 ## Next
 
+- Provide question mark alias of `event.drop_accepted` (i.e. `drop_accepted?`)
+- Look into improving this code in Hello, Drag and Drop! (maybe provide proxy so consumers can do `event.tooltip.content {label {...} }` with Glimmer DSL):
+```ruby
+          TkLabel.new(event.tooltip) {
+            text event.data + " "
+            bg "yellow"
+            bitmap "warning"
+            compound "right"
+          }.pack
+
+```
 - Add Glimmer Style Guide
 
 ## Soon

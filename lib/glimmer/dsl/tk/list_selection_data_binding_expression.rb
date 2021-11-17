@@ -50,7 +50,7 @@ module Glimmer
           #TODO check if nested data binding works for list widget and other widgets that need custom data binding
           list_selection_binding.observe(model, model_binding.property_name_expression)
   
-          parent.tk.bind('<TreeviewSelect>') do
+          parent.on('<TreeviewSelect>') do
             model_binding.call(list_selection_binding.evaluate_property)
           end
         end

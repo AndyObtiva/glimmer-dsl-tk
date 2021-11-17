@@ -20,6 +20,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer/data_binding/tk/one_time_observer'
+require 'glimmer/tk/widget'
 
 module Glimmer
   module Tk
@@ -70,7 +71,8 @@ module Glimmer
       
       FONTS_PREDEFINED = %w[default text fixed menu heading caption small_caption icon tooltip]
       
-      attr_reader :parent_proxy, :tk, :args, :keyword, :children
+      attr_reader :parent_proxy, :tk, :args, :keyword, :children, :bind_ids, :destroyed
+      alias destroyed? destroyed
 
       # Initializes a new Tk Widget
       #
@@ -288,8 +290,10 @@ module Glimmer
       end
       
       def destroy
+        unbind_all
         @tk.destroy
         @on_destroy_procs&.each {|p| p.call(@tk)}
+        @destroyed = true
       end
       
       def apply_style(options)
@@ -491,6 +495,16 @@ module Glimmer
         handle_listener(listener_name, &listener)
       end
       
+      def unbind_all
+        @listeners&.keys&.each do |key|
+          if key.to_s.downcase.include?('command')
+            @tk.send(key, '')
+          else
+            @tk.bind(key, '')
+          end
+        end
+      end
+      
       def content(&block)
         Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Tk::WidgetExpression.new, keyword, *args, &block)
       end
@@ -514,6 +528,11 @@ module Glimmer
           !super_only && tk.respond_to?(method, *args, &block)
       end
       
+      # inspect is overridden to prevent printing very long stack traces
+      def inspect
+        "#{super[0, 150]}... >"
+      end
+      
       private
       
       # The griddable parent widget proxy to apply grid to (is different from @tk in composite widgets like notebook or scrolledframe)
@@ -528,7 +547,7 @@ module Glimmer
       
       def build_widget
         tk_widget_class = self.class.tk_widget_class_for(@keyword)
-        @tk = tk_widget_class.new(@parent_proxy.tk, *args)
+        @tk = tk_widget_class.new(@parent_proxy.tk, *args).tap {|tk| tk.singleton_class.include(Glimmer::Tk::Widget); tk.proxy = self}
       end
       
       def initialize_defaults

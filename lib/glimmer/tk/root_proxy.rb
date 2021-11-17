@@ -28,7 +28,7 @@ module Glimmer
     # Follows the Proxy Design Pattern
     class RootProxy < ToplevelProxy
       def initialize(*args, &block)
-        @tk = ::TkRoot.new
+        @tk = ::TkRoot.new.tap {|tk| tk.singleton_class.include(Glimmer::Tk::Widget); tk.proxy = self}
         @tk.minsize = DEFAULT_WIDTH, DEFAULT_HEIGHT
         initialize_defaults
         post_add_content if block.nil?

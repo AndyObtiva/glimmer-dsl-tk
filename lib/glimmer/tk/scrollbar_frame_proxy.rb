@@ -103,7 +103,7 @@ module Glimmer
         build_yscrollbar
         build_xscrollbar
         tk_widget_class = self.class.tk_widget_class_for('frame')
-        @tk = tk_widget_class.new(@canvas_proxy.tk, *args)
+        @tk = tk_widget_class.new(@canvas_proxy.tk, *args).tap {|tk| tk.singleton_class.include(Glimmer::Tk::Widget); tk.proxy = self}
         TkcWindow.new(@canvas_proxy.tk, 0, 0, :anchor => "nw", :window => @tk)
       end
       

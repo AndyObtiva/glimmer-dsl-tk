@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.45
+
+- Add `#proxy` method to all Tk widgets to return Glimmer widget proxy objects (e.g. `Tk::Tile::TButton#proxy` returns `Glimmer::Tk::WidgetProxy` object)
+- Fix issue with dropping button and list unto checkbox in Hello, Drag and Drop!
+
 ## 0.0.44
 
 - Fix issue with not being able to drop list into checkbox in Hello, Drag and Drop! by disabling functionality for list just like button

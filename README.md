@@ -225,6 +225,8 @@ The Glimmer GUI DSL follows these simple concepts in mapping from Tk syntax:
 - **Content/Options Block**: Any keyword may optionally be followed by a Ruby curly-brace block containing nested widgets (content) and attributes (options). Attributes are simply Tk option keywords followed by arguments and no block (e.g. `title 'Hello, World!'` under a `root`)
 - **Event Binding Block**: `on(event) {}` keyword receiving a Tk binding event name (e.g. `KeyPress` or `ComboboxSelected`). Surrounding event by `<>` is optional as [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) can take care of that automatically.
 
+Note that Glimmer widgets are proxy objects (wrappers) for Tk widgets. To get wrapped Tk widget from a Glimmer widget, you simply invoke `#tk` method. To get the proxy of a wrapped Tk widget, you may invoke `#proxy` method.
+
 Example of an app written in [Tk](https://www.tcl.tk/) imperative syntax:
 
 ```ruby
