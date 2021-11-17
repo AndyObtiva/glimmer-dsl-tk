@@ -134,9 +134,7 @@ root {
         borderwidth 2
         relief "solid"
         
-        on_drop do |event|
-          event.target.text = event.data
-        end
+        drop_target true
       }
       
       label {
@@ -147,9 +145,7 @@ root {
         grid :row => 1, :column => 1, :pady => 5, :sticky => "e"
         width 30
         
-        on_drop { |event|
-          event.target.text = event.data
-        }
+        drop_target true
       }
       
       label {
@@ -160,9 +156,7 @@ root {
         grid :row => 2, :column => 1, :pady => 5, :sticky => "e"
         width 27
         
-        on_drop do |event|
-          event.target.text = event.data
-        end
+        drop_target true
       }
       
       label {
@@ -174,9 +168,7 @@ root {
         selectmode 'browse'
         height 3
         
-        on_drop do |event|
-          event.target.items += [event.data]
-        end
+        drop_target true
       }
       
       label {
@@ -187,9 +179,7 @@ root {
         grid :row => 4, :column => 1, :pady => 5, :sticky => "w"
         text "Drop here"
         
-        on_drop do |event|
-          event.target.text = event.data
-        end
+        drop_target true
       }
       
       label {
@@ -199,7 +189,9 @@ root {
       checkbutton {
         grid :row => 5, :column => 1, :pady => 5, :sticky => "w"
         text "Drop here to destroy a widget"
-        
+
+        # drop_target true
+        # This is an alternative to `drop_target true` with manual consumption of transferred data
         on_drop do |event|
           event.target.text = event.data
           # execute asynchronously after 100ms to ensure all events have been processed before destruction

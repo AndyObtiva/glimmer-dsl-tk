@@ -35,6 +35,15 @@ module Glimmer
         end
       end
 
+      def drop_target=(value)
+        @drop_target = value
+        if @drop_target
+          make_droppable
+        else
+          make_non_droppable
+        end
+      end
+
       def on_drag_start_block=(block)
         @on_drag_start_block = block
         make_draggable
@@ -122,6 +131,20 @@ module Glimmer
         @tk.bind_remove("B1-Motion")
         @tk.bind_remove("ButtonRelease-1")
         @tk.bind_remove("<DropAcceptedEvent>")
+      end
+
+      def make_droppable
+        self.on_drop_block = Proc.new do |event|
+          event.target.text = event.data if event.target.has_attribute?('text')
+          event.target.items += [event.data] if event.target.has_attribute?('items')
+          event.target.selection += [event.data] if event.target.has_attribute?('selection')
+        end
+      end
+
+      def make_non_droppable
+        @tk.bind_remove('<DropEvent>')
+        @tk.bind_remove('<DropCheckEvent>')
+        @on_drop_block = nil
       end
 
       DragAndDropEvent = Struct.new(:source, :target, :tooltip, :x_root, :y_root, :data, :drop_accepted) do

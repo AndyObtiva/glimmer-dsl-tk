@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.45
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.46
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -182,7 +182,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '0.0.45'
+gem 'glimmer-dsl-tk', '0.0.46'
 ```
 
 And, then run:
@@ -480,7 +480,7 @@ Check out the [Hello, Scrollbar!](#hello-scrollbar) sample for a `text` demo wit
 
 #### Drag and Drop API
 
-Drag and drop works by simply designating a widget as a drag source with attribute `drag_source true`
+Drag and drop works by simply designating a widget as a drag source with attribute `drag_source true` and another widget as a drop target with attribute `drop_target true`.
 
 Alternatively, add listeners:
 - `on_drag_start {|event| ...}`: fires on drag start receiving an `event` arg to set `data` and configure `source`
@@ -2732,11 +2732,12 @@ root {
         text "Drag entry text"
         width 30
         
+        # drag_source true
         # This is how to do `drag_source true` the manual way for use in exceptional cases
         on_drag_start do |event|
           event.data = event.source.text
           event.source.configure(:cursor => "hand2")
-          event.tooltip.content {
+          event.tooltip.content { # re-open tooltip content and add a label
             lbl { # non-tile-theme version of label
               text event.data + " "
               bg "yellow"
@@ -2765,9 +2766,7 @@ root {
         values %w[USA Canada Mexico Columbia UK Australia Germany Italy Spain]
         width 27
         
-        on_drag_start do |event|
-          event.data = event.source.text
-        end
+        drag_source true
       }
       
       label {
@@ -2781,6 +2780,8 @@ root {
         selection 'Canada'
         height 3
         
+        # drag_source true
+        # This is another alternative to `drag_source true` with manual specification of transferred data only
         on_drag_start do |event|
           event.data = event.source.selection.first
         end
@@ -2812,9 +2813,7 @@ root {
         borderwidth 2
         relief "solid"
         
-        on_drop do |event|
-          event.target.text = event.data
-        end
+        drop_target true
       }
       
       label {
@@ -2825,9 +2824,7 @@ root {
         grid :row => 1, :column => 1, :pady => 5, :sticky => "e"
         width 30
         
-        on_drop { |event|
-          event.target.text = event.data
-        }
+        drop_target true
       }
       
       label {
@@ -2838,9 +2835,7 @@ root {
         grid :row => 2, :column => 1, :pady => 5, :sticky => "e"
         width 27
         
-        on_drop do |event|
-          event.target.text = event.data
-        end
+        drop_target true
       }
       
       label {
@@ -2852,9 +2847,7 @@ root {
         selectmode 'browse'
         height 3
         
-        on_drop do |event|
-          event.target.items += [event.data]
-        end
+        drop_target true
       }
       
       label {
@@ -2865,9 +2858,7 @@ root {
         grid :row => 4, :column => 1, :pady => 5, :sticky => "w"
         text "Drop here"
         
-        on_drop do |event|
-          event.target.text = event.data
-        end
+        drop_target true
       }
       
       label {
@@ -2877,7 +2868,9 @@ root {
       checkbutton {
         grid :row => 5, :column => 1, :pady => 5, :sticky => "w"
         text "Drop here to destroy a widget"
-        
+
+        # drop_target true
+        # This is an alternative to `drop_target true` with manual consumption of transferred data
         on_drop do |event|
           event.target.text = event.data
           # execute asynchronously after 100ms to ensure all events have been processed before destruction

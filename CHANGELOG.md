@@ -3,6 +3,7 @@
 ## 0.0.46
 
 - Support `drag_source true` on `list` widget
+- Support `drop_target true` keyword alternative to `on_drop` for cases where it is implied what to drop (text in the case of label, entry, combo, list, and button)
 
 ## 0.0.45
 

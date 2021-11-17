@@ -2,7 +2,7 @@
 
 ## Next
 
-- Support `drop_target true` keyword alternative to `on_drop` for cases where it is implied what to drop (text in the case of label, entry, combo, list, and button)
+- Support `on('drag_set_data') {}` and `on('drop') {}` alternatives to `on_drag_set_data {}` and `on_drop {}` for consistency with Glimmer DSL for general Tk listener style (`on('event') {}`)
 - Support inter-application Drag and Drop (e.g. drag a file from Finder/Explorer and drop it in Glimmer DSL for Tk app drop zone to store it in a list)
 
 ## Soon
