@@ -20,7 +20,6 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 require 'glimmer-dsl-tk'
-require 'glimmer/tk/drag_and_drop_extension'
 
 include Glimmer
 

@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.42
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.43
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -181,7 +181,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '0.0.42'
+gem 'glimmer-dsl-tk', '0.0.43'
 ```
 
 And, then run:
@@ -2683,27 +2683,31 @@ Glimmer app:
 Glimmer code (from [samples/hello/hello_drag_and_drop.rb](samples/hello/hello_drag_and_drop.rb)):
 
 ```ruby
-require "glimmer-dsl-tk"
-require "glimmer/tk/drag_and_drop_extension"
+require 'glimmer-dsl-tk'
 
 include Glimmer
 
 root {
   title "Hello, Drag and Drop!"
+  
   frame {
     padding 5
+    
     labelframe {
       text "Drag sources"
       padding 5
+      
       label {
-        text "Entry"
         grid :row => 0, :column => 0
+        text "Entry"
       }
+      
       entry {
+        grid :row => 0, :column => 1, :pady => 5, :sticky => "e"
         text "Drag entry text"
         width 30
-        grid :row => 0, :column => 1, :pady => 5, :sticky => "e"
-        on_drag_start { |event|
+        
+        on_drag_start do |event|
           event.data = event.source.textvariable&.value
           event.source.configure(:cursor => "hand2")
           TkLabel.new(event.tooltip) {
@@ -2712,111 +2716,166 @@ root {
             bitmap "warning"
             compound "right"
           }.pack
-        }
-        on_drag_motion { |event|
+        end
+        
+        on_drag_motion do |event|
           if event.drop_accepted
             event.source.configure(:cursor => "hand1")
           else
             event.source.configure(:cursor => "hand2")
           end
           event.tooltip.geometry("+#{event.x_root + 10}+#{event.y_root - 4}")
-        }
+        end
       }
+      
       label {
-        text "Label"
         grid :row => 1, :column => 0
+        text "Label"
       }
+      
       label {
+        grid :row => 1, :column => 1, :pady => 10, :sticky => "e"
         text "Drag label text"
         width 30
-        grid :row => 1, :column => 1, :pady => 10, :sticky => "e"
         drag_source true
       }
+      
       label {
-        text "Combobox"
         grid :row => 2, :column => 0
+        text "Combobox"
       }
+      
       combobox {
+        grid :row => 2, :column => 1, :pady => 5, :sticky => "e"
         text "Spain"
         values %w[USA Canada Mexico Columbia UK Australia Germany Italy Spain]
         width 27
-        grid :row => 2, :column => 1, :pady => 5, :sticky => "e"
-        on_drag_start { |event|
+        
+        on_drag_start do |event|
           event.data = event.source.textvariable&.value
-        }
+        end
       }
+      
       label {
-        text "Button"
         grid :row => 3, :column => 0
+        text 'List'
       }
+      
+      country_list = list {
+        grid :row => 3, :column => 1, :pady => 5, :sticky => "e"
+        selectmode 'browse'
+        items %w[USA Canada Mexico]
+        selection 'Canada'
+        height 3
+        
+        on_drag_start do |event|
+          event.data = event.source.selection.to_a.first.text
+        end
+      }
+      
+      label {
+        grid :row => 4, :column => 0
+        text "Button"
+      }
+      
       button {
+        grid :row => 4, :column => 1, :pady => 5, :sticky => "w"
         text "Drag it"
-        grid :row => 3, :column => 1, :pady => 5, :sticky => "w"
         drag_source true
       }
     }
 
     labelframe {
-      text "Drop targets"
       grid :sticky => "nsew", :pady => 15
+      text "Drop targets"
       padding 5
+      
       label {
-        text "Entry"
         grid :row => 0, :column => 0
+        text "Entry"
       }
+      
       entry {
-        width 30
         grid :row => 0, :column => 1, :pady => 5, :sticky => "e"
+        width 30
+        
         on_drop { |event|
           event.target.textvariable.value = event.data
         }
       }
+      
       label {
-        text "Label"
         grid :row => 1, :column => 0
+        text "Label"
       }
+      
       label {
-        width 30
         grid :row => 1, :column => 1, :pady => 10, :sticky => "e"
+        width 30
         borderwidth 2
         relief "solid"
-        on_drop { |event|
+        
+        on_drop do |event|
           event.target.textvariable.value = event.data
-        }
+        end
       }
+      
       label {
-        text "Combobox"
         grid :row => 2, :column => 0
+        text "Combobox"
       }
+      
       combobox {
-        width 27
         grid :row => 2, :column => 1, :pady => 5, :sticky => "e"
-        on_drop { |event|
+        width 27
+        
+        on_drop do |event|
           event.target.textvariable.value = event.data
-        }
+        end
       }
+      
       label {
-        text "Button"
         grid :row => 3, :column => 0
+        text 'List'
       }
-      button {
-        text "Drop here"
-        grid :row => 3, :column => 1, :pady => 5, :sticky => "w"
-        on_drop { |event|
-          event.target.text = event.data
-        }
+      
+      list {
+        grid :row => 3, :column => 1, :pady => 5, :sticky => "e"
+        selectmode 'browse'
+        height 3
+        
+        on_drop do |event|
+          event.target.insert('', 'end', :text => event.data)
+        end
       }
+      
       label {
-        text "Checkbutton"
         grid :row => 4, :column => 0
+        text "Button"
       }
-      checkbutton {
-        text "Drop here to destroy a widget\n(except button)"
+      
+      button {
         grid :row => 4, :column => 1, :pady => 5, :sticky => "w"
-        on_drop { |event|
+        text "Drop here"
+        
+        on_drop do |event|
+          event.target.text = event.data
+        end
+      }
+      
+      label {
+        grid :row => 5, :column => 0
+        text "Checkbutton"
+      }
+      
+      checkbutton {
+        grid :row => 5, :column => 1, :pady => 5, :sticky => "w"
+        text "Drop here to destroy a widget\n(except button)"
+        
+        on_drop do |event|
           event.target.text = event.data
           event.source.destroy unless event.source.is_a? Tk::Button
-        }
+        end
       }
     }
   }
