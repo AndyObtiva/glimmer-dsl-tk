@@ -7,6 +7,7 @@
 - Provide question mark alias of `event.drop_accepted` (i.e. `drop_accepted?`)
 - Have `DragAndDropEvent` `source`/`target` be the enhanced Glimmer widget proxy instead of the unenhanced Tk widget
 - Look into improving code that uses `TkLabel` explicitly in Hello, Drag and Drop! (do `event.tooltip.content {label {...} }` with Glimmer DSL instead)
+- Add Glimmer Style Guide
 - Fix issue with dropping button and list unto checkbox in Hello, Drag and Drop!
 
 ## 0.0.44

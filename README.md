@@ -100,6 +100,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems:
     - [Radiobutton Data-Binding](#radiobutton-data-binding)
   - [Command Callback](#command-callback)
   - [Gotchas](#gotchas)
+  - [Glimmer Style Guide](#glimmer-style-guide)
   - [Samples](#samples)
     - [Hello, World!](#hello-world)
     - [Hello, Button!](#hello-button)
@@ -826,6 +827,15 @@ More details can be found in the [Hello, Button!](#hello-button) sample below.
 ## Gotchas
 
 - Setting `background` attribute on `frame` or `label` does not work in `'aqua'` theme on the Mac (only in `'classic'` theme)
+
+## Glimmer Style Guide
+
+- Widget arguments are always wrapped by parentheses.
+- Widget blocks are always declared with **curly braces** to clearly visualize hierarchical view code and separate from logic code.
+- Widget attribute declarations always have arguments and never take a block.
+- Widget attribute arguments are never wrapped inside parentheses.
+- Widget listeners are always declared with `on` keyword receiving listener event name as an argument. Their multi-line blocks have a `do; end` style to distinguish as logic from widget keywords and attributes.
+- Pure logic multi-line blocks that do not constitute GUI DSL view elements in general always have `do; end` style to clearly separate logic code from view code.
 
 ## Samples
 

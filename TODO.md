@@ -3,7 +3,6 @@
 ## Next
 
 - Support `drag_source true` on all widgets in Hello, Drag and Drop!
-- Add Glimmer Style Guide
 
 ## Soon
 
