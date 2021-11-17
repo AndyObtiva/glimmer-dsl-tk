@@ -55,7 +55,7 @@ root {
         end
         
         on_drag_motion do |event|
-          if event.drop_accepted
+          if event.drop_accepted?
             event.source.configure(:cursor => "hand1")
           else
             event.source.configure(:cursor => "hand2")

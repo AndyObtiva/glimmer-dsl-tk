@@ -112,6 +112,8 @@ module Glimmer
       end
 
       DragAndDropEvent = Struct.new(:source, :target, :tooltip, :x_root, :y_root, :data, :drop_accepted) do
+        alias drop_accepted? drop_accepted
+        
         def as_json(*)
           klass = self.class.name
           {
