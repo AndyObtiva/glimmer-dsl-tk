@@ -130,6 +130,16 @@ class MetaSample
         grid row: 0, column: 1, column_weight: 1
         value File.read(file_path_for(selected_sample))
       }
+      
+      @yscrollbar = scrollbar {
+        grid row: 0, column: 2
+      }
+      @code_text.yscrollbar @yscrollbar
+      
+      @xscrollbar = scrollbar {
+        grid row: 1, column: 1, column_span: 2
+      }
+      @code_text.xscrollbar @xscrollbar
     }
     @root.open
   end

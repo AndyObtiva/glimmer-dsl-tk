@@ -304,7 +304,7 @@ class HelloText
         end
       }
       
-      @yscrollbar = y_scrollbar {
+      @yscrollbar = scrollbar {
         grid row: 1, column: 1
       }
       @text.yscrollbar @yscrollbar
