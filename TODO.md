@@ -2,12 +2,10 @@
 
 ## Next
 
-- Add `list` to widgets demoed in Hello, Drag and Drop!
 - Add Glimmer Style Guide
 
 ## Soon
 
-- Remove 'os' gem due to Tk having the capability to detect the windowing system it is on (using `Tk.windowingsystem`)
 - Support data-binding `_options` method items on list and combo (not just main value), thus making options update if `notify_observers(:some_attr_options)` is called)
 - Support `@tk.textvariable.trace('write')` via `on() {}` listeners (e.g. `on('textvariable_write') {}`)
 - Handle menu item accelerators that end with function keys (e.g. `'Alt+F4'`)

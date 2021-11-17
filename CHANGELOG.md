@@ -4,6 +4,7 @@
 
 - Modified Hello, Drag and Drop! to include a list
 - Removed the need to require `'glimmer/tk/drag_and_drop_extension'` to do drag and drop; it is automatically included in `require 'glimmer-dsl-tk'` now.
+- Remove 'os' gem due to Tk having the capability to detect the OS it is on using `Tk.windowingsystem` (include Glimmer implementation of `OS` class having `OS.mac?`, `OS.windows?` and `OS.linux?`)
 
 ## 0.0.42
 
