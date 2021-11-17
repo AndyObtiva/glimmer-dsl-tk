@@ -55,7 +55,7 @@ root {
         
         # drag_source true
         # This is how to do `drag_source true` the manual way for use in exceptional cases
-        on_drag_start do |event|
+        on('drag_start') do |event|
           event.data = event.source.text
           event.source.configure(:cursor => "hand2")
           event.tooltip.content { # re-open tooltip content and add a label
@@ -67,7 +67,7 @@ root {
             }
           }
         end
-        on_drag_motion do |event|
+        on('drag_motion') do |event|
           if event.drop_accepted?
             event.source.configure(:cursor => "hand1")
           else
@@ -103,7 +103,7 @@ root {
         
         # drag_source true
         # This is another alternative to `drag_source true` with manual specification of transferred data only
-        on_drag_start do |event|
+        on('drag_start') do |event|
           event.data = event.source.selection.first
         end
       }
@@ -192,7 +192,7 @@ root {
 
         # drop_target true
         # This is an alternative to `drop_target true` with manual consumption of transferred data
-        on_drop do |event|
+        on('drop') do |event|
           event.target.text = event.data
           # execute asynchronously after 100ms to ensure all events have been processed before destruction
           ::Tk.after(100) {event.source.destroy}

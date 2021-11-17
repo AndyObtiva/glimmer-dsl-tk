@@ -2,7 +2,6 @@
 
 ## Next
 
-- Support `on('drag_set_data') {}` and `on('drop') {}` alternatives to `on_drag_set_data {}` and `on_drop {}` for consistency with Glimmer DSL for general Tk listener style (`on('event') {}`)
 - Support inter-application Drag and Drop (e.g. drag a file from Finder/Explorer and drop it in Glimmer DSL for Tk app drop zone to store it in a list)
 
 ## Soon

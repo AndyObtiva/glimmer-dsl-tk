@@ -23,8 +23,21 @@ require "json"
 
 module Glimmer
   module Tk
-    class WidgetProxy
+    module DraggableAndDroppable
       attr_accessor :on_drag_motion_block
+      
+      def handle_listener(listener_name, &listener)
+        case listener_name.to_s.downcase
+        when 'drag_start'
+          self.on_drag_start_block = listener
+        when 'drag_motion'
+          self.on_drag_motion_block = listener
+        when 'drop'
+          self.on_drop_block = listener
+        else
+          super
+        end
+      end
 
       def drag_source=(value)
         @drag_source = value

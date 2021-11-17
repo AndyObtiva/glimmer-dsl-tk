@@ -482,12 +482,21 @@ Check out the [Hello, Scrollbar!](#hello-scrollbar) sample for a `text` demo wit
 
 Drag and drop works by simply designating a widget as a drag source with attribute `drag_source true` and another widget as a drop target with attribute `drop_target true`.
 
-Alternatively, add listeners:
-- `on_drag_start {|event| ...}`: fires on drag start receiving an `event` arg to set `data` and configure `source`
-- `on_drag_motion {|event| ...}`: fires on drag motion receiving an `event` arg to check `event#drop_accepted`, and configure `source` and `tooltip`
+Alternatively, add listeners on the drag source:
+- `on('drag_start') {|event| ...}`: fires on drag start receiving an `event` arg to set `data` and configure `source`
+- `on('drag_motion') {|event| ...}`: fires on drag motion receiving an `event` arg to check `event#drop_accepted`, and configure `source` and `tooltip`
 
-On the drop target, you simply define:
-- `on_drop { |event| ...}`: fires on drop, receiving an `event` arg with `event#target` and `event#data` (set during drag). You can even destroy the `event#source` if you want to get rid of the dragged widget.
+And on the drop target, add listener:
+- `on('drop') { |event| ...}`: fires on drop, receiving an `event` arg with `event#target` and `event#data` (set during drag). You can even destroy the `event#source` if you want to get rid of the dragged widget.
+
+These are all the available attributes on event, which is of type `DragAndDropEvent`:
+- `source`: drag source widget proxy
+- `target`: drop target widget proxy
+- `tooltip`: tooltip widget proxy
+- `x_root`: x coordinate from top-left root corner
+- `y_root`: y coordinate from top-left root corner
+- `data`: data being transferred through drag and drop
+- `drop_accepted`: boolean indicating if drop was accepted
 
 Learn more at the [Hello, Drag and Drop!](#hello-drag-and-drop) sample.
 

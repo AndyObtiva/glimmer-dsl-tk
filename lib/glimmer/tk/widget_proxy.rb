@@ -21,6 +21,7 @@
 
 require 'glimmer/data_binding/tk/one_time_observer'
 require 'glimmer/tk/widget'
+require 'glimmer/tk/draggable_and_droppable'
 
 module Glimmer
   module Tk
@@ -68,6 +69,8 @@ module Glimmer
           tk_widget_class if tk_widget_class.respond_to?(:new)
         end
       end
+      
+      prepend DraggableAndDroppable
       
       FONTS_PREDEFINED = %w[default text fixed menu heading caption small_caption icon tooltip]
       
