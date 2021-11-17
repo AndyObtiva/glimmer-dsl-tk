@@ -4,7 +4,7 @@
 
 - Add vertical/horizontal scrollbars to Meta-Sample
 - Keep only vertical scrollbar in Hello, Text!
-- Fix issue with including bwidgets and iwidgets in Windows
+- Fix issue with including bwidgets and iwidgets in Windows (by removing from default requires, leaving to users to require manually when needed only and only systems that support them)
 - Fix Hello, Menu Bar! sample in Windows (by disabling Windows-special System menu, which does not seem to be working in Tk)
 
 ## 0.0.41
