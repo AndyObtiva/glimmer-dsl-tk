@@ -35,16 +35,27 @@ root {
       
       label {
         grid :row => 0, :column => 0
-        text "Entry"
+        text "Label"
+      }
+      label {
+        grid :row => 0, :column => 1, :pady => 10, :sticky => "e"
+        text "Drag label text"
+        width 30
+        drag_source true
       }
       
+      label {
+        grid :row => 1, :column => 0
+        text "Entry"
+      }
       entry {
-        grid :row => 0, :column => 1, :pady => 5, :sticky => "e"
+        grid :row => 1, :column => 1, :pady => 5, :sticky => "e"
         text "Drag entry text"
         width 30
         
+        # This is how to do `drag_source true` the manual way for use in exceptional cases
         on_drag_start do |event|
-          event.data = event.source.textvariable&.value
+          event.data = event.source.text
           event.source.configure(:cursor => "hand2")
           TkLabel.new(event.tooltip) {
             text event.data + " "
@@ -53,7 +64,6 @@ root {
             compound "right"
           }.pack
         end
-        
         on_drag_motion do |event|
           if event.drop_accepted?
             event.source.configure(:cursor => "hand1")
@@ -63,24 +73,12 @@ root {
           event.tooltip.geometry("+#{event.x_root + 10}+#{event.y_root - 4}")
         end
       }
-      
-      label {
-        grid :row => 1, :column => 0
-        text "Label"
-      }
-      
-      label {
-        grid :row => 1, :column => 1, :pady => 10, :sticky => "e"
-        text "Drag label text"
-        width 30
-        drag_source true
-      }
+            
       
       label {
         grid :row => 2, :column => 0
         text "Combobox"
       }
-      
       combobox {
         grid :row => 2, :column => 1, :pady => 5, :sticky => "e"
         text "Spain"
@@ -88,7 +86,7 @@ root {
         width 27
         
         on_drag_start do |event|
-          event.data = event.source.textvariable&.value
+          event.data = event.source.text
         end
       }
       
@@ -96,7 +94,6 @@ root {
         grid :row => 3, :column => 0
         text 'List'
       }
-      
       list {
         grid :row => 3, :column => 1, :pady => 5, :sticky => "e"
         selectmode 'browse'
@@ -105,7 +102,7 @@ root {
         height 3
         
         on_drag_start do |event|
-          event.data = event.source.selection.to_a.first.text
+          event.data = event.source.selection.first
         end
       }
       
@@ -113,7 +110,6 @@ root {
         grid :row => 4, :column => 0
         text "Button"
       }
-      
       button {
         grid :row => 4, :column => 1, :pady => 5, :sticky => "w"
         text "Drag it"
@@ -128,45 +124,42 @@ root {
       
       label {
         grid :row => 0, :column => 0
-        text "Entry"
-      }
-      
-      entry {
-        grid :row => 0, :column => 1, :pady => 5, :sticky => "e"
-        width 30
-        
-        on_drop { |event|
-          event.target.textvariable.value = event.data
-        }
-      }
-      
-      label {
-        grid :row => 1, :column => 0
         text "Label"
       }
-      
       label {
-        grid :row => 1, :column => 1, :pady => 10, :sticky => "e"
+        grid :row => 0, :column => 1, :pady => 10, :sticky => "e"
         width 30
         borderwidth 2
         relief "solid"
         
         on_drop do |event|
-          event.target.textvariable.value = event.data
+          event.target.text = event.data
         end
+      }
+      
+      label {
+        grid :row => 1, :column => 0
+        text "Entry"
+      }
+      entry {
+        grid :row => 1, :column => 1, :pady => 5, :sticky => "e"
+        width 30
+        
+        on_drop { |event|
+          event.target.text = event.data
+        }
       }
       
       label {
         grid :row => 2, :column => 0
         text "Combobox"
       }
-      
       combobox {
         grid :row => 2, :column => 1, :pady => 5, :sticky => "e"
         width 27
         
         on_drop do |event|
-          event.target.textvariable.value = event.data
+          event.target.text = event.data
         end
       }
       
@@ -174,14 +167,13 @@ root {
         grid :row => 3, :column => 0
         text 'List'
       }
-      
       list {
         grid :row => 3, :column => 1, :pady => 5, :sticky => "e"
         selectmode 'browse'
         height 3
         
         on_drop do |event|
-          event.target.insert('', 'end', :text => event.data)
+          event.target.items += [event.data]
         end
       }
       
@@ -189,7 +181,6 @@ root {
         grid :row => 4, :column => 0
         text "Button"
       }
-      
       button {
         grid :row => 4, :column => 1, :pady => 5, :sticky => "w"
         text "Drop here"
@@ -203,7 +194,6 @@ root {
         grid :row => 5, :column => 0
         text "Checkbutton"
       }
-      
       checkbutton {
         grid :row => 5, :column => 1, :pady => 5, :sticky => "w"
         text "Drop here to destroy a widget"

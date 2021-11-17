@@ -44,7 +44,7 @@ module Glimmer
         @on_drop_block = value
         self.tk.bind("<DropEvent>", proc { |tk_event|
           drop_event = DragAndDropEvent.json_create(JSON.parse("{" + tk_event.detail + "}"))
-          @on_drop_block.call(drop_event) if self.tk == drop_event.target
+          @on_drop_block.call(drop_event) if self == drop_event.target
         })
         self.tk.bind("<DropCheckEvent>", proc { |tk_event|
           drop_check_event = DragAndDropEvent.json_create(JSON.parse("{" + tk_event.detail + "}"))
@@ -63,7 +63,7 @@ module Glimmer
           if drag_event.nil?
             tooltip = TkToplevel.new(root).overrideredirect(1) #create tooltip window to display dragged data
             tooltip.geometry("+#{tk_event.x_root + 10}+#{tk_event.y_root - 2}")
-            drag_event = DragAndDropEvent.new(self.tk, nil, tooltip, tk_event.x_root, tk_event.y_root, nil, false)
+            drag_event = DragAndDropEvent.new(self, nil, tooltip, tk_event.x_root, tk_event.y_root, nil, false)
             if @drag_source
               tk_event.widget.configure(:cursor => "hand2")
               # Default data to drag is text
@@ -77,7 +77,7 @@ module Glimmer
             drag_event.x_root, drag_event.y_root = tk_event.x_root, tk_event.y_root
             drag_event.drop_accepted = false
             move_over_widget = tk_event.widget.winfo_containing(tk_event.x_root, tk_event.y_root)
-            drag_event.target = move_over_widget
+            drag_event.target = move_over_widget.proxy
             move_over_widget.event_generate("<DropCheckEvent>", :data => drag_event.to_json)
             if @on_drag_motion_block.nil?
               # Default motion behavior:
@@ -96,7 +96,7 @@ module Glimmer
         })
         bind("ButtonRelease-1", proc { |tk_event|
           if drag_event
-            drag_event.target = tk_event.widget.winfo_containing(tk_event.x_root, tk_event.y_root)
+            drag_event.target = tk_event.widget.winfo_containing(tk_event.x_root, tk_event.y_root).proxy
             drag_event.source.configure(:cursor => "")
             drag_event.target.event_generate("<DropEvent>", :data => drag_event.to_json)
             drag_event.tooltip.destroy
@@ -127,7 +127,7 @@ module Glimmer
         end
 
         def self.json_create(object)
-          new(*[ObjectSpace._id2ref(object["v"][0]), ObjectSpace._id2ref(object["v"][1]), ObjectSpace._id2ref(object["v"][2])].concat(object["v"].drop 3))
+          new(*[ObjectSpace._id2ref(object["v"][0]), ObjectSpace._id2ref(object["v"][1]).proxy, ObjectSpace._id2ref(object["v"][2])].concat(object["v"].drop 3))
         end
       end
     end

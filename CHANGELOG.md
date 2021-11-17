@@ -4,6 +4,7 @@
 
 - Add `#proxy` method to all Tk widgets to return Glimmer widget proxy objects (e.g. `Tk::Tile::TButton#proxy` returns `Glimmer::Tk::WidgetProxy` object)
 - Provide question mark alias of `event.drop_accepted` (i.e. `drop_accepted?`)
+- Have `DragAndDropEvent` `source`/`target` be the enhanced Glimmer widget proxy instead of the unenhanced Tk widget
 - Fix issue with dropping button and list unto checkbox in Hello, Drag and Drop!
 
 ## 0.0.44
