@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.46
+
+- Support `drag_source true` on `list` widget
+
 ## 0.0.45
 
 - Support `lbl` widget as the non-tile-themed version of `label` (i.e. `::TkLabel` not `::Tk::Tile::TLabel`)

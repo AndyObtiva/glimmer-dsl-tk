@@ -68,7 +68,13 @@ module Glimmer
             if @drag_source
               tk_event.widget.configure(:cursor => "hand2")
               # Default data to drag is text
-              drag_event.data = if textvariable_defined? then tk.textvariable.value elsif has_attribute?(:text) then tk.text end
+              drag_event.data = if textvariable_defined?
+                tk.textvariable.value
+              elsif has_attribute?('text')
+                tk.text
+              elsif has_attribute?('selection')
+                selection.first
+              end
               tooltip_label = WidgetProxy.new('label', tooltip, [])
               tooltip_label.text = drag_event.data
               tooltip_label.pack # TODO look into using grid instead to be consistent with the modern Tk way

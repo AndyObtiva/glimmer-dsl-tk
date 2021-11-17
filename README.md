@@ -834,6 +834,9 @@ More details can be found in the [Hello, Button!](#hello-button) sample below.
 - Widget blocks are always declared with curly braces `{}` to clearly visualize hierarchical view code and separate from logic code.
 - Widget attribute declarations always have arguments that are never wrapped inside parentheses and never take a block.
 - Widget listeners are always declared with `on` keyword receiving listener event name as an argument. Their multi-line blocks have a `do; end` style to distinguish as logic from widget keywords and attributes.
+- In a widget's content block, group attributes on top first, with the `grid` geometry management attribute being first, and separate by an empty line from nested widgets and listeners following afterwards.
+- In a widget's content block, after attributes, you may either include nested widgets second and listeners third or vice versa.
+- Unlike attributes, nested widgets and listeners are all separated by an empty line to make readability easier except where it helps to group two widgets together (e.g. label and described entry)
 - Pure logic multi-line blocks that do not constitute GUI DSL view elements in general always have `do; end` style to clearly separate logic code from view code.
 
 ## Samples

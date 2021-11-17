@@ -155,6 +155,7 @@ module Glimmer
       end
       
       def has_state?(attribute)
+        attribute = attribute.to_s
         attribute = attribute.sub(/\?$/, '').sub(/=$/, '')
         if @tk.respond_to?(:tile_state)
           begin
@@ -170,6 +171,7 @@ module Glimmer
       end
       
       def has_attributes_attribute?(attribute)
+        attribute = attribute.to_s
         attribute = attribute.sub(/\?$/, '').sub(/=$/, '')
         @tk.respond_to?(:attributes) && @tk.attributes.keys.include?(attribute.to_s)
       end

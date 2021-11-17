@@ -53,6 +53,7 @@ root {
         text "Drag entry text"
         width 30
         
+        # drag_source true
         # This is how to do `drag_source true` the manual way for use in exceptional cases
         on_drag_start do |event|
           event.data = event.source.text
@@ -86,9 +87,7 @@ root {
         values %w[USA Canada Mexico Columbia UK Australia Germany Italy Spain]
         width 27
         
-        on_drag_start do |event|
-          event.data = event.source.text
-        end
+        drag_source true
       }
       
       label {
@@ -102,6 +101,8 @@ root {
         selection 'Canada'
         height 3
         
+        # drag_source true
+        # This is another alternative to `drag_source true` with manual specification of transferred data only
         on_drag_start do |event|
           event.data = event.source.selection.first
         end

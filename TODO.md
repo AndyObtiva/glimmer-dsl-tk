@@ -2,8 +2,8 @@
 
 ## Next
 
-- Support `drag_source true` on all widgets in Hello, Drag and Drop! (entry, combo, and list)
 - Support `drop_target true` keyword alternative to `on_drop` for cases where it is implied what to drop (text in the case of label, entry, combo, list, and button)
+- Support inter-application Drag and Drop (e.g. drag a file from Finder/Explorer and drop it in Glimmer DSL for Tk app drop zone to store it in a list)
 
 ## Soon
 
