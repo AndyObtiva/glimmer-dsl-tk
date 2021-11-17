@@ -2,6 +2,11 @@
 
 ## Next
 
+- Add `list` to widgets demoed in Hello, Drag and Drop!
+- Add Glimmer Style Guide
+
+## Soon
+
 - Remove 'os' gem due to Tk having the capability to detect the windowing system it is on (using `Tk.windowingsystem`)
 - Support data-binding `_options` method items on list and combo (not just main value), thus making options update if `notify_observers(:some_attr_options)` is called)
 - Support `@tk.textvariable.trace('write')` via `on() {}` listeners (e.g. `on('textvariable_write') {}`)
@@ -15,9 +20,6 @@
 - `icon_photo` as alias for `iconphoto` attribute
 - Add defensive programming for preventing spinbox from allowing value to go over `to` (max) when typing by keyboard
 - Document Glimmer debug logging
-
-## Soon
-
 - Support Mac application handlers/events (https://tcl.tk/man/tcl8.6/TkCmd/tk_mac.htm):
 ```
 `tk::mac::OnHide:` Called when your application has been hidden.

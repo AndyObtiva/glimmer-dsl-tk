@@ -39,6 +39,7 @@ require 'delegate'
 # require 'ext/glimmer/config'
 # require 'ext/glimmer'
 require 'glimmer/dsl/tk/dsl'
+require 'glimmer/tk/drag_and_drop_extension'
 
 Glimmer::Config.loop_max_count = -1
 
