@@ -61,17 +61,24 @@ module Glimmer
         bind("<DropAcceptedEvent>", proc { |event| drag_event.drop_accepted = true })
         bind("B1-Motion", proc { |tk_event|
           if drag_event.nil?
-            tooltip = TkToplevel.new(root).overrideredirect(1) #create tooltip window to display dragged data
+            tooltip = WidgetProxy.new('toplevel', root_parent_proxy, [])
+            tooltip.overrideredirect(1) #create tooltip window to display dragged data
             tooltip.geometry("+#{tk_event.x_root + 10}+#{tk_event.y_root - 2}")
             drag_event = DragAndDropEvent.new(self, nil, tooltip, tk_event.x_root, tk_event.y_root, nil, false)
             if @drag_source
               tk_event.widget.configure(:cursor => "hand2")
               # Default data to drag is text
               drag_event.data = if textvariable_defined? then tk.textvariable.value elsif has_attribute?(:text) then tk.text end
-              TkLabel.new(tooltip) { text drag_event.data }.pack
+              tooltip_label = WidgetProxy.new('label', tooltip, [])
+              tooltip_label.text = drag_event.data
+              tooltip_label.pack # TODO look into using grid instead to be consistent with the modern Tk way
             elsif !@on_drag_start_block.nil?
               @on_drag_start_block.call(drag_event)
-              TkLabel.new(tooltip) { text drag_event.data }.pack if tooltip.winfo_children().length == 0
+              if tooltip.winfo_children().length == 0
+                tooltip_label = WidgetProxy.new('label', tooltip, [])
+                tooltip_label.text = drag_event.data
+                tooltip_label.pack # TODO look into using grid instead to be consistent with the modern Tk way
+              end
             end
           else
             drag_event.x_root, drag_event.y_root = tk_event.x_root, tk_event.y_root

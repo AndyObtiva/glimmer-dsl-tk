@@ -305,6 +305,7 @@ keyword(args) | attributes | event bindings & callbacks
 `spinbox` | `text`, `from`, `to`, `increment`, `format`, [more attributes](https://tcl.tk/man/tcl8.6/TkCmd/text.htm#M116) | `command {}`, `'increment'`, `'decrement'`
 `frame(text: nil)` | `width`, `height`, `borderwidth`, `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`) | None
 `label` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `font` (`'default', 'text', 'fixed', 'menu', 'heading', 'caption', 'small_caption', 'icon', 'tooltip'`), `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`), `justify` (`'left', 'center', 'right'`), `foreground`, `background` | None
+`lbl` (non-theme version of `label`) | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `font` (`'default', 'text', 'fixed', 'menu', 'heading', 'caption', 'small_caption', 'icon', 'tooltip'`), `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`), `justify` (`'left', 'center', 'right'`), `foreground`, `background`, `bg`, `bitmap`, [more here](https://tcl.tk/man/tcl8.6/TkCmd/label.htm) | None
 `list` | `selectmode`, `selection` | None
 `message_box(type: , message: , detail: , title: , icon: , default: , parent: )` | None | None
 `menu(label: nil) (label is nil if nested under root/toplevel for menu bar)` | None | None

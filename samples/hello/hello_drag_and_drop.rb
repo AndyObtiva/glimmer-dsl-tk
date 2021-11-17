@@ -57,12 +57,14 @@ root {
         on_drag_start do |event|
           event.data = event.source.text
           event.source.configure(:cursor => "hand2")
-          TkLabel.new(event.tooltip) {
-            text event.data + " "
-            bg "yellow"
-            bitmap "warning"
-            compound "right"
-          }.pack
+          event.tooltip.content {
+            lbl { # non-tile-theme version of label
+              text event.data + " "
+              bg "yellow"
+              bitmap "warning"
+              compound "right"
+            }
+          }
         end
         on_drag_motion do |event|
           if event.drop_accepted?
@@ -73,7 +75,6 @@ root {
           event.tooltip.geometry("+#{event.x_root + 10}+#{event.y_root - 4}")
         end
       }
-            
       
       label {
         grid :row => 2, :column => 0
