@@ -2,6 +2,7 @@
 
 ## 0.0.43
 
+- Modified Hello, Drag and Drop! to include a list
 - Removed the need to require `'glimmer/tk/drag_and_drop_extension'` to do drag and drop; it is automatically included in `require 'glimmer-dsl-tk'` now.
 
 ## 0.0.42

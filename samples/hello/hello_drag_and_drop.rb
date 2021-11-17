@@ -95,11 +95,28 @@ root {
       
       label {
         grid :row => 3, :column => 0
+        text 'List'
+      }
+      
+      country_list = list {
+        grid :row => 3, :column => 1, :pady => 5, :sticky => "e"
+        selectmode 'browse'
+        items %w[USA Canada Mexico]
+        selection 'Canada'
+        height 3
+        
+        on_drag_start do |event|
+          event.data = event.source.selection.to_a.first.text
+        end
+      }
+      
+      label {
+        grid :row => 4, :column => 0
         text "Button"
       }
       
       button {
-        grid :row => 3, :column => 1, :pady => 5, :sticky => "w"
+        grid :row => 4, :column => 1, :pady => 5, :sticky => "w"
         text "Drag it"
         drag_source true
       }
@@ -156,11 +173,26 @@ root {
       
       label {
         grid :row => 3, :column => 0
+        text 'List'
+      }
+      
+      list {
+        grid :row => 3, :column => 1, :pady => 5, :sticky => "e"
+        selectmode 'browse'
+        height 3
+        
+        on_drop do |event|
+          event.target.insert('', 'end', :text => event.data)
+        end
+      }
+      
+      label {
+        grid :row => 4, :column => 0
         text "Button"
       }
       
       button {
-        grid :row => 3, :column => 1, :pady => 5, :sticky => "w"
+        grid :row => 4, :column => 1, :pady => 5, :sticky => "w"
         text "Drop here"
         
         on_drop do |event|
@@ -169,12 +201,12 @@ root {
       }
       
       label {
-        grid :row => 4, :column => 0
+        grid :row => 5, :column => 0
         text "Checkbutton"
       }
       
       checkbutton {
-        grid :row => 4, :column => 1, :pady => 5, :sticky => "w"
+        grid :row => 5, :column => 1, :pady => 5, :sticky => "w"
         text "Drop here to destroy a widget\n(except button)"
         
         on_drop do |event|
