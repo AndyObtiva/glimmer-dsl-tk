@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.44
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.45
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -182,7 +182,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '0.0.44'
+gem 'glimmer-dsl-tk', '0.0.45'
 ```
 
 And, then run:
@@ -831,9 +831,8 @@ More details can be found in the [Hello, Button!](#hello-button) sample below.
 ## Glimmer Style Guide
 
 - Widget arguments are always wrapped by parentheses.
-- Widget blocks are always declared with **curly braces** to clearly visualize hierarchical view code and separate from logic code.
-- Widget attribute declarations always have arguments and never take a block.
-- Widget attribute arguments are never wrapped inside parentheses.
+- Widget blocks are always declared with curly braces `{}` to clearly visualize hierarchical view code and separate from logic code.
+- Widget attribute declarations always have arguments that are never wrapped inside parentheses and never take a block.
 - Widget listeners are always declared with `on` keyword receiving listener event name as an argument. Their multi-line blocks have a `do; end` style to distinguish as logic from widget keywords and attributes.
 - Pure logic multi-line blocks that do not constitute GUI DSL view elements in general always have `do; end` style to clearly separate logic code from view code.
 
@@ -2712,27 +2711,39 @@ root {
       
       label {
         grid :row => 0, :column => 0
-        text "Entry"
+        text "Label"
+      }
+      label {
+        grid :row => 0, :column => 1, :pady => 10, :sticky => "e"
+        text "Drag label text"
+        width 30
+        drag_source true
       }
       
+      label {
+        grid :row => 1, :column => 0
+        text "Entry"
+      }
       entry {
-        grid :row => 0, :column => 1, :pady => 5, :sticky => "e"
+        grid :row => 1, :column => 1, :pady => 5, :sticky => "e"
         text "Drag entry text"
         width 30
         
+        # This is how to do `drag_source true` the manual way for use in exceptional cases
         on_drag_start do |event|
-          event.data = event.source.textvariable&.value
+          event.data = event.source.text
           event.source.configure(:cursor => "hand2")
-          TkLabel.new(event.tooltip) {
-            text event.data + " "
-            bg "yellow"
-            bitmap "warning"
-            compound "right"
-          }.pack
+          event.tooltip.content {
+            lbl { # non-tile-theme version of label
+              text event.data + " "
+              bg "yellow"
+              bitmap "warning"
+              compound "right"
+            }
+          }
         end
-        
         on_drag_motion do |event|
-          if event.drop_accepted
+          if event.drop_accepted?
             event.source.configure(:cursor => "hand1")
           else
             event.source.configure(:cursor => "hand2")
@@ -2742,22 +2753,9 @@ root {
       }
       
       label {
-        grid :row => 1, :column => 0
-        text "Label"
-      }
-      
-      label {
-        grid :row => 1, :column => 1, :pady => 10, :sticky => "e"
-        text "Drag label text"
-        width 30
-        drag_source true
-      }
-      
-      label {
         grid :row => 2, :column => 0
         text "Combobox"
       }
-      
       combobox {
         grid :row => 2, :column => 1, :pady => 5, :sticky => "e"
         text "Spain"
@@ -2765,7 +2763,7 @@ root {
         width 27
         
         on_drag_start do |event|
-          event.data = event.source.textvariable&.value
+          event.data = event.source.text
         end
       }
       
@@ -2773,8 +2771,7 @@ root {
         grid :row => 3, :column => 0
         text 'List'
       }
-      
-      country_list = list {
+      list {
         grid :row => 3, :column => 1, :pady => 5, :sticky => "e"
         selectmode 'browse'
         items %w[USA Canada Mexico]
@@ -2782,7 +2779,7 @@ root {
         height 3
         
         on_drag_start do |event|
-          event.data = event.source.selection.to_a.first.text
+          event.data = event.source.selection.first
         end
       }
       
@@ -2790,7 +2787,6 @@ root {
         grid :row => 4, :column => 0
         text "Button"
       }
-      
       button {
         grid :row => 4, :column => 1, :pady => 5, :sticky => "w"
         text "Drag it"
@@ -2805,45 +2801,42 @@ root {
       
       label {
         grid :row => 0, :column => 0
-        text "Entry"
-      }
-      
-      entry {
-        grid :row => 0, :column => 1, :pady => 5, :sticky => "e"
-        width 30
-        
-        on_drop { |event|
-          event.target.textvariable.value = event.data
-        }
-      }
-      
-      label {
-        grid :row => 1, :column => 0
         text "Label"
       }
-      
       label {
-        grid :row => 1, :column => 1, :pady => 10, :sticky => "e"
+        grid :row => 0, :column => 1, :pady => 10, :sticky => "e"
         width 30
         borderwidth 2
         relief "solid"
         
         on_drop do |event|
-          event.target.textvariable.value = event.data
+          event.target.text = event.data
         end
+      }
+      
+      label {
+        grid :row => 1, :column => 0
+        text "Entry"
+      }
+      entry {
+        grid :row => 1, :column => 1, :pady => 5, :sticky => "e"
+        width 30
+        
+        on_drop { |event|
+          event.target.text = event.data
+        }
       }
       
       label {
         grid :row => 2, :column => 0
         text "Combobox"
       }
-      
       combobox {
         grid :row => 2, :column => 1, :pady => 5, :sticky => "e"
         width 27
         
         on_drop do |event|
-          event.target.textvariable.value = event.data
+          event.target.text = event.data
         end
       }
       
@@ -2851,14 +2844,13 @@ root {
         grid :row => 3, :column => 0
         text 'List'
       }
-      
       list {
         grid :row => 3, :column => 1, :pady => 5, :sticky => "e"
         selectmode 'browse'
         height 3
         
         on_drop do |event|
-          event.target.insert('', 'end', :text => event.data)
+          event.target.items += [event.data]
         end
       }
       
@@ -2866,7 +2858,6 @@ root {
         grid :row => 4, :column => 0
         text "Button"
       }
-      
       button {
         grid :row => 4, :column => 1, :pady => 5, :sticky => "w"
         text "Drop here"
@@ -2880,14 +2871,14 @@ root {
         grid :row => 5, :column => 0
         text "Checkbutton"
       }
-      
       checkbutton {
         grid :row => 5, :column => 1, :pady => 5, :sticky => "w"
-        text "Drop here to destroy a widget\n(except button)"
+        text "Drop here to destroy a widget"
         
         on_drop do |event|
           event.target.text = event.data
-          event.source.destroy unless event.source.is_a? Tk::Button
+          # execute asynchronously after 100ms to ensure all events have been processed before destruction
+          ::Tk.after(100) {event.source.destroy}
         end
       }
     }

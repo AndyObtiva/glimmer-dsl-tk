@@ -2,7 +2,7 @@
 
 ## Next
 
-- Support `drag_source true` on all widgets in Hello, Drag and Drop!
+- Support `drag_source true` on all widgets in Hello, Drag and Drop! (entry, combo, and list)
 
 ## Soon
 
