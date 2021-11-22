@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.47
+
+- Upgrade to glimmer 2.5.1 (includes more advanced data-binding/observer features)
+
 ## 0.0.46
 
 - Support `drag_source true` on `list` widget

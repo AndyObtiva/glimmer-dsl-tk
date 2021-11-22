@@ -27,10 +27,10 @@ GEM
       hashie (>= 3.4)
       mime-types (>= 1.16, < 3.0)
       oauth2 (~> 1.0)
-    glimmer (2.4.0)
+    glimmer (2.5.1)
       array_include_methods (~> 1.4.0)
       facets (>= 3.1.0, < 4.0.0)
-    hashie (4.1.0)
+    hashie (5.0.0)
     highline (2.0.3)
     jeweler (2.3.9)
       builder
@@ -72,7 +72,7 @@ GEM
     rake-tui (0.2.3)
       tty-prompt
     rchardet (1.8.0)
-    rdoc (6.3.2)
+    rdoc (6.3.3)
     rspec (3.5.0)
       rspec-core (~> 3.5.0)
       rspec-expectations (~> 3.5.0)
@@ -120,7 +120,7 @@ PLATFORMS
 DEPENDENCIES
   bundler (>= 1.0)
   coveralls (= 0.8.23)
-  glimmer (~> 2.4.0)
+  glimmer (~> 2.5.1)
   jeweler (>= 2.3.9, < 3.0.0)
   json (= 2.5.1)
   puts_debuggerer (~> 0.13.1)
