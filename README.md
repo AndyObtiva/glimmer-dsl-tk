@@ -60,7 +60,6 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems you might be int
 - [glimmer-dsl-gtk](https://github.com/AndyObtiva/glimmer-dsl-gtk): Glimmer DSL for GTK (Ruby-GNOME Desktop Development GUI Library)
 - [glimmer-dsl-xml](https://github.com/AndyObtiva/glimmer-dsl-xml): Glimmer DSL for XML (& HTML)
 - [glimmer-dsl-css](https://github.com/AndyObtiva/glimmer-dsl-css): Glimmer DSL for CSS (Cascading Style Sheets)
-- [glimmer-dsl-specification](https://github.com/AndyObtiva/glimmer-dsl-specification): Glimmer DSL for Specification (Pure Ruby Declarative Use Case Specification and Automated Verification)
 
 ## Table of Contents
 
