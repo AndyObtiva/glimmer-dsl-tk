@@ -21,18 +21,28 @@
 
 require 'tk'
 
-class OS
-  class << self
-    def mac?
-      ::Tk.windowingsystem == 'aqua'
-    end
-    
-    def windows?
-      ::Tk.windowingsystem == 'win32'
-    end
-    
-    def linux?
-      ::Tk.windowingsystem == 'x11'
+module Glimmer
+  module Tk
+    class OS
+      class << self
+        def mac?
+          ::Tk.windowingsystem == 'aqua'
+        end
+        
+        def windows?
+          ::Tk.windowingsystem == 'win32'
+        end
+        
+        def linux?
+          ::Tk.windowingsystem == 'x11'
+        end
+      end
     end
   end
+end
+
+begin
+  OS
+rescue
+  ::OS = Glimmer::Tk::OS
 end

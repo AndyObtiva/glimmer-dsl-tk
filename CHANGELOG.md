@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.48
+
+- Moved `OS` class to `Glimmer::Tk::OS` to avoid clashing with os gem when installed for users
+
 ## 0.0.47
 
 - Upgrade to glimmer 2.5.1 (includes more advanced data-binding/observer features)

@@ -29,7 +29,6 @@ require 'puts_debuggerer' if ENV['pd'].to_s.downcase == 'true'
 require 'tk'
 #require 'tkextlib/bwidget' # does not work on Windows
 #require 'tkextlib/iwidgets' # does not work on Windows
-require 'os'
 require 'facets/hash/symbolize_keys'
 require 'facets/string/underscore'
 require 'facets/string/camelcase'
@@ -38,6 +37,7 @@ require 'delegate'
 # Internal requires
 # require 'ext/glimmer/config'
 # require 'ext/glimmer'
+require 'glimmer/tk/os'
 require 'glimmer/dsl/tk/dsl'
 
 Glimmer::Config.loop_max_count = -1
