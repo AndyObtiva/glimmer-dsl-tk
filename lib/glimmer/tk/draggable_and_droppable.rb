@@ -19,6 +19,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require_relative 'drag_and_drop_event'
 require "json"
 
 module Glimmer
@@ -65,11 +66,11 @@ module Glimmer
       def on_drop_block=(value)
         @on_drop_block = value
         self.tk.bind("<DropEvent>", proc { |tk_event|
-          drop_event = DragAndDropEvent.json_create(JSON.parse("{" + tk_event.detail + "}"))
+          drop_event = Glimmer::Tk::DragAndDropEvent.json_create(JSON.parse("{" + tk_event.detail + "}"))
           @on_drop_block.call(drop_event) if self == drop_event.target
         })
         self.tk.bind("<DropCheckEvent>", proc { |tk_event|
-          drop_check_event = DragAndDropEvent.json_create(JSON.parse("{" + tk_event.detail + "}"))
+          drop_check_event = Glimmer::Tk::DragAndDropEvent.json_create(JSON.parse("{" + tk_event.detail + "}"))
           drop_check_event.source.event_generate("<DropAcceptedEvent>")
         })
       end
@@ -86,7 +87,7 @@ module Glimmer
             tooltip = WidgetProxy.new('toplevel', root_parent_proxy, [])
             tooltip.overrideredirect(1) #create tooltip window to display dragged data
             tooltip.geometry("+#{tk_event.x_root + 10}+#{tk_event.y_root - 2}")
-            drag_event = DragAndDropEvent.new(self, nil, tooltip, tk_event.x_root, tk_event.y_root, nil, false)
+            drag_event = Glimmer::Tk::DragAndDropEvent.new(self, nil, tooltip, tk_event.x_root, tk_event.y_root, nil, false)
             if @drag_source
               tk_event.widget.configure(:cursor => "hand2")
               # Default data to drag is text
@@ -158,26 +159,6 @@ module Glimmer
         @tk.bind_remove('<DropEvent>')
         @tk.bind_remove('<DropCheckEvent>')
         @on_drop_block = nil
-      end
-
-      DragAndDropEvent = Struct.new(:source, :target, :tooltip, :x_root, :y_root, :data, :drop_accepted) do
-        alias drop_accepted? drop_accepted
-        
-        def as_json(*)
-          klass = self.class.name
-          {
-            JSON.create_id => klass,
-            "v" => [values[0].object_id, values[1].object_id, values[2].object_id].concat(values.drop 3),
-          }
-        end
-
-        def to_json(*args)
-          as_json.to_json(*args)
-        end
-
-        def self.json_create(object)
-          new(*[ObjectSpace._id2ref(object["v"][0]), ObjectSpace._id2ref(object["v"][1]).proxy, ObjectSpace._id2ref(object["v"][2])].concat(object["v"].drop 3))
-        end
       end
     end
   end

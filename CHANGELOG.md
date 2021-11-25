@@ -3,6 +3,7 @@
 ## 0.0.48
 
 - Moved `OS` class to `Glimmer::Tk::OS` to avoid clashing with os gem when installed for users
+- Moved `DragAndDropEvent` from `Glimmer::Tk::DraggableAndDroppable` into `Glimmer::Tk` namespace directly as `Glimmer::Tk::DragAndDropEvent`
 
 ## 0.0.47
 

@@ -2,7 +2,7 @@
 
 ## Next
 
-- Move `DragAndDropEvent` from `Glimmer::Tk::DraggableAndDroppable` into `Glimmer::Tk` namespace directly as `Glimmer::Tk::DragAndDropEvent`
+- Hello, Contextual Menu!
 
 ## Soon
 
@@ -28,7 +28,6 @@
 `tk::mac::PrintDocument:` As with OpenDocument, but the documents should be printed rather than opened.
 ```
 
-- Hello, Contextual Menu!
 - Enhance `text` undo/redo to include format/font-format changes
 - `text` widget cut/copy with style (perhaps track all applied formatting tags and reapply them to new indexes)
 - `text` widget paste with cut/copied style (perhaps track all applied formatting tags and reapply them to new indexes)
