@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.49
+
+- [API Breaking] Update menu bar support to require `menu_bar` keyword under `root` or `toplevel`
+- Support contextual menu by nesting `menu` keyword under `root` or `toplevel`
+
 ## 0.0.48
 
 - Moved `OS` class to `Glimmer::Tk::OS` to avoid clashing with os gem when installed for users

@@ -34,7 +34,16 @@ module Glimmer
       def post_add_content
         case @parent_proxy
         when ToplevelProxy
-          @parent_proxy.tk['menu'] = @tk
+          if @keyword == 'menu_bar'
+            @parent_proxy.tk['menu'] = @tk
+          else
+            if OS.mac?
+              @parent_proxy.tk.bind '2', proc{|x,y| tk.popup(x,y)}, "%X %Y"
+              @parent_proxy.tk.bind 'Control-1', proc{|x,y| tk.popup(x,y)}, "%X %Y"
+            else
+              @parent_proxy.tk.bind '3', proc{|x,y| tk.popup(x,y)}, "%X %Y"
+            end
+          end
         end
       end
       
@@ -75,8 +84,7 @@ module Glimmer
 #           elsif @parent_proxy.parent_proxy.is_a?(ToplevelProxy) && OS.windows? && system?
 #             @tk = ::TkSysMenu_System.new(@parent_proxy.tk).tap {|tk| tk.singleton_class.include(Glimmer::Tk::Widget); tk.proxy = self}
           else
-            tk_widget_class = self.class.tk_widget_class_for(@keyword)
-            @tk = tk_widget_class.new(@parent_proxy.tk).tap {|tk| tk.singleton_class.include(Glimmer::Tk::Widget); tk.proxy = self}
+            @tk = ::Tk::Menu.new(@parent_proxy.tk).tap {|tk| tk.singleton_class.include(Glimmer::Tk::Widget); tk.proxy = self}
           end
           case @parent_proxy
           when MenuProxy
@@ -85,5 +93,6 @@ module Glimmer
         end
       end
     end
+    MenuBarProxy = MenuProxy
   end
 end

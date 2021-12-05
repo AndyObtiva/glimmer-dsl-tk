@@ -28,83 +28,16 @@ COLORS = [:white, :red, :yellow, :green, :blue, :magenta, :gray, :black]
 Tk::Tile::Style.theme_use 'classic' if OS.mac? # this enables setting background on label just for demo purposes
 
 root { |r|
-  title 'Hello, Menu Bar!'
+  title 'Hello, Contextual Menu!'
   
   @label = label {
     grid row_weight: 1, column_weight: 1
-    text 'Check Out The Menu Bar Above!'
+    text 'Right-Click To Pop Up Contextual Menu!'
     font size: 50
     anchor 'center'
   }
   
-  menu_bar {
-    # Mac-specific application menu (right next to the Apple menu)
-    if OS.mac?
-      menu(:application) {
-        menu_item(:about, label: 'About My Application') {
-          accelerator 'Command+A'
-          
-          on('command') do
-            message_box(parent: r, title: 'About', message: 'About my application.')
-          end
-        }
-        
-        menu_item(:preferences) {
-          on('command') do
-            message_box(parent: r, title: 'Preferences', message: 'Preferences of my application.')
-          end
-        }
-        
-        # If not defined, application simply quits upon selecting Quit menu item
-        menu_item(:quit) {
-          on('command') do
-            message_box(parent: r, title: 'Quit', message: 'Quitting my application...')
-            exit(0)
-          end
-        }
-      }
-    end
-    
-    menu(label: 'File', underline: 0) {
-      menu_item(label: 'New', underline: 0) {
-        accelerator OS.mac? ? 'Command+N' : 'Control+N'
-
-        on('command') do
-          message_box(parent: r, title: 'New', message: 'New file created.')
-        end
-      }
-      
-      menu_item(label: 'Open...', underline: 0) {
-        accelerator OS.mac? ? 'Command+O' : 'Control+O'
-
-        on('command') do
-          message_box(parent: r, title: 'Open', message: 'Opening File...')
-        end
-      }
-      
-      menu(label: 'Open Recent', underline: 5) {
-        menu_item(label: 'File 1') {
-          on('command') do
-            message_box(parent: r, title: 'File 1', message: 'File 1 Contents')
-          end
-        }
-        
-        menu_item(label: 'File 2') {
-          on('command') do
-            message_box(parent: r, title: 'File 2', message: 'File 2 Contents')
-          end
-        }
-      }
-      
-      menu_item(:separator)
-      
-      menu_item(label: 'Exit', underline: 1) {
-        on('command') do
-          exit(0)
-        end
-      }
-    }
-    
+  menu {
     menu(label: 'Edit', underline: 0) {
       menu_item(label: 'Cut', underline: 2) {
         accelerator OS.mac? ? 'Command+X' : 'Control+X'
@@ -195,7 +128,7 @@ root { |r|
     
     menu(label: 'View', underline: 0) {
       menu_item(:radiobutton, label: 'Small', underline: 0) {
-        accelerator OS.mac? ? 'Command+S' : 'Control+S'
+        accelerator 'Control+S'
         
         on('command') do
           @label.font = {size: 25}
@@ -203,7 +136,7 @@ root { |r|
       }
       
       menu_item(:radiobutton, label: 'Medium', underline: 0) {
-        accelerator OS.mac? ? 'Command+M' : 'Control+M'
+        accelerator 'Control+M'
         selection true
 
         on('command') do
@@ -212,47 +145,10 @@ root { |r|
       }
       
       menu_item(:radiobutton, label: 'Large', underline: 0) {
-        accelerator OS.mac? ? 'Command+L' : 'Control+L'
+        accelerator 'Control+L'
         
         on('command') do
           @label.font = {size: 75}
-        end
-      }
-    }
-    
-    # Mac-specific window menu (containing zooming/resizing menu items)
-    menu(label: 'Window', underline: 0) if OS.mac?
-    
-    menu(label: 'Help', underline: 0) {
-      if OS.mac?
-        menu_item(:help) {
-          on('command') do
-            message_box(parent: r, title: 'Help', message: 'Help for my application.')
-          end
-        }
-      end
-      
-      menu_item(label: 'Manual', underline: 0) {
-        accelerator OS.mac? ? 'Command+Shift+M' : 'Control+U'
-
-        on('command') do
-          message_box(parent: r, title: 'Manual', message: 'Manual Contents')
-        end
-      }
-      
-      menu_item(label: 'Tutorial', underline: 0) {
-        accelerator OS.mac? ? 'Command+Shift+T' : 'Control+T'
-
-        on('command') do
-          message_box(parent: r, title: 'Tutorial', message: 'Tutorial Contents')
-        end
-      }
-      
-      menu_item(:separator)
-      
-      menu_item(label: 'Report an Issue...', underline: 0) {
-        on('command') do
-          message_box(parent: r, title: 'Report an Issue', message: 'Reporting an issue...')
         end
       }
     }

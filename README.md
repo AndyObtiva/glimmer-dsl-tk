@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.48
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.49
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -125,6 +125,7 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems you might be int
     - [Hello, Scrollbar!](#hello-scrollbar)
     - [Hello, Scrollbar Frame!](#hello-scrollbar-frame)
     - [Hello, Menu Bar!](#hello-menu-bar)
+    - [Hello, Contextual Menu!](#hello-contextual-menu)
   - [Applications](#applications)
     - [Glimmer Tk Calculator](#glimmer-tk-calculator)
     - [Y3network Ruby UI](#y3network-ruby-ui)
@@ -182,7 +183,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '0.0.48'
+gem 'glimmer-dsl-tk', '0.0.49'
 ```
 
 And, then run:
@@ -310,6 +311,7 @@ keyword(args) | attributes | event bindings & callbacks
 `list` | `selectmode`, `selection` | None
 `message_box(type: , message: , detail: , title: , icon: , default: , parent: )` | None | None
 `menu(label: nil) (label is nil if nested under root/toplevel for menu bar)` | None | None
+`menu_bar` | None | None
 `menu_item(style = :command, label: , underline: )` (style also can be `:radiobutton`, `:checkbutton`, `:separator`, `:about`, `:preferences`, `:quit`, `:help`) | `state`, `accelerator`, `selection` & `variable` (if `:radiobutton` or `:checkbutton`), `image`, `compound` | `command`
 `notebook` | None | None
 `radiobutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `value` (default: `text`) | `command {}`
@@ -3495,6 +3497,164 @@ Glimmer app:
 ![glimmer dsl tk screenshot sample hello menu-bar](images/glimmer-dsl-tk-screenshot-sample-hello-menu-bar-view.png)
 
 ![glimmer dsl tk screenshot sample hello menu-bar](images/glimmer-dsl-tk-screenshot-sample-hello-menu-bar-help.png)
+
+### Hello, Contextual Menu!
+
+Glimmer code (from [samples/hello/hello_contextual_menu.rb](samples/hello/hello_contextual_menu.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+include Glimmer
+
+COLORS = [:white, :red, :yellow, :green, :blue, :magenta, :gray, :black]
+
+Tk::Tile::Style.theme_use 'classic' if OS.mac? # this enables setting background on label just for demo purposes
+
+root { |r|
+  title 'Hello, Contextual Menu!'
+  
+  @label = label {
+    grid row_weight: 1, column_weight: 1
+    text 'Right-Click To Pop Up Contextual Menu!'
+    font size: 50
+    anchor 'center'
+  }
+  
+  menu {
+    menu(label: 'Edit', underline: 0) {
+      menu_item(label: 'Cut', underline: 2) {
+        accelerator OS.mac? ? 'Command+X' : 'Control+X'
+      }
+      
+      menu_item(label: 'Copy', underline: 0) {
+        accelerator OS.mac? ? 'Command+C' : 'Control+C'
+      }
+      
+      menu_item(label: 'Paste', underline: 0) {
+        accelerator OS.mac? ? 'Command+V' : 'Control+V'
+      }
+    }
+    
+    menu(label: 'Options', underline: 0) {
+      menu_item(:checkbutton, label: 'Enabled', underline: 0) {
+        on('command') do
+          @select_one_menu.children.each { |menu_item| menu_item.state = menu_item.state == 'disabled' ? 'normal' : 'disabled' }
+          @select_multiple_menu.children.each { |menu_item| menu_item.state = menu_item.state == 'disabled' ? 'normal' : 'disabled' }
+        end
+      }
+      
+      @select_one_menu = menu(label: 'Select One', underline: 7) {
+        menu_item(:radiobutton, label: 'Option 1') {
+          state 'disabled'
+        }
+        menu_item(:radiobutton, label: 'Option 2') {
+          state 'disabled'
+        }
+        menu_item(:radiobutton, label: 'Option 3') {
+          state 'disabled'
+        }
+      }
+      
+      @select_multiple_menu = menu(label: 'Select Multiple', underline: 7) {
+        menu_item(:checkbutton, label: 'Option 4') {
+          state 'disabled'
+        }
+        menu_item(:checkbutton, label: 'Option 5') {
+          state 'disabled'
+        }
+        menu_item(:checkbutton, label: 'Option 6') {
+          state 'disabled'
+        }
+      }
+    }
+    
+    menu(label: 'Language', underline: 3) {
+      ['denmark', 'finland', 'france', 'germany', 'italy', 'mexico', 'netherlands', 'norway', 'usa'].each do |image_name|
+        menu_item(:radiobutton, label: image_name.capitalize) {
+          selection image_name == 'usa'
+          image File.expand_path("images/#{image_name}.png", __dir__)
+        }
+      end
+    }
+    
+    menu(label: 'Country', underline: 0) {
+      ['denmark', 'finland', 'france', 'germany', 'italy', 'mexico', 'netherlands', 'norway', 'usa'].each do |image_name|
+        menu_item(:radiobutton, label: image_name.capitalize) {
+          selection image_name == 'usa'
+          image File.expand_path("images/#{image_name}.png", __dir__)
+          compound 'left'
+        }
+      end
+    }
+    
+    menu(label: 'Format', underline: 3) {
+      menu(label: 'Background Color', underline: 0) {
+        COLORS.each { |color_style|
+          menu_item(:radiobutton, label: color_style.to_s.split('_').map(&:capitalize).join(' ')) {
+            on('command') do
+              @label.background = color_style
+            end
+          }
+        }
+      }
+      
+      menu(label: 'Foreground Color', underline: 11) {
+        COLORS.each { |color_style|
+          menu_item(:radiobutton, label: color_style.to_s.split('_').map(&:capitalize).join(' ')) {
+            on('command') do
+              @label.foreground = color_style
+            end
+          }
+        }
+      }
+    }
+    
+    menu(label: 'View', underline: 0) {
+      menu_item(:radiobutton, label: 'Small', underline: 0) {
+        accelerator 'Control+S'
+        
+        on('command') do
+          @label.font = {size: 25}
+        end
+      }
+      
+      menu_item(:radiobutton, label: 'Medium', underline: 0) {
+        accelerator 'Control+M'
+        selection true
+
+        on('command') do
+          @label.font = {size: 50}
+        end
+      }
+      
+      menu_item(:radiobutton, label: 'Large', underline: 0) {
+        accelerator 'Control+L'
+        
+        on('command') do
+          @label.font = {size: 75}
+        end
+      }
+    }
+  }
+}.open
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_contextual_menu'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_contextual_menu.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello contextual-menu](images/glimmer-dsl-tk-screenshot-sample-hello-contextual-menu.png)
 
 ## Applications
 
