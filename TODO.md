@@ -2,11 +2,10 @@
 
 ## Next
 
-- Hello, Contextual Menu!
+- Support data-binding `_options` method items on list and combo (not just main value), thus making options update if `notify_observers(:some_attr_options)` is called)
 
 ## Soon
 
-- Support data-binding `_options` method items on list and combo (not just main value), thus making options update if `notify_observers(:some_attr_options)` is called)
 - Support `@tk.textvariable.trace('write')` via `on() {}` listeners (e.g. `on('textvariable_write') {}`)
 - Handle menu item accelerators that end with function keys (e.g. `'Alt+F4'`)
 - Default About Menu Item label to 'About' if not specified

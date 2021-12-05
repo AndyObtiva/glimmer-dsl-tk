@@ -3234,7 +3234,7 @@ root { |r|
     anchor 'center'
   }
   
-  menu {
+  menu_bar {
     # Mac-specific application menu (right next to the Apple menu)
     if OS.mac?
       menu(:application) {
