@@ -2,7 +2,7 @@
 
 ## Next
 
-- customize menu pop up logic
+- customize contextual menu pop up logic to be able to popup conditionally or at specific x,y locations instead of just the right click position alone
 
 - Support data-binding `_options` method items on list and combo (not just main value), thus making options update if `notify_observers(:some_attr_options)` is called)
 
