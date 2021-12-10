@@ -37,6 +37,8 @@ root { |r|
     anchor 'center'
   }
   
+  # Contextual Menu is bound to mouse right-click (and CTRL-click on Mac) by default
+  # (Read Comment Below for Alternative)
   menu {
     menu(label: 'Edit', underline: 0) {
       menu_item(label: 'Cut', underline: 2) {
@@ -153,4 +155,30 @@ root { |r|
       }
     }
   }
+  
+  # You can replace `menu {` code with `menu(bind: false) {` if you want to bind manually,
+  # which can be useful if you want to show menu at a specific location based on conditional logic.
+  #
+  # You can also repurpose a `menu_bar` as a contextual menu by declaring `@menu = menu_bar {` and
+  # binding to mouse right-click.
+  #
+  # Example:
+  #
+  # @menu = menu(bind: false) {
+  #   menu(label: 'File', underline: 0) {
+  #     menu_item(label: 'Exit')
+  #   }
+  # }
+  # if OS.mac?
+  #   on('2') do |event|
+  #     @menu.popup(event.x_root, event.y_root)
+  #   end
+  #   on('Control-1') do |event|
+  #     @menu.popup(event.x_root, event.y_root)
+  #   end
+  # else
+  #   on('3') do |event|
+  #     @menu.popup(event.x_root, event.y_root)
+  #   end
+  # end
 }.open

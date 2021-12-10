@@ -1,5 +1,12 @@
 # Change Log
 
+## 0.0.50
+
+- Support manual binding of contextual menu by passing `bind: false` option (e.g. `menu(bind: false) {...}` as demonstrated in samples/hello/hello_contextual_menu.rb)
+- Support binding multiple contextual menus (they show up consecutively unless there is conditional logic to control showing them individually)
+- Update Hello, Contextual Menu! to add a comment and an example about manual menu binding
+- Upgrade to glimmer 2.5.4
+
 ## 0.0.49
 
 - [API Breaking] Update menu bar support to require `menu_bar` keyword under `root` or `toplevel`

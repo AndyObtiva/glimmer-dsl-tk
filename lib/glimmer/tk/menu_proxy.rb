@@ -36,12 +36,18 @@ module Glimmer
         when ToplevelProxy
           if @keyword == 'menu_bar'
             @parent_proxy.tk['menu'] = @tk
-          else
+          elsif @options[:bind].nil? || @options[:bind]
             if OS.mac?
-              @parent_proxy.tk.bind '2', proc{|x,y| tk.popup(x,y)}, "%X %Y"
-              @parent_proxy.tk.bind 'Control-1', proc{|x,y| tk.popup(x,y)}, "%X %Y"
+              @parent_proxy.handle_listener('2') do |event|
+                popup(event.x_root, event.y_root)
+              end
+              @parent_proxy.handle_listener('Control-1') do |event|
+                popup(event.x_root, event.y_root)
+              end
             else
-              @parent_proxy.tk.bind '3', proc{|x,y| tk.popup(x,y)}, "%X %Y"
+              @parent_proxy.handle_listener('3') do |event|
+                popup(event.x_root, event.y_root)
+              end
             end
           end
         end
