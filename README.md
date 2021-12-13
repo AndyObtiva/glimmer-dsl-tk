@@ -19,9 +19,9 @@ The trade-off is that while [SWT](https://www.eclipse.org/swt/) provides a pleth
 - Convention over configuration via smart defaults and automation of low-level details
 - Requiring the least amount of syntax possible to build GUI
 - Bidirectional Data-Binding to declaratively wire and automatically synchronize GUI with Business Models
-- Custom Widget support
-- Scaffolding for new custom widgets, apps, and gems
-- Native-Executable packaging on Mac, Windows, and Linux
+- (Future Plan) Custom Widget support
+- (Future Plan) Scaffolding for new custom widgets, apps, and gems
+- (Future Plan) Native-Executable packaging on Mac, Windows, and Linux
 
 **Hello, World!**
 
@@ -51,7 +51,7 @@ Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello world](images/glimmer-dsl-tk-screenshot-sample-hello-world.png)
 
-NOTE: Glimmer DSL for Tk is currently in early alpha mode (incomplete). Please help make better by contributing, adopting for small or low risk projects, and providing feedback. It is still an early alpha, so the more feedback and issues you report the better.
+NOTE: Glimmer DSL for Tk is currently in early alpha mode (only about 44% complete). If you want it developed faster, then [open an issue report](https://github.com/AndyObtiva/glimmer-dsl-tk/issues/new). I have completed some features much faster before due to [issue reports](https://github.com/AndyObtiva/glimmer-dsl-tk/issues) and [pull requests](https://github.com/AndyObtiva/glimmer-dsl-tk/pulls). Please help make better by contributing, adopting for small or low risk projects, and providing feedback. It is still an early alpha, so the more feedback and issues you report the better.
 
 Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems you might be interested in:
 - [glimmer-dsl-swt](https://github.com/AndyObtiva/glimmer-dsl-swt): Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)
@@ -145,24 +145,24 @@ Other [Glimmer](https://github.com/AndyObtiva/glimmer) DSL gems you might be int
 
 ## Pre-requisites
 
-- [Tcl/Tk](https://www.tcl.tk/): Follow the [install instructions](https://tkdocs.com/tutorial/install.html)
+- [Tcl/Tk 8.6](https://www.tcl.tk/): Follow the exact instructions below (if a further reference is needed, here are the [official install instructions](https://tkdocs.com/tutorial/install.html))
 - [Ruby](https://www.ruby-lang.org/en/): On Windows, obtain from the Ruby [download page](https://www.ruby-lang.org/en/downloads/). On the Mac and Linux, it is more convenient to just use [RVM](http://rvm.io) and follow the [RVM Tk instructions](https://rvm.io/integration/tk).
 
-For example, on the Mac, you can:
-- Install the ActiveTcl Mac package from [ActiveState.com](https://activestate.com)
+**Mac:**
+- Install the ActiveTcl 8.6 Mac package from [ActiveState.com](https://activestate.com)
 - Install [RVM](https://rvm.io/) by running `\curl -sSL https://get.rvm.io | bash -s stable` (and run `curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -` if needed for mentioned security reasons)
 - Run: `rvm install 3.0.2 --enable-shared --enable-pthread --with-tk --with-tcl`
 - Run: `gem install tk -v0.4.0`
 
-For example, on Windows, you can follow the [instructions over here](https://tkdocs.com/tutorial/install.html), specifically the following:
+**Windows:**
 - Install Ruby+Devkit (including MSYS/MINGW toolchains) through Windows Installer: https://rubyinstaller.org/downloads/
-- Install the ActiveTcl Windows package from [ActiveState.com](https://activestate.com)
+- Install the ActiveTcl 8.6 Windows package from [ActiveState.com](https://activestate.com)
 - Follow this instruction: "First, Ruby needs to find the tcl86t.dll and tk86t.dll shared libraries. These are located in C:\ActiveTcl\bin. Make a copy of them somewhere Ruby can find them, e.g. C:\Ruby26\bin."
 - Setup environment variables TCL_LIBRARY=C:\ActiveTcl\lib\tcl8.6 & TK_LIBRARY=C:\ActiveTcl\lib\tk8.6
 - Run: `gem install tk -v0.4.0`
 
-For example, on Linux, you can:
-- Download the ActiveTcl Linux package from [ActiveState.com](https://activestate.com)
+**Linux:**
+- Download the ActiveTcl 8.6 Linux package from [ActiveState.com](https://activestate.com)
 - Extract the tar gz file using command `tar zxvf ActiveTcl-version-number.tar.gz`
 - Run included install shell script `./ActiveTcl-version-number/install.sh`
 - Install [RVM](https://rvm.io/) by running `\curl -sSL https://get.rvm.io | bash -s stable` (and run `curl -sSL https://rvm.io/pkuczynski.asc | gpg --import -` if needed for mentioned security reasons)
@@ -172,6 +172,8 @@ For example, on Linux, you can:
 Afterwards, if you open `irb`, you should be able to run `require 'tk'` successfully.
 
 ## Setup
+
+Assuming you have all [Pre-Requisites](#pre-requisites) ready, follow these instructions to setup the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-tk). 
 
 ### Option 1: Install
 
@@ -484,13 +486,13 @@ Check out the [Hello, Scrollbar!](#hello-scrollbar) sample for a `text` demo wit
 
 #### Drag and Drop API
 
-Drag and drop works by simply designating a widget as a drag source with attribute `drag_source true` and another widget as a drop target with attribute `drop_target true`.
+Thanks to the vision of [vin1antme](https://github.com/vin1antme) (contributor), drag and drop works by simply designating a widget as a draggable with attribute `drag_source true` and another widget as a droppable with attribute `drop_target true`.
 
-Alternatively, add listeners on the drag source:
+Alternatively, for advanced customization, add listeners on the draggable:
 - `on('drag_start') {|event| ...}`: fires on drag start receiving an `event` arg to set `data` and configure `source`
 - `on('drag_motion') {|event| ...}`: fires on drag motion receiving an `event` arg to check `event#drop_accepted`, and configure `source` and `tooltip`
 
-And on the drop target, add listener:
+And, add a listener on the droppable:
 - `on('drop') { |event| ...}`: fires on drop, receiving an `event` arg with `event#target` and `event#data` (set during drag). You can even destroy the `event#source` if you want to get rid of the dragged widget.
 
 These are all the available attributes on event, which is of type `DragAndDropEvent`:
@@ -624,7 +626,25 @@ More details can be found in the [Hello, Computed!](#hello-computed) sample belo
 
 ## Data-Binding
 
-Glimmer supports Shine syntax bidirectional data-binding via the `<=>` operator (read-write) and unidirectional data-binding via the `<=` operator (read-only), which takes a model and an attribute (the `bind` keyword may also be used as the old-style of data-binding).
+Glimmer supports Shine syntax bidirectional data-binding via the `<=>` operator (read-write) and unidirectional data-binding via the `<=` operator (read-only), which takes a model and an attribute (the `bind(model, attribute, *options)` keyword may also be used as the old-style of data-binding).
+
+To summarize the data-binding API:
+- `view_property <=> [model, attribute, *read_or_write_options]`: Bidirectional (two-way) data-binding to Model attribute accessor
+- `view_property <= [model, attribute, *read_only_options]`: Unidirectional (one-way) data-binding to Model attribute reader
+
+Data-bound model attribute can be:
+- **Direct:** `Symbol` representing attribute reader/writer (e.g. `[person, :name`])
+- **Nested:** `String` representing nested attribute path (e.g. `[company, 'address.street']`). That results in "nested data-binding"
+- **Indexed:** `String` containing array attribute index (e.g. `[customer, 'addresses[0].street']`). That results in "indexed data-binding"
+
+Data-binding options include:
+- `before_read {|value| ...}`: performs an operation before reading data from Model to update View.
+- `on_read {|value| ...}`: converts value read from Model to update the View.
+- `after_read {|converted_value| ...}`: performs an operation after read from Model to update View.
+- `before_write {|value| ...}`: performs an operation before writing data to Model from View.
+- `on_write {|value| ...}`: converts value read from View to update the Model.
+- `after_write {|converted_value| ...}`: performs an operation after writing to Model from View.
+- `computed_by attribute` or `computed_by [attribute1, attribute2, ...]`: indicates model attribute is computed from specified attribute(s), thus updated when they are updated. That is known as "computed data-binding".
 
 ### Label Data-Binding
 
@@ -3365,16 +3385,24 @@ root { |r|
         menu_item(:radiobutton, label: image_name.capitalize) {
           selection image_name == 'usa'
           image File.expand_path("images/#{image_name}.png", __dir__)
+          
+          on('command') do
+            message_box(parent: r, title: 'Language Selection', message: "You selected the language of #{image_name.capitalize}!")
+          end
         }
       end
     }
     
-    menu(label: 'Country', underline: 3) {
+    menu(label: 'Country', underline: 0) {
       ['denmark', 'finland', 'france', 'germany', 'italy', 'mexico', 'netherlands', 'norway', 'usa'].each do |image_name|
         menu_item(:radiobutton, label: image_name.capitalize) {
           selection image_name == 'usa'
           image File.expand_path("images/#{image_name}.png", __dir__)
           compound 'left'
+          
+          on('command') do
+            message_box(parent: r, title: 'Country Selection', message: "You selected the country of #{image_name.capitalize}!")
+          end
         }
       end
     }
@@ -3582,6 +3610,10 @@ root { |r|
         menu_item(:radiobutton, label: image_name.capitalize) {
           selection image_name == 'usa'
           image File.expand_path("images/#{image_name}.png", __dir__)
+          
+          on('command') do
+            message_box(parent: r, title: 'Language Selection', message: "You selected the language of #{image_name.capitalize}!")
+          end
         }
       end
     }
@@ -3592,10 +3624,14 @@ root { |r|
           selection image_name == 'usa'
           image File.expand_path("images/#{image_name}.png", __dir__)
           compound 'left'
+          
+          on('command') do
+            message_box(parent: r, title: 'Country Selection', message: "You selected the country of #{image_name.capitalize}!")
+          end
         }
       end
     }
-    
+        
     menu(label: 'Format', underline: 3) {
       menu(label: 'Background Color', underline: 0) {
         COLORS.each { |color_style|
@@ -3716,9 +3752,9 @@ https://github.com/cryptopunksnotdead/cryptopunks-gui
 
 Generate an icon of overlapping circles derived from a hash.
 
-https://gitlab.com/fjc/circule
-
 [Demo Video](https://gitlab.com/fjc/circule/-/raw/master/circule-demo.mp4)
+
+https://gitlab.com/fjc/circule
 
 ## Process
 

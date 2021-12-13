@@ -2,6 +2,7 @@
 
 ## Next
 
+- add percentage of completeness to Readme when mentioning that this is alpha
 - Support data-binding `_options` method items on list and combo (not just main value), thus making options update if `notify_observers(:some_attr_options)` is called)
 
 ## Soon
@@ -45,7 +46,6 @@
 - Add default padding to `labelframe`
 - Hello, Labelframe!
 
-- Support themes
 - Custom Widgets
 - Support canvas shapes:
   - line
@@ -73,7 +73,6 @@
 - Hello, Listbox! (two tabs for single/multi selection)
 - Hello, Treeview!
 - Hello, Table! (adapt treeview as a table)
-- Hello, Drag & Drop!
 - Hello, Canvas!
 - Hello, Canvas Drag and Drop!
 - Hello, Cursor!
@@ -142,3 +141,4 @@
 - Consider exposing WidgetProxy Tk possible class names (e.g. ::Tk#{SomeWidget}) via Glimmer::Config to make configurable
 - Support inter-application Drag and Drop (e.g. drag a file from Finder/Explorer and drop it in Glimmer DSL for Tk app drop zone to store it in a list)
 - Consider supporting adding a menu as both contextual and menu_bar
+- Support embedding plots declaratively with custom widgets using https://github.com/red-data-tools/GR.rb
