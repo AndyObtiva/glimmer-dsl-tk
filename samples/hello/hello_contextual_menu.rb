@@ -92,6 +92,10 @@ root { |r|
         menu_item(:radiobutton, label: image_name.capitalize) {
           selection image_name == 'usa'
           image File.expand_path("images/#{image_name}.png", __dir__)
+          
+          on('command') do
+            message_box(parent: r, title: 'Language Selection', message: "You selected the language of #{image_name.capitalize}!")
+          end
         }
       end
     }
@@ -102,6 +106,10 @@ root { |r|
           selection image_name == 'usa'
           image File.expand_path("images/#{image_name}.png", __dir__)
           compound 'left'
+          
+          on('command') do
+            message_box(parent: r, title: 'Country Selection', message: "You selected the country of #{image_name.capitalize}!")
+          end
         }
       end
     }
