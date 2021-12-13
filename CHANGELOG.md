@@ -2,9 +2,9 @@
 
 ## 0.0.51
 
-- Explicitly support all menu item attributes: `activebackground`, `activeforeground`, `background`, `bitmap`, `columnbreak`, `compound`, `font`, `foreground`, `hidemargin`, `indicatoron`, `menu`, `offvalue`, `onvalue`, `selectcolor`, `selectimage`, `state`, `underline`, `value`
-- Enhance Hello, Contextual Menu! & Hello, Menu Bar! to display a message box upon selecting a Language/Country
 - Center application root/toplevel within screen by default (if x or y are specified, they are respected instead)
+- Enhance Hello, Contextual Menu! & Hello, Menu Bar! to display a message box upon selecting a Language/Country
+- Explicitly support all menu item attributes: `activebackground`, `activeforeground`, `background`, `bitmap`, `columnbreak`, `compound`, `font`, `foreground`, `hidemargin`, `indicatoron`, `menu`, `offvalue`, `onvalue`, `selectcolor`, `selectimage`, `state`, `underline`, `value`
 
 ## 0.0.50
 
