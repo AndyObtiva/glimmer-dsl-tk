@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.51
+
+- Explicitly support all menu item attributes: `activebackground`, `activeforeground`, `background`, `bitmap`, `columnbreak`, `compound`, `font`, `foreground`, `hidemargin`, `indicatoron`, `menu`, `offvalue`, `onvalue`, `selectcolor`, `selectimage`, `state`, `underline`, `value`
+
+
 ## 0.0.50
 
 - Support manual binding of contextual menu by passing `bind: false` option (e.g. `menu(bind: false) {...}` as demonstrated in samples/hello/hello_contextual_menu.rb)

@@ -36,10 +36,13 @@ module Glimmer
         'Control' => 'Control',
       }
       
+      ATTRIBUTES = %w[activebackground activeforeground background bitmap columnbreak compound font foreground hidemargin indicatoron menu offvalue onvalue selectcolor selectimage state underline value]
+      
       attr_reader :options
     
       def initialize(underscored_widget_name, parent_proxy, args, &block)
         @options = args.last.is_a?(Hash) ? args.last : {}
+        @label = @options[:label]
         super
       end
     
@@ -62,17 +65,14 @@ module Glimmer
         end.join('-')
       end
       
-      def state=(value)
-        @state = value
-        configure_menu_item_attribute(state: value)
-      end
-      
-      def state
-        @state
+      def label=(value)
+        @last_label = @label
+        @label = value
+        configure_menu_item_attribute(label: @label)
       end
       
       def label
-        @options[:label]
+        @label
       end
       
       def image=(*args)
@@ -151,9 +151,9 @@ module Glimmer
       
       def selection=(value)
         if value
-          variable.value = label
+          self.value = variable.value = label
         elsif checkbutton?
-          variable.value = ''
+          self.value = variable.value = ''
         end
       end
       
@@ -170,7 +170,34 @@ module Glimmer
         elsif quit? && attribute_value_hash[:command]
           ::Tk.ip_eval("proc ::tk::mac::Quit {} {#{::Tk.install_cmd(attribute_value_hash[:command])}}") if OS.mac?
         else
-          @parent_proxy.tk.entryconfigure label, attribute_value_hash
+          if attribute_value_hash.keys.first.to_s == 'label'
+            @parent_proxy.tk.entryconfigure @last_label, attribute_value_hash
+            self.value = variable.value = attribute_value_hash.values.first if variable.value == @last_label
+          else
+            @parent_proxy.tk.entryconfigure label, attribute_value_hash
+          end
+        end
+      end
+      
+      def has_attributes_attribute?(attribute)
+        attribute = attribute.to_s
+        attribute = attribute.sub(/\?$/, '').sub(/=$/, '')
+        ATTRIBUTES.include?(attribute)
+      end
+      
+      def set_attribute(attribute, value)
+        if has_attributes_attribute?(attribute)
+          configure_menu_item_attribute(attribute => value)
+        else
+          super
+        end
+      end
+      
+      def get_attribute(attribute)
+        if has_attributes_attribute?(attribute)
+          @parent_proxy.tk.entrycget label, attribute
+        else
+          super
         end
       end
       
