@@ -36,6 +36,7 @@ module Glimmer
       alias escapable? escapable
       
       def post_add_content
+        center_within_screen unless @x || @y
         if escapable?
            on('KeyPress') do |event|
             if event.keysym == 'Escape'
@@ -93,10 +94,12 @@ module Glimmer
       end
       
       def x=(value)
+        @x = value
         self.geometry = "#{@width || DEFAULT_WIDTH}x#{@height || DEFAULT_HEIGHT}#{value.to_i > 0 ? '+' : '-'}#{value.to_i.abs}#{y_sign}#{abs_y}"
       end
       
       def y=(value)
+        @y = value
         self.geometry = "#{@width || DEFAULT_WIDTH}x#{@height || DEFAULT_HEIGHT}#{x_sign}#{abs_x}#{value.to_i > 0 ? '+' : '-'}#{value.to_i.abs}"
       end
       
@@ -108,6 +111,17 @@ module Glimmer
         else
           super
         end
+      end
+      
+      def center_within_screen
+        monitor_width, monitor_height = wm_maxsize
+        update :idletasks
+        current_width = width
+        current_height = height
+        self.x = (winfo_screenwidth - width) / 2
+        self.y = (winfo_screenheight - height) / 2
+        self.width = width
+        self.height = height
       end
       
       private
