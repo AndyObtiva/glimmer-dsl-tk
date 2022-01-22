@@ -3763,6 +3763,7 @@ https://gitlab.com/fjc/circule
 ## Resources
 
 - [Tk Tutorial](https://tkdocs.com/tutorial/index.html)
+- [Official Tk Command Reference](https://tcl.tk/man/tcl8.6/TkCmd/contents.htm)
 - [Code Master Blog](https://andymaleh.blogspot.com/search/label/Tk)
 
 ## Help

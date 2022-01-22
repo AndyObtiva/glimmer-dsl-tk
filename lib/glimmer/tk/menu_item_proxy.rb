@@ -61,8 +61,15 @@ module Glimmer
       def accelerator_event
         accelerator_parts = @accelerator.split('+')
         accelerator_parts.map do |accelerator_part|
-          ACCELERATOR_MODIFIER_EVENT_MAP[accelerator_part.capitalize] || accelerator_part.downcase
+          ACCELERATOR_MODIFIER_EVENT_MAP[accelerator_part.capitalize] ||
+            (accelerator_part.size == 1 && accelerator_part.downcase) ||
+            (function_key?(accelerator_part) && accelerator_part.upcase) ||
+            accelerator_part
         end.join('-')
+      end
+      
+      def function_key?(string)
+        string.downcase.match(/^f\d+$/)
       end
       
       def label=(value)

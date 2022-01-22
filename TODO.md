@@ -2,12 +2,11 @@
 
 ## Next
 
-- Handle menu item accelerators that end with function keys (e.g. `'Alt+F4'`)
+- Default About Menu Item label to 'About' if not specified
 
 ## Soon
 
 - Support `@tk.textvariable.trace('write')` via `on() {}` listeners (e.g. `on('textvariable_write') {}`)
-- Default About Menu Item label to 'About' if not specified
 - Update Hello, Menu Bar! screenshots with Language Country
 - Auto-Default to `validate 'key'` when defining `validatecommand {}` or `on('validate') {}` on an `entry`
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`

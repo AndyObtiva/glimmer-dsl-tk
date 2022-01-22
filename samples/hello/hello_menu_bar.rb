@@ -99,6 +99,8 @@ root { |r|
       menu_item(:separator)
       
       menu_item(label: 'Exit', underline: 1) {
+        accelerator 'Alt+F4'
+        
         on('command') do
           exit(0)
         end
