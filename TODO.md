@@ -2,8 +2,6 @@
 
 ## Next
 
-- Default About Menu Item label to 'About' if not specified
-
 ## Soon
 
 - Support `@tk.textvariable.trace('write')` via `on() {}` listeners (e.g. `on('textvariable_write') {}`)

@@ -3,6 +3,7 @@
 ## 0.0.53
 
 - Support menu item accelerators that include or end with function keys (e.g. `'Alt+F4'`)
+- Default `:about` Menu Item label to 'About' if not specified
 
 ## 0.0.52
 

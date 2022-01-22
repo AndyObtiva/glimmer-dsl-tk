@@ -41,7 +41,8 @@ root { |r|
     # Mac-specific application menu (right next to the Apple menu)
     if OS.mac?
       menu(:application) {
-        menu_item(:about, label: 'About My Application') {
+#         menu_item(:about, label: 'About My Application') {
+        menu_item(:about) {
           accelerator 'Command+A'
           
           on('command') do

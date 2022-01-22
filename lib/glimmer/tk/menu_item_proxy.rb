@@ -43,6 +43,7 @@ module Glimmer
       def initialize(underscored_widget_name, parent_proxy, args, &block)
         @options = args.last.is_a?(Hash) ? args.last : {}
         @label = @options[:label]
+        @label ||= 'About' if args.first == :about
         super
       end
     
