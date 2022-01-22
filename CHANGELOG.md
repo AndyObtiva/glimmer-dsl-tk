@@ -4,6 +4,7 @@
 
 - Upgrade to glimmer 2.6.0
 - Remove default height for root/toplevel (automatically calculated from children)
+- Support data-binding `_options` method items on `combobox` (not just main value), thus making options update if `notify_observers(:some_attr_options)` is called
 
 ## 0.0.51
 

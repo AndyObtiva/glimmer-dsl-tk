@@ -393,8 +393,13 @@ module Glimmer
               if observer.is_a?(Glimmer::DataBinding::ModelBinding)
                 model = observer.model
                 options_model_property = observer.property_name + '_options'
-                # TODO perform data-binding to values too
-                @tk.values = model.send(options_model_property) if model.respond_to?(options_model_property)
+                if model.respond_to?(options_model_property)
+                  options_observer = Glimmer::DataBinding::Observer.proc do
+                    @tk.values = model.send(options_model_property)
+                  end
+                  options_observer.observe(model, options_model_property)
+                  options_observer.call
+                end
               end
               @tk.bind('<ComboboxSelected>') {
                 observer.call(@tk.textvariable.value)
