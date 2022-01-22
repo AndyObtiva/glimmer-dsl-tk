@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.52
+
+- Upgrade to glimmer 2.6.0
+- Remove default height for root/toplevel (automatically calculated from children)
+
 ## 0.0.51
 
 - Center application root/toplevel within screen by default (if x or y are specified, they are respected instead)

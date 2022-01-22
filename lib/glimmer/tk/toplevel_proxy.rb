@@ -29,7 +29,7 @@ module Glimmer
     class ToplevelProxy < WidgetProxy
       REGEX_GEOMETRY = /[x+-]/
       DEFAULT_WIDTH = 190
-      DEFAULT_HEIGHT = 95
+      DEFAULT_HEIGHT = 0
       
       attr_reader :tk
       attr_accessor :escapable
