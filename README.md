@@ -173,7 +173,7 @@ Afterwards, if you open `irb`, you should be able to run `require 'tk'` successf
 
 ## Setup
 
-Assuming you have all [Pre-Requisites](#pre-requisites) ready, follow these instructions to setup the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-tk). 
+Assuming you have all [Pre-Requisites](#pre-requisites) ready, follow these instructions to setup the [Ruby gem](https://rubygems.org/gems/glimmer-dsl-tk).
 
 ### Option 1: Install
 
@@ -3800,7 +3800,7 @@ These features have been planned or suggested. You might see them in a future ve
 
 [MIT](LICENSE.txt)
 
-Copyright (c) 2020-2021 - Andy Maleh.
+Copyright (c) 2020-2022 - Andy Maleh.
 
 --
 
