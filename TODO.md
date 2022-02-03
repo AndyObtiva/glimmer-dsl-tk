@@ -2,6 +2,8 @@
 
 ## Next
 
+- Add default padding to `labelframe`
+
 ## Soon
 
 - Support `@tk.textvariable.trace('write')` via `on() {}` listeners (e.g. `on('textvariable_write') {}`)
@@ -37,9 +39,6 @@
 - Implement `code_text` custom widget using `text` and `rouge` gem
 - Implement `code_text` line numbers feature, relying on yscrollcommand and yview scroll number
 - Update Meta-Sample to use `code_text` custom widget
-
-- Add default padding to `labelframe`
-- Hello, Labelframe!
 
 - Custom Widgets
 - Support canvas shapes:

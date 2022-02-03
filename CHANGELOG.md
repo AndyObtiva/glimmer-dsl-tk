@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.54
+
+- Hello, Labelframe!
+
 ## 0.0.53
 
 - Support menu item accelerators that include or end with function keys (e.g. `'Alt+F4'`)
