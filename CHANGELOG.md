@@ -3,6 +3,7 @@
 ## 0.0.54
 
 - Hello, Labelframe!
+- Add default padding to `labelframe`
 
 ## 0.0.53
 

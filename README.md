@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.53
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.54
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -54,7 +54,7 @@ NOTE: Glimmer DSL for Tk is currently in early alpha mode (only about 44% comple
 **[Glimmer](https://rubygems.org/gems/glimmer) DSL Comparison Table:**
 DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
 ----|-----------|---------|------------------|------|------|--------
-[Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)](https://github.com/AndyObtiva/glimmer-dsl-swt) | Mac / Windows / Linux | Yes | Yes (Canvas Shape DSL) | Very Mature / Scaffolding / Native Executable Packaging / Custom Widgets | Slow JRuby Startup Time / Heavy Memory Footprint | Java / JRuby 
+[Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)](https://github.com/AndyObtiva/glimmer-dsl-swt) | Mac / Windows / Linux | Yes | Yes (Canvas Shape DSL) | Very Mature / Scaffolding / Native Executable Packaging / Custom Widgets | Slow JRuby Startup Time / Heavy Memory Footprint | Java / JRuby
 [Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)](https://github.com/AndyObtiva/glimmer-dsl-opal) | All Web Browsers | No | Yes (Canvas Shape DSL) | Simpler than All JavaScript Technologies / Auto-Webify Desktop Apps | Setup Process / Incomplete Alpha | Rails
 [Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-libui) | Mac / Windows / Linux | Yes | Yes (Area API) | Fast Startup Time / Light Memory Footprint | LibUI is an Incomplete Mid-Alpha Only | None Other Than MRI Ruby
 [Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-tk) | Mac / Windows / Linux | Some Native-Themed Widgets (Not Truly Native) | Yes (Canvas) | Fast Startup Time / Light Memory Footprint | Complicated setup / Widgets Do Not Look Truly Native, Espcially on Linux | ActiveTcl / MRI Ruby
@@ -131,6 +131,7 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
     - [Hello, Scrollbar Frame!](#hello-scrollbar-frame)
     - [Hello, Menu Bar!](#hello-menu-bar)
     - [Hello, Contextual Menu!](#hello-contextual-menu)
+    - [Hello, Labelframe!](#hello-labelframe)
   - [Applications](#applications)
     - [Glimmer Tk Calculator](#glimmer-tk-calculator)
     - [Y3network Ruby UI](#y3network-ruby-ui)
@@ -190,7 +191,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '0.0.53'
+gem 'glimmer-dsl-tk', '0.0.54'
 ```
 
 And, then run:
@@ -3729,6 +3730,169 @@ ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_contextual_menu.rb
 Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello contextual-menu](images/glimmer-dsl-tk-screenshot-sample-hello-contextual-menu.png)
+
+### Hello, Labelframe!
+
+Glimmer code (from [samples/hello/hello_labelframe.rb](samples/hello/hello_labelframe.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+include Glimmer
+
+root {
+  title 'Hello, Labelframe!'
+  
+  labelframe {
+    grid column: 0, row: 0, padx: 10, pady: 10
+    text 'Name:'
+    # labelanchor 'nw' # Default. Other options: 'n', 'ne', 'en', 'e', 'es', 'se', 's', 'sw', 'ws', 'w', 'wn'
+    
+    label {
+      grid column: 0, row: 0, sticky: 'w'
+      text 'First Name:'
+    }
+    entry {
+      grid column: 1, row: 0
+      width 15
+    }
+    
+    label {
+      grid column: 0, row: 1, sticky: 'w'
+      text 'Last Name:'
+    }
+    entry {
+      grid column: 1, row: 1
+      width 15
+    }
+  }
+  
+  labelframe {
+    grid column: 0, row: 1, padx: 10, pady: 10
+    text 'Address:'
+    
+    label {
+      grid column: 0, row: 0, sticky: 'w'
+      text 'Street:'
+    }
+    entry {
+      grid column: 1, row: 0
+      width 15
+    }
+    
+    label {
+      grid column: 0, row: 1, sticky: 'w'
+      text 'City:'
+    }
+    entry {
+      grid column: 1, row: 1
+      width 15
+    }
+    
+    label {
+      grid column: 0, row: 2, sticky: 'w'
+      text 'State:'
+    }
+    entry {
+      grid column: 1, row: 2
+      width 15
+    }
+    
+    label {
+      grid column: 0, row: 3, sticky: 'w'
+      text 'Zip:'
+    }
+    entry {
+      grid column: 1, row: 3
+      width 15
+    }
+  }
+  
+  labelframe {
+    grid column: 1, row: 0, rowspan: 2, padx: 10, pady: 10
+    text 'Medical Info:'
+    
+    label {
+      grid column: 0, row: 0, sticky: 'w'
+      text 'Family Doctor:'
+    }
+    entry {
+      grid column: 1, row: 0
+      width 15
+    }
+    
+    label {
+      grid column: 0, row: 1, sticky: 'w'
+      text 'Chronic Conditions:'
+    }
+    entry {
+      grid column: 1, row: 1
+      width 15
+    }
+    
+    label {
+      grid column: 0, row: 2, sticky: 'w'
+      text 'Past Surgeries:'
+    }
+    entry {
+      grid column: 1, row: 2
+      width 15
+    }
+    
+    label {
+      grid column: 0, row: 3, sticky: 'w'
+      text 'Health Insurance Info:'
+    }
+    entry {
+      grid column: 1, row: 3
+      width 15
+    }
+    
+    label {
+      grid column: 0, row: 4, sticky: 'w'
+      text 'Dental Insurance Info:'
+    }
+    entry {
+      grid column: 1, row: 4
+      width 15
+    }
+    
+    label {
+      grid column: 0, row: 5, sticky: 'w'
+      text 'Diet:'
+    }
+    entry {
+      grid column: 1, row: 5
+      width 15
+    }
+    
+    label {
+      grid column: 0, row: 6, sticky: 'w'
+      text 'Exercise:'
+    }
+    entry {
+      grid column: 1, row: 6
+      width 15
+    }
+  }
+}.open
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_labelframe'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_labelframe.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello label-frame](images/glimmer-dsl-tk-screenshot-sample-hello-labelframe.png)
 
 ## Applications
 

@@ -29,7 +29,7 @@ root {
   labelframe {
     grid column: 0, row: 0, padx: 10, pady: 10
     text 'Name:'
-    padding 10
+    # labelanchor 'nw' # Default. Other options: 'n', 'ne', 'en', 'e', 'es', 'se', 's', 'sw', 'ws', 'w', 'wn'
     
     label {
       grid column: 0, row: 0, sticky: 'w'
@@ -53,7 +53,6 @@ root {
   labelframe {
     grid column: 0, row: 1, padx: 10, pady: 10
     text 'Address:'
-    padding 10
     
     label {
       grid column: 0, row: 0, sticky: 'w'
@@ -95,7 +94,6 @@ root {
   labelframe {
     grid column: 1, row: 0, rowspan: 2, padx: 10, pady: 10
     text 'Medical Info:'
-    padding 10
     
     label {
       grid column: 0, row: 0, sticky: 'w'

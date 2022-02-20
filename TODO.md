@@ -2,7 +2,11 @@
 
 ## Next
 
-- Add default padding to `labelframe`
+- Hello, Scale!
+- Hello, Progressbar!
+- Hello, Panedwindow!
+- Hello, Grid!
+- Hello, Listbox! (two tabs for single/multi selection)
 
 ## Soon
 
@@ -60,11 +64,6 @@
 
 ### Hello
 
-- Hello, Scale!
-- Hello, Progressbar!
-- Hello, Panedwindow!
-- Hello, Grid!
-- Hello, Listbox! (two tabs for single/multi selection)
 - Hello, Treeview!
 - Hello, Table! (adapt treeview as a table)
 - Hello, Canvas!
