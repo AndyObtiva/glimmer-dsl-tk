@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.54
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.55
 ## MRI Ruby Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -100,6 +100,7 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
     - [List Multi Selection Data-Binding](#list-multi-selection-data-binding)
     - [Entry Data-Binding](#entry-data-binding)
     - [Text Data-Binding](#text-data-binding)
+    - [Scale Data-Binding](#scale-data-binding)
     - [Spinbox Data-Binding](#spinbox-data-binding)
     - [Checkbutton Data-Binding](#checkbutton-data-binding)
     - [Radiobutton Data-Binding](#radiobutton-data-binding)
@@ -132,6 +133,7 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
     - [Hello, Menu Bar!](#hello-menu-bar)
     - [Hello, Contextual Menu!](#hello-contextual-menu)
     - [Hello, Labelframe!](#hello-labelframe)
+    - [Hello, Scale!](#hello-scale)
   - [Applications](#applications)
     - [Glimmer Tk Calculator](#glimmer-tk-calculator)
     - [Y3network Ruby UI](#y3network-ruby-ui)
@@ -191,7 +193,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '0.0.54'
+gem 'glimmer-dsl-tk', '0.0.55'
 ```
 
 And, then run:
@@ -767,6 +769,28 @@ That code binds the `value` of `text` to the `biography` attribute on the `perso
 It automatically handles all the Tk plumbing behind the scenes.
 
 More details can be found in [Hello, Text!](#hello-text) sample below.
+
+### Scale Data-Binding
+
+Example:
+
+This assumes a `Person` model with an `age` attribute.
+
+```ruby
+  spinbox {
+    orient 'horizontal' # can be 'vertical' too
+    length 200
+    from 0.0
+    to 100.0
+    variable <=> [person, :age, on_write: ->(val) {val.to_i}]
+  }
+```
+
+That code binds the `variable` value of the `scale` to the `age` attribute on the `person` model.
+
+It automatically handles all the Tk plumbing behind the scenes.
+
+More details can be found in [Hello, Scale!](#hello-scale) sample below.
 
 ### Spinbox Data-Binding
 
@@ -3893,6 +3917,61 @@ ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_labelframe.rb
 Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello label-frame](images/glimmer-dsl-tk-screenshot-sample-hello-labelframe.png)
+
+### Hello, Scale!
+
+Glimmer code (from [samples/hello/hello_scale.rb](samples/hello/hello_scale.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+class HelloScale
+  include Glimmer
+  
+  attr_accessor :scale_value
+  
+  def initialize
+    self.scale_value = 50
+  end
+  
+  def launch
+    root {
+      text 'Hello, Scale!'
+      
+      label {
+        anchor 'center'
+        text <= [self, :scale_value]
+      }
+      
+      scale {
+        orient 'horizontal'
+        length 200
+        from 0.0
+        to 100.0
+        variable <=> [self, :scale_value, on_write: ->(val) {val.to_i}]
+      }
+    }.open
+  end
+end
+
+HelloScale.new.launch
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_scale'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_scale.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello scale](images/glimmer-dsl-tk-screenshot-sample-hello-scale.png)
 
 ## Applications
 

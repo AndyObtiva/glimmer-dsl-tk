@@ -2,7 +2,6 @@
 
 ## Next
 
-- Hello, Scale!
 - Hello, Progressbar!
 - Hello, Panedwindow!
 - Hello, Grid!
@@ -33,6 +32,7 @@
 - `text` widget cut/copy with style (perhaps track all applied formatting tags and reapply them to new indexes)
 - `text` widget paste with cut/copied style (perhaps track all applied formatting tags and reapply them to new indexes)
 - `text` widget paste matching insert mark style (track all applied tags to that location and reapply)
+- Improve support for `command` listener so that it does not override usage in data-binding when explicitly set after data-binding
 
 ## Issues
 

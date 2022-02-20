@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.55
+
+- Hello, Scale!
+- `scale` `variable` data-binding
+
 ## 0.0.54
 
 - Hello, Labelframe!

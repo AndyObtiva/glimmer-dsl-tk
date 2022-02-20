@@ -369,6 +369,12 @@ module Glimmer
               setter: {name: 'text=', invoker: lambda { |widget, args| @tk.textvariable&.value = args.first }},
             },
           },
+          ::Tk::Tile::TScale => {
+            'variable' => {
+              getter: {name: 'variable', invoker: lambda { |widget, args| @tk.variable&.value }},
+              setter: {name: 'variable=', invoker: lambda { |widget, args| @tk.variable&.value = args.first }},
+            },
+          },
           ::Tk::Root => {
             'text' => {
               getter: {name: 'text', invoker: lambda { |widget, args| @tk.title }},
@@ -425,6 +431,13 @@ module Glimmer
                 new_icursor += validate_args.string.size if validate_args.action == 1
                 @tk.icursor = new_icursor
                 true
+              }
+            end,
+          },
+          ::Tk::Tile::TScale => {
+            'variable' => lambda do |observer|
+              @tk.command {
+                observer.call(@tk.variable&.value)
               }
             end,
           },
