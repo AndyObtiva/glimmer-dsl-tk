@@ -2,7 +2,6 @@
 
 ## Next
 
-- Hello, Progressbar!
 - Hello, Panedwindow!
 - Hello, Grid!
 - Hello, Listbox! (two tabs for single/multi selection)

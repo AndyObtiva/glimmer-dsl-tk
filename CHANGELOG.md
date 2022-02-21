@@ -1,13 +1,18 @@
 # Change Log
 
+## 0.0.56
+
+- Hello, Progressbar! sample
+- Upgrade to glimmer 2.7.3
+
 ## 0.0.55
 
-- Hello, Scale!
+- Hello, Scale! sample
 - `scale` `variable` data-binding
 
 ## 0.0.54
 
-- Hello, Labelframe!
+- Hello, Labelframe! sample
 - Add default padding to `labelframe`
 
 ## 0.0.53

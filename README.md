@@ -1,5 +1,5 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.55
-## MRI Ruby Desktop Development GUI Library
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.56
+## Ruby Tk Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
 [![Coverage Status](https://coveralls.io/repos/github/AndyObtiva/glimmer-dsl-tk/badge.svg?branch=master)](https://coveralls.io/github/AndyObtiva/glimmer-dsl-tk?branch=master)
@@ -57,7 +57,7 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
 [Glimmer DSL for SWT (JRuby Desktop Development GUI Framework)](https://github.com/AndyObtiva/glimmer-dsl-swt) | Mac / Windows / Linux | Yes | Yes (Canvas Shape DSL) | Very Mature / Scaffolding / Native Executable Packaging / Custom Widgets | Slow JRuby Startup Time / Heavy Memory Footprint | Java / JRuby
 [Glimmer DSL for Opal (Pure Ruby Web GUI and Auto-Webifier of Desktop Apps)](https://github.com/AndyObtiva/glimmer-dsl-opal) | All Web Browsers | No | Yes (Canvas Shape DSL) | Simpler than All JavaScript Technologies / Auto-Webify Desktop Apps | Setup Process / Incomplete Alpha | Rails
 [Glimmer DSL for LibUI (Prerequisite-Free Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-libui) | Mac / Windows / Linux | Yes | Yes (Area API) | Fast Startup Time / Light Memory Footprint | LibUI is an Incomplete Mid-Alpha Only | None Other Than MRI Ruby
-[Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-tk) | Mac / Windows / Linux | Some Native-Themed Widgets (Not Truly Native) | Yes (Canvas) | Fast Startup Time / Light Memory Footprint | Complicated setup / Widgets Do Not Look Truly Native, Espcially on Linux | ActiveTcl / MRI Ruby
+[Glimmer DSL for Tk (Ruby Tk Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-tk) | Mac / Windows / Linux | Some Native-Themed Widgets (Not Truly Native) | Yes (Canvas) | Fast Startup Time / Light Memory Footprint | Complicated setup / Widgets Do Not Look Truly Native, Espcially on Linux | ActiveTcl / MRI Ruby
 [Glimmer DSL for GTK (Ruby-GNOME Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-gtk) | Mac / Windows / Linux | Only on Linux | Yes (Cairo) | Complete Access to GNOME Features on Linux (Forte) | Not Native on Mac and Windows | None Other Than MRI Ruby on Linux / Brew Packages on Mac / MSYS & MING Toolchains on Windows / MRI Ruby
 [Glimmer DSL for FX (FOX Toolkit Ruby Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-fx) | Mac (requires XQuartz) / Windows / Linux | No | Yes (Canvas) | No Prerequisites on Windows (Forte Since Binaries Are Included Out of The Box) | Widgets Do Not Look Native / Mac Usage Obtrusively Starts XQuartz | None Other Than MRI Ruby on Windows / XQuarts on Mac / MRI Ruby
 [Glimmer DSL for JFX (JRuby JavaFX Desktop Development GUI Library)](https://github.com/AndyObtiva/glimmer-dsl-jfx) | Mac / Windows / Linux | No | Yes (javafx.scene.shape and javafx.scene.canvas) | Rich in Custom Widgets | Slow JRuby Startup Time / Heavy Memory Footprint / Widgets Do Not Look Native | Java / JRuby / JavaFX SDK
@@ -134,6 +134,7 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
     - [Hello, Contextual Menu!](#hello-contextual-menu)
     - [Hello, Labelframe!](#hello-labelframe)
     - [Hello, Scale!](#hello-scale)
+    - [Hello, Progressbar!](#hello-progressbar)
   - [Applications](#applications)
     - [Glimmer Tk Calculator](#glimmer-tk-calculator)
     - [Y3network Ruby UI](#y3network-ruby-ui)
@@ -193,7 +194,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '0.0.55'
+gem 'glimmer-dsl-tk', '0.0.56'
 ```
 
 And, then run:
@@ -791,6 +792,28 @@ That code binds the `variable` value of the `scale` to the `age` attribute on th
 It automatically handles all the Tk plumbing behind the scenes.
 
 More details can be found in [Hello, Scale!](#hello-scale) sample below.
+
+### Progressbar Data-Binding
+
+Example:
+
+This assumes a `Worker` model with a `progress_value` attribute.
+
+```ruby
+progressbar {
+  orient 'horizontal' # can be vertical too
+  length 200
+  mode 'determinate'
+  maximum 100
+  value <= [worker, :progress_value]
+}
+```
+
+That code binds the value of the `progressbar` to the `progress_value` attribute on the `worker` model.
+
+It automatically handles all the Tk plumbing behind the scenes.
+
+More details can be found in [Hello, Progressbar!](#hello-progressbar) sample below.
 
 ### Spinbox Data-Binding
 
@@ -3972,6 +3995,128 @@ ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_scale.rb
 Glimmer app:
 
 ![glimmer dsl tk screenshot sample hello scale](images/glimmer-dsl-tk-screenshot-sample-hello-scale.png)
+
+### Hello, Progressbar!
+
+Glimmer code (from [samples/hello/hello_progressbar.rb](samples/hello/hello_progressbar.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+class HelloProgressbar
+  include Glimmer
+  
+  attr_accessor :progress_value, :maximum_value, :delay_value
+  
+  def initialize
+    self.progress_value = 0
+    self.maximum_value = 100
+    self.delay_value = 0.01
+    
+    Thread.new do
+      loop do
+        self.progress_value = (self.progress_value.to_i + 1) % (maximum_value.to_i + 1)
+        sleep(delay_value) # yields to main thread
+      end
+    end
+  end
+  
+  def launch
+    root {
+      text 'Hello, Progressbar!'
+      
+      progressbar {
+        grid row: 0, column: 0, columnspan: 3
+        orient 'horizontal'
+        length 200
+        mode 'indeterminate'
+        maximum <= [self, :maximum_value]
+        value <= [self, :progress_value]
+      }
+      
+      label {
+        grid row: 1, column: 0
+        text 'Value'
+      }
+      
+      label {
+        grid row: 1, column: 1
+        text 'Maximum'
+      }
+      
+      label {
+        grid row: 1, column: 2
+        text 'Delay in Seconds'
+      }
+      
+      spinbox {
+        grid row: 2, column: 0
+        from 0.0
+        to 100.0
+        increment 1.0
+        format '%0f'
+        text <=> [self, :progress_value, on_read: :to_i, on_write: :to_i]
+      }
+      
+      spinbox {
+        grid row: 2, column: 1
+        from 1.0
+        to 100.0
+        increment 1.0
+        format '%0f'
+        text <=> [self, :maximum_value, on_read: :to_i, on_write: :to_i]
+      }
+      
+      spinbox {
+        grid row: 2, column: 2
+        from 0.01
+        to 1.0
+        increment 0.1
+        format '%0.2f'
+        text <=> [self, :delay_value, on_write: ->(val) {[val.to_f, 1.0].min}]
+      }
+      
+      progressbar {
+        grid row: 3, column: 0, columnspan: 3
+        orient 'horizontal'
+        length 200
+        mode 'determinate'
+        maximum <= [self, :maximum_value]
+        value <= [self, :progress_value]
+      }
+      
+      progressbar {
+        grid row: 4, column: 0, columnspan: 3
+        orient 'vertical'
+        length 200
+        mode 'determinate'
+        maximum <= [self, :maximum_value]
+        value <= [self, :progress_value]
+      }
+    }.open
+  end
+end
+
+HelloProgressbar.new.launch
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_progressbar'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_progressbar.rb
+```
+
+Glimmer app:
+
+![glimmer dsl tk screenshot sample hello progressbar](images/glimmer-dsl-tk-screenshot-sample-hello-progressbar.png)
+
+![glimmer dsl tk screenshot sample hello progressbar gif](images/glimmer-dsl-tk-screenshot-sample-hello-progressbar.gif)
 
 ## Applications
 

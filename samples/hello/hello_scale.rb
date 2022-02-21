@@ -44,7 +44,7 @@ class HelloScale
         length 200
         from 0.0
         to 100.0
-        variable <=> [self, :scale_value, on_write: ->(val) {val.to_i}]
+        variable <=> [self, :scale_value, on_write: :to_i]
       }
     }.open
   end
