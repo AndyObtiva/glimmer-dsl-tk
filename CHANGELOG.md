@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.57
+
+- Hello, Theme! sample
+
 ## 0.0.56
 
 - Hello, Progressbar! sample

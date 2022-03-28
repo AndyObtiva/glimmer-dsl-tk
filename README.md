@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.56
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.57
 ## Ruby Tk Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -135,6 +135,7 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
     - [Hello, Labelframe!](#hello-labelframe)
     - [Hello, Scale!](#hello-scale)
     - [Hello, Progressbar!](#hello-progressbar)
+    - [Hello, Theme!](#hello-theme)
   - [Applications](#applications)
     - [Glimmer Tk Calculator](#glimmer-tk-calculator)
     - [Y3network Ruby UI](#y3network-ruby-ui)
@@ -194,7 +195,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '0.0.56'
+gem 'glimmer-dsl-tk', '0.0.57'
 ```
 
 And, then run:
@@ -4117,6 +4118,143 @@ Glimmer app:
 ![glimmer dsl tk screenshot sample hello progressbar](images/glimmer-dsl-tk-screenshot-sample-hello-progressbar.png)
 
 ![glimmer dsl tk screenshot sample hello progressbar gif](images/glimmer-dsl-tk-screenshot-sample-hello-progressbar.gif)
+
+### Hello, Theme!
+
+Glimmer code (from [samples/hello/hello_theme.rb](samples/hello/hello_theme.rb)):
+
+```ruby
+require 'glimmer-dsl-tk'
+
+class HelloTheme
+  include Glimmer
+  
+  def launch
+    root {
+      title 'Hello, Theme!'
+      
+      labelframe {
+        text 'Theme'
+        
+        combobox { |cb|
+          readonly true
+          values ::Tk::Tile::Style.theme_names
+          text 'aqua'
+          
+          on('<ComboboxSelected>') do
+            ::Tk::Tile::Style.theme_use cb.tk.textvariable.value
+          end
+        }
+      }
+      
+      labelframe {
+        text 'Widgets'
+        
+        notebook {
+          frame(text: 'One') {
+            label {
+              text 'label'
+            }
+            
+            entry {
+              text 'entry'
+            }
+            
+            entry {
+              text 'password'
+              show '*'
+            }
+            
+            spinbox {
+              text '100'
+            }
+          }
+        
+          frame(text: 'Two') {
+            button {
+              text 'button'
+            }
+            
+            checkbutton {
+              text 'checkbutton'
+            }
+            
+            radiobutton {
+              text 'radiobutton'
+            }
+          }
+        
+          frame(text: 'Three') {
+            scale {
+              orient 'horizontal'
+              length 200
+              from 0.0
+              to 100.0
+              value 50
+            }
+            
+            progressbar {
+              orient 'horizontal'
+              length 200
+              mode 'determinate'
+              maximum 100
+              value 50
+            }
+            
+            progressbar {
+              orient 'vertical'
+              length 100
+              mode 'determinate'
+              maximum 100
+              value 50
+            }
+          }
+        }
+      }
+    }.open
+  end
+end
+
+HelloTheme.new.launch
+```
+
+Run with [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r glimmer-dsl-tk -e "require 'samples/hello/hello_theme'"
+```
+
+Alternatively, run from cloned project without [glimmer-dsl-tk](https://rubygems.org/gems/glimmer-dsl-tk) gem installed:
+
+```
+ruby -r ./lib/glimmer-dsl-tk.rb samples/hello/hello_theme.rb
+```
+
+Glimmer app:
+
+Aqua Theme Tab One
+
+![glimmer dsl tk screenshot sample hello theme aqua 1](images/glimmer-dsl-tk-screenshot-sample-hello-theme-aqua-tab-one.png)
+
+Aqua Theme Tab Two
+
+![glimmer dsl tk screenshot sample hello theme aqua 2](images/glimmer-dsl-tk-screenshot-sample-hello-theme-aqua-tab-two.png)
+
+Aqua Theme Tab Three
+
+![glimmer dsl tk screenshot sample hello theme aqua 3](images/glimmer-dsl-tk-screenshot-sample-hello-theme-aqua-tab-three.png)
+
+Clam Theme Tab One
+
+![glimmer dsl tk screenshot sample hello theme clam 1](images/glimmer-dsl-tk-screenshot-sample-hello-theme-clam-tab-one.png)
+
+Clam Theme Tab Two
+
+![glimmer dsl tk screenshot sample hello theme clam 2](images/glimmer-dsl-tk-screenshot-sample-hello-theme-clam-tab-two.png)
+
+Clam Theme Tab Three
+
+![glimmer dsl tk screenshot sample hello theme clam 3](images/glimmer-dsl-tk-screenshot-sample-hello-theme-clam-tab-three.png)
 
 ## Applications
 

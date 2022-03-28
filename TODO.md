@@ -2,10 +2,6 @@
 
 ## Next
 
-- Hello, Panedwindow!
-- Hello, Grid!
-- Hello, Listbox! (two tabs for single/multi selection)
-
 ## Soon
 
 - Support `@tk.textvariable.trace('write')` via `on() {}` listeners (e.g. `on('textvariable_write') {}`)
@@ -63,13 +59,14 @@
 
 ### Hello
 
+- Hello, Grid!
+- Hello, Listbox! (two tabs for single/multi selection)
 - Hello, Treeview!
 - Hello, Table! (adapt treeview as a table)
 - Hello, Canvas!
 - Hello, Canvas Drag and Drop!
 - Hello, Cursor!
 - Hello, Style!
-- Hello, Theme!
 - Hello samples for tk included tkextlib extra widgets such as tktable, calendar, autoscroll, tablelist, etc...
 
 ### Elaborate
