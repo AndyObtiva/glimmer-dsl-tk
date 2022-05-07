@@ -1,4 +1,4 @@
-# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.58
+# [<img src="https://raw.githubusercontent.com/AndyObtiva/glimmer/master/images/glimmer-logo-hi-res.png" height=85 />](https://github.com/AndyObtiva/glimmer) Glimmer DSL for Tk 0.0.59
 ## Ruby Tk Desktop Development GUI Library
 [![Gem Version](https://badge.fury.io/rb/glimmer-dsl-tk.svg)](http://badge.fury.io/rb/glimmer-dsl-tk)
 [![Ruby](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml/badge.svg)](https://github.com/AndyObtiva/glimmer-dsl-tk/actions/workflows/ruby.yml)
@@ -195,7 +195,7 @@ gem install glimmer-dsl-tk
 
 Add the following to `Gemfile`:
 ```
-gem 'glimmer-dsl-tk', '0.0.58'
+gem 'glimmer-dsl-tk', '0.0.59'
 ```
 
 And, then run:
@@ -2181,12 +2181,13 @@ class HelloEntry
   def launch
     root {
       title 'Hello, Entry!'
-      
+      minsize 230, 0
+         
       label {
         grid sticky: 'ew'
         text 'default entry'
       }
-      entry {
+      entry { |the_entry|
         grid sticky: 'ew'
         text <=> [self, :default]
       }
@@ -2205,11 +2206,14 @@ class HelloEntry
         grid sticky: 'ew'
         text 'entry with event handlers'
       }
-      entry {
+      entry { |the_entry|
         grid sticky: 'ew'
         text <=> [self, :telephone]
-        validate 'key'
 
+        # validate 'key' # default when on('validate') or on('invalid') is specified
+        ## Validation happens on key change by default when validation listeners are specified
+        ## (other accepted values: 'none', 'focus', 'focusin', 'focusout', 'key', or 'all')
+        
         ## this event kicks in just after the user typed and before modifying the text variable
         on('validate') do |new_text_variable|
           telephone?(new_text_variable.value)
@@ -2217,7 +2221,7 @@ class HelloEntry
 
         ## this event kicks in just after the text variable is validated and before it is modified
         on('invalid') do |validate_args|
-          @validated_entry_label.text = "#{validate_args.string} is not valid!"
+          @validated_entry_label.text = "#{validate_args.value} is not a valid phone!"
           @validated_entry_label.foreground = 'red'
         end
 
@@ -2226,6 +2230,13 @@ class HelloEntry
           self.read_only = "Telephone area code is #{new_text_variable.value.gsub(/[^0-9]/, '')[0...3]}"
           @validated_entry_label.text = 'entry with event handlers'
           @validated_entry_label.foreground = nil
+        end
+        
+        ## this is similar to on('change') (which is Glimmer-specific), but more low level at the Tk level
+        ## it is the equivalent of calling: the_entry.tk.textvariable.trace('write') { puts "..." }
+        ## More at: https://tkdocs.com/tutorial/widgets.html#entry and https://tcl.tk/man/tcl8.6/TclCmd/trace.htm#M14
+        on_textvariable('write') do
+          puts "\"#{the_entry.text}\" has been written to entry!"
         end
       }
 
@@ -4274,9 +4285,9 @@ https://github.com/ancorgs/y3network-ruby-ui
 
 This is a Graphical User Interface for the famous [cryptopunks Ruby gem](https://github.com/cryptopunksnotdead/cryptopunks/tree/master/cryptopunks).
 
-https://github.com/cryptopunksnotdead/cryptopunks-gui
+https://github.com/cryptopunksnotdead/cryptopunks/tree/master/cryptopunks-gui
 
-![CryptoPunks GUI Screenshot](https://raw.githubusercontent.com/cryptopunksnotdead/cryptopunks-gui/master/screenshots/cryptopunks-gui-screenshot.png)
+![CryptoPunks GUI Screenshot](https://raw.githubusercontent.com/cryptopunksnotdead/cryptopunks/master/cryptopunks-gui/screenshots/cryptopunks-gui-screenshot.png)
 
 ### Circule
 

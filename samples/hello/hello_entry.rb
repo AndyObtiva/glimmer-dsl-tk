@@ -64,8 +64,11 @@ class HelloEntry
       entry { |the_entry|
         grid sticky: 'ew'
         text <=> [self, :telephone]
-        validate 'key'
 
+        # validate 'key' # default when on('validate') or on('invalid') is specified
+        ## Validation happens on key change by default when validation listeners are specified
+        ## (other accepted values: 'none', 'focus', 'focusin', 'focusout', 'key', or 'all')
+        
         ## this event kicks in just after the user typed and before modifying the text variable
         on('validate') do |new_text_variable|
           telephone?(new_text_variable.value)

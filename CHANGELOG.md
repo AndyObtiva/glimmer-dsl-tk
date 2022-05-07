@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.59
+
+- Auto-Default to `validate 'key'` on an `entry` when defining `validatecommand {}`, `on('validate') {}`, `invalidcommand {}`, `on('invalid') {}`
+
 ## 0.0.58
 
 - Support `@tk.textvariable.trace('write')` kind of variable tracing via `on_var(trace_operation) {}` listeners (e.g. `on_textvariable('write') {}`)

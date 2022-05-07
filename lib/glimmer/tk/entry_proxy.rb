@@ -31,11 +31,22 @@ module Glimmer
       include TextVariableOwner
     
       def validatecommand_block=(proc)
+        self.validate = 'key' unless validate
         tk.validatecommand(proc)
       end
       
       def invalidcommand_block=(proc)
+        self.validate = 'key' unless validate
         tk.invalidcommand(proc)
+      end
+      
+      def validate
+        @validate
+      end
+      
+      def validate=(value)
+        @validate = value
+        @tk.validate(value)
       end
       
       def handle_listener(listener_name, &listener)

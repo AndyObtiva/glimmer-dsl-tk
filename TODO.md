@@ -5,7 +5,6 @@
 ## Soon
 
 - Update Hello, Menu Bar! screenshots with Language Country
-- Auto-Default to `validate 'key'` when defining `validatecommand {}` or `on('validate') {}` on an `entry`
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
 - Refactor `WidgetProxy` by adding a `griddable?` method that could be overriden by subclasses to consult for auto-gridding on `initialize_defaults`
 - Allow setting root x/y without affecting its default width/height
