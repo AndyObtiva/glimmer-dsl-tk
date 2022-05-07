@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.0.58
+
+- Support `@tk.textvariable.trace('write')` kind of variable tracing via `on_var(trace_operation) {}` listeners (e.g. `on_textvariable('write') {}`)
+- Use `on_textvariable` in `samples/hello/hello_entry.rb`
+- Improve validation text in `samples/hello/hello_entry.rb` to say "... not a valid phone!"
+
 ## 0.0.57
 
 - Hello, Theme! sample

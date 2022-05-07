@@ -4,7 +4,6 @@
 
 ## Soon
 
-- Support `@tk.textvariable.trace('write')` via `on() {}` listeners (e.g. `on('textvariable_write') {}`)
 - Update Hello, Menu Bar! screenshots with Language Country
 - Auto-Default to `validate 'key'` when defining `validatecommand {}` or `on('validate') {}` on an `entry`
 - Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
@@ -68,6 +67,7 @@
 - Hello, Cursor!
 - Hello, Style!
 - Hello samples for tk included tkextlib extra widgets such as tktable, calendar, autoscroll, tablelist, etc...
+- Hello, Trace! sample demonstrating `on('variable', 'trace_event') {}`
 
 ### Elaborate
 

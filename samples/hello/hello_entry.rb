@@ -36,12 +36,13 @@ class HelloEntry
   def launch
     root {
       title 'Hello, Entry!'
-      
+      minsize 230, 0
+         
       label {
         grid sticky: 'ew'
         text 'default entry'
       }
-      entry {
+      entry { |the_entry|
         grid sticky: 'ew'
         text <=> [self, :default]
       }
@@ -60,7 +61,7 @@ class HelloEntry
         grid sticky: 'ew'
         text 'entry with event handlers'
       }
-      entry {
+      entry { |the_entry|
         grid sticky: 'ew'
         text <=> [self, :telephone]
         validate 'key'
@@ -72,7 +73,7 @@ class HelloEntry
 
         ## this event kicks in just after the text variable is validated and before it is modified
         on('invalid') do |validate_args|
-          @validated_entry_label.text = "#{validate_args.value} is not valid!"
+          @validated_entry_label.text = "#{validate_args.value} is not a valid phone!"
           @validated_entry_label.foreground = 'red'
         end
 
@@ -81,6 +82,13 @@ class HelloEntry
           self.read_only = "Telephone area code is #{new_text_variable.value.gsub(/[^0-9]/, '')[0...3]}"
           @validated_entry_label.text = 'entry with event handlers'
           @validated_entry_label.foreground = nil
+        end
+        
+        ## this is similar to on('change') (which is Glimmer-specific), but more low level at the Tk level
+        ## it is the equivalent of calling: the_entry.tk.textvariable.trace('write') { puts "..." }
+        ## More at: https://tkdocs.com/tutorial/widgets.html#entry and https://tcl.tk/man/tcl8.6/TclCmd/trace.htm#M14
+        on_textvariable('write') do
+          puts "\"#{the_entry.text}\" has been written to entry!"
         end
       }
 

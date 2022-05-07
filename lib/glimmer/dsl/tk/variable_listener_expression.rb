@@ -19,33 +19,23 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/engine'
-Dir[File.expand_path('../*_expression.rb', __FILE__)].each {|f| require f}
-
-# Glimmer DSL expression configuration module
-#
-# When DSL engine interprets an expression, it attempts to handle
-# with expressions listed here in the order specified.
-
-# Every expression has a corresponding Expression subclass
-# in glimmer/dsl
+require 'glimmer/dsl/expression'
+require 'glimmer/tk/widget_proxy'
 
 module Glimmer
   module DSL
     module Tk
-      Engine.add_dynamic_expressions(
-        Tk,
-        %w[
-          list_selection_data_binding
-          variable_listener
-          data_binding
-          attribute
-          shine_data_binding
-          widget
-          built_in_dialog
-          block_attribute
-        ]
-      )
+      class VariableListenerExpression < Expression
+        def can_interpret?(parent, keyword, *args, &block)
+          parent.is_a?(Glimmer::Tk::WidgetProxy) && keyword.match(/^on_.*/) && textual?(args.first)
+        end
+  
+        def interpret(parent, keyword, *args, &block)
+          variable_name = keyword.sub(/^on_/, '')
+          operation = args.first.to_s
+          parent.tk.send(variable_name).trace(operation, &block)
+        end
+      end
     end
   end
 end
