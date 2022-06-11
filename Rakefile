@@ -18,7 +18,7 @@ Jeweler::Tasks.new do |gem|
   gem.homepage = "http://github.com/AndyObtiva/glimmer-dsl-tk"
   gem.license = "MIT"
   gem.summary = %Q{Glimmer DSL for Tk}
-  gem.description = %Q{Glimmer DSL for Tk (MRI Ruby Desktop Development GUI Library) - Ruby DSL for Tcl/Tk with bidirectional/unidirectional data-binding support.}
+  gem.description = %Q{Glimmer DSL for Tk (Ruby Tk Desktop Development GUI Library) - Ruby DSL for Tcl/Tk with bidirectional/unidirectional data-binding support.}
   gem.email = "andy.am@gmail.com"
   gem.authors = ["AndyMaleh"]
   gem.executables = ['girb']
