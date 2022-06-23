@@ -4,11 +4,13 @@
 
 ## Soon
 
+- Support rgb colors via `rgb(r, g, b)`, or `[r, g, b]`
 - Update Hello, Menu Bar! screenshots with Language Country
-- Support rgb colors via a hash of `:r`, `:g`, `:b`, hash of `:red`, `:green`, `:blue`, or `rgb(r, g, b)`
+
 - Refactor `WidgetProxy` by adding a `griddable?` method that could be overriden by subclasses to consult for auto-gridding on `initialize_defaults`
-- Allow setting root x/y without affecting its default width/height
 - `icon_photo` as alias for `iconphoto` attribute
+- Allow setting root x/y without affecting its default width/height
+
 - Add defensive programming for preventing spinbox from allowing value to go over `to` (max) when typing by keyboard
 - Document Glimmer debug logging
 - Support Mac application handlers/events (https://tcl.tk/man/tcl8.6/TkCmd/tk_mac.htm):
