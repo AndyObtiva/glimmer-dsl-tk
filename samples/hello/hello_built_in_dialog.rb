@@ -31,21 +31,47 @@ root { |w|
   y 150
   
   frame {
-    %w[get_open_file get_multiple_open_file get_save_file choose_directory choose_color].each do |dialog|
+    %w[get_open_file get_multiple_open_file get_save_file choose_directory].each do |dialog|
+      dialog_name = dialog.split('_').map(&:capitalize).join(' ')
       button {
-        text dialog.split('_').map(&:capitalize).join(' ')
+        text dialog_name
         
         on('command') do
-          result = send(dialog, parent: w)
+          # parent is optional.
+          # It is recommended to set parent to display dialog on top of.
+          #
+          # title is optional (defaults to blank).
+          # It is not supported by choose_directory (its title is always blank).
+          result = send(dialog, parent: w, title: dialog_name)
+          # Uniformly handle both a singular result (e.g. from get_open_file)
+          # and an array of results (e.g. from get_multiple_open_file)
           @result_label.text = [result].flatten.join("\n")
         end
       }
     end
     
     button {
+      text 'Choose Color'
+      
+      on('command') do
+        # parent is optional.
+        # It is recommended to set parent to display dialog on top of.
+        #
+        # title is optional (defaults to 'Colors').
+        #
+        # initialcolor is optional (defaults to 'white').
+        # It can be a built-in color (e.g. 'AliceBlue') or hex (e.g. '#FFFF00')
+        # Full list of built-in colors is at: https://tcl.tk/man/tcl8.6/TkCmd/colors.htm
+        chosen_color = choose_color(parent: w, title: 'Choose Color', initialcolor: '#FFFF00')
+        @result_label.text = chosen_color
+      end
+    }
+    
+    button {
       text 'Choose Font'
       
       on('command') do
+        # Initial family, size, and weight are optional.
         choose_font(family: 'Courier New', size: '30', weight: 'bold') do |chosen_font|
           @result_label.text = chosen_font
         end

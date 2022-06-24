@@ -4,7 +4,7 @@
 
 ## Soon
 
-- Support rgb colors via `rgb(r, g, b)`, or `[r, g, b]`
+- Support setting colors as rgb colors via `[r, g, b]`
 - Update Hello, Menu Bar! screenshots with Language Country
 
 - Refactor `WidgetProxy` by adding a `griddable?` method that could be overriden by subclasses to consult for auto-gridding on `initialize_defaults`

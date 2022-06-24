@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.60
+
+- Update Hello, Built-in Dialog! with more options for customizing dialogs
+
 ## 0.0.59
 
 - Auto-Default to `validate 'key'` on an `entry` when defining `validatecommand {}`, `on('validate') {}`, `invalidcommand {}`, `on('invalid') {}`

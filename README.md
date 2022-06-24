@@ -309,14 +309,14 @@ keyword(args) | attributes | event bindings & callbacks
 ------------- | ---------- | ---------
 `button` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `default` (`'active', 'normal'`) | `command {}`
 `checkbutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `onvalue` (default: `1`), `offvalue` (default: `0`) | `command {}`
-`choose_color(options = nil)` | None | None
-`choose_directory(options = nil)` | None | None
-`choose_font(options = nil) {|font| ... }` | None | None
+`choose_color(parent: nil, initialcolor: 'white', title: 'Colors')` | None | None
+`choose_directory(parent: nil)` | None | None
+`choose_font(family: nil, size: nil, weight: nil) {|font| ... }` | None | None
 `combobox` | `state`, `text` | `'ComboboxSelected'`
 `entry` | `width`, `text`, `validate`, `show` (`'none', 'focus', 'focusin', 'focusout', 'key', or 'all'`) | `'validate'`, `'invalid'`, `'change'` (alias: `'changed'`), `validatecommand {}`, `invalidcommand {}`
-`get_multiple_open_file(options = nil)` | None | None
-`get_open_file(options = nil)` | None | None
-`get_save_file(options = nil)` | None | None
+`get_multiple_open_file(parent: nil, title: '')` | None | None
+`get_open_file(parent: nil, title: '')` | None | None
+`get_save_file(parent: nil, title: '')` | None | None
 `spinbox` | `text`, `from`, `to`, `increment`, `format`, [more attributes](https://tcl.tk/man/tcl8.6/TkCmd/text.htm#M116) | `command {}`, `'increment'`, `'decrement'`
 `frame(text: nil)` | `width`, `height`, `borderwidth`, `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`) | None
 `label` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `font` (`'default', 'text', 'fixed', 'menu', 'heading', 'caption', 'small_caption', 'icon', 'tooltip'`), `relief` (`'flat' (default), 'raised', 'sunken', 'solid', 'ridge', 'groove'`), `justify` (`'left', 'center', 'right'`), `foreground`, `background` | None
@@ -343,6 +343,8 @@ Options for `get_open_file` and `get_multiple_open_file` include:
 #### Common Attributes
 
 - `grid`: `Hash` of `:row`, `:column`, `:padx`, `:pady`, `:sticky` (`'e', 'w', 'n', 's'` or any combination of direction letters)
+- `foreground`: [Built-in Color](https://tcl.tk/man/tcl8.6/TkCmd/colors.htm) (e.g. `'AliceBlue'`) or Hex color (e.g. `'#ffd807'`)
+- `background`: [Built-in Color](https://tcl.tk/man/tcl8.6/TkCmd/colors.htm) (e.g. `'AliceBlue'`) or Hex color (e.g. `'#ffd807'`)
 
 #### Common Event Bindings
 
