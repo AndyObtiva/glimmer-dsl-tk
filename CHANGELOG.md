@@ -3,6 +3,7 @@
 ## 0.0.60
 
 - Update Hello, Built-in Dialog! with more options for customizing dialogs
+- Support setting colors as rgb colors via `r, g, b` (e.g. `foreground 210, 48, 110`)
 
 ## 0.0.59
 

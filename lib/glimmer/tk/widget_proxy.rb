@@ -192,6 +192,7 @@ module Glimmer
 
       def set_attribute(attribute, *args)
         begin
+          args = normalize_attribute_arguments(attribute, args)
           widget_custom_attribute = widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][attribute.to_s]
           if respond_to?(attribute_setter(attribute), super_only: true)
             send(attribute_setter(attribute), *args)
@@ -306,6 +307,28 @@ module Glimmer
         style = "style#{@@style_number += 1}.#{@tk.class.name.split('::').last}"
         ::Tk::Tile::Style.configure(style, options)
         @tk.style = style
+      end
+      
+      def normalize_attribute_arguments(attribute, args)
+        attribute_argument_normalizers[attribute]&.call(args) || args
+      end
+      
+      def attribute_argument_normalizers
+        color_normalizer = lambda do |args|
+          if args.size > 1 || args.first.is_a?(Numeric)
+            rgb = args
+            rgb = rgb.map(&:to_s).map(&:to_i)
+            rgb = 3.times.map { |n| rgb[n] || 0}
+            hex = rgb.map { |color| color.to_s(16).ljust(2, '0') }.join
+            ["##{hex}"]
+          else
+            args
+          end
+        end
+        @attribute_argument_normalizers ||= {
+          'background' => color_normalizer,
+          'foreground' => color_normalizer,
+        }
       end
       
       def widget_custom_attribute_mapping
@@ -534,10 +557,12 @@ module Glimmer
 
       def method_missing(method, *args, &block)
         method = method.to_s
+        attribute_name = method.sub(/=$/, '')
+        args = normalize_attribute_arguments(attribute_name, args)
         if args.empty? && block.nil? && ((widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][method]) || has_state?(method) || has_attributes_attribute?(method))
           get_attribute(method)
         elsif method.end_with?('=') && block.nil? && ((widget_custom_attribute_mapping[tk.class] && widget_custom_attribute_mapping[tk.class][method.sub(/=$/, '')]) || has_state?(method) || has_attributes_attribute?(method))
-          set_attribute(method.sub(/=$/, ''), *args)
+          set_attribute(attribute_name, *args)
         else
           tk.send(method, *args, &block)
         end
