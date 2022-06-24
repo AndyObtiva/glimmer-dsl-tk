@@ -321,6 +321,8 @@ module Glimmer
             rgb = 3.times.map { |n| rgb[n] || 0}
             hex = rgb.map { |color| color.to_s(16).ljust(2, '0') }.join
             ["##{hex}"]
+          elsif args.size == 1 && args.first.is_a?(String) && !args.first.start_with?('#')
+            ["##{args.first}"]
           else
             args
           end

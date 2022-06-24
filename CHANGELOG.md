@@ -4,6 +4,7 @@
 
 - Update Hello, Built-in Dialog! with more options for customizing dialogs
 - Support setting colors as rgb colors via `r, g, b` (e.g. `foreground 210, 48, 110`)
+- Accept hex color strings not starting with `#` (e.g. `background 'f828d7'`)
 
 ## 0.0.59
 

@@ -80,8 +80,13 @@ class HelloLabel
             anchor 'center'
             justify 'center' # other options are: 'left' and 'right'
             font 'caption' # other options are: 'default', 'text', 'fixed', 'menu', 'heading', 'small_caption', 'icon', 'tooltip'
-            foreground 38, 20, 138
             relief 'sunken' # other options are: 'flat' (default), 'raised', 'solid', 'ridge', 'groove'
+            foreground 38, 20, 138 # RGB (Red Green Blue) color
+            
+            # Other supported color arguments:
+            # foreground 'blue' # built-in color alternative from https://tcl.tk/man/tcl8.6/TkCmd/colors.htm
+            # foreground '#ff0000' # hex color
+            # foreground 'ff0000' # hex color missing the # prefix
           }
         }
         
