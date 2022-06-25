@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.0.61
+
+- Fix issue with Hello, Entry! breaking after the latest release due to mistakenly converting color `'red'` to `'#red'` by thinking it is hex
+
 ## 0.0.60
 
 - Update Hello, Built-in Dialog! with more options for customizing dialogs

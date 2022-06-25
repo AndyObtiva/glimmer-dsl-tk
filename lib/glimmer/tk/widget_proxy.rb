@@ -73,6 +73,7 @@ module Glimmer
       prepend DraggableAndDroppable
       
       FONTS_PREDEFINED = %w[default text fixed menu heading caption small_caption icon tooltip]
+      HEXADECIMAL_CHARACTERS = %w[0 1 2 3 4 5 6 7 8 9 a b c d e f]
       
       attr_reader :parent_proxy, :tk, :args, :keyword, :children, :bind_ids, :destroyed
       alias destroyed? destroyed
@@ -321,7 +322,11 @@ module Glimmer
             rgb = 3.times.map { |n| rgb[n] || 0}
             hex = rgb.map { |color| color.to_s(16).ljust(2, '0') }.join
             ["##{hex}"]
-          elsif args.size == 1 && args.first.is_a?(String) && !args.first.start_with?('#')
+          elsif args.size == 1 &&
+                args.first.is_a?(String) &&
+                !args.first.start_with?('#') &&
+                (args.first.size == 3 || args.first.size == 6)  &&
+                (args.first.chars.all? {|char| HEXADECIMAL_CHARACTERS.include?(char.downcase)})
             ["##{args.first}"]
           else
             args

@@ -5,9 +5,9 @@
 ## Soon
 
 - Update Hello, Menu Bar! screenshots with Language Country
-
 - Refactor `WidgetProxy` by adding a `griddable?` method that could be overriden by subclasses to consult for auto-gridding on `initialize_defaults`
 - `icon_photo` as alias for `iconphoto` attribute
+- `initial_color` as alias for `initialcolor` attribute
 - Allow setting root x/y without affecting its default width/height
 
 - Add defensive programming for preventing spinbox from allowing value to go over `to` (max) when typing by keyboard
