@@ -3,6 +3,7 @@
 ## 0.0.62
 
 - `icon_photo` as alias for `iconphoto` attribute on `root` and `toplevel`
+- `initial_color` as alias for `initialcolor` attribute on `choose_color` built-in dialog
 
 ## 0.0.61
 

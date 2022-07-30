@@ -62,7 +62,7 @@ root { |w|
         # initialcolor is optional (defaults to 'white').
         # It can be a built-in color (e.g. 'AliceBlue') or hex (e.g. '#FFFF00')
         # Full list of built-in colors is at: https://tcl.tk/man/tcl8.6/TkCmd/colors.htm
-        chosen_color = choose_color(parent: w, title: 'Choose Color', initialcolor: '#FFFF00')
+        chosen_color = choose_color(parent: w, title: 'Choose Color', initial_color: '#FFFF00')
         @result_label.text = chosen_color
       end
     }

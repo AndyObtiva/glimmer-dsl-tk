@@ -38,6 +38,7 @@ module Glimmer
         def interpret(parent, keyword, *args, &block)
           if args.first.is_a?(Hash)
             options = args.first.symbolize_keys
+            options[:initialcolor] = options.delete(:initial_color) if options.keys.include?(:initial_color)
             options[:filetypes] = options.delete(:file_types) if options.keys.include?(:file_types)
             options[:filetypes] = options[:filetypes].map { |key, value| "{#{key}} {#{value}}" } if options[:filetypes].is_a?(Hash)
             options[:parent] = options[:parent].tk if options[:parent].is_a?(Glimmer::Tk::RootProxy)

@@ -309,7 +309,7 @@ keyword(args) | attributes | event bindings & callbacks
 ------------- | ---------- | ---------
 `button` | `text`, `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `default` (`'active', 'normal'`) | `command {}`
 `checkbutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `onvalue` (default: `1`), `offvalue` (default: `0`) | `command {}`
-`choose_color(parent: nil, initialcolor: 'white', title: 'Colors')` | None | None
+`choose_color(parent: nil, initial_color: 'white', title: 'Colors')` | None | None
 `choose_directory(parent: nil)` | None | None
 `choose_font(family: nil, size: nil, weight: nil) {|font| ... }` | None | None
 `combobox` | `state`, `text` | `'ComboboxSelected'`
@@ -328,11 +328,11 @@ keyword(args) | attributes | event bindings & callbacks
 `menu_item(style = :command, label: , underline: )` (style also can be `:radiobutton`, `:checkbutton`, `:separator`, `:about`, `:preferences`, `:quit`, `:help`) | `state`, `accelerator`, `selection` & `variable` (if `:radiobutton` or `:checkbutton`), `image`, `compound` | `command`
 `notebook` | None | None
 `radiobutton` | `text`, `variable` (Boolean), `image` (optional keyword args: `subsample`, `zoom`, `from`, `to`, `shrink`, `compositingrule`), `compound` (`'center', 'top', 'bottom', 'left', 'right'`), `value` (default: `text`) | `command {}`
-`root` | `title`, `iconphoto`, `background`, `alpha`, `escapable`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`, `'OPEN_WINDOW'`
+`root` | `title`, `icon_photo`, `background`, `alpha`, `escapable`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`, `'OPEN_WINDOW'`
 `scrollbar` | `orient` | `command`
 `scrollbar_frame` | `xscrollbar` (Boolean or scrollbar widget proxy), `yscrollbar` (Boolean or scrollbar widget proxy) | None
 `separator` | `orient` (`'horizontal' (default) or 'vertical'`) | None
-`toplevel` | `title`, `iconphoto`, `background`, `alpha`, `escapable`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`
+`toplevel` | `title`, `icon_photo`, `background`, `alpha`, `escapable`, `fullscreen?`, `topmost?`, `transparent?`, `stackorder`, `winfo_screendepth`, `winfo_screenvisual`, `winfo_screenwidth`, `winfo_screenheight`, `winfo_pixels('li')`, `winfo_screen`, `wm_maxsize`, `state` (`'normal', 'iconic', 'withdrawn', 'icon', 'zoomed'`) | `'DELETE_WINDOW'`
 `text` | `value`, [many more attributes](https://tcl.tk/man/tcl8.6/TkCmd/text.htm#M116) | `'modified'`, `'selection'`, `'insert_mark_moved'` (alias: `'insert_mark_move', 'InsertMarkMove', 'InsertMarkMoved'`)
 `x_scrollbar` | `orient` (`'horizontal'`) | `command`
 `y_scrollbar` | `orient` (`'vertical'`) | `command`
@@ -555,7 +555,7 @@ When nesting `frame` under `notebook`, you can pass a `:text` keyword argument t
 
 #### Icon Photo
 
-The `iconphoto` attribute on `root` is set to the Glimmer icon by default if no icon photo is supplied.
+The `icon_photo` attribute (alias for `iconphoto`) on `root` is set to the Glimmer icon by default if no icon photo is supplied.
 
 Otherwise, [Glimmer DSL for Tk](https://rubygems.org/gems/glimmer-dsl-tk) is smart enough to accept an image path directly (no need to wrap with `TkPhotoImage`)
 
@@ -564,7 +564,7 @@ Example with direct image path (you may copy/paste in [`girb`](#girb-glimmer-irb
 ```ruby
 root {
   title 'Title'
-  iconphoto 'icons/glimmer.png'
+  icon_photo 'icons/glimmer.png'
 }.open
 ```
 
@@ -573,7 +573,7 @@ Example with `TkPhotoImage` object (you may copy/paste in [`girb`](#girb-glimmer
 ```ruby
 root {
   title 'Title'
-  iconphoto TkPhotoImage.new(file: 'icons/glimmer.png')
+  icon_photo TkPhotoImage.new(file: 'icons/glimmer.png')
 }.open
 ```
 
@@ -1535,7 +1535,7 @@ include Glimmer
 
 root { |r|
   title 'Hello, Root!'
-  iconphoto File.expand_path('../../icons/glimmer.png', __dir__)
+  icon_photo File.expand_path('../../icons/glimmer.png', __dir__)
   width 400
   height 200
   x -150
