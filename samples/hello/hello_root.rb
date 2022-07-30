@@ -25,7 +25,7 @@ include Glimmer
 
 root { |r|
   title 'Hello, Root!'
-  iconphoto File.expand_path('../../icons/glimmer.png', __dir__)
+  icon_photo File.expand_path('../../icons/glimmer.png', __dir__)
   width 400
   height 200
   x -150

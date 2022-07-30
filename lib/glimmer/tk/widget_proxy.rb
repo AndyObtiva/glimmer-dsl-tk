@@ -410,6 +410,10 @@ module Glimmer
               getter: {name: 'text', invoker: lambda { |widget, args| @tk.title }},
               setter: {name: 'text=', invoker: lambda { |widget, args| @tk.title = args.first }},
             },
+            'icon_photo' => {
+              getter: {name: 'icon_photo', invoker: lambda { |widget, args| @tk.iconphoto }},
+              setter: {name: 'icon_photo=', invoker: lambda { |widget, args| @tk.iconphoto = image_argument(args) }},
+            },
           },
         }
       end

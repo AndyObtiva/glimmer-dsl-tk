@@ -48,14 +48,14 @@ module Glimmer
       end
       
       def has_attribute?(attribute, *args)
-        %w[width height x y].include?(attribute.to_s) || super
+        %w[width height x y icon_photo].include?(attribute.to_s) || super
       end
       
       def set_attribute(attribute, *args)
         case attribute.to_s
-        when 'iconphoto'
+        when 'iconphoto', 'icon_photo'
           args[0..-1] = [image_argument(args)]
-          super
+          super('iconphoto', *args)
         when 'resizable'
           if args.size == 1 && !args.first.is_a?(Array)
             self.resizable = [args.first]*2
@@ -65,6 +65,19 @@ module Glimmer
         else
           super
         end
+      end
+      
+      def get_attribute(attribute)
+        case attribute.to_s
+        when 'icon_photo'
+          super('iconphoto')
+        else
+          super
+        end
+      end
+      
+      def icon_photo
+        iconphoto
       end
       
       def width
