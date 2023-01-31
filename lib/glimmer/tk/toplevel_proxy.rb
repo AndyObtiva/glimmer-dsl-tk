@@ -32,18 +32,42 @@ module Glimmer
       DEFAULT_HEIGHT = 0
       
       attr_reader :tk
-      attr_accessor :escapable
+      attr_accessor :escapable, :modal, :centered
       alias escapable? escapable
-      
+      alias modal? modal
+      alias centered? centered
+
       def post_add_content
-        center_within_screen unless @x || @y
+        center_within_screen if centered?
+
         if escapable?
            on('KeyPress') do |event|
-            if event.keysym == 'Escape'
-              grab_release
+            if event.state == 0 && event.keysym == 'Escape'
+              tk.grab_release
               destroy
             end
           end
+        end
+
+        if is_a?(Glimmer::Tk::ToplevelProxy) && modal?
+          center_within_root unless centered?
+          root_parent_proxy.withdraw
+          tk.grab_set
+          on('WM_DELETE_WINDOW') do
+            tk.grab_release
+            root_parent_proxy.deiconify
+            destroy
+            true
+          end
+          on('destroy') do
+            tk.grab_release
+            root_parent_proxy.deiconify
+            true
+          end
+        end
+
+        if is_a?(Glimmer::Tk::ToplevelProxy) && @tk.iconphoto.nil? && root_parent_proxy.iconphoto
+          @tk.iconphoto = root_parent_proxy.iconphoto
         end
       end
       
@@ -125,18 +149,68 @@ module Glimmer
           super
         end
       end
-      
+
       def center_within_screen
         monitor_width, monitor_height = wm_maxsize
         update :idletasks
         current_width = width
         current_height = height
-        self.x = (winfo_screenwidth - width) / 2
-        self.y = (winfo_screenheight - height) / 2
+
+        if RbConfig::CONFIG['host_os'] == 'linux'
+          begin
+            # example output: HDMI-A-0 connected primary 2560x1080+1024+100 (normal left inverted right x axis y axis) 798mm x 334mm
+            # TODO: is xrandr output same on all systems?
+            sizes = `xrandr`
+                      .split("\n")
+                      .find { |line| line.include?(' connected primary ') }
+                      &.match(/([0-9]+)x([0-9]+)\+([0-9]+)\+([0-9]+)/)
+            raise "`xrandr` returned unexpected results. Try to run `xrandr`, verify it's output and possibly update this code." unless sizes
+
+            self.x = (sizes[1].to_i - width) / 2 + sizes[3].to_i
+            self.y = (sizes[2].to_i - height) / 2 + sizes[4].to_i
+
+          rescue StandardError => e
+            Glimmer::Config.logger.debug {"Unable to detect primary screen on Linux with xrandr"}
+            Glimmer::Config.logger.debug {e.full_message}
+
+            self.x = (winfo_screenwidth - width) / 2
+            self.y = (winfo_screenheight - height) / 2
+          end
+
+        else
+          self.x = (winfo_screenwidth - width) / 2
+          self.y = (winfo_screenheight - height) / 2
+        end
+
         self.width = width
         self.height = height
       end
-      
+
+      def center_within_root(margin: 0)
+        self.x = root_parent_proxy.x + margin
+        self.y = root_parent_proxy.y + margin
+        self.width = root_parent_proxy.width - 2 * margin
+        self.height = root_parent_proxy.height - 2 * margin
+      end
+
+      def window?
+        true
+      end
+
+      def closest_window
+        self
+      end
+
+      [:visible,  :hidden,  :enabled,  :disabled,
+       :visible=, :hidden=, :enabled=, :disabled=,
+       :visible?, :hidden?, :enabled?, :disabled?].each \
+      do |restricted_method|
+        define_method(restricted_method) do
+          # TODO: or just do nothing?
+          raise 'Not applicable for a window'
+        end
+      end
+
       private
       
       def sign_number(sign, number)
