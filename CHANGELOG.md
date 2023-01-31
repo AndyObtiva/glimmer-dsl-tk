@@ -1,5 +1,20 @@
 # Change Log
 
+## 0.0.63
+
+- `modal = true` modifier for toplevels (the root becomes hidden till the toplevel is closed)
+- If no icon is set for a toplevel, take icon from the root
+- An exprimental fix of `center_within_screen` for Linux multi-monitor environments
+- `center_within_root` method to center a toplevel within the boundaries of the root (useful for modal windows / dialogs)
+- A helper `window?` method to determine if the widget is a window (root, toplevel) or not
+- Support for single style name argument in the `style` setter to be able to use predefined Tk styles by name
+- Support for `columnuniform` / `rowuniform` grid arguments, aliased also as `column_uniform` / `row_uniform`
+- `raise_event` method for raising custom Tk events (wrapper around `tk.event_generate`)
+- `closest_window` method to find the closest parent window-type widget
+- `close_window` method to close the window the widget belongs to
+- `enabled` / `disabled` pair of attributes
+- `visible` / `hidden` pair of attributes
+
 ## 0.0.62
 
 - `icon_photo` as alias for `iconphoto` attribute on `root` and `toplevel`
