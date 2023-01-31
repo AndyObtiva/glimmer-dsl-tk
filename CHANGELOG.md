@@ -4,7 +4,7 @@
 
 - `modal = true` modifier for toplevels (the root becomes hidden till the toplevel is closed)
 - If no icon is set for a toplevel, take icon from the root
-- An exprimental fix of `center_within_screen` for Linux multi-monitor environments
+- An experimental fix of `center_within_screen` for Linux multi-monitor environments
 - `center_within_root` method to center a toplevel within the boundaries of the root (useful for modal windows / dialogs)
 - A helper `window?` method to determine if the widget is a window (root, toplevel) or not
 - Support for single style name argument in the `style` setter to be able to use predefined Tk styles by name
