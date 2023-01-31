@@ -10,6 +10,7 @@
 - Support for single style name argument in the `style` setter to be able to use predefined Tk styles by name
 - Support for `columnuniform` / `rowuniform` grid arguments, aliased also as `column_uniform` / `row_uniform`
 - `raise_event` method for raising custom Tk events (wrapper around `tk.event_generate`)
+- Fix `unbind_all`, use `tk.bind_remove` instead of `tk.bind(..., '')` which was causing weird effects when reloading events
 - `closest_window` method to find the closest parent window-type widget
 - `close_window` method to close the window the widget belongs to
 - `enabled` / `disabled` pair of attributes
