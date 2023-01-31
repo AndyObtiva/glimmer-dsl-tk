@@ -19,6 +19,7 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+require 'yaml'
 require 'glimmer/data_binding/tk/one_time_observer'
 require 'glimmer/tk/widget'
 require 'glimmer/tk/draggable_and_droppable'
@@ -254,13 +255,18 @@ module Glimmer
         "#{attribute}="
       end
       
-      def style=(styles)
-        styles.each do |attribute, value|
-          apply_style(attribute => value)
+      def style=(style_or_styles)
+        if style_or_styles.is_a? String
+          @tk.style(style_or_styles)
+        else
+          style_or_styles.each do |attribute, value|
+            apply_style(attribute => value)
+          end
         end
       end
-      
+
       def grid(options = {})
+        @_visible = true
         options = options.stringify_keys
         options['rowspan'] = options.delete('row_span') if options.keys.include?('row_span')
         options['columnspan'] = options.delete('column_span') if options.keys.include?('column_span')
@@ -273,13 +279,17 @@ module Glimmer
         options['columnminsize'] = options.delete('column_minsize') if options.keys.include?('column_minsize')
         options['columnminsize'] = options.delete('minwidth') if options.keys.include?('minwidth')
         options['columnminsize'] = options.delete('min_width') if options.keys.include?('min_width')
-        options['columnminsize'] = options['rowminsize'] = options.delete('minsize')  if options.keys.include?('minsize')
+        options['columnminsize'] = options['rowminsize'] = options.delete('minsize') if options.keys.include?('minsize')
+        options['rowuniform'] = options.delete('row_uniform') || options.delete('rowuniform')
+        options['columnuniform'] = options.delete('column_uniform') || options.delete('columnuniform')
         index_in_parent = griddable_parent_proxy&.children&.index(griddable_proxy)
         if index_in_parent
           TkGrid.rowconfigure(griddable_parent_proxy.tk, index_in_parent, 'weight'=> options.delete('rowweight')) if options.keys.include?('rowweight')
           TkGrid.rowconfigure(griddable_parent_proxy.tk, index_in_parent, 'minsize'=> options.delete('rowminsize')) if options.keys.include?('rowminsize')
+          TkGrid.rowconfigure(griddable_parent_proxy.tk, index_in_parent, 'uniform'=> options.delete('rowuniform')) if options.keys.include?('rowuniform')
           TkGrid.columnconfigure(griddable_parent_proxy.tk, index_in_parent, 'weight'=> options.delete('columnweight')) if options.keys.include?('columnweight')
           TkGrid.columnconfigure(griddable_parent_proxy.tk, index_in_parent, 'minsize'=> options.delete('columnminsize')) if options.keys.include?('columnminsize')
+          TkGrid.columnconfigure(griddable_parent_proxy.tk, index_in_parent, 'uniform'=> options.delete('columnuniform')) if options.keys.include?('columnuniform')
         end
         griddable_proxy&.tk&.grid(options)
       end
@@ -297,6 +307,7 @@ module Glimmer
       end
       
       def destroy
+        children.each(&:destroy)
         unbind_all
         @tk.destroy
         @on_destroy_procs&.each {|p| p.call(@tk)}
@@ -551,19 +562,89 @@ module Glimmer
       def on(listener_name, &listener)
         handle_listener(listener_name, &listener)
       end
-      
+
+      def raise_event(event_name, data = nil)
+        data = YAML.dump(data) if data && !data.is_a?(String)
+        tk.event_generate("<#{event_name}>", data: data)
+      end
+
       def unbind_all
         @listeners&.keys&.each do |key|
           if key.to_s.downcase.include?('command')
             @tk.send(key, '')
           else
-            @tk.bind(key, '')
+            @tk.bind_remove(key)
           end
         end
+        @listeners = nil
       end
-      
+
+      def clear
+        unbind_all
+        children.each(&:destroy)
+        @children = []
+      end
+
       def content(&block)
         Glimmer::DSL::Engine.add_content(self, Glimmer::DSL::Tk::WidgetExpression.new, keyword, *args, &block)
+      end
+
+      def window?
+        false
+      end
+
+      def closest_window
+        widget = self
+        widget = widget.parent_proxy until widget.window?
+        widget
+      end
+
+      def close_window
+        closest_window.destroy
+      end
+
+      def visible
+        instance_variable_defined?(:@_visible) ? @_visible : (@_visible = true)
+      end
+      alias visible? visible
+
+      def visible=(value)
+        value = !!value
+        return if visible == value
+
+        if value
+          grid
+        else
+          tk.grid_remove
+        end
+        @_visible = value
+      end
+
+      def hidden
+        !visible
+      end
+      alias hidden? hidden
+
+      def hidden=(value)
+        self.visible = !value
+      end
+
+      def enabled
+        tk.state == 'normal'
+      end
+      alias enabled? enabled
+
+      def enabled=(value)
+        tk.state = !!value ? 'normal' : 'disabled'
+      end
+
+      def disabled
+        !enabled
+      end
+      alias disabled? disabled
+
+      def disabled=(value)
+        self.enabled = !value
       end
 
       def method_missing(method, *args, &block)
