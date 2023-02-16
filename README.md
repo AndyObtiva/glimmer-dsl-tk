@@ -139,7 +139,6 @@ DSL | Platforms | Native? | Vector Graphics? | Pros | Cons | Prereqs
   - [Applications](#applications)
     - [Glimmer Tk Calculator](#glimmer-tk-calculator)
     - [Y3network Ruby UI](#y3network-ruby-ui)
-    - [CryptoPunks GUI](#cryptopunks-gui)
     - [Circule](#circule)
   - [Process](#process)
   - [Resources](#resources)
@@ -4282,14 +4281,6 @@ https://github.com/ancorgs/glimmer-tk-calculator
 ### Y3network Ruby UI
 
 https://github.com/ancorgs/y3network-ruby-ui
-
-### CryptoPunks GUI
-
-This is a Graphical User Interface for the famous [cryptopunks Ruby gem](https://github.com/cryptopunksnotdead/cryptopunks/tree/master/cryptopunks).
-
-https://github.com/cryptopunksnotdead/cryptopunks/tree/master/cryptopunks-gui
-
-![CryptoPunks GUI Screenshot](https://raw.githubusercontent.com/cryptopunksnotdead/cryptopunks/master/cryptopunks-gui/screenshots/cryptopunks-gui-screenshot.png)
 
 ### Circule
 
