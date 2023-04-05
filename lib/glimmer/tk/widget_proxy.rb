@@ -103,6 +103,7 @@ module Glimmer
       def toplevel_parent_proxy
         ancestor_proxies.find {|widget_proxy| widget_proxy.is_a?(ToplevelProxy)}
       end
+      alias closest_window toplevel_parent_proxy
       
       # returns list of ancestors ordered from direct parent to root parent
       def ancestor_proxies
@@ -563,7 +564,7 @@ module Glimmer
         handle_listener(listener_name, &listener)
       end
 
-      def raise_event(event_name, data = nil)
+      def event_generate(event_name, data = nil)
         data = YAML.dump(data) if data && !data.is_a?(String)
         tk.event_generate("<#{event_name}>", data: data)
       end
@@ -579,8 +580,7 @@ module Glimmer
         @listeners = nil
       end
 
-      def clear
-        unbind_all
+      def clear_children
         children.each(&:destroy)
         @children = []
       end
@@ -593,18 +593,9 @@ module Glimmer
         false
       end
 
-      def closest_window
-        widget = self
-        widget = widget.parent_proxy until widget.window?
-        widget
-      end
-
-      def close_window
-        closest_window.destroy
-      end
-
       def visible
-        instance_variable_defined?(:@_visible) ? @_visible : (@_visible = true)
+        @visible = true if @visible.nil?
+        @visible
       end
       alias visible? visible
 
@@ -617,7 +608,7 @@ module Glimmer
         else
           tk.grid_remove
         end
-        @_visible = value
+        @visible = value
       end
 
       def hidden
