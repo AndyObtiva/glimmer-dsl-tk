@@ -67,22 +67,22 @@ module GlimmerSpec # used to house Glimmer mixin
       end
     end
 
-    describe '#raise_event' do
+    describe '#event_generate' do
       it 'sends an event' do
         expect(@root.tk).to receive(:event_generate).with('<CustomEvent>', data: nil)
-        @root.raise_event('CustomEvent')
+        @root.event_generate('CustomEvent')
       end
 
       it 'sends an event with a string argument' do
         expect(@root.tk).to receive(:event_generate).with('<CustomEvent>', data: 'argument')
-        @root.raise_event('CustomEvent', 'argument')
+        @root.event_generate('CustomEvent', 'argument')
       end
 
       it 'sends an event with a non-string argument' do
         argument = { key: 'value' }
         argument_dump = YAML.dump(argument)
         expect(@root.tk).to receive(:event_generate).with('<CustomEvent>', data: argument_dump)
-        @root.raise_event('CustomEvent', argument)
+        @root.event_generate('CustomEvent', argument)
       end
     end
 

@@ -38,8 +38,6 @@ module Glimmer
       alias centered? centered
 
       def post_add_content
-        center_within_screen if centered?
-
         if escapable?
            on('KeyPress') do |event|
             if event.state == 0 && event.keysym == 'Escape'
@@ -49,8 +47,12 @@ module Glimmer
           end
         end
 
-        if is_a?(Glimmer::Tk::ToplevelProxy) && modal?
-          center_within_root unless centered?
+        if modal?
+          unless is_a?(Glimmer::Tk::ToplevelProxy)
+            raise 'Modal windows must be top level windows. Root cannot be modal.'
+          end
+
+          center_within_root unless @x || @y
           root_parent_proxy.withdraw
           tk.grab_set
           on('WM_DELETE_WINDOW') do
@@ -64,6 +66,8 @@ module Glimmer
             root_parent_proxy.deiconify
             true
           end
+        else
+          center_within_screen unless @x || @y
         end
 
         if is_a?(Glimmer::Tk::ToplevelProxy) && @tk.iconphoto.nil? && root_parent_proxy.iconphoto
@@ -197,17 +201,13 @@ module Glimmer
         true
       end
 
-      def closest_window
-        self
-      end
-
       [:visible,  :hidden,  :enabled,  :disabled,
        :visible=, :hidden=, :enabled=, :disabled=,
        :visible?, :hidden?, :enabled?, :disabled?].each \
       do |restricted_method|
         define_method(restricted_method) do
           # TODO: or just do nothing?
-          raise 'Not applicable for a window'
+          raise 'Not applicable for a root / toplevel'
         end
       end
 
