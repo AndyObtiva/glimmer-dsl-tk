@@ -48,6 +48,27 @@ root { |root_window|
       toplevel(root_window) {
         title 'Custom Window'
         escapable true
+        centered true
+        x 150
+        y 180
+        width 500
+        height 200
+        minsize 500, 100
+        maxsize 1000, 300
+          
+        toplevel_content
+      }
+    end
+  }
+  
+  button {
+    text 'Nested Window (Modal)'
+    
+    on('command') do
+      toplevel(root_window) {
+        title 'Custom Window'
+        escapable true
+        modal true
         x 150
         y 180
         width 500
@@ -67,6 +88,30 @@ root { |root_window|
       toplevel(root_window) {
         title 'Transparent Window'
         escapable true
+        centered true
+        alpha 0.85
+        width 250
+        height 100
+        resizable false, false # not resizable horizontally or vertically
+          
+        frame {
+          label {
+            text "This is a transparent window\n(Varies per platform)\nYou can hit ESCAPE to close."
+            anchor 'center'
+          }
+        }
+      }
+    end
+  }
+  
+  button {
+    text 'Transparent Window (Modal)'
+    
+    on('command') do
+      toplevel(root_window) {
+        title 'Transparent Window'
+        escapable true
+        modal true
         alpha 0.85
         width 250
         height 100
