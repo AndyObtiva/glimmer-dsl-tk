@@ -211,6 +211,10 @@ module Glimmer
         end
       end
 
+      def closest_window
+        self
+      end
+
       private
       
       def sign_number(sign, number)
