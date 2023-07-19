@@ -19,34 +19,32 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'glimmer/dsl/engine'
-Dir[File.expand_path('../*_expression.rb', __FILE__)].each {|f| require f}
-
-# Glimmer DSL expression configuration module
-#
-# When DSL engine interprets an expression, it attempts to handle
-# with expressions listed here in the order specified.
-
-# Every expression has a corresponding Expression subclass
-# in glimmer/dsl
+require 'glimmer/data_binding/observable'
+require 'glimmer/data_binding/observer'
 
 module Glimmer
-  module DSL
+  module DataBinding
     module Tk
-      Engine.add_dynamic_expressions(
-        Tk,
-        %w[
-          treeview_selection_data_binding
-          list_selection_data_binding
-          variable_listener
-          data_binding
-          attribute
-          shine_data_binding
-          widget
-          built_in_dialog
-          block_attribute
-        ]
-      )
+      class TreeviewSelectionBinding
+        include Glimmer
+        include Observable
+        include Observer
+  
+        attr_accessor :widget_proxy
+        private :widget_proxy=
+  
+        def initialize(widget_proxy)
+          self.widget_proxy = widget_proxy
+        end
+
+        def call(value)
+          widget_proxy.set_attribute('selection', value) unless widget_proxy.get_attribute('selection') == value
+        end
+
+        def evaluate_property
+          widget_proxy.get_attribute('selection')
+        end
+      end
     end
   end
 end

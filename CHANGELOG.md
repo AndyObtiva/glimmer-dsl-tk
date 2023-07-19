@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.0.64
+
+- `treeview` widget
+- Hello, TreeView! sample
+
 ## 0.0.63
 
 - `modal = true` modifier for toplevels (the root becomes hidden till the toplevel is closed)
