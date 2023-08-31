@@ -496,7 +496,15 @@ module Glimmer
           },
           ::Tk::Tile::TRadiobutton => {
             'variable' => lambda do |observer|
+              # tk.command is called only when the radiobutton is clicked/selected
+              # it isn't called when other radiobutton in the group is clicked/selected == this radiobutton is deselected
+              # so, we need to call the observers of the deselected radiobuttons in order for their variables to be reset to false
               @tk.command {
+                if @tk.variable.value == @tk.value
+                  sibling_radio_buttons.each do |sibling_radio_button|
+                    sibling_radio_button.tk.command.call
+                  end
+                end
                 observer.call(@tk.variable.value == @tk.value)
               }
             end,
