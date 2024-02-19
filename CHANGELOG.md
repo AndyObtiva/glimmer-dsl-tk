@@ -1,9 +1,5 @@
 # Change Log
 
-## 0.0.64
-
-- Fixed the problem when variables bound to deselected radiobuttons weren't being updated to false
-
 ## 0.0.63
 
 - `modal = true` modifier for toplevels (the root becomes hidden till the toplevel is closed)
@@ -18,6 +14,7 @@
 - `closest_window` method to find the closest parent window-type widget
 - `enabled` / `disabled` pair of attributes
 - `visible` / `hidden` pair of attributes
+- Fixed the problem when variables bound to deselected radiobuttons weren't being updated to false
 
 ## 0.0.62
 
