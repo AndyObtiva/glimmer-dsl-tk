@@ -4,6 +4,7 @@
 
 ## Soon
 
+- Handle `is_a?(Glimmer::Tk::ToplevelProxy)` conditions in ToplevelProxy more correctly by applying the Template Method Design Pattern or doing a different check against the class direclty instead of using `is_a?`
 - Update Hello, Menu Bar! screenshots with Language Country
 - Refactor `WidgetProxy` by adding a `griddable?` method that could be overriden by subclasses to consult for auto-gridding on `initialize_defaults`
 - Allow setting root x/y without affecting its default width/height
